@@ -1,3 +1,5 @@
+# Copyright (c) Cosmo Tech corporation.
+# Licensed under the MIT license.
 import os
 
 import cosmotech_api
