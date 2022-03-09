@@ -1,2 +1,7 @@
+azure-functions
+azure-digitaltwins-core
 azure-identity
-git+https://github.com/Cosmo-Tech/cosmotech-api-python-client.git#egg=cosmotech_api
+
+openpyxl
+
+cosmotech-api

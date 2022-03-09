@@ -14,7 +14,10 @@ setuptools.setup(
     author_email='alexis.fossart@cosmotech.com',
     description='Acceleration library for CosmoTech cloud based solution development',
     install_requires=[
+        'azure-functions',
+        'azure-digitaltwins-core',
         'azure-identity',
+        'openpyxl',
         'cosmotech-api',
     ]
 )
