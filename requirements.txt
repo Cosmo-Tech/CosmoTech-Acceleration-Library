@@ -5,7 +5,7 @@ azure-kusto-data
 azure-kusto-ingest
 
 openpyxl
-
 pandas
+python-dateutil
 
 cosmotech-api
