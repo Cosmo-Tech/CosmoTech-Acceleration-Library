@@ -5,7 +5,20 @@ import pandas as pd
 
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.data.data_format import DataFormat
-from azure.kusto.ingest import QueuedIngestClient, IngestionProperties
+from azure.kusto.ingest import QueuedIngestClient, IngestionProperties, ReportLevel
+from azure.kusto.ingest.status import KustoIngestStatusQueues, SuccessMessage, FailureMessage
+
+from enum import Enum
+import time
+from typing import Iterator
+
+
+class IngestionStatus(Enum):
+    QUEUED = 'QUEUED'
+    SUCCESS = 'SUCCESS'
+    FAILURE = 'FAILURE'
+    UNKNOWN = 'UNKNOWN'
+    TIMEOUT = 'TIMED OUT'
 
 
 class ADXQueriesWrapper:
@@ -42,7 +55,7 @@ class ADXQueriesWrapper:
         return "string"
 
     def send_to_adx(self, dict_list: list, table_name: str, ignore_table_creation: bool = True,
-                    drop_by_tag: str = None) -> bool:
+                    drop_by_tag: str = None):
         """
         Will take a list of dict items and send them to a given table in ADX
         :param dict_list: list of dict objects requiring to have the same keys
@@ -63,8 +76,8 @@ class ADXQueriesWrapper:
 
         # Create a dataframe with the data to write and send them to ADX
         df = pd.DataFrame(dict_list)
-        self.ingest_dataframe(table_name, df, drop_by_tag)
-        return True
+        ingestion_result = self.ingest_dataframe(table_name, df, drop_by_tag)
+        return ingestion_result
 
     def ingest_dataframe(self, table_name: str, dataframe: pd.DataFrame, drop_by_tag: str = None):
         """
@@ -76,9 +89,82 @@ class ADXQueriesWrapper:
         """
         drop_by_tags = [drop_by_tag] if (drop_by_tag is not None) else None
         properties = IngestionProperties(database=self.database, table=table_name, data_format=DataFormat.CSV,
-                                         drop_by_tags=drop_by_tags)
+                                         drop_by_tags=drop_by_tags, report_level=ReportLevel.FailuresAndSuccesses)
         client = self.ingest_client
-        client.ingest_from_dataframe(dataframe, ingestion_properties=properties)
+        ingestion_result = client.ingest_from_dataframe(dataframe, ingestion_properties=properties)
+        self.ingest_status[str(ingestion_result.source_id)] = IngestionStatus.QUEUED
+        self.ingest_times[str(ingestion_result.source_id)] = time.time()
+        return ingestion_result
+
+    def check_ingestion_status(self, source_ids: list[str],
+                               timeout: int = None,
+                               logs: bool = False) -> Iterator[tuple[str, IngestionStatus]]:
+        remaining_ids = []
+        for source_id in source_ids:
+            if source_id not in self.ingest_status:
+                self.ingest_status[source_id] = IngestionStatus.UNKNOWN
+                self.ingest_times[source_id] = time.time()
+            if self.ingest_status[source_id] not in [IngestionStatus.QUEUED, IngestionStatus.UNKNOWN]:
+                yield source_id, self.ingest_status[source_id]
+            else:
+                remaining_ids.append(source_id)
+
+        qs = KustoIngestStatusQueues(self.ingest_client)
+
+        def get_messages(queues):
+            _r = []
+            for q in queues:
+                _r.extend(((q, m) for m in q.receive_messages(messages_per_page=32, visibility_timeout=1)))
+            return _r
+
+        successes = get_messages(qs.success._get_queues())
+        failures = get_messages(qs.failure._get_queues())
+
+        if logs:
+            print(f"Success messages: {len(successes)}")
+            print(f"Failure messages: {len(failures)}")
+        non_sent_ids = remaining_ids[:]
+        for messages, cast_func, status in [(successes, SuccessMessage, IngestionStatus.SUCCESS),
+                                            (failures, FailureMessage, IngestionStatus.FAILURE)]:
+            for _q, _m in messages:
+                dm = cast_func(_m.content)
+                to_check_ids = remaining_ids[:]
+                for source_id in to_check_ids:
+                    if dm.IngestionSourceId == str(source_id):
+                        self.ingest_status[source_id] = status
+                        if logs:
+                            print(f"Found status for {source_id}: {status.value}")
+                        _q.delete_message(_m)
+                        remaining_ids.remove(source_id)
+                        break
+                else:
+                    # The message did not correspond to a known ID
+                    continue
+                break
+            else:
+                # No message was found on the current list of messages for the given IDs
+                continue
+            break
+        else:
+            for source_id in remaining_ids:
+                if time.time() - self.ingest_times[source_id] > ([timeout, self.timeout][timeout is None]):
+                    self.ingest_status[source_id] = IngestionStatus.TIMEOUT
+        for source_id in non_sent_ids:
+            yield source_id, self.ingest_status[source_id]
+
+    def _clear_ingestion_status_queues(self, confirmation: bool = False):
+        """
+        Dangerous operation that will fully clear all data in the ingestion status queues
+        Those queues are common to all databases in the ADX Cluster so don't ut this unless you know what you are doing
+        :param confirmation: Unless confirmation is set to True, won't do anything
+        :return:
+        """
+        if confirmation:
+            qs = KustoIngestStatusQueues(self.ingest_client)
+            while not qs.success.is_empty():
+                qs.success.pop(32)
+            while not qs.failure.is_empty():
+                qs.failure.pop(32)
 
     def run_command_query(self, query: str):
         """
@@ -159,3 +245,8 @@ class ADXQueriesWrapper:
         self.kusto_client = KustoClient(self.cluster_kcsb)
         self.ingest_client = QueuedIngestClient(self.ingest_kcsb)
         self.database = database
+
+        self.timeout = 900
+
+        self.ingest_status = dict()
+        self.ingest_times = dict()
