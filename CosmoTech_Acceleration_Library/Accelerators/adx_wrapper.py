@@ -122,7 +122,7 @@ class ADXQueriesWrapper:
         if self.table_exists(table_name):
             return True
 
-        create_query = f".create table {table_name}("
+        create_query = f".create-merge table {table_name}("
         for column_name, column_type in schema.items():
             create_query += f"{column_name}:{column_type},"
         create_query = create_query[:-1] + ")"
