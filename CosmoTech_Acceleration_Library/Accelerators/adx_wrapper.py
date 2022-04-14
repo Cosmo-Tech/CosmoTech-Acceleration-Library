@@ -52,7 +52,7 @@ class ADXQueriesWrapper:
         :return: A boolean check if the data have been sent to ADX
         """
 
-        if not ignore_table_creation and not self.table_exists(table_name):
+        if not ignore_table_creation:
             # If the target table does not exist create it
             # First create the columns types needed for the table
             types = {k: self.type_mapping(k, dict_list[0][k]) for k in dict_list[0].keys()}
@@ -118,10 +118,6 @@ class ADXQueriesWrapper:
         :param schema: the schema associated to the table
         :return: Is the table created ?
         """
-        # If the table exists no need to create it
-        if self.table_exists(table_name):
-            return True
-
         create_query = f".create-merge table {table_name}("
         for column_name, column_type in schema.items():
             create_query += f"{column_name}:{column_type},"
