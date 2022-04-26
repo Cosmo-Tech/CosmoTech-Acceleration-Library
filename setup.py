@@ -2,7 +2,10 @@
 # Licensed under the MIT license.
 import setuptools
 
-VERSION = "0.0.1"
+VERSION = "0.0.8"
+
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
 
 setuptools.setup(
     name='CosmoTech_Acceleration_Library',
@@ -13,11 +16,5 @@ setuptools.setup(
     author='afossart',
     author_email='alexis.fossart@cosmotech.com',
     description='Acceleration library for CosmoTech cloud based solution development',
-    install_requires=[
-        'azure-functions',
-        'azure-digitaltwins-core',
-        'azure-identity',
-        'openpyxl',
-        'cosmotech-api',
-    ]
+    install_requires=required
 )
