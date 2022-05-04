@@ -9,9 +9,14 @@ from cosmotech_api.api.scenario_api import ScenarioApi
 from cosmotech_api.api.workspace_api import WorkspaceApi
 
 
+from CosmoTech_Acceleration_Library.Accelerators.utils.multi_environment import MultiEnvironment
+
+env = MultiEnvironment()
+
+
 def __get_configuration():
-    api_url = os.environ.get("CSM_API_URL")
-    api_scope = os.environ.get("CSM_API_SCOPE")
+    api_url = env.api_host
+    api_scope = env.api_scope
     credentials = DefaultAzureCredential()
     token = credentials.get_token(api_scope)
 

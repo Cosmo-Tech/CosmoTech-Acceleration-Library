@@ -17,16 +17,20 @@ from cosmotech_api.api.workspace_api import WorkspaceApi
 
 from openpyxl import load_workbook
 
+from CosmoTech_Acceleration_Library.Accelerators.utils.multi_environment import MultiEnvironment
+
+env = MultiEnvironment()
+
 
 class ScenarioDownloader:
 
     def __init__(self, workspace_id: str, organization_id: str):
         self.credentials = DefaultAzureCredential()
-        scope = os.environ.get("COSMOTECH_API_SCOPE")
+        scope = env.api_scope
         token = self.credentials.get_token(scope)
 
         self.configuration = cosmotech_api.Configuration(
-            host=os.environ.get("COSMOTECH_API_HOST"),
+            host=env.api_host,
             discard_unknown_keys=True,
             access_token=token.token
         )
@@ -35,12 +39,12 @@ class ScenarioDownloader:
         self.organization_id = organization_id
 
     def get_scenario_data(self, scenario_id: str):
-            with cosmotech_api.ApiClient(self.configuration) as api_client:
-                api_instance = ScenarioApi(api_client)
-                scenario_data = api_instance.find_scenario_by_id(organization_id=self.organization_id,
-                                                                 workspace_id=self.workspace_id,
-                                                                 scenario_id=scenario_id)
-            return scenario_data
+        with cosmotech_api.ApiClient(self.configuration) as api_client:
+            api_instance = ScenarioApi(api_client)
+            scenario_data = api_instance.find_scenario_by_id(organization_id=self.organization_id,
+                                                             workspace_id=self.workspace_id,
+                                                             scenario_id=scenario_id)
+        return scenario_data
 
     def download_dataset(self, dataset_id: str) -> (str, str, Union[str, None]):
         with cosmotech_api.ApiClient(self.configuration) as api_client:
