@@ -4,6 +4,10 @@ azure-identity
 azure-kusto-data
 azure-kusto-ingest
 
+redis==3.5.3
+redisgraph~=2.4.4
+redisgraph_bulk_loader
+
 openpyxl
 pandas
 python-dateutil
