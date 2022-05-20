@@ -2,10 +2,9 @@
 # Licensed under the MIT license.
 import logging
 
-from redisgraph.query_result import QueryResult
-
 from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import VersionedGraphHandler
 from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelUtil
+from redis.commands.graph.query_result import QueryResult
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +54,7 @@ class ModelReader(VersionedGraphHandler):
         Get relationship types
         :return: relationship types list
         """
-        return [item for sublist in self.graph.relationshipTypes() for item in sublist]
+        return [item for sublist in self.graph.relationship_types() for item in sublist]
 
     def get_relationships_by_type(self, relationship_type: str, limit: int = 0) -> QueryResult:
         """

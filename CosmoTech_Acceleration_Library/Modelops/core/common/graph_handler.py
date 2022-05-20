@@ -3,8 +3,6 @@
 import logging
 from pathlib import Path
 
-from redisgraph import Graph
-
 from CosmoTech_Acceleration_Library.Modelops.core.common.redis_handler import RedisHandler
 from CosmoTech_Acceleration_Library.Modelops.core.io.model_metadata import ModelMetadata
 from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelUtil
@@ -20,7 +18,7 @@ class GraphHandler(RedisHandler):
     def __init__(self, host: str, port: int, name: str, source_url: str = "", graph_rotation: int = 1):
         super().__init__(host=host, port=port, name=name)
         logger.debug("GraphHandler init")
-        self.graph = Graph(name, self.r)
+        self.graph = self.r.graph(name)
         self.m_metadata = ModelMetadata(host, port, name)
         current_metadata = self.m_metadata.get_metadata()
         if not current_metadata:
@@ -51,7 +49,7 @@ class VersionedGraphHandler(GraphHandler):
         versioned_name = ModelUtil.build_graph_version_name(graph_name, version)
         self.versioned_name = versioned_name
         self.version = version
-        self.graph = Graph(versioned_name, self.r)
+        self.graph = self.r.graph(versioned_name)
         self.m_metadata.set_last_graph_version(version)
 
 

@@ -4,9 +4,8 @@ azure-identity
 azure-kusto-data
 azure-kusto-ingest
 
-redis==3.5.3
-redisgraph~=2.4.4
-redisgraph_bulk_loader
+redis==4.3.1
+redisgraph_bulk_loader==0.10.2
 
 openpyxl
 pandas

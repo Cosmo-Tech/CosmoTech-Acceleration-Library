@@ -3,9 +3,10 @@
 import csv
 import logging
 
-from redisgraph.query_result import QueryResult
+from redis.commands.graph.query_result import QueryResult
 
 logger = logging.getLogger(__name__)
+
 
 class CsvWriter:
     """

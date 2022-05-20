@@ -3,8 +3,9 @@
 import json
 
 from datetime import datetime
-from redisgraph import Edge, Node
-from redisgraph.query_result import QueryResult
+from redis.commands.graph.edge import Edge
+from redis.commands.graph.node import Node
+from redis.commands.graph.query_result import QueryResult
 
 
 class ModelUtil:
@@ -145,8 +146,8 @@ class ModelUtil:
         :param version: the version
         :return: the versioned graph name
         """
-        return graph_name+":"+str(version)
+        return graph_name + ":" + str(version)
 
     @staticmethod
     def build_graph_key_pattern(graph_name: str) -> str:
-        return graph_name+":*"
+        return graph_name + ":*"
