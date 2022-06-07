@@ -1,0 +1,2 @@
+NbWaiters:INT,RestockQty:INT,Stock:INT,dt_id:ID
+11,30,60,MyBar

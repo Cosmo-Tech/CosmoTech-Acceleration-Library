@@ -1,0 +1,9 @@
+src,dest,name,dt_id
+Customer1,Customer4,arc_to_Customer,2_arc_to_5
+Customer4,Customer1,arc_to_Customer,5_arc_to_2
+Customer3,Customer2,arc_to_Customer,4_arc_to_3
+Customer2,Customer3,arc_to_Customer,3_arc_to_4
+Customer3,Customer1,arc_to_Customer,4_arc_to_2
+Customer1,Customer3,arc_to_Customer,2_arc_to_4
+Customer1,Customer2,arc_to_Customer,2_arc_to_3
+Customer2,Customer1,arc_to_Customer,3_arc_to_2

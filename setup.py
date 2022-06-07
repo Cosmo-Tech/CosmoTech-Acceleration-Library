@@ -2,7 +2,7 @@
 # Licensed under the MIT license.
 import setuptools
 
-VERSION = "0.0.8"
+VERSION = "0.1.0"
 
 with open('requirements.txt') as f:
     required = f.read().splitlines()
@@ -15,6 +15,6 @@ setuptools.setup(
     license='MIT',
     author='afossart',
     author_email='alexis.fossart@cosmotech.com',
-    description='Acceleration library for CosmoTech cloud based solution development',
+    description='Acceleration libraries for CosmoTech cloud based solution development',
     install_requires=required
 )
