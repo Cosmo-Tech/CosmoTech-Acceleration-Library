@@ -22,7 +22,7 @@ The library can be used by Data Scientists, Modelers, Developers, ...
 
 ### Utility classes
 
-* `ModelImporter(host: str, port: int, name: str, version: int, graph_rotation:int = 1)` : will allow you to bulk import data from csv files [with schema enforced](samples/Bulk_Import_from_CSV_with_schema.py) or [not](samples/Bulk_Import_from_CSV_without_schema.py) (see [documentation](https://github.com/RedisGraph/redisgraph-bulk-loader#input-schemas) for further details)
+* `ModelImporter(host: str, port: int, name: str, version: int, graph_rotation:int = 1)` : will allow you to bulk import data from csv files [with schema enforced](samples/Modelops/Bulk_Import_from_CSV_with_schema.py) or [not](samples/Modelops/Bulk_Import_from_CSV_without_schema.py) (see [documentation](https://github.com/RedisGraph/redisgraph-bulk-loader#input-schemas) for further details)
 * `ModelExporter(host: str, port: int, name: str, version: int, export_dir: str = '/')` : will allow you to export data from a model cache instance
 * `ModelReader(host: str, port: int, name: str, version: int)` : will allow you to read data from a model cache instance ([object returned](https://github.com/RedisGraph/redisgraph-py/blob/master/redisgraph/query_result.py))
 * `ModelWriter(host: str, port: int, name: str, version: int, graph_rotation:int = 1)` : will allow you to write data into a model instance
