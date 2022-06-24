@@ -15,9 +15,9 @@ class ModelExporter(ExportableGraphHandler):
     Model Exporter for cached data
     """
 
-    def __init__(self, host: str, port: int, name: str, version: int, export_dir: str = "/"):
-        super().__init__(host=host, port=port, name=name, version=version, export_dir=export_dir)
-        self.mr = ModelReader(host=host, port=port, name=name, version=version)
+    def __init__(self, host: str, port: int, name: str, version: int, password: str = None, export_dir: str = "/"):
+        super().__init__(host=host, port=port, name=name, version=version, password=password, export_dir=export_dir)
+        self.mr = ModelReader(host=host, port=port, name=name, password=password, version=version)
 
     @do_if_graph_exist
     def export_all_twins(self):

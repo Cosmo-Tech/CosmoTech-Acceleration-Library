@@ -26,6 +26,10 @@ class ModelImporter(RotatedGraphHandler):
         """
         command_parameters = ['--host', self.host, '--port', self.port]
 
+        if self.password is not None:
+            command_parameters.append('--password')
+            command_parameters.append(self.password)
+
         if enforce_schema:
             command_parameters.append('--enforce-schema')
 

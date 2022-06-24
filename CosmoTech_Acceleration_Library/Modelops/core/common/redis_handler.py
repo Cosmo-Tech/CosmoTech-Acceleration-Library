@@ -12,10 +12,11 @@ class RedisHandler:
     Class that handle Redis informations
     """
 
-    def __init__(self, host: str, port: int, name: str):
+    def __init__(self, host: str, port: int, name: str, password: str = None):
         logger.debug("RedisHandler init")
         self.host = host
         self.port = port
         self.name = name
-        self.r = redis.Redis(host=host, port=port, decode_responses=True)
+        self.password = password
+        self.r = redis.Redis(host=host, port=port, password=password, decode_responses=True)
         self.metadata_key = name + "MetaData"

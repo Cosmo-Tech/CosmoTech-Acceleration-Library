@@ -15,11 +15,11 @@ class GraphHandler(RedisHandler):
     Class that handle Graph Redis information
     """
 
-    def __init__(self, host: str, port: int, name: str, source_url: str = "", graph_rotation: int = 1):
-        super().__init__(host=host, port=port, name=name)
+    def __init__(self, host: str, port: int, name: str, password: str = None, source_url: str = "", graph_rotation: int = 1):
+        super().__init__(host=host, port=port, name=name, password=password)
         logger.debug("GraphHandler init")
         self.graph = self.r.graph(name)
-        self.m_metadata = ModelMetadata(host, port, name)
+        self.m_metadata = ModelMetadata(host=host, port=port, name=name, password=password)
         current_metadata = self.m_metadata.get_metadata()
         if not current_metadata:
             logger.debug("Create metadata key")
@@ -32,9 +32,10 @@ class VersionedGraphHandler(GraphHandler):
     Class that handle Versioned Graph Redis information
     """
 
-    def __init__(self, host: str, port: int, name: str, version: int, source_url: str = "",
+    def __init__(self, host: str, port: int, name: str, version: int, password: str = None, source_url: str = "",
                  graph_rotation: int = 1):
-        super().__init__(host=host, port=port, name=name, source_url=source_url, graph_rotation=graph_rotation)
+        super().__init__(host=host, port=port, name=name, password=password, source_url=source_url,
+                         graph_rotation=graph_rotation)
         logger.debug("VersionedGraphHandler init")
         self.version = None
         self.versioned_name = None
@@ -58,9 +59,9 @@ class RotatedGraphHandler(VersionedGraphHandler):
     Class that handle Rotated Graph Redis information
     """
 
-    def __init__(self, host: str, port: int, name: str, version: int = -1, source_url: str = "",
+    def __init__(self, host: str, port: int, name: str, password: str = None, version: int = -1, source_url: str = "",
                  graph_rotation: int = 1):
-        super().__init__(host=host, port=port, name=name, source_url=source_url, version=version,
+        super().__init__(host=host, port=port, name=name, password=password, source_url=source_url, version=version,
                          graph_rotation=graph_rotation)
         logger.debug("RotatedGraphHandler init")
         self.graph_rotation = graph_rotation
@@ -101,8 +102,8 @@ class ExportableGraphHandler(VersionedGraphHandler):
     Class that handle Exportable Versioned Graph Redis information
     """
 
-    def __init__(self, host: str, port: int, name: str, version: int, source_url: str = "", export_dir: str = "/"):
-        super().__init__(host=host, port=port, name=name, version=version, source_url=source_url)
+    def __init__(self, host: str, port: int, name: str, version: int, password: str = None, source_url: str = "", export_dir: str = "/"):
+        super().__init__(host=host, port=port, name=name, version=version, password=password, source_url=source_url)
         logger.debug("ExportableGraphHandler init")
         if export_dir != "":
             Path(export_dir).mkdir(parents=True, exist_ok=True)
