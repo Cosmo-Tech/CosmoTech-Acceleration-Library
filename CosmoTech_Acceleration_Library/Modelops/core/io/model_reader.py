@@ -83,7 +83,8 @@ class ModelReader(VersionedGraphHandler):
         if result_set and result_set[0]:
             # relationship
             for key, val in result_set[0][2].properties.items():
-                result.append(str(key))
+                if not str(key) in result:
+                    result.append(str(key))
         return result
 
     def query(self, query: str, params: dict = None, timeout: int = None, read_only: bool = False) -> QueryResult:

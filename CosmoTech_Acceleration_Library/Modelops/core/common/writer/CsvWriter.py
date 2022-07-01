@@ -5,6 +5,8 @@ import logging
 
 from redis.commands.graph.query_result import QueryResult
 
+from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelUtil
+
 logger = logging.getLogger(__name__)
 
 
@@ -43,7 +45,9 @@ class CsvWriter:
         for raw_data in query_result.result_set:
             row = [raw_data[0], raw_data[1]]
             for key, val in raw_data[2].properties.items():
-                row.append(str(val))
+                property_name = str(key)
+                if property_name != ModelUtil.source_key and property_name != ModelUtil.dest_key:
+                    row.append(str(val))
             writer.writerow(row)
         csvfile.close()
         logger.debug(f"... CSV file {output_file_name} has been written")
