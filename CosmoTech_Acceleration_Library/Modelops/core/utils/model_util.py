@@ -14,11 +14,11 @@ class ModelUtil:
     """
 
     # Relationship variables
-    source_key = 'src'
-    dest_key = 'dest'
+    source_key = 'source'
+    dest_key = 'target'
 
     # Twins variables
-    dt_id_key = 'dt_id'
+    dt_id_key = 'id'
 
     @staticmethod
     def dict_to_cypher_parameters(parameters: dict) -> str:

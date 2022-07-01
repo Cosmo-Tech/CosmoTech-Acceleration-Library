@@ -46,7 +46,10 @@ class ModelReader(VersionedGraphHandler):
         result_set = twin_result.result_set
         if result_set and result_set[0]:
             for key, val in result_set[0][0].properties.items():
-                result.append(str(key))
+                if str(key) != 'dt_id':
+                    result.append(str(key))
+                else:
+                    result.append(ModelUtil.dt_id_key)
         return result
 
     def get_relationship_types(self) -> list:
@@ -84,7 +87,10 @@ class ModelReader(VersionedGraphHandler):
             # relationship
             for key, val in result_set[0][2].properties.items():
                 if not str(key) in result:
-                    result.append(str(key))
+                    if str(key) == "dt_id":
+                        result.append(ModelUtil.dt_id_key)
+                    else:
+                        result.append(str(key))
         return result
 
     def query(self, query: str, params: dict = None, timeout: int = None, read_only: bool = False) -> QueryResult:
