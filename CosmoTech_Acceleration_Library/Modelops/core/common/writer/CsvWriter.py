@@ -28,7 +28,10 @@ class CsvWriter:
             for i in range(len(raw_data)):
                 row = []
                 for key, val in raw_data[i].properties.items():
-                    row.append(str(val))
+                    if isinstance(val, bool):
+                        row.append(str(val).lower())
+                    else:
+                        row.append(str(val))
                 writer.writerow(row)
         csvfile.close()
         logger.debug(f"... CSV file {output_file_name} has been written")
@@ -47,7 +50,10 @@ class CsvWriter:
             for key, val in raw_data[2].properties.items():
                 property_name = str(key)
                 if property_name != ModelUtil.source_key and property_name != ModelUtil.dest_key:
-                    row.append(str(val))
+                    if isinstance(val, bool):
+                        row.append(str(val).lower())
+                    else:
+                        row.append(str(val))
             writer.writerow(row)
         csvfile.close()
         logger.debug(f"... CSV file {output_file_name} has been written")
