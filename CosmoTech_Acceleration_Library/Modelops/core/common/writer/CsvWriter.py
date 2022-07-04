@@ -30,6 +30,8 @@ class CsvWriter:
                 for key, val in raw_data[i].properties.items():
                     if isinstance(val, bool):
                         row.append(str(val).lower())
+                    elif str(val) == 'True' or str(val) == 'False':
+                        row.append(str(val).lower())
                     else:
                         row.append(str(val))
                 writer.writerow(row)
@@ -49,8 +51,10 @@ class CsvWriter:
             row = [raw_data[0], raw_data[1]]
             for key, val in raw_data[2].properties.items():
                 property_name = str(key)
-                if property_name != ModelUtil.source_key and property_name != ModelUtil.dest_key:
+                if property_name != 'src' and property_name != 'dest':
                     if isinstance(val, bool):
+                        row.append(str(val).lower())
+                    elif str(val) == 'True' or str(val) == 'False':
                         row.append(str(val).lower())
                     else:
                         row.append(str(val))

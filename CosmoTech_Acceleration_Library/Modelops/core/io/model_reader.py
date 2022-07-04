@@ -87,9 +87,9 @@ class ModelReader(VersionedGraphHandler):
             # relationship
             for key, val in result_set[0][2].properties.items():
                 if not str(key) in result:
-                    if str(key) == "dt_id":
+                    if str(key) == 'dt_id':
                         result.append(ModelUtil.dt_id_key)
-                    else:
+                    elif str(key) != 'src' and str(key) != 'dest':
                         result.append(str(key))
         return result
 
