@@ -3,7 +3,7 @@
 import setuptools
 from pathlib import Path
 
-VERSION = "0.1.6"
+VERSION = "0.1.7"
 
 with open('requirements.txt') as f:
     required = f.read().splitlines()
