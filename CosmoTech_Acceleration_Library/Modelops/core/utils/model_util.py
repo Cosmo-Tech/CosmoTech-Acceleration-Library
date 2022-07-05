@@ -36,8 +36,14 @@ class ModelUtil:
                 cypher_list.append(f"{key} : \"{value}\"")
             elif isinstance(value, list):
                 cypher_list.append(f"{key} : {value}")
+            elif isinstance(value, str):
+                if value.startswith("'") and value.endswith("'"):
+                    cypher_list.append(f"{key} : {value}")
+                else:
+                    cypher_list.append(f"{key} : '{value}'")
             else:
                 cypher_list.append(f"{key} : '{value}'")
+
         joined_list = ', '.join(cypher_list)
         return '{' + joined_list + '}'
 

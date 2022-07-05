@@ -16,6 +16,7 @@ class TestModelUtil(unittest.TestCase):
             "property1": "toto",
             "property2": "tata",
         },
+        "with_quotes": "'9999'",
         "colors": ["red", "white", "blue"]
     }
 
@@ -29,14 +30,15 @@ class TestModelUtil(unittest.TestCase):
             "property1": "toto",
             "property2": "tata",
         },
+        "with_quotes": "'12345'",
         "colors": ["red", "white", "blue"]
     }
 
-    expected_simple_parameters = "{dt_id : 'Twin1', brand : 'Ford', electric : 'False', year : '1964', dict_param : \"{'property1': 'toto', 'property2': 'tata'}\", colors : [" \
+    expected_simple_parameters = "{dt_id : 'Twin1', brand : 'Ford', electric : 'False', year : '1964', dict_param : \"{'property1': 'toto', 'property2': 'tata'}\", with_quotes : \'9999\', colors : [" \
                                  "\'red\', \'white\', \'blue\']}"
 
     expected_relationship_simple_parameters = "{src : 'Node1', dest : 'Node2', brand : 'Ford', electric : 'False', " \
-                                              "year : '1964', dict_param : \"{'property1': 'toto', 'property2': 'tata'}\", colors : [\'red\', \'white\', \'blue\']}"
+                                              "year : '1964', dict_param : \"{'property1': 'toto', 'property2': 'tata'}\", with_quotes : \'12345\', colors : [\'red\', \'white\', \'blue\']}"
 
     def setUp(self):
         self.model_util = ModelUtil()
