@@ -46,10 +46,10 @@ class ModelReader(VersionedGraphHandler):
         result_set = twin_result.result_set
         if result_set and result_set[0]:
             for key, val in result_set[0][0].properties.items():
-                if str(key) != 'dt_id':
+                if str(key) != ModelUtil.dt_id_key:
                     result.append(str(key))
                 else:
-                    result.append(ModelUtil.dt_id_key)
+                    result.append(ModelUtil.id_key)
         return result
 
     def get_relationship_types(self) -> list:
@@ -67,7 +67,7 @@ class ModelReader(VersionedGraphHandler):
         :return: the relationship list corresponding to relationship type parameter
         """
         rel_query = f'MATCH (n)-[relation:{relationship_type}]->(m) RETURN n.dt_id as {ModelUtil.source_key}, ' \
-                    f'm.dt_id as {ModelUtil.dest_key}, relation'
+                    f'm.dt_id as {ModelUtil.target_key}, relation'
         if limit != 0:
             rel_query = f'{rel_query} LIMIT {str(limit)}'
         logger.debug(f"Query : {rel_query}")
@@ -80,16 +80,16 @@ class ModelReader(VersionedGraphHandler):
         :param relationship_type: the relationship type
         :return: the properties list
         """
-        result = [ModelUtil.source_key, ModelUtil.dest_key]
+        result = [ModelUtil.source_key, ModelUtil.target_key]
         relationship_result = self.get_relationships_by_type(relationship_type, 1)
         result_set = relationship_result.result_set
         if result_set and result_set[0]:
             # relationship
             for key, val in result_set[0][2].properties.items():
                 if not str(key) in result:
-                    if str(key) == 'dt_id':
-                        result.append(ModelUtil.dt_id_key)
-                    elif str(key) != 'src' and str(key) != 'dest':
+                    if str(key) == ModelUtil.dt_id_key:
+                        result.append(ModelUtil.id_key)
+                    elif str(key) != ModelUtil.src_key and str(key) != ModelUtil.dest_key:
                         result.append(str(key))
         return result
 

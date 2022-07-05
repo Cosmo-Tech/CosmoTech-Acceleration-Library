@@ -51,7 +51,7 @@ class CsvWriter:
             row = [raw_data[0], raw_data[1]]
             for key, val in raw_data[2].properties.items():
                 property_name = str(key)
-                if property_name != 'src' and property_name != 'dest':
+                if property_name != ModelUtil.src_key and property_name != ModelUtil.dest_key:
                     if isinstance(val, bool):
                         row.append(str(val).lower())
                     elif str(val) == 'True' or str(val) == 'False':

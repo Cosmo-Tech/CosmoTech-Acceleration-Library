@@ -13,12 +13,15 @@ class ModelUtil:
     Utility class for Redis management
     """
 
-    # Relationship variables
+    # ADT variables
     source_key = 'source'
-    dest_key = 'target'
+    target_key = 'target'
+    id_key = 'id'
 
-    # Twins variables
-    dt_id_key = 'id'
+    # Redis/Csm variables
+    src_key = 'src'
+    dest_key = 'dest'
+    dt_id_key = 'dt_id'
 
     @staticmethod
     def dict_to_cypher_parameters(parameters: dict) -> str:
@@ -71,13 +74,13 @@ class ModelUtil:
         :return: the create relationship query
         """
 
-        if ModelUtil.source_key in properties and ModelUtil.dest_key in properties:
+        if ModelUtil.src_key in properties and ModelUtil.dest_key in properties:
             cypher_params = ModelUtil.dict_to_cypher_parameters(properties)
-            return f"MATCH (n), (m) WHERE n.dt_id = '{properties.get(ModelUtil.source_key)}' " \
+            return f"MATCH (n), (m) WHERE n.dt_id = '{properties.get(ModelUtil.src_key)}' " \
                    f"AND m.dt_id = '{properties.get(ModelUtil.dest_key)}' " \
                    f"CREATE (n)-[r:{relationship_type} {cypher_params}]->(m) RETURN r"
         raise Exception(
-            f"When you create a relationship, you should define at least {ModelUtil.source_key} and {ModelUtil.dest_key} properties ")
+            f"When you create a relationship, you should define at least {ModelUtil.src_key} and {ModelUtil.dest_key} properties ")
 
     @staticmethod
     def dict_to_json(obj: dict) -> str:
