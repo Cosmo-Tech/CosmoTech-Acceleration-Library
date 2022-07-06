@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 from redis.commands.graph.edge import Edge
 from redis.commands.graph.node import Node
+from redis.commands.helpers import stringify_param_value
 from redis.commands.graph.query_result import QueryResult
 
 
@@ -30,20 +31,10 @@ class ModelUtil:
         :param parameters: parameters dict
         :return: string representing parameters as Cyper Parameters
         """
+
         cypher_list = []
         for key, value in parameters.items():
-            if isinstance(value, dict):
-                cypher_list.append(f"{key} : \"{value}\"")
-            elif isinstance(value, list):
-                cypher_list.append(f"{key} : {value}")
-            elif isinstance(value, str):
-                if value.startswith("'") and value.endswith("'"):
-                    cypher_list.append(f"{key} : {value}")
-                else:
-                    cypher_list.append(f"{key} : '{value}'")
-            else:
-                cypher_list.append(f"{key} : '{value}'")
-
+            cypher_list.append(f"{key} : {stringify_param_value(value)}")
         joined_list = ', '.join(cypher_list)
         return '{' + joined_list + '}'
 
