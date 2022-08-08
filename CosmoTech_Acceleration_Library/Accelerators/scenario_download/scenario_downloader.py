@@ -67,63 +67,73 @@ class ScenarioDownloader:
 
     def _download_file(self, file_name: str):
         tmp_dataset_dir = tempfile.mkdtemp()
-        target_file = os.path.join(tmp_dataset_dir, file_name.split('/')[-1])
         with cosmotech_api.ApiClient(self.configuration) as api_client:
             api_ws = WorkspaceApi(api_client)
 
-            dl_file = api_ws.download_workspace_file(organization_id=self.organization_id,
-                                                     workspace_id=self.workspace_id,
-                                                     file_name=file_name)
+            all_api_files = api_ws.find_all_workspace_files(self.organization_id, self.workspace_id)
 
-            with open(target_file, "wb") as tmp_file:
-                tmp_file.write(dl_file.read())
+            existing_files = list(
+                _f.to_dict().get('file_name') for _f in all_api_files
+                if _f.to_dict().get('file_name', '').startswith(file_name))
+
             content = dict()
-            if ".xls" in file_name:
-                wb = load_workbook(target_file, data_only=True)
-                for sheet_name in wb.sheetnames:
-                    sheet = wb[sheet_name]
-                    content[sheet_name] = list()
-                    headers = next(sheet.iter_rows(max_row=1, values_only=True))
 
-                    def item(_row: tuple) -> dict:
-                        return {k: v for k, v in zip(headers, _row)}
+            for _file_name in existing_files:
+                dl_file = api_ws.download_workspace_file(organization_id=self.organization_id,
+                                                         workspace_id=self.workspace_id,
+                                                         file_name=_file_name)
 
-                    for r in sheet.iter_rows(min_row=2, values_only=True):
-                        row = item(r)
-                        new_row = dict()
-                        for key, value in row.items():
-                            try:
-                                converted_value = json.load(io.StringIO(value))
-                            except (json.decoder.JSONDecodeError, TypeError):
-                                converted_value = value
-                            if converted_value is not None:
-                                new_row[key] = converted_value
-                        if new_row:
-                            content[sheet_name].append(new_row)
-            elif ".csv" in file_name:
-                with open(target_file, "r") as file:
-                    # Read every file in the input folder
-                    current_filename = os.path.basename(target_file)[:-len(".csv")]
-                    content[current_filename] = list()
-                    for row in csv.DictReader(file):
-                        new_row = dict()
-                        for key, value in row.items():
-                            try:
-                                # Try to convert any json row to dict object
-                                converted_value = json.load(io.StringIO(value))
-                            except json.decoder.JSONDecodeError:
-                                converted_value = value
-                            if converted_value == '':
-                                converted_value = None
-                            if converted_value is not None:
-                                new_row[key] = converted_value
-                        content[current_filename].append(new_row)
-            elif ".json" in file_name:
-                with open(target_file, "r") as _file:
-                    content = json.load(_file)
-            else:
-                with open(target_file, "r") as _file:
-                    content = "\n".join(line for line in _file)
+                target_file = os.path.join(tmp_dataset_dir, _file_name.split('/')[-1])
+                with open(target_file, "wb") as tmp_file:
+                    tmp_file.write(dl_file.read())
+                if ".xls" in _file_name:
+                    wb = load_workbook(target_file, data_only=True)
+                    for sheet_name in wb.sheetnames:
+                        sheet = wb[sheet_name]
+                        content[sheet_name] = list()
+                        headers = next(sheet.iter_rows(max_row=1, values_only=True))
+
+                        def item(_row: tuple) -> dict:
+                            return {k: v for k, v in zip(headers, _row)}
+
+                        for r in sheet.iter_rows(min_row=2, values_only=True):
+                            row = item(r)
+                            new_row = dict()
+                            for key, value in row.items():
+                                try:
+                                    converted_value = json.load(io.StringIO(value))
+                                except (json.decoder.JSONDecodeError, TypeError):
+                                    converted_value = value
+                                if converted_value is not None:
+                                    new_row[key] = converted_value
+                            if new_row:
+                                content[sheet_name].append(new_row)
+                elif ".csv" in _file_name:
+                    with open(target_file, "r") as file:
+                        # Read every file in the input folder
+                        current_filename = os.path.basename(target_file)[:-len(".csv")]
+                        content[current_filename] = list()
+                        for row in csv.DictReader(file):
+                            new_row = dict()
+                            for key, value in row.items():
+                                try:
+                                    # Try to convert any json row to dict object
+                                    converted_value = json.load(io.StringIO(value))
+                                except json.decoder.JSONDecodeError:
+                                    converted_value = value
+                                if converted_value == '':
+                                    converted_value = None
+                                if converted_value is not None:
+                                    new_row[key] = converted_value
+                            content[current_filename].append(new_row)
+                elif ".json" in _file_name:
+                    with open(target_file, "r") as _file:
+                        current_filename = os.path.basename(target_file)
+                        content[current_filename] = json.load(_file)
+                else:
+                    with open(target_file, "r") as _file:
+                        current_filename = os.path.basename(target_file)
+                        content[current_filename] = "\n".join(line for line in _file)
         return content
 
     def _download_adt_content(self, adt_adress: str) -> dict:
