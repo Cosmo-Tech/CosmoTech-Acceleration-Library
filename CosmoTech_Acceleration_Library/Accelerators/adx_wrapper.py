@@ -26,6 +26,42 @@ class ADXQueriesWrapper:
     Wrapping class to ADX
     """
 
+    def __init__(self,
+                 database: str,
+                 cluster_url: Union[str, None] = None,
+                 ingest_url: Union[str, None] = None,
+                 cluster_name: Union[str, None] = None,
+                 cluster_region: Union[str, None] = None):
+
+        if cluster_name and cluster_region:
+            cluster_url = f"https://{cluster_name}.{cluster_region}.kusto.windows.net"
+            ingest_url = f"https://ingest-{cluster_name}.{cluster_region}.kusto.windows.net"
+
+        try:
+            az_client_id = os.environ['AZURE_CLIENT_ID']
+            az_client_secret = os.environ['AZURE_CLIENT_SECRET']
+            az_tenant_id = os.environ['AZURE_TENANT_ID']
+
+            self.cluster_kcsb = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_url,
+                                                                                                     az_client_id,
+                                                                                                     az_client_secret,
+                                                                                                     az_tenant_id)
+            self.ingest_kcsb = KustoConnectionStringBuilder.with_aad_application_key_authentication(ingest_url,
+                                                                                                    az_client_id,
+                                                                                                    az_client_secret,
+                                                                                                    az_tenant_id)
+        except KeyError:
+            self.cluster_kcsb = KustoConnectionStringBuilder.with_az_cli_authentication(cluster_url)
+            self.ingest_kcsb = KustoConnectionStringBuilder.with_az_cli_authentication(ingest_url)
+        self.kusto_client = KustoClient(self.cluster_kcsb)
+        self.ingest_client = QueuedIngestClient(self.ingest_kcsb)
+        self.database = database
+
+        self.timeout = 900
+
+        self.ingest_status = dict()
+        self.ingest_times = dict()
+
     @staticmethod
     def type_mapping(key: str, key_example_value) -> str:
         """
@@ -214,39 +250,3 @@ class ADXQueriesWrapper:
             print(e)
             return False
         return True
-
-    def __init__(self,
-                 database: str,
-                 cluster_url: Union[str, None] = None,
-                 ingest_url: Union[str, None] = None,
-                 cluster_name: Union[str, None] = None,
-                 cluster_region: Union[str, None] = None):
-
-        if cluster_name and cluster_region:
-            cluster_url = f"https://{cluster_name}.{cluster_region}.kusto.windows.net"
-            ingest_url = f"https://ingest-{cluster_name}.{cluster_region}.kusto.windows.net"
-
-        try:
-            az_client_id = os.environ['AZURE_CLIENT_ID']
-            az_client_secret = os.environ['AZURE_CLIENT_SECRET']
-            az_tenant_id = os.environ['AZURE_TENANT_ID']
-
-            self.cluster_kcsb = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_url,
-                                                                                                     az_client_id,
-                                                                                                     az_client_secret,
-                                                                                                     az_tenant_id)
-            self.ingest_kcsb = KustoConnectionStringBuilder.with_aad_application_key_authentication(ingest_url,
-                                                                                                    az_client_id,
-                                                                                                    az_client_secret,
-                                                                                                    az_tenant_id)
-        except KeyError:
-            self.cluster_kcsb = KustoConnectionStringBuilder.with_az_cli_authentication(cluster_url)
-            self.ingest_kcsb = KustoConnectionStringBuilder.with_az_cli_authentication(ingest_url)
-        self.kusto_client = KustoClient(self.cluster_kcsb)
-        self.ingest_client = QueuedIngestClient(self.ingest_kcsb)
-        self.database = database
-
-        self.timeout = 900
-
-        self.ingest_status = dict()
-        self.ingest_times = dict()
