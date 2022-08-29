@@ -1,0 +1,25 @@
+site_name: Cosmotech Acceleration Librairy Docs
+theme:
+  name: material
+  font:
+    code: Fira Mono
+  palette:
+    scheme: slate
+    primary: orange
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.expand
+    - navigation.top
+  custom_dir: overrides
+nav:
+  - Home: 'index.md'
+  - Getting started:
+    - Dependencies: 'dependencies.md'
+plugins:
+  - search
+  - mkdocstrings
+  - gen-files:
+      scripts:
+        - scripts/generate_dependencies_markdown.py
+        - scripts/generate_index.py
