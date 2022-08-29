@@ -1,9 +1,9 @@
 # Copyright (c) Cosmo Tech corporation.
 # Licensed under the MIT license.
 import setuptools
+import CosmoTech_Acceleration_Library
 from pathlib import Path
 
-VERSION = "0.2.2"
 
 with open('requirements.txt') as f:
     required = f.read().splitlines()
@@ -14,7 +14,7 @@ readme_text = (root_directory / "README.md").read_text()
 
 setuptools.setup(
     name='CosmoTech_Acceleration_Library',
-    version=VERSION,
+    version=CosmoTech_Acceleration_Library.__version__,
     packages=setuptools.find_packages(),
     url='https://github.com/Cosmo-Tech/CosmoTech-Acceleration-Library',
     license='MIT',

@@ -12,3 +12,11 @@ pandas
 python-dateutil
 
 cosmotech-api
+
+# Documentation generation
+mkdocs
+mkdocs-gen-files
+mkdocs-material
+mkdocstrings[python]
+pymdown-extensions
+requirements-parser
