@@ -16,9 +16,37 @@ nav:
   - Home: 'index.md'
   - Getting started:
     - Dependencies: 'dependencies.md'
+  - References:
+    - Modelops:
+      - common:
+        - redis_handler: 'modelops.core.common.redis_handler.md'
+        - graph_handler: 'modelops.core.common.graph_handler.md'
+      - decorators: 'modelops.core.decorators.md'
+      - io:
+        - model_exporter: 'modelops.core.io.model_exporter.md'
+        - model_importer: 'modelops.core.io.model_importer.md'
+        - model_metadata: 'modelops.core.io.model_metadata.md'
+        - model_reader: 'modelops.core.io.model_reader.md'
+        - model_writer: 'modelops.core.io.model_writer.md'
+      - utils: 'modelops.core.utils.model_util.md'
+    - Accelerators:
+      - adx_wrapper: 'accelerators.adx_wrapper.md'
+      - cosmo_api: 'accelerators.cosmo_api.md'
+      - csm_engine: 'accelerators.csm_engine.md'
+      - scenario_download: 'accelerators.scenario_download.md' 
+markdown_extensions:
+    - attr_list
+    - tables
+    - pymdownx.snippets
 plugins:
   - search
-  - mkdocstrings
+  - mkdocstrings:
+     default_handler: python
+     handlers:
+       python:
+         options:
+           docstring_style: sphinx
+           line_lenth: 120
   - gen-files:
       scripts:
         - docs/scripts/generate_dependencies_markdown.py
