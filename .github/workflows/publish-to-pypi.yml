@@ -10,13 +10,6 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@master
-    - name: Get the version
-      id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-    - name: Replace version
-      run: |
-        echo Changing version in setup.py to ${{ steps.get_version.outputs.VERSION }}
-        sed -i 's/VERSION = ".*"/VERSION = "${{ steps.get_version.outputs.VERSION }}"/g' setup.py
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
