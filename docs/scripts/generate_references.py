@@ -1,6 +1,5 @@
 import mkdocs_gen_files
 import os
-from pprint import pprint
 from griffe.dataclasses import Kind
 from griffe.dataclasses import Module
 from griffe.dataclasses import Alias
@@ -10,8 +9,6 @@ pyhand = mkdocs_gen_files.config['plugins']['mkdocstrings'].get_handler('python'
 module_name = 'CosmoTech_Acceleration_Library'
 
 griffed_module = pyhand.collect(module_name, {})
-
-# pprint(griffed_module.as_dict())
 
 
 def yield_module_member(module: Module) -> list:
@@ -23,9 +20,8 @@ def yield_module_member(module: Module) -> list:
                 # escape the classes import which are alias of class
                 continue
             yield c.path
-    else:
-        if len(module.functions) > 0:
-            yield module.path
+    if len(module.functions) > 0 and all([not isinstance(f, Alias) for f in module.functions.values()]):
+        yield module.path
 
 
 depth = 1
@@ -45,13 +41,13 @@ mk_nav = mkdocs_gen_files.Nav()
 for nav, file_set in parents.items():
     nav_root = ['References']
     nav_root.extend(nav.split('.'))
-    for filz in file_set:
-        file_name = '.'.join([nav, filz, 'md'])
-        nav_file = nav_root[:]
-        if len(file_set) > 1:
-            nav_file.append(filz)
-        mk_nav[nav_file] = file_name
-        with mkdocs_gen_files.open(os.path.join('references', file_name), 'w') as f:
+    file_name = '.'.join([nav, 'md'])
+
+    mk_nav[nav_root] = file_name
+    with mkdocs_gen_files.open(os.path.join('references', file_name), 'w') as f:
+        f.write(f'# {nav}')
+        f.write('\n')
+        for filz in file_set:
             f.write(generic_template_ref.replace('%%IDENTIFIER%%', '.'.join([module_name, nav, filz])))
             f.write('\n')
 
