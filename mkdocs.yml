@@ -9,7 +9,6 @@ theme:
   features:
     - navigation.tabs
     - navigation.tabs.sticky
-    - navigation.expand
     - navigation.top
   custom_dir: docs/overrides
 nav:
