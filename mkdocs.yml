@@ -1,6 +1,8 @@
-site_name: Cosmotech Acceleration Librairy Docs
+site_name: Cosmotech Acceleration Library Docs
+
 theme:
   name: material
+  logo: assets/logo.png
   font:
     code: Fira Mono
   palette:
@@ -11,15 +13,22 @@ theme:
     - navigation.tabs.sticky
     - navigation.top
   custom_dir: docs/overrides
+
+extra:
+  version:
+    provider: mike
+
 nav:
   - Home: 'index.md'
   - Getting started:
     - Dependencies: 'dependencies.md'
   - References: references/
+
 markdown_extensions:
     - attr_list
     - tables
     - pymdownx.snippets
+
 plugins:
   - search
   - mkdocstrings:
@@ -35,3 +44,4 @@ plugins:
         - docs/scripts/generate_dependencies_markdown.py
         - docs/scripts/generate_index.py
   - literate-nav
+  - mike

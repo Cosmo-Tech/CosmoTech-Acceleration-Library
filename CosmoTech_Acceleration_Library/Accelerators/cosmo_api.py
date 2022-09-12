@@ -29,6 +29,7 @@ def __get_configuration():
 
 
 def send_file_to_api(file_content, file_name: str):
+    """Send a file to the api"""
     organization_id = os.environ.get("CSM_ORGANIZATION_ID")
     workspace_id = os.environ.get("CSM_WORKSPACE_ID")
 
@@ -42,6 +43,7 @@ def send_file_to_api(file_content, file_name: str):
 
 
 def send_dataframe_to_api(dataframe, file_name: str):
+    """Send a dataframe to the API"""
     file_content = io.StringIO()
     dataframe.to_csv(file_content, index=False)
     file_content.seek(0)

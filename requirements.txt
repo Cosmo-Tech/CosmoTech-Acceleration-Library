@@ -25,3 +25,4 @@ mkdocstrings[python]
 mkdocs-literate-nav
 pymdown-extensions
 requirements-parser
+mike
