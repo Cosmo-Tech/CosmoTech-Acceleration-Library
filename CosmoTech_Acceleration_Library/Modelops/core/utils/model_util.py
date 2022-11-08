@@ -34,7 +34,7 @@ class ModelUtil:
 
         cypher_list = []
         for key, value in parameters.items():
-            cypher_list.append(f"{key} : {stringify_param_value(value)}")
+            cypher_list.append(f"{key} : {json.dumps(json.dumps(value)) if '{' in str(value) else stringify_param_value(value)}")
         joined_list = ', '.join(cypher_list)
         return '{' + joined_list + '}'
 
