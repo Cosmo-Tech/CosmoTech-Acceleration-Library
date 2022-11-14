@@ -35,15 +35,18 @@ class ModelExporter(ExportableGraphHandler):
 
         for twin_name in twin_names:
             logger.debug(f"Get twin info for type {twin_name} ...")
+
             get_twin_info_start = time.time()
-            headers = self.mr.get_twin_properties_by_type(twin_name)
             twin_results = self.mr.get_twins_by_type(twin_name)
             get_twin_info_end = time.time() - get_twin_info_start
+
             logger.debug(f"Get twin info for type {twin_name} took {get_twin_info_end} s")
             logger.debug(f"Export twin info for type {twin_name} ...")
+
             export_twin_info_start = time.time()
-            CsvWriter.write_twin_data(self.export_dir, twin_name, twin_results, headers)
+            CsvWriter.write_twin_data(self.export_dir, twin_name, twin_results)
             export_twin_info_end = time.time() - export_twin_info_start
+
             logger.debug(f"Export twin info for type {twin_name} took {export_twin_info_end} s")
             logger.debug(f"Twins exported :{twin_name}")
         logger.debug("... End exporting twins")
@@ -64,15 +67,19 @@ class ModelExporter(ExportableGraphHandler):
 
         for relationship_name in relationship_names:
             logger.debug(f"Get relationship info for type {relationship_name} ...")
+
             get_relationship_info_start = time.time()
             headers = self.mr.get_relationship_properties_by_type(relationship_name)
             relationship_result = self.mr.get_relationships_by_type(relationship_name)
+
             get_relationship_info_end = time.time() - get_relationship_info_start
             logger.debug(f"Get relationship info for type {relationship_name} took {get_relationship_info_end} s")
             logger.debug(f"Export relationship info for type {relationship_name} ...")
+
             export_relationship_info_start = time.time()
-            CsvWriter.write_relationship_data(self.export_dir, relationship_name, relationship_result, headers)
+            CsvWriter.write_relationship_data(self.export_dir, relationship_name, relationship_result)
             export_relationship_info_end = time.time() - export_relationship_info_start
+
             logger.debug(f"Export relationship info for type {relationship_name} took {export_relationship_info_end} s")
             logger.debug(f"Relationships exported :{relationship_name}")
         logger.debug("... End exporting relationships")
