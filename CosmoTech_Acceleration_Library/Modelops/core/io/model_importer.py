@@ -48,5 +48,5 @@ class ModelImporter(RotatedGraphHandler):
         # TODO: Think about use '--index Label:Property' command parameters to create indexes on default id properties
         try:
             bulk_insert(command_parameters)
-        except SystemExit:
-            pass
+        except SystemExit as e:
+            print(e)

@@ -74,15 +74,16 @@ class RotatedGraphHandler(VersionedGraphHandler):
 
     def handle_graph_rotation(self, graph_name: str, graph_rotation: int) -> int:
         """
-        Handle graph rotation (delete the oldest graph if the amount of graph is upper than graph rotation
+        Handle graph rotation (delete the oldest graph if the amount of graph is greater than graph rotation)
         :param graph_name: the graph name
         :param graph_rotation: the amount of graph to keep
         :return: the graph version to create
         """
-        matching_keys = self.r.keys(ModelUtil.build_graph_key_pattern(graph_name))
+        matching_graph_keys = self.r.keys(ModelUtil.build_graph_key_pattern(graph_name))
         graph_versions = []
-        for graph_key in matching_keys:
+        for graph_key in matching_graph_keys:
             graph_versions.append(graph_key.split(":")[-1])
+
         min_version = 0
         max_version = 0
         if len(graph_versions) > 0:
@@ -90,7 +91,8 @@ class RotatedGraphHandler(VersionedGraphHandler):
             max_version = max([int(x) for x in graph_versions if x.isnumeric()])
         logger.debug(f"{graph_name} minimal version is: {min_version}")
         logger.debug(f"{graph_name} maximal version is: {max_version}")
-        if len(matching_keys) >= graph_rotation:
+
+        if len(matching_graph_keys) >= graph_rotation:
             oldest_graph_version_to_delete = ModelUtil.build_graph_version_name(graph_name, min_version)
             self.r.delete(oldest_graph_version_to_delete)
             logger.debug(f"Graph {oldest_graph_version_to_delete} deleted")
