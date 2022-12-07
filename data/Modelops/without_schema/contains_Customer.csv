@@ -1,4 +1,4 @@
-src,dest,name,dt_id
+src,dest,name,id
 MyBar,Customer3,contains_Customer,1_contains_4
 MyBar,Customer2,contains_Customer,1_contains_3
 MyBar,Customer1,contains_Customer,1_contains_2
