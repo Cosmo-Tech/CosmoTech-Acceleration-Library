@@ -66,8 +66,8 @@ class ModelReader(VersionedGraphHandler):
         :param limit: the limit number of twin retrieved
         :return: the relationship list corresponding to relationship type parameter
         """
-        rel_query = f'MATCH (n)-[relation:{relationship_type}]->(m) RETURN n.dt_id as {ModelUtil.source_key}, ' \
-                    f'm.dt_id as {ModelUtil.target_key}, relation'
+        rel_query = f'MATCH (n)-[relation:{relationship_type}]->(m) RETURN n.{ModelUtil.dt_id_key} as {ModelUtil.source_key}, ' \
+                    f'm.{ModelUtil.dt_id_key} as {ModelUtil.target_key}, relation'
         if limit != 0:
             rel_query = f'{rel_query} LIMIT {str(limit)}'
         logger.debug(f"Query : {rel_query}")

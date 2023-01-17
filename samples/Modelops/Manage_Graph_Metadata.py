@@ -4,7 +4,7 @@ from CosmoTech_Acceleration_Library.Modelops.core.io.model_writer import ModelWr
 
 if __name__ == '__main__':
     mw = ModelWriter(host='localhost', port=6379, name='newGraph')
-    mw.create_twin("MyTwin", {"dt_id": "1234", "property1": "This is a property", "property2List": ["This is a list "
+    mw.create_twin("MyTwin", {"id": "1234", "property1": "This is a property", "property2List": ["This is a list "
                                                                                                     "element",
                                                                                                     "This is another "
                                                                                                     "list element"]})

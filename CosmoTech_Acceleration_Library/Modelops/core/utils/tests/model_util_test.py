@@ -8,7 +8,7 @@ from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelU
 class TestModelUtil(unittest.TestCase):
     # Global variables
     simple_parameters = {
-        "dt_id": "Twin1",
+        "id": "Twin1",
         "brand": "Ford",
         "electric": False,
         "year": 1964,
@@ -35,11 +35,11 @@ class TestModelUtil(unittest.TestCase):
         "colors": ["red", "white", "blue"]
     }
 
-    expected_simple_parameters = '{dt_id : "Twin1", ' \
+    expected_simple_parameters = '{id : "Twin1", ' \
                                  'brand : "Ford", ' \
                                  'electric : False, ' \
                                  'year : 1964, ' \
-                                 'dict_param : {property1:"toto",property2:"tata"}, ' \
+                                 'dict_param : "{\\"property1\\": \\"toto\\", \\"property2\\": \\"tata\\"}", ' \
                                  'with_quotes : "\'9999\'", ' \
                                  'with_dbl_quotes : "\\"1234\\"", ' \
                                  'colors : ["red","white","blue"]}'
@@ -49,7 +49,8 @@ class TestModelUtil(unittest.TestCase):
                                               'brand : "Ford", ' \
                                               'electric : False, ' \
                                               'year : 1964, ' \
-                                              'dict_param : {property1:"toto",property2:"tata"}, ' \
+                                              'dict_param : "{\\"property1\\": \\"toto\\", \\"property2\\": ' \
+                                              '\\"tata\\"}", ' \
                                               'with_quotes : "\'12345\'", ' \
                                               'colors : ["red","white","blue"]}'
 
@@ -77,7 +78,7 @@ class TestModelUtil(unittest.TestCase):
         source_id = 'Node1'
         destination_id = 'Node2'
         relation_name = 'Relation_Name'
-        expected_result = f"MATCH (n), (m) WHERE n.dt_id = '{source_id}' AND m.dt_id = '{destination_id}' CREATE (n)-[r:{relation_name} {self.expected_relationship_simple_parameters}]->(m) RETURN r"
+        expected_result = f"MATCH (n), (m) WHERE n.{ModelUtil.dt_id_key} = '{source_id}' AND m.{ModelUtil.dt_id_key} = '{destination_id}' CREATE (n)-[r:{relation_name} {self.expected_relationship_simple_parameters}]->(m) RETURN r"
         self.assertEqual(expected_result,
                          self.model_util.create_relationship_query(relation_name, self.relationship_simple_parameters))
 

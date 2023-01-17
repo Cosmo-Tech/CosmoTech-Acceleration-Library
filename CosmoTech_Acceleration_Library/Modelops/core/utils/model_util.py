@@ -22,7 +22,7 @@ class ModelUtil:
     # Redis/Csm variables
     src_key = 'src'
     dest_key = 'dest'
-    dt_id_key = 'dt_id'
+    dt_id_key = 'id'
 
     @staticmethod
     def dict_to_cypher_parameters(parameters: dict) -> str:
@@ -73,8 +73,8 @@ class ModelUtil:
 
         if ModelUtil.src_key in properties and ModelUtil.dest_key in properties:
             cypher_params = ModelUtil.dict_to_cypher_parameters(properties)
-            return f"MATCH (n), (m) WHERE n.dt_id = '{properties.get(ModelUtil.src_key)}' " \
-                   f"AND m.dt_id = '{properties.get(ModelUtil.dest_key)}' " \
+            return f"MATCH (n), (m) WHERE n.{ModelUtil.dt_id_key} = '{properties.get(ModelUtil.src_key)}' " \
+                   f"AND m.{ModelUtil.dt_id_key} = '{properties.get(ModelUtil.dest_key)}' " \
                    f"CREATE (n)-[r:{relationship_type} {cypher_params}]->(m) RETURN r"
         raise Exception(
             f"When you create a relationship, you should define at least {ModelUtil.src_key} and {ModelUtil.dest_key} properties ")
