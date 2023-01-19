@@ -44,8 +44,7 @@ class ModelUtil:
                     formatted_value = json.dumps(value)
                 except ValueError as e:
                     logger.debug(f"{value} is not a jsonString, use the raw value")
-            cypher_list.append(
-                f"{key} : {formatted_value}")
+            cypher_list.append(f"{key} : {formatted_value}")
         joined_list = ', '.join(cypher_list)
         return '{' + joined_list + '}'
 
@@ -166,7 +165,7 @@ class ModelUtil:
     @staticmethod
     def unjsonify(value: dict) -> dict:
         """
-        Unjsonify jsonString values within a dict
+        Unjsonify transform json strings to python objects
         :param value a dict
         :return: a dict with unjsonify values
         """
