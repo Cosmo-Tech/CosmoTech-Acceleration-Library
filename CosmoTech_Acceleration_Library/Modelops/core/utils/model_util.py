@@ -1,12 +1,15 @@
 # Copyright (c) Cosmo Tech corporation.
 # Licensed under the MIT license.
 import json
+import logging
 
 from datetime import datetime
 from redis.commands.graph.edge import Edge
 from redis.commands.graph.node import Node
 from redis.commands.helpers import stringify_param_value
 from redis.commands.graph.query_result import QueryResult
+
+logger = logging.getLogger(__name__)
 
 
 class ModelUtil:
@@ -34,7 +37,14 @@ class ModelUtil:
 
         cypher_list = []
         for key, value in parameters.items():
-            cypher_list.append(f"{key} : {json.dumps(json.dumps(value)) if '{' in str(value) else stringify_param_value(value)}")
+            formatted_value = stringify_param_value(value)
+            if isinstance(value, str):
+                try:
+                    json.loads(value)
+                    formatted_value = json.dumps(value)
+                except ValueError as e:
+                    logger.debug(f"{value} is not a jsonString, use the raw value")
+            cypher_list.append(f"{key} : {formatted_value}")
         joined_list = ', '.join(cypher_list)
         return '{' + joined_list + '}'
 
@@ -151,3 +161,19 @@ class ModelUtil:
     @staticmethod
     def build_graph_key_pattern(graph_name: str) -> str:
         return graph_name + ":*"
+
+    @staticmethod
+    def unjsonify(value: dict) -> dict:
+        """
+        Unjsonify transform json strings to python objects
+        :param value a dict
+        :return: a dict with unjsonify values
+        """
+        for k, v in value.items():
+            if isinstance(v, str):
+                try:
+                    value[k] = json.loads(v)
+                    logger.debug(f" new value => {value[k]}")
+                except ValueError as e:
+                    logger.debug(f"{v} is not a jsonString, use the raw value")
+        return value

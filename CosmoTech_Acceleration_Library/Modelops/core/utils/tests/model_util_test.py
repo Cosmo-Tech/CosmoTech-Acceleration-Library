@@ -35,11 +35,22 @@ class TestModelUtil(unittest.TestCase):
         "colors": ["red", "white", "blue"]
     }
 
+    dict_with_simple_json_string = {
+        "src": "Node1",
+        "dest": "Node2",
+        "brand": "Ford",
+        "electric": False,
+        "year": 1964,
+        "dict_param": "{\"property1\": \"toto\", \"property2\": \"tata\"}",
+        "with_quotes": "'12345'",
+        "colors": ["red", "white", "blue"]
+    }
+
     expected_simple_parameters = '{id : "Twin1", ' \
                                  'brand : "Ford", ' \
                                  'electric : False, ' \
                                  'year : 1964, ' \
-                                 'dict_param : "{\\"property1\\": \\"toto\\", \\"property2\\": \\"tata\\"}", ' \
+                                 'dict_param : {property1:\"toto\",property2:\"tata\"}, ' \
                                  'with_quotes : "\'9999\'", ' \
                                  'with_dbl_quotes : "\\"1234\\"", ' \
                                  'colors : ["red","white","blue"]}'
@@ -49,8 +60,7 @@ class TestModelUtil(unittest.TestCase):
                                               'brand : "Ford", ' \
                                               'electric : False, ' \
                                               'year : 1964, ' \
-                                              'dict_param : "{\\"property1\\": \\"toto\\", \\"property2\\": ' \
-                                              '\\"tata\\"}", ' \
+                                              'dict_param : {property1:\"toto\",property2:\"tata\"}, ' \
                                               'with_quotes : "\'12345\'", ' \
                                               'colors : ["red","white","blue"]}'
 
@@ -86,6 +96,14 @@ class TestModelUtil(unittest.TestCase):
         relation_name = 'Relation_Name'
         self.assertRaises(Exception,
                           self.model_util.create_relationship_query, relation_name, self.expected_simple_parameters)
+
+    def test_unjsonify_without_jsonstring(self):
+        new_value = self.model_util.unjsonify(self.relationship_simple_parameters)
+        self.assertEqual(self.relationship_simple_parameters, new_value)
+
+    def test_unjsonify_with_jsonstring(self):
+        new_value = self.model_util.unjsonify(self.dict_with_simple_json_string)
+        self.assertEqual(self.relationship_simple_parameters, new_value)
 
 
 if __name__ == '__main__':
