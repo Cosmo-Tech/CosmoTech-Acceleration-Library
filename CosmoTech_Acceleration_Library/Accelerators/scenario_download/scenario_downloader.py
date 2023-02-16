@@ -58,7 +58,7 @@ class ScenarioDownloader:
             parameters = dataset['connector']['parameters_values']
 
             is_adt = 'AZURE_DIGITAL_TWINS_URL' in parameters
-            is_twin_cache = 'TWIN_CACHE_HOST' in parameters
+            is_twin_cache = 'TWIN_CACHE_NAME' in parameters
 
             if is_adt:
                 return {
