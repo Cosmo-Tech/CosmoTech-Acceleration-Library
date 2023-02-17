@@ -119,10 +119,12 @@ class ScenarioDownloader:
                 src = item['src']
                 dest = item['dest']
                 rel = item['rel']
+                props = item['rel']['properties']
                 content[rel['label']].append({
                     'id': rel['id'],
                     'source': src['id'],
-                    'target': dest['id']
+                    'target': dest['id'],
+                    **props
                 })
 
             return content
