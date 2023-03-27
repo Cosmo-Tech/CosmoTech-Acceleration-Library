@@ -6,7 +6,7 @@ azure-kusto-data
 azure-kusto-ingest
 
 # Modelops requirements
-redis==4.3.1
+redis==4.5.3
 redisgraph_bulk_loader==0.10.2
 
 # Cosmotech specific requirements
