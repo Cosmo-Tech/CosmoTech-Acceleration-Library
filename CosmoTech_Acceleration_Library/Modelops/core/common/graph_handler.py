@@ -15,7 +15,7 @@ class GraphHandler(RedisHandler):
     Class that handle Graph Redis information
     """
 
-    def __init__(self, host: str, port: int, name: str, password: str = None, source_url: str = "", graph_rotation: int = 1):
+    def __init__(self, host: str, port: int, name: str, password: str = None, source_url: str = "", graph_rotation: int = 3):
         super().__init__(host=host, port=port, name=name, password=password)
         logger.debug("GraphHandler init")
         self.graph = self.r.graph(name)
@@ -33,7 +33,7 @@ class VersionedGraphHandler(GraphHandler):
     """
 
     def __init__(self, host: str, port: int, name: str, version: int, password: str = None, source_url: str = "",
-                 graph_rotation: int = 1):
+                 graph_rotation: int = 3):
         super().__init__(host=host, port=port, name=name, password=password, source_url=source_url,
                          graph_rotation=graph_rotation)
         logger.debug("VersionedGraphHandler init")
@@ -60,7 +60,7 @@ class RotatedGraphHandler(VersionedGraphHandler):
     """
 
     def __init__(self, host: str, port: int, name: str, password: str = None, version: int = -1, source_url: str = "",
-                 graph_rotation: int = 1):
+                 graph_rotation: int = 3):
         super().__init__(host=host, port=port, name=name, password=password, source_url=source_url, version=version,
                          graph_rotation=graph_rotation)
         logger.debug("RotatedGraphHandler init")
@@ -70,7 +70,6 @@ class RotatedGraphHandler(VersionedGraphHandler):
             logger.debug("Handle Rotation Graph")
             new_version = self.handle_graph_rotation(name, graph_rotation)
         self.fill_versioned_graph_data(name, new_version)
-        self.m_metadata.set_graph_rotation(graph_rotation=graph_rotation)
 
     def handle_graph_rotation(self, graph_name: str, graph_rotation: int) -> int:
         """
