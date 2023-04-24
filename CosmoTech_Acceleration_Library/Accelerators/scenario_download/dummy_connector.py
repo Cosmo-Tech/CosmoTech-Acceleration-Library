@@ -1,7 +1,8 @@
 # Copyright (c) Cosmo Tech corporation.
 # Licensed under the MIT license.
-import scenario_downloader
+from CosmoTech_Acceleration_Library.Accelerators.scenario_download.scenario_downloader import ScenarioDownloader
 from distutils.dir_util import copy_tree
+import os
 import pathlib
 import shutil
 
@@ -9,9 +10,9 @@ import json
 
 
 def dummy_connector(scenario_id, organization_id, workspace_id, dataset_folder, parameter_folder):
-    dl = scenario_downloader.ScenarioDownloader(workspace_id=workspace_id,
-                                                organization_id=organization_id,
-                                                read_files=False)
+    dl = ScenarioDownloader(workspace_id=workspace_id,
+                            organization_id=organization_id,
+                            read_files=False)
 
     content = dict()
     content['datasets'] = dl.get_all_datasets(scenario_id=scenario_id)
@@ -21,9 +22,6 @@ def dummy_connector(scenario_id, organization_id, workspace_id, dataset_folder, 
     dataset_paths = dict()
 
     dataset_dir = dataset_folder
-    if pathlib.Path(dataset_dir).exists():
-        shutil.rmtree(dataset_dir)
-    pathlib.Path(dataset_dir).mkdir()
 
     for k in content['datasets'].keys():
         dataset_paths[k] = dl.dataset_to_file(k, content['datasets'][k])
@@ -31,9 +29,7 @@ def dummy_connector(scenario_id, organization_id, workspace_id, dataset_folder, 
             copy_tree(dataset_paths[k], dataset_dir)
 
     tmp_parameter_dir = parameter_folder
-    if pathlib.Path(tmp_parameter_dir).exists():
-        shutil.rmtree(tmp_parameter_dir)
-    pathlib.Path(tmp_parameter_dir).mkdir()
+
     tmp_parameter_file = os.path.join(tmp_parameter_dir, "parameters.json")
 
     parameters = []

@@ -327,7 +327,9 @@ class ScenarioDownloader:
             with open(tmp_dataset_dir + "/" + _filename + ".csv", "w") as _file:
                 fieldnames = self.sheet_to_header(_filecontent)
 
-                _w = csv.DictWriter(_file, fieldnames=fieldnames)
+                _w = csv.DictWriter(_file, fieldnames=fieldnames, dialect="unix", quoting=csv.QUOTE_MINIMAL)
                 _w.writeheader()
-                _w.writerows(_filecontent)
+                # _w.writerows(_filecontent)
+                for r in _filecontent:
+                    _w.writerow({k: str(v).replace("'","\"") for k, v in r.items()})
         return tmp_dataset_dir
