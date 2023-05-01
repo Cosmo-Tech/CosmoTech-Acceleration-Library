@@ -34,15 +34,17 @@ The library can be used by Data Scientists, Modelers, Developers, ...
 `python setup.py install --user`
 
 ## Setting up a development environment with Docker
-* Make sure you have Docker installed on your machine.
+* Make sure you have [Docker installed](https://docs.docker.com/get-docker/) on your machine.
 * Clone the repository to your local machine using Git. For example, you can run the following command in your terminal: 
 `git clone https://github.com/Cosmo-Tech/CosmoTech-Acceleration-Library.git`
 * Navigate to the project directory:
 `cd CosmoTech-Acceleration-Library`
 * Create a Docker container:
-`docker run -t -i --name cosmotech-acceleration-library-dev -v /opt/CosmoTech-Acceleration-Library -v /C:/Users/Johnsmith/CosmoTech-Acceleration-Library:/opt python:3.11 bash`
-* Navigate to the project directory in the Docker contianer:
-`cd opt`
+* For Windows:
+`CMD: docker run -it --name cosmotech-acceleration-library-dev -w /opt -v %cd%:/opt python:3.11 bash`
+`PoweShell: docker run -it --name cosmotech-acceleration-library-dev -w /opt -v ${PWD}:/opt python:3.11 bash`
+* For Linux:
+`docker run -it --name cosmotech-acceleration-library-dev -w /opt -v $(PWD):/opt python:3.11 bash`
 * Install the required dependencies:
 `pip install -r requirements.txt`
 * Install the pytest package:
