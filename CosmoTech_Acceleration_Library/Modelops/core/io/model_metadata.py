@@ -8,6 +8,7 @@ from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelU
 
 logger = logging.getLogger(__name__)
 
+
 class ModelMetadata(RedisHandler):
     """
     Model Metadata management class for cached data
@@ -143,8 +144,8 @@ class ModelMetadata(RedisHandler):
         current_metadata = self.get_metadata()
         if self.last_version_key in current_metadata:
             current_version = int(self.get_last_graph_version())
-            current_version += 1
-            self.set_last_graph_version(str(current_version))
+            new_version = current_version + 1
+            self.set_last_graph_version(str(new_version))
             self.update_last_modified_date()
         else:
             self.set_last_graph_version("0")

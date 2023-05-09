@@ -2,13 +2,14 @@
 # Licensed under the MIT license.
 import logging
 
-from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import RotatedGraphHandler
+from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import VersionedGraphHandler
 from CosmoTech_Acceleration_Library.Modelops.core.decorators.model_decorators import update_last_modified_date
 from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelUtil
 
 logger = logging.getLogger(__name__)
 
-class ModelWriter(RotatedGraphHandler):
+
+class ModelWriter(VersionedGraphHandler):
     """
     Model Writer for cached data
     """
@@ -34,5 +35,3 @@ class ModelWriter(RotatedGraphHandler):
         create_rel = ModelUtil.create_relationship_query(relationship_type, properties)
         logger.debug(f"Query: {create_rel}")
         self.graph.query(create_rel)
-
-
