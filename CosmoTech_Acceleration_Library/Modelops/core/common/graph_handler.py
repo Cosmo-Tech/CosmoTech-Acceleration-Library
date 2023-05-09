@@ -19,6 +19,7 @@ class GraphHandler(RedisHandler):
         super().__init__(host=host, port=port, name=name, password=password)
         logger.debug("GraphHandler init")
         self.graph = self.r.graph(name)
+        self.name = name
         self.m_metadata = ModelMetadata(host=host, port=port, name=name, password=password)
         current_metadata = self.m_metadata.get_metadata()
         if not current_metadata:
@@ -32,26 +33,16 @@ class VersionedGraphHandler(GraphHandler):
     Class that handle Versioned Graph Redis information
     """
 
-    def __init__(self, host: str, port: int, name: str, version: int, password: str = None, source_url: str = "",
+    def __init__(self, host: str, port: int, name: str, version: int = None, password: str = None, source_url: str = "",
                  graph_rotation: int = 3):
         super().__init__(host=host, port=port, name=name, password=password, source_url=source_url,
                          graph_rotation=graph_rotation)
         logger.debug("VersionedGraphHandler init")
-        self.version = None
-        self.versioned_name = None
-        self.fill_versioned_graph_data(name, version)
-
-    def fill_versioned_graph_data(self, graph_name: str, version: int):
-        """
-        Fill data about version and create new graph
-        :param graph_name: the graph name
-        :param version: the version
-        """
-        versioned_name = ModelUtil.build_graph_version_name(graph_name, version)
-        self.versioned_name = versioned_name
         self.version = version
-        self.graph = self.r.graph(versioned_name)
-        self.m_metadata.set_last_graph_version(version)
+        if version is None:
+            self.version = self.m_metadata.get_last_graph_version()
+        self.versioned_name = ModelUtil.build_graph_version_name(self.name, self.version)
+        self.graph = self.r.graph(self.versioned_name)
 
 
 class RotatedGraphHandler(VersionedGraphHandler):
@@ -59,43 +50,50 @@ class RotatedGraphHandler(VersionedGraphHandler):
     Class that handle Rotated Graph Redis information
     """
 
-    def __init__(self, host: str, port: int, name: str, password: str = None, version: int = -1, source_url: str = "",
+    def __init__(self, host: str, port: int, name: str, password: str = None, version: int = None, source_url: str = "",
                  graph_rotation: int = 3):
         super().__init__(host=host, port=port, name=name, password=password, source_url=source_url, version=version,
                          graph_rotation=graph_rotation)
         logger.debug("RotatedGraphHandler init")
         self.graph_rotation = graph_rotation
-        new_version = version
-        if version == -1:
-            logger.debug("Handle Rotation Graph")
-            new_version = self.handle_graph_rotation(name, graph_rotation)
-        self.fill_versioned_graph_data(name, new_version)
 
-    def handle_graph_rotation(self, graph_name: str, graph_rotation: int) -> int:
+    def handle_graph_rotation(func):
         """
-        Handle graph rotation (delete the oldest graph if the amount of graph is greater than graph rotation)
-        :param graph_name: the graph name
-        :param graph_rotation: the amount of graph to keep
-        :return: the graph version to create
+        Decorator to do stuff then handle graph rotation (delete the oldest graph if the amount of graph is greater than graph rotation)
         """
-        matching_graph_keys = self.r.keys(ModelUtil.build_graph_key_pattern(graph_name))
-        graph_versions = []
-        for graph_key in matching_graph_keys:
-            graph_versions.append(graph_key.split(":")[-1])
 
-        min_version = 0
-        max_version = 0
-        if len(graph_versions) > 0:
-            min_version = min([int(x) for x in graph_versions if x.isnumeric()])
-            max_version = max([int(x) for x in graph_versions if x.isnumeric()])
-        logger.debug(f"{graph_name} minimal version is: {min_version}")
-        logger.debug(f"{graph_name} maximal version is: {max_version}")
+        def handle(self, *args, **kwargs):
+            # upgrade graph used
+            matching_graph_keys = self.r.keys(ModelUtil.build_graph_key_pattern(self.name))
+            graph_versions = []
+            for graph_key in matching_graph_keys:
+                graph_versions.append(graph_key.split(":")[-1])
 
-        if len(matching_graph_keys) >= graph_rotation:
-            oldest_graph_version_to_delete = ModelUtil.build_graph_version_name(graph_name, min_version)
-            self.r.delete(oldest_graph_version_to_delete)
-            logger.debug(f"Graph {oldest_graph_version_to_delete} deleted")
-        return max_version + 1
+            min_version = 0
+            max_version = 0
+            if len(graph_versions) > 0:
+                min_version = min([int(x) for x in graph_versions if x.isnumeric()])
+                max_version = max([int(x) for x in graph_versions if x.isnumeric()])
+            logger.debug(f"{self.name} minimal version is: {min_version}")
+            logger.debug(f"{self.name} maximal version is: {max_version}")
+
+            if len(matching_graph_keys) >= self.graph_rotation:  # TODO remove all oldest. in case rotation graph reduce mutliple deletion needed
+                oldest_graph_version_to_delete = ModelUtil.build_graph_version_name(self.name, min_version)
+                self.r.delete(oldest_graph_version_to_delete)
+                logger.debug(f"Graph {oldest_graph_version_to_delete} deleted")
+
+            self.version = max_version + 1
+            self.version_name = ModelUtil.build_graph_version_name(self.name, max_version + 1)
+            self.graph = self.r.graph(self.version_name)
+            logger.debug(f'Using graph version {self.version_name}, name {self.graph.name}')
+
+            # do function on new graph
+            func(self, *args, **kwargs)
+
+            # upgrade metadata last version to +1 after function execution
+            self.m_metadata.set_last_graph_version(self.version)
+
+        return handle
 
 
 class ExportableGraphHandler(VersionedGraphHandler):

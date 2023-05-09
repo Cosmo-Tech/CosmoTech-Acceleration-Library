@@ -15,6 +15,7 @@ class ModelImporter(RotatedGraphHandler):
     Model Exporter for cached data
     """
 
+    @RotatedGraphHandler.handle_graph_rotation
     def bulk_import(self, twin_file_paths: list = [], relationship_file_paths: list = [], enforce_schema: bool = False):
         """
         Import all csv data
