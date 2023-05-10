@@ -77,7 +77,7 @@ class RotatedGraphHandler(VersionedGraphHandler):
             logger.debug(f"{self.name} minimal version is: {min_version}")
             logger.debug(f"{self.name} maximal version is: {max_version}")
 
-            if len(matching_graph_keys) >= self.graph_rotation:  # TODO remove all oldest. in case rotation graph reduce mutliple deletion needed
+            if len(matching_graph_keys) > self.graph_rotation:  # TODO remove all oldest. in case rotation graph reduce mutliple deletion needed
                 oldest_graph_version_to_delete = ModelUtil.build_graph_version_name(self.name, min_version)
                 self.r.delete(oldest_graph_version_to_delete)
                 logger.debug(f"Graph {oldest_graph_version_to_delete} deleted")
