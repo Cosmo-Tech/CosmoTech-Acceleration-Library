@@ -26,7 +26,7 @@ setuptools.setup(
     install_requires=required,
     entry_points={
         'console_scripts': [
-            'csm_connector=CosmoTech_Acceleration_Library.Accelerators.scenario_download.dummy_connector:main'
+            'cosmotech_scenario_downloader=CosmoTech_Acceleration_Library.Accelerators.scenario_download.download_command:main'
         ]
     },
 )

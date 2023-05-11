@@ -3,24 +3,20 @@
 import csv
 import io
 import json
-import os
-import pathlib
 import multiprocessing
-import shutil
+import os
 import tempfile
 from typing import Union
 
+import cosmotech_api
 from azure.digitaltwins.core import DigitalTwinsClient
 from azure.identity import DefaultAzureCredential
-
-import cosmotech_api
 from cosmotech_api.api.dataset_api import DatasetApi
 from cosmotech_api.api.scenario_api import ScenarioApi
-from cosmotech_api.api.workspace_api import WorkspaceApi
 from cosmotech_api.api.twingraph_api import TwingraphApi
+from cosmotech_api.api.workspace_api import WorkspaceApi
 from cosmotech_api.model.twin_graph_query import TwinGraphQuery
-
-from openpyxl import load_workbook, Workbook
+from openpyxl import load_workbook
 
 from CosmoTech_Acceleration_Library.Accelerators.utils.multi_environment import MultiEnvironment
 
@@ -331,5 +327,5 @@ class ScenarioDownloader:
                 _w.writeheader()
                 # _w.writerows(_filecontent)
                 for r in _filecontent:
-                    _w.writerow({k: str(v).replace("'","\"") for k, v in r.items()})
+                    _w.writerow({k: str(v).replace("'", "\"") for k, v in r.items()})
         return tmp_dataset_dir

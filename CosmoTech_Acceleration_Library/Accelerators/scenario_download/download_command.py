@@ -1,16 +1,29 @@
 # Copyright (c) Cosmo Tech corporation.
 # Licensed under the MIT license.
-from CosmoTech_Acceleration_Library.Accelerators.scenario_download.scenario_downloader import ScenarioDownloader
-from distutils.dir_util import copy_tree
+import json
+import logging
 import os
 import pathlib
-import logging
+from distutils.dir_util import copy_tree
 
-import json
+from CosmoTech_Acceleration_Library.Accelerators.scenario_download.scenario_downloader import ScenarioDownloader
+
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
-def dummy_connector(scenario_id, organization_id, workspace_id, dataset_folder, parameter_folder):
+
+def download_scenario_data(
+    organization_id: str, workspace_id: str, scenario_id: str, dataset_folder: str, parameter_folder: str
+) -> None:
+    """
+    Download the datas from a scenario from the CosmoTech API to the local file system
+    :param scenario_id: The id of the Scenario as defined in the CosmoTech API
+    :param organization_id: The id of the Organization as defined in the CosmoTech API
+    :param workspace_id: The id of the Workspace as defined in the CosmoTech API
+    :param dataset_folder: a local folder where the main dataset of the scenario will be downloaded
+    :param parameter_folder: a local folder where all parameters will be downloaded
+    :return: Nothing
+    """
     logger.info("Starting connector")
     dl = ScenarioDownloader(workspace_id=workspace_id,
                             organization_id=organization_id,
@@ -62,7 +75,11 @@ def dummy_connector(scenario_id, organization_id, workspace_id, dataset_folder, 
         json.dump(parameters, _file)
     logger.info("Generated parameters.json")
 
+
 def main():
+    """
+    Uses environment variables to call the download_scenario_data function
+    """
     logger.setLevel(logging.INFO)
     import os
 
@@ -87,7 +104,8 @@ def main():
         for _var, _help in required_environment:
             print(f"  {_var} : {_help}")
         exit(1)
-    dummy_connector(s_id, o_id, w_id, dataset_path, parameter_path)
+    download_scenario_data(o_id, w_id, s_id, dataset_path, parameter_path)
+
 
 if __name__ == "__main__":
     main()
