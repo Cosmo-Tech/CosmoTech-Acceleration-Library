@@ -24,4 +24,9 @@ setuptools.setup(
     long_description=readme_text,
     long_description_content_type='text/markdown',
     install_requires=required,
+    entry_points={
+        'console_scripts': [
+            'cosmotech_scenario_downloader=CosmoTech_Acceleration_Library.Accelerators.scenario_download.download_command:main'
+        ]
+    },
 )

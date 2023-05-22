@@ -3,20 +3,19 @@
 import csv
 import io
 import json
+import multiprocessing
 import os
 import tempfile
 from typing import Union
 
+import cosmotech_api
 from azure.digitaltwins.core import DigitalTwinsClient
 from azure.identity import DefaultAzureCredential
-
-import cosmotech_api
 from cosmotech_api.api.dataset_api import DatasetApi
 from cosmotech_api.api.scenario_api import ScenarioApi
-from cosmotech_api.api.workspace_api import WorkspaceApi
 from cosmotech_api.api.twingraph_api import TwingraphApi
-from cosmotech_api.api.twingraph_api import TwinGraphQuery
-
+from cosmotech_api.api.workspace_api import WorkspaceApi
+from cosmotech_api.model.twin_graph_query import TwinGraphQuery
 from openpyxl import load_workbook
 
 from CosmoTech_Acceleration_Library.Accelerators.utils.multi_environment import MultiEnvironment
@@ -26,7 +25,7 @@ env = MultiEnvironment()
 
 class ScenarioDownloader:
 
-    def __init__(self, workspace_id: str, organization_id: str):
+    def __init__(self, workspace_id: str, organization_id: str, read_files=True):
         self.credentials = DefaultAzureCredential()
         scope = env.api_scope
         token = self.credentials.get_token(scope)
@@ -39,6 +38,8 @@ class ScenarioDownloader:
 
         self.workspace_id = workspace_id
         self.organization_id = organization_id
+        self.dataset_file_temp_path = dict()
+        self.read_files = read_files
 
     def get_scenario_data(self, scenario_id: str):
         with cosmotech_api.ApiClient(self.configuration) as api_client:
@@ -76,9 +77,11 @@ class ScenarioDownloader:
             else:
                 _file_name = parameters['AZURE_STORAGE_CONTAINER_BLOB_PREFIX'].replace(
                     '%WORKSPACE_FILE%/', '')
+                _content = self._download_file(_file_name)
+                self.dataset_file_temp_path[dataset_id] = self.dataset_file_temp_path[_file_name]
                 return {
                     "type": _file_name.split('.')[-1],
-                    "content": self._download_file(_file_name),
+                    "content": _content,
                     "name": dataset['name']
                 }
 
@@ -131,6 +134,7 @@ class ScenarioDownloader:
 
     def _download_file(self, file_name: str):
         tmp_dataset_dir = tempfile.mkdtemp()
+        self.dataset_file_temp_path[file_name] = tmp_dataset_dir
         with cosmotech_api.ApiClient(self.configuration) as api_client:
             api_ws = WorkspaceApi(api_client)
 
@@ -152,6 +156,8 @@ class ScenarioDownloader:
                     tmp_dataset_dir, _file_name.split('/')[-1])
                 with open(target_file, "wb") as tmp_file:
                     tmp_file.write(dl_file.read())
+                if not self.read_files:
+                    return {}
                 if ".xls" in _file_name:
                     wb = load_workbook(target_file, data_only=True)
                     for sheet_name in wb.sheetnames:
@@ -179,8 +185,7 @@ class ScenarioDownloader:
                 elif ".csv" in _file_name:
                     with open(target_file, "r") as file:
                         # Read every file in the input folder
-                        current_filename = os.path.basename(target_file)[
-                            :-len(".csv")]
+                        current_filename = os.path.basename(target_file)[:-len(".csv")]
                         content[current_filename] = list()
                         for row in csv.DictReader(file):
                             new_row = dict()
@@ -254,13 +259,73 @@ class ScenarioDownloader:
 
         datasets = scenario_data['dataset_list']
 
-        content = dict()
-        for dataset_id in datasets:
-            content[dataset_id] = self.download_dataset(dataset_id)
+        dataset_ids = datasets[:]
 
         for parameter in scenario_data['parameters_values']:
             if parameter['var_type'] == '%DATASETID%':
                 dataset_id = parameter['value']
-                content[dataset_id] = self.download_dataset(dataset_id)
+                dataset_ids.append(dataset_id)
+
+        def process(_dataset_id, _return_dict):
+            _c = self.download_dataset(_dataset_id)
+            if _dataset_id in self.dataset_file_temp_path:
+                _return_dict[_dataset_id] = (_c, self.dataset_file_temp_path[_dataset_id], dataset_id)
+            else:
+                _return_dict[_dataset_id] = _c
+
+        manager = multiprocessing.Manager()
+        return_dict = manager.dict()
+        processes = [multiprocessing.Process(target=process, args=(dataset_id, return_dict)) for dataset_id in
+                     dataset_ids]
+        [p.start() for p in processes]
+        [p.join() for p in processes]
+        content = dict()
+        for k, v in return_dict.items():
+            if isinstance(v, tuple):
+                content[k] = v[0]
+                self.dataset_file_temp_path[v[2]] = v[1]
+            else:
+                content[k] = v
 
         return content
+
+    def dataset_to_file(self, dataset_id, dataset_info):
+        type = dataset_info['type']
+        content = dataset_info['content']
+        name = dataset_info['name']
+        if type == "adt":
+            return self.adt_dataset(content, name, type)
+        return self.dataset_file_temp_path[dataset_id]
+
+    @staticmethod
+    def sheet_to_header(sheet_content):
+        fieldnames = []
+        has_src = False
+        has_id = False
+        for r in sheet_content:
+            for k in r.keys():
+                if k not in fieldnames:
+                    if k in ['source', 'target']:
+                        has_src = True
+                    elif k == "id":
+                        has_id = True
+                    else:
+                        fieldnames.append(k)
+        if has_src:
+            fieldnames = ['source', 'target'] + fieldnames
+        if has_id:
+            fieldnames = ['id', ] + fieldnames
+        return fieldnames
+
+    def adt_dataset(self, content, _name, _type):
+        tmp_dataset_dir = tempfile.mkdtemp()
+        for _filename, _filecontent in content.items():
+            with open(tmp_dataset_dir + "/" + _filename + ".csv", "w") as _file:
+                fieldnames = self.sheet_to_header(_filecontent)
+
+                _w = csv.DictWriter(_file, fieldnames=fieldnames, dialect="unix", quoting=csv.QUOTE_MINIMAL)
+                _w.writeheader()
+                # _w.writerows(_filecontent)
+                for r in _filecontent:
+                    _w.writerow({k: str(v).replace("'", "\"") for k, v in r.items()})
+        return tmp_dataset_dir
