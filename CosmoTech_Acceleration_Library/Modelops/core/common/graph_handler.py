@@ -23,6 +23,8 @@ class GraphHandler(RedisHandler):
         self.m_metadata = ModelMetadata(host=host, port=port, name=name, password=password)
         current_metadata = self.m_metadata.get_metadata()
         if not current_metadata:
+            if graph_rotation is None:
+                graph_rotation = 3
             logger.debug("Create metadata key")
             self.m_metadata.set_metadata(last_graph_version=0, graph_source_url=source_url,
                                          graph_rotation=graph_rotation)
@@ -34,7 +36,7 @@ class VersionedGraphHandler(GraphHandler):
     """
 
     def __init__(self, host: str, port: int, name: str, version: int = None, password: str = None, source_url: str = "",
-                 graph_rotation: int = 3):
+                 graph_rotation: int = None):
         super().__init__(host=host, port=port, name=name, password=password, source_url=source_url,
                          graph_rotation=graph_rotation)
         logger.debug("VersionedGraphHandler init")
@@ -51,11 +53,18 @@ class RotatedGraphHandler(VersionedGraphHandler):
     """
 
     def __init__(self, host: str, port: int, name: str, password: str = None, version: int = None, source_url: str = "",
-                 graph_rotation: int = 3):
+                 graph_rotation: int = None):
         super().__init__(host=host, port=port, name=name, password=password, source_url=source_url, version=version,
                          graph_rotation=graph_rotation)
         logger.debug("RotatedGraphHandler init")
-        self.graph_rotation = graph_rotation
+        self.graph_rotation = self.m_metadata.get_graph_rotation()
+
+    def get_all_versions(self):
+        matching_graph_keys = self.r.keys(ModelUtil.build_graph_key_pattern(self.name))
+        versions = []
+        for graph_key in matching_graph_keys:
+            versions.append(graph_key.split(":")[-1])
+        return versions
 
     def handle_graph_rotation(func):
         """
@@ -63,32 +72,33 @@ class RotatedGraphHandler(VersionedGraphHandler):
         """
 
         def handle(self, *args, **kwargs):
-            # upgrade graph used
-            matching_graph_keys = self.r.keys(ModelUtil.build_graph_key_pattern(self.name))
-            graph_versions = []
-            for graph_key in matching_graph_keys:
-                graph_versions.append(graph_key.split(":")[-1])
+            graph_versions = self.get_all_versions()
 
-            min_version = 0
-            max_version = 0
+            breakpoint()
             if len(graph_versions) > 0:
-                min_version = min([int(x) for x in graph_versions if x.isnumeric()])
                 max_version = max([int(x) for x in graph_versions if x.isnumeric()])
-            logger.debug(f"{self.name} minimal version is: {min_version}")
-            logger.debug(f"{self.name} maximal version is: {max_version}")
-
-            if len(matching_graph_keys) > self.graph_rotation:  # TODO remove all oldest. in case rotation graph reduce mutliple deletion needed
-                oldest_graph_version_to_delete = ModelUtil.build_graph_version_name(self.name, min_version)
-                self.r.delete(oldest_graph_version_to_delete)
-                logger.debug(f"Graph {oldest_graph_version_to_delete} deleted")
-
+            else:
+                max_version = 0
+            # upgrade current graph to max_version+1
             self.version = max_version + 1
-            self.version_name = ModelUtil.build_graph_version_name(self.name, max_version + 1)
+            self.version_name = ModelUtil.build_graph_version_name(self.name, self.version)
             self.graph = self.r.graph(self.version_name)
-            logger.debug(f'Using graph version {self.version_name}, name {self.graph.name}')
+            logger.debug(f'Using graph updated version {self.version_name}')
 
             # do function on new graph
             func(self, *args, **kwargs)
+
+            # get max version to manage case func not using (hence creating) graph
+            graph_versions = [int(v) for v in self.get_all_versions()]
+            graph_versions.sort()
+            graph_versions.reverse()
+            to_remove = graph_versions[int(self.graph_rotation):]
+
+            # remove all older versions
+            for v in to_remove:
+                oldest_graph_version_to_delete = ModelUtil.build_graph_version_name(self.name, v)
+                self.r.delete(oldest_graph_version_to_delete)
+                logger.debug(f"Graph {oldest_graph_version_to_delete} deleted")
 
             # upgrade metadata last version to +1 after function execution
             self.m_metadata.set_last_graph_version(self.version)
