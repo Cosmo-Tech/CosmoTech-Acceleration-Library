@@ -74,7 +74,6 @@ class RotatedGraphHandler(VersionedGraphHandler):
         def handle(self, *args, **kwargs):
             graph_versions = self.get_all_versions()
 
-            breakpoint()
             if len(graph_versions) > 0:
                 max_version = max([int(x) for x in graph_versions if x.isnumeric()])
             else:
