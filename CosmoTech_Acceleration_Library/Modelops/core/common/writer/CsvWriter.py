@@ -2,6 +2,8 @@
 # Licensed under the MIT license.
 import csv
 import logging
+import json
+import ast
 
 from redis.commands.graph.query_result import QueryResult
 
@@ -21,6 +23,8 @@ class CsvWriter:
             return str(val).lower()
         if str(val) == 'True' or str(val) == 'False':
             return str(val).lower()
+        if str(val).startswith('{') and str(val).endswith('}'):
+            return json.dumps(ast.literal_eval(str(val)))
         return str(val)
 
     @staticmethod
@@ -45,7 +49,7 @@ class CsvWriter:
         output_file_name = f'{export_dir}/{file_name}.csv'
         logger.debug(f"Writing CSV file {output_file_name}")
         with open(output_file_name, 'w') as csvfile:
-            csv_writer = csv.DictWriter(csvfile, fieldnames=headers, delimiter=delimiter, quotechar=quote_char, quoting=csv.QUOTE_ALL)
+            csv_writer = csv.DictWriter(csvfile, fieldnames=headers, delimiter=delimiter, quotechar=quote_char, quoting=csv.QUOTE_MINIMAL)
             csv_writer.writeheader()
             csv_writer.writerows(rows)
         logger.debug(f"... CSV file {output_file_name} has been written")
@@ -64,7 +68,7 @@ class CsvWriter:
         output_file_name = export_dir + file_name + '.csv'
         logger.debug(f"Writing CSV file {output_file_name}")
         with open(output_file_name, 'w') as csvfile:
-            csv_writer = csv.DictWriter(csvfile, fieldnames=headers, delimiter=delimiter, quotechar=quote_char, quoting=csv.QUOTE_ALL)
+            csv_writer = csv.DictWriter(csvfile, fieldnames=headers, delimiter=delimiter, quotechar=quote_char, quoting=csv.QUOTE_MINIMAL)
             csv_writer.writeheader()
             csv_writer.writerows(rows)
         logger.debug(f"... CSV file {output_file_name} has been written")
