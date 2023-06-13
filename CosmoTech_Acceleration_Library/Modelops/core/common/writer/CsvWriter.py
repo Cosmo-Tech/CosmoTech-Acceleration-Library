@@ -24,7 +24,10 @@ class CsvWriter:
         if str(val) == 'True' or str(val) == 'False':
             return str(val).lower()
         if str(val).startswith('{') and str(val).endswith('}'):
-            return json.dumps(ast.literal_eval(str(val)))
+            try:
+                return json.dumps(json.loads(val))
+            except json.decoder.JSONDecodeError:
+                return json.dumps(ast.literal_eval(str(val)))
         return str(val)
 
     @staticmethod
