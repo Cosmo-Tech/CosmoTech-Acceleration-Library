@@ -3,7 +3,7 @@
 import glob
 import os
 
-from CosmoTech_Acceleration_Library.Modelops.core.io.model_exporter import ModelExporter
+from cosmotech.acceleration_library.Modelops.core.io.model_exporter import ModelExporter
 
 export_directory = "/tmp/export/"
 

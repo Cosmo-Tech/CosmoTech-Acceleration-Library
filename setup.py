@@ -1,7 +1,7 @@
 # Copyright (c) Cosmo Tech corporation.
 # Licensed under the MIT license.
 import setuptools
-import CosmoTech_Acceleration_Library
+import cosmotech.acceleration_library
 from pathlib import Path
 
 
@@ -14,8 +14,8 @@ readme_text = (root_directory / "README.md").read_text()
 
 setuptools.setup(
     name='CosmoTech_Acceleration_Library',
-    version=CosmoTech_Acceleration_Library.__version__,
-    packages=setuptools.find_packages(),
+    version=cosmotech.acceleration_library.__version__,
+    packages=setuptools.find_namespace_packages(include=['cosmotech.*']),
     url='https://github.com/Cosmo-Tech/CosmoTech-Acceleration-Library',
     license='MIT',
     author='afossart',
@@ -26,7 +26,7 @@ setuptools.setup(
     install_requires=required,
     entry_points={
         'console_scripts': [
-            'cosmotech_scenario_downloader=CosmoTech_Acceleration_Library.Accelerators.scenario_download.download_command:main'
+            'cosmotech_scenario_downloader=cosmotech.acceleration_library.Accelerators.scenario_download.download_command:main'
         ]
     },
 )

@@ -18,7 +18,7 @@ from cosmotech_api.api.workspace_api import WorkspaceApi
 from cosmotech_api.model.twin_graph_query import TwinGraphQuery
 from openpyxl import load_workbook
 
-from CosmoTech_Acceleration_Library.Accelerators.utils.multi_environment import MultiEnvironment
+from cosmotech.acceleration_library.Accelerators.utils.multi_environment import MultiEnvironment
 
 env = MultiEnvironment()
 

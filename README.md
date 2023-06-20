@@ -5,7 +5,7 @@ Acceleration library for CosmoTech cloud based solution development
 
 In project root directory you'll find 4 main directories:
 
-* CosmoTech_Acceleration_Library: containing all Cosmo Tech libraries to accelerate interaction with Cosmo Tech solutions
+* cosmotech.acceleration_library: containing all Cosmo Tech libraries to accelerate interaction with Cosmo Tech solutions
 * data: a bunch of csv files on which samples are based
 * samples: a bunch of python scripts to demonstrate how to use the library
 * doc: for schema or specific documentation

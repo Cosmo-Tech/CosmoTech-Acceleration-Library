@@ -22,7 +22,9 @@ nav:
   - Home: 'index.md'
   - Getting started:
     - Dependencies: 'dependencies.md'
-  - References: references/
+  - References: 
+    - 'references/SUMMARY.md'
+    - acceleration_library: 'references/acceleration_library/'
 
 markdown_extensions:
     - attr_list

@@ -3,9 +3,9 @@
 import logging
 from pathlib import Path
 
-from CosmoTech_Acceleration_Library.Modelops.core.common.redis_handler import RedisHandler
-from CosmoTech_Acceleration_Library.Modelops.core.io.model_metadata import ModelMetadata
-from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelUtil
+from cosmotech.acceleration_library.Modelops.core.common.redis_handler import RedisHandler
+from cosmotech.acceleration_library.Modelops.core.io.model_metadata import ModelMetadata
+from cosmotech.acceleration_library.Modelops.core.utils.model_util import ModelUtil
 
 logger = logging.getLogger(__name__)
 

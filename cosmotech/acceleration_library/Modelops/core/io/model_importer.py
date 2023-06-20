@@ -4,8 +4,8 @@ import logging
 
 from redisgraph_bulk_loader.bulk_insert import bulk_insert
 
-from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import RotatedGraphHandler
-from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelUtil
+from cosmotech.acceleration_library.Modelops.core.common.graph_handler import RotatedGraphHandler
+from cosmotech.acceleration_library.Modelops.core.utils.model_util import ModelUtil
 
 logger = logging.getLogger(__name__)
 

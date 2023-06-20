@@ -7,7 +7,7 @@ import ast
 
 from redis.commands.graph.query_result import QueryResult
 
-from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelUtil
+from cosmotech.acceleration_library.Modelops.core.utils.model_util import ModelUtil
 
 logger = logging.getLogger(__name__)
 

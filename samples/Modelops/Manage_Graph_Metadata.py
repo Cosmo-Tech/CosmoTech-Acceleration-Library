@@ -1,6 +1,6 @@
 # Copyright (c) Cosmo Tech corporation.
 # Licensed under the MIT license.
-from CosmoTech_Acceleration_Library.Modelops.core.io.model_writer import ModelWriter
+from cosmotech.acceleration_library.Modelops.core.io.model_writer import ModelWriter
 
 if __name__ == '__main__':
     mw = ModelWriter(host='localhost', port=6379, name='newGraph')

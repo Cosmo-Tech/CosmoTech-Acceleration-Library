@@ -6,7 +6,7 @@ import os
 import pathlib
 from distutils.dir_util import copy_tree
 
-from CosmoTech_Acceleration_Library.Accelerators.scenario_download.scenario_downloader import ScenarioDownloader
+from cosmotech.acceleration_library.Accelerators.scenario_download.scenario_downloader import ScenarioDownloader
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)

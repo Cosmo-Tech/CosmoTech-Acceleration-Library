@@ -1,7 +1,7 @@
 # Copyright (c) Cosmo Tech corporation.
 # Licensed under the MIT license.
-from CosmoTech_Acceleration_Library.Modelops.core.io.model_reader import ModelReader
-from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelUtil
+from cosmotech.acceleration_library.Modelops.core.io.model_reader import ModelReader
+from cosmotech.acceleration_library.Modelops.core.utils.model_util import ModelUtil
 
 
 def get_and_display_relationships_info(relationship_type: str):

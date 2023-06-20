@@ -9,7 +9,7 @@ from cosmotech_api.api.scenario_api import ScenarioApi
 from cosmotech_api.api.workspace_api import WorkspaceApi
 
 
-from CosmoTech_Acceleration_Library.Accelerators.utils.multi_environment import MultiEnvironment
+from cosmotech.acceleration_library.Accelerators.utils.multi_environment import MultiEnvironment
 
 env = MultiEnvironment()
 

@@ -1,6 +1,6 @@
 # Copyright (c) Cosmo Tech corporation.
 # Licensed under the MIT license.
-from CosmoTech_Acceleration_Library.Modelops.core.io.model_importer import ModelImporter
+from cosmotech.acceleration_library.Modelops.core.io.model_importer import ModelImporter
 
 
 def run_bulk_import_from_csv_files_with_schema():
