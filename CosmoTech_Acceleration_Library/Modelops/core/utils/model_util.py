@@ -161,19 +161,3 @@ class ModelUtil:
     @staticmethod
     def build_graph_key_pattern(graph_name: str) -> str:
         return graph_name + ":*"
-
-    @staticmethod
-    def unjsonify(value: dict) -> dict:
-        """
-        Unjsonify transform json strings to python objects
-        :param value a dict
-        :return: a dict with unjsonify values
-        """
-        for k, v in value.items():
-            if isinstance(v, str):
-                try:
-                    value[k] = json.loads(v)
-                    logger.debug(f" new value => {value[k]}")
-                except ValueError as e:
-                    logger.debug(f"{v} is not a jsonString, use the raw value")
-        return value
