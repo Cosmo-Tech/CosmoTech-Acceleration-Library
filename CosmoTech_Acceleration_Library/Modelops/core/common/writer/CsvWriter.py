@@ -21,6 +21,8 @@ class CsvWriter:
     def _to_csv_format(val: any) -> str:
         if isinstance(val, bool):
             return str(val).lower()
+        if isinstance(val, dict):
+            return json.dumps(val)
         if str(val) == 'True' or str(val) == 'False':
             return str(val).lower()
         if str(val).startswith('{') and str(val).endswith('}'):
