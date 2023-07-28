@@ -1,7 +1,6 @@
 # Copyright (c) Cosmo Tech corporation.
 # Licensed under the MIT license.
 import logging
-from pathlib import Path
 
 from CosmoTech_Acceleration_Library.Modelops.core.common.redis_handler import RedisHandler
 from CosmoTech_Acceleration_Library.Modelops.core.io.model_metadata import ModelMetadata
@@ -103,18 +102,3 @@ class RotatedGraphHandler(VersionedGraphHandler):
             self.m_metadata.set_last_graph_version(self.version)
 
         return handle
-
-
-class ExportableGraphHandler(VersionedGraphHandler):
-    """
-    Class that handle Exportable Versioned Graph Redis information
-    """
-
-    def __init__(self, host: str, port: int, name: str, version: int, password: str = None, source_url: str = "", export_dir: str = "/"):
-        super().__init__(host=host, port=port, name=name, version=version, password=password, source_url=source_url)
-        logger.debug("ExportableGraphHandler init")
-        if export_dir != "":
-            Path(export_dir).mkdir(parents=True, exist_ok=True)
-            self.export_dir = export_dir
-        else:
-            self.export_dir = self.default_export_dir
