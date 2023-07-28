@@ -4,6 +4,7 @@ import csv
 import logging
 import json
 import ast
+import os
 
 from redis.commands.graph.query_result import QueryResult
 
@@ -77,3 +78,24 @@ class CsvWriter:
             csv_writer.writeheader()
             csv_writer.writerows(rows)
         logger.debug(f"... CSV file {output_file_name} has been written")
+
+    @staticmethod
+    def write_data(export_dir: str, file_name: str, input_rows: dict, delimiter: str = ',', quote_char: str = '\"') -> None:
+        output_file_name = export_dir + file_name + '.csv'
+        write_header = False
+        if not os.path.exists(output_file_name):
+            write_header = True
+
+        headers = set()
+        output_rows = []
+        for row in input_rows:
+            output_rows.append({CsvWriter._to_cosmo_key(k): CsvWriter._to_csv_format(v) for k, v in row.items()})
+            headers.update(row.keys())
+
+        logger.info(f"Writing file {output_file_name} ...")
+        with open(output_file_name, 'a') as csvfile:
+            csv_writer = csv.DictWriter(csvfile, fieldnames=headers, delimiter=delimiter, quotechar=quote_char, quoting=csv.QUOTE_MINIMAL)
+            if write_header:
+                csv_writer.writeheader()
+            csv_writer.writerows(output_rows)
+        logger.debug(f"... file {output_file_name} has been written")

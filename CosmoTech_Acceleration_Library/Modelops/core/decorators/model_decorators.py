@@ -2,7 +2,7 @@
 # Licensed under the MIT license.
 import functools
 
-from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import GraphHandler, ExportableGraphHandler
+from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import GraphHandler, VersionedGraphHandler
 
 
 def update_last_version(function):
@@ -50,7 +50,7 @@ def do_if_graph_exist(function):
     def wrapper(*args, **kwargs):
         self = args[0]
         version_graph_name = self.versioned_name
-        if isinstance(self, ExportableGraphHandler):
+        if isinstance(self, VersionedGraphHandler):
             key_count = self.r.exists(version_graph_name)
             if key_count != 0:
                 function(*args, **kwargs)

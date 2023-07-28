@@ -102,7 +102,7 @@ class ModelReader(VersionedGraphHandler):
         :param read_only: executes a readonly query if set to True
         :return: the QueryResult corresponding to specified query
         """
-        logger.debug(f"Query : {query}")
+        logger.debug(f"Query : {query} with params : {params}")
         return self.graph.query(q=query, params=params, timeout=timeout, read_only=read_only)
 
     def exists(self, key) -> bool:
