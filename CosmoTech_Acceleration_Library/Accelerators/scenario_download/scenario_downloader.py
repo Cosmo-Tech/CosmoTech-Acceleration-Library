@@ -116,6 +116,7 @@ class ScenarioDownloader:
                 label = item['n']['label']
                 prop = item['n']['properties']
                 prop.update({'id': item['n']['id']})
+                content.setdefault(label, list())
                 content[label].append(prop)
 
             for item in rel:
@@ -129,7 +130,6 @@ class ScenarioDownloader:
                     'target': dest['id'],
                     **props
                 })
-
             return content
 
     def _download_file(self, file_name: str):
@@ -157,7 +157,7 @@ class ScenarioDownloader:
                 with open(target_file, "wb") as tmp_file:
                     tmp_file.write(dl_file.read())
                 if not self.read_files:
-                    return {}
+                    continue
                 if ".xls" in _file_name:
                     wb = load_workbook(target_file, data_only=True)
                     for sheet_name in wb.sheetnames:
@@ -269,7 +269,7 @@ class ScenarioDownloader:
         def process(_dataset_id, _return_dict):
             _c = self.download_dataset(_dataset_id)
             if _dataset_id in self.dataset_file_temp_path:
-                _return_dict[_dataset_id] = (_c, self.dataset_file_temp_path[_dataset_id], dataset_id)
+                _return_dict[_dataset_id] = (_c, self.dataset_file_temp_path[_dataset_id], _dataset_id)
             else:
                 _return_dict[_dataset_id] = _c
 
@@ -286,7 +286,6 @@ class ScenarioDownloader:
                 self.dataset_file_temp_path[v[2]] = v[1]
             else:
                 content[k] = v
-
         return content
 
     def dataset_to_file(self, dataset_id, dataset_info):
@@ -327,5 +326,5 @@ class ScenarioDownloader:
                 _w.writeheader()
                 # _w.writerows(_filecontent)
                 for r in _filecontent:
-                    _w.writerow({k: str(v).replace("'", "\"") for k, v in r.items()})
+                    _w.writerow({k: str(v).replace("'", "\"").replace("True","true").replace("False","false") for k, v in r.items()})
         return tmp_dataset_dir
