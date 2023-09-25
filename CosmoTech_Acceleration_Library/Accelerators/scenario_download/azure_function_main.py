@@ -11,13 +11,15 @@ def generate_main(apply_update, parallel=True):
         scenario_id = req.params.get('scenario-id')
         organization_id = req.params.get('organization-id')
         workspace_id = req.params.get('workspace-id')
+        access_token: str = req.headers["authorization"].split(" ")[1]
 
         if scenario_id is None or organization_id is None or workspace_id is None:
             return func.HttpResponse(body='Query is missing configuration', status_code=400)
 
         dl = ScenarioDownloader(workspace_id=workspace_id,
                                 organization_id=organization_id,
-                                parallel=parallel)
+                                parallel=parallel,
+                                access_token=access_token)
 
         content = dict()
 
