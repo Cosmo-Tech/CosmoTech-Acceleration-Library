@@ -25,15 +25,22 @@ env = MultiEnvironment()
 
 class ScenarioDownloader:
 
-    def __init__(self, workspace_id: str, organization_id: str, read_files=True, parallel=True):
+    def __init__(
+        self,
+        workspace_id: str,
+        organization_id: str,
+        access_token: str = None,
+        read_files=True,
+        parallel=True
+    ):
         self.credentials = DefaultAzureCredential()
         scope = env.api_scope
-        token = self.credentials.get_token(scope)
-
+        if not access_token:
+            access_token = self.credentials.get_token(scope).token
         self.configuration = cosmotech_api.Configuration(
             host=env.api_host,
             discard_unknown_keys=True,
-            access_token=token.token
+            access_token=access_token
         )
 
         self.workspace_id = workspace_id
@@ -337,5 +344,7 @@ class ScenarioDownloader:
                 _w.writeheader()
                 # _w.writerows(_filecontent)
                 for r in _filecontent:
-                    _w.writerow({k: str(v).replace("'", "\"").replace("True","true").replace("False","false") for k, v in r.items()})
+                    _w.writerow(
+                        {k: str(v).replace("'", "\"").replace("True", "true").replace("False", "false") for k, v in
+                         r.items()})
         return tmp_dataset_dir
