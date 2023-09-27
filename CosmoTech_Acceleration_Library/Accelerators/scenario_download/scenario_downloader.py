@@ -279,6 +279,9 @@ class ScenarioDownloader:
                      dataset_ids]
         [p.start() for p in processes]
         [p.join() for p in processes]
+        for p in processes:
+            if p.exitcode != 0:
+                raise ChildProcessError("One of the datasets was not downloaded.")
         content = dict()
         for k, v in return_dict.items():
             if isinstance(v, tuple):
