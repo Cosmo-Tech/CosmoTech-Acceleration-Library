@@ -2,19 +2,17 @@
 # Licensed under the MIT license.
 import logging
 
-from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import VersionedGraphHandler
-from CosmoTech_Acceleration_Library.Modelops.core.decorators.model_decorators import update_last_modified_date
+from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import GraphHandler
 from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelUtil
 
 logger = logging.getLogger(__name__)
 
 
-class ModelWriter(VersionedGraphHandler):
+class ModelWriter(GraphHandler):
     """
     Model Writer for cached data
     """
 
-    @update_last_modified_date
     def create_twin(self, twin_type: str, properties: dict):
         """
         Create a twin
@@ -25,7 +23,6 @@ class ModelWriter(VersionedGraphHandler):
         logger.debug(f"Query: {create_query}")
         self.graph.query(create_query)
 
-    @update_last_modified_date
     def create_relationship(self, relationship_type: str, properties: dict):
         """
         Create a relationship

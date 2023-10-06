@@ -6,30 +6,30 @@ from pathlib import Path
 import redis
 from functools import lru_cache
 
-from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import VersionedGraphHandler
+from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import GraphHandler
 from CosmoTech_Acceleration_Library.Modelops.core.common.writer.CsvWriter import CsvWriter
-from CosmoTech_Acceleration_Library.Modelops.core.decorators.model_decorators import do_if_graph_exist
 from CosmoTech_Acceleration_Library.Modelops.core.io.model_reader import ModelReader
 
 logger = logging.getLogger(__name__)
 
 
-class ModelExporter(VersionedGraphHandler):
+class ModelExporter(GraphHandler):
     """
     Model Exporter for cached data
     """
 
-    def __init__(self, host: str, port: int, name: str, version: int, password: str = None, export_dir: str = "/"):
-        super().__init__(host=host, port=port, name=name, version=version, password=password)
+    def __init__(self, host: str, port: int, name: str, password: str = None, export_dir: str = "/"):
+        super().__init__(host=host, port=port, name=name, password=password)
         Path(export_dir).mkdir(parents=True, exist_ok=True)
         self.export_dir = export_dir
-        self.mr = ModelReader(host=host, port=port, name=name, password=password, version=version)
+
+        self.mr = ModelReader(host=host, port=port, name=name, password=password)
         self.labels = [label[0] for label in self.graph.labels()]
         self.relationships = [relation[0] for relation in self.graph.relationship_types()]
         self.already_exported_nodes = {}
         self.already_exported_edges = []
 
-    @do_if_graph_exist
+    @GraphHandler.do_if_graph_exist
     def export_all_twins(self):
         """
         Export all twins
@@ -58,7 +58,7 @@ class ModelExporter(VersionedGraphHandler):
             logger.debug(f"Twins exported :{twin_name}")
         logger.debug("... End exporting twins")
 
-    @do_if_graph_exist
+    @GraphHandler.do_if_graph_exist
     def export_all_relationships(self):
         """
         Export all relationships
@@ -88,7 +88,7 @@ class ModelExporter(VersionedGraphHandler):
             logger.debug(f"Relationships exported :{relationship_name}")
         logger.debug("... End exporting relationships")
 
-    @do_if_graph_exist
+    @GraphHandler.do_if_graph_exist
     def export_all_data(self):
         """
         Export all data
@@ -97,7 +97,7 @@ class ModelExporter(VersionedGraphHandler):
         self.export_all_twins()
         self.export_all_relationships()
 
-    @do_if_graph_exist
+    @GraphHandler.do_if_graph_exist
     def export_from_queries(self, queries: list):
         """
         Export data from queries

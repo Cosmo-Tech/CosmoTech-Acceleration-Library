@@ -2,14 +2,14 @@
 # Licensed under the MIT license.
 import logging
 
-from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import VersionedGraphHandler
+from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import GraphHandler
 from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelUtil
 from redis.commands.graph.query_result import QueryResult
 
 logger = logging.getLogger(__name__)
 
 
-class ModelReader(VersionedGraphHandler):
+class ModelReader(GraphHandler):
     """
     Model Reader for cached data
     """

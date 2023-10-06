@@ -4,18 +4,17 @@ import logging
 
 from redisgraph_bulk_loader.bulk_insert import bulk_insert
 
-from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import RotatedGraphHandler
-from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelUtil
+from CosmoTech_Acceleration_Library.Modelops.core.common.graph_handler import GraphHandler
 
 logger = logging.getLogger(__name__)
 
 
-class ModelImporter(RotatedGraphHandler):
+class ModelImporter(GraphHandler):
     """
     Model Exporter for cached data
     """
 
-    @RotatedGraphHandler.handle_graph_rotation
+    @GraphHandler.handle_graph_replace
     def bulk_import(self, twin_file_paths: list = [], relationship_file_paths: list = [], enforce_schema: bool = False):
         """
         Import all csv data
@@ -44,7 +43,7 @@ class ModelImporter(RotatedGraphHandler):
                 command_parameters.append('--relations')
                 command_parameters.append(relationship_file_path)
 
-        command_parameters.append(ModelUtil.build_graph_version_name(self.name, self.version))
+        command_parameters.append(self.name)
         logger.debug(command_parameters)
         # TODO: Think about use '--index Label:Property' command parameters to create indexes on default id properties
         try:

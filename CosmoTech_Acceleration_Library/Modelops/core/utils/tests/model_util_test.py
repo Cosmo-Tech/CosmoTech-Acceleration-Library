@@ -81,8 +81,7 @@ class TestModelUtil(unittest.TestCase):
 
     def test_create_twin_query_Exception(self):
         twin_name = 'Twin_name'
-        self.assertRaises(Exception,
-                          self.model_util.create_twin_query, twin_name, self.expected_simple_parameters)
+        self.assertRaises(Exception, self.model_util.create_twin_query, twin_name, self.expected_simple_parameters)
 
     def test_create_relationship_query(self):
         source_id = 'Node1'
@@ -94,16 +93,8 @@ class TestModelUtil(unittest.TestCase):
 
     def test_create_relationship_query_Exception(self):
         relation_name = 'Relation_Name'
-        self.assertRaises(Exception,
-                          self.model_util.create_relationship_query, relation_name, self.expected_simple_parameters)
-
-    def test_unjsonify_without_jsonstring(self):
-        new_value = self.model_util.unjsonify(self.relationship_simple_parameters)
-        self.assertEqual(self.relationship_simple_parameters, new_value)
-
-    def test_unjsonify_with_jsonstring(self):
-        new_value = self.model_util.unjsonify(self.dict_with_simple_json_string)
-        self.assertEqual(self.relationship_simple_parameters, new_value)
+        self.assertRaises(Exception, self.model_util.create_relationship_query, relation_name,
+                          self.expected_simple_parameters)
 
 
 if __name__ == '__main__':

@@ -69,8 +69,7 @@ class ModelUtil:
         if ModelUtil.dt_id_key in properties:
             cypher_params = ModelUtil.dict_to_cypher_parameters(properties)
             return f"CREATE (:{twin_type} {cypher_params})"
-        raise Exception(
-            f"When you create a twin, you should define at least {ModelUtil.dt_id_key} properties ")
+        raise Exception(f"When you create a twin, you should define at least {ModelUtil.dt_id_key} properties ")
 
     @staticmethod
     def create_relationship_query(relationship_type: str, properties: dict) -> str:
@@ -87,7 +86,8 @@ class ModelUtil:
                    f"AND m.{ModelUtil.dt_id_key} = '{properties.get(ModelUtil.dest_key)}' " \
                    f"CREATE (n)-[r:{relationship_type} {cypher_params}]->(m) RETURN r"
         raise Exception(
-            f"When you create a relationship, you should define at least {ModelUtil.src_key} and {ModelUtil.dest_key} properties ")
+            f"When you create a relationship, you should define at least {ModelUtil.src_key} and {ModelUtil.dest_key} properties "
+        )
 
     @staticmethod
     def dict_to_json(obj: dict) -> str:
@@ -147,16 +147,6 @@ class ModelUtil:
         """
         date_time_obj = datetime.strptime(date_str, '%Y/%m/%d - %H:%M:%S')
         return date_time_obj
-
-    @staticmethod
-    def build_graph_version_name(graph_name: str, version: int) -> str:
-        """
-        Build versioned graph name
-        :param graph_name: the graph name
-        :param version: the version
-        :return: the versioned graph name
-        """
-        return graph_name + ":" + str(version)
 
     @staticmethod
     def build_graph_key_pattern(graph_name: str) -> str:
