@@ -19,4 +19,3 @@ class RedisHandler:
         self.name = name
         self.password = password
         self.r = redis.Redis(host=host, port=port, password=password, decode_responses=True)
-        self.metadata_key = name + "MetaData"

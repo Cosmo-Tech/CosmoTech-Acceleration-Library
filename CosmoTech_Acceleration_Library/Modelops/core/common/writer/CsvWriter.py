@@ -40,29 +40,43 @@ class CsvWriter:
         return val
 
     @staticmethod
-    def write_twin_data(export_dir: str, file_name: str, query_result: QueryResult,
-                        delimiter: str = ',', quote_char: str = '\"') -> None:
+    def write_twin_data(export_dir: str,
+                        file_name: str,
+                        query_result: QueryResult,
+                        delimiter: str = ',',
+                        quote_char: str = '\"') -> None:
         headers = set()
         rows = []
         for raw_data in query_result.result_set:
             row = {}
             # read all graph link properties
             for i in range(len(raw_data)):  # TODO for the moment its only a len 1 list with the node
-                row.update({CsvWriter._to_cosmo_key(k): CsvWriter._to_csv_format(v) for k, v in raw_data[i].properties.items()})
+                row.update({
+                    CsvWriter._to_cosmo_key(k): CsvWriter._to_csv_format(v)
+                    for k, v in raw_data[i].properties.items()
+                })
             headers.update(row.keys())
             rows.append(row)
 
         output_file_name = f'{export_dir}/{file_name}.csv'
         logger.debug(f"Writing CSV file {output_file_name}")
         with open(output_file_name, 'w') as csvfile:
-            csv_writer = csv.DictWriter(csvfile, fieldnames=headers, delimiter=delimiter, quotechar=quote_char, quoting=csv.QUOTE_MINIMAL)
+            csv_writer = csv.DictWriter(csvfile,
+                                        fieldnames=headers,
+                                        delimiter=delimiter,
+                                        quotechar=quote_char,
+                                        quoting=csv.QUOTE_MINIMAL)
             csv_writer.writeheader()
             csv_writer.writerows(rows)
         logger.debug(f"... CSV file {output_file_name} has been written")
 
     @staticmethod
-    def write_relationship_data(export_dir: str, file_name: str, query_result: QueryResult, headers: list = [],
-                                delimiter: str = ',', quote_char: str = '\"') -> None:
+    def write_relationship_data(export_dir: str,
+                                file_name: str,
+                                query_result: QueryResult,
+                                headers: list = [],
+                                delimiter: str = ',',
+                                quote_char: str = '\"') -> None:
         headers = {'source', 'target'}
         rows = []
         for raw_data in query_result.result_set:
@@ -71,16 +85,24 @@ class CsvWriter:
             headers.update(row.keys())
             rows.append(row)
 
-        output_file_name = export_dir + file_name + '.csv'
+        output_file_name = f'{export_dir}/{file_name}.csv'
         logger.debug(f"Writing CSV file {output_file_name}")
         with open(output_file_name, 'w') as csvfile:
-            csv_writer = csv.DictWriter(csvfile, fieldnames=headers, delimiter=delimiter, quotechar=quote_char, quoting=csv.QUOTE_MINIMAL)
+            csv_writer = csv.DictWriter(csvfile,
+                                        fieldnames=headers,
+                                        delimiter=delimiter,
+                                        quotechar=quote_char,
+                                        quoting=csv.QUOTE_MINIMAL)
             csv_writer.writeheader()
             csv_writer.writerows(rows)
         logger.debug(f"... CSV file {output_file_name} has been written")
 
     @staticmethod
-    def write_data(export_dir: str, file_name: str, input_rows: dict, delimiter: str = ',', quote_char: str = '\"') -> None:
+    def write_data(export_dir: str,
+                   file_name: str,
+                   input_rows: dict,
+                   delimiter: str = ',',
+                   quote_char: str = '\"') -> None:
         output_file_name = export_dir + file_name + '.csv'
         write_header = False
         if not os.path.exists(output_file_name):
@@ -94,7 +116,11 @@ class CsvWriter:
 
         logger.info(f"Writing file {output_file_name} ...")
         with open(output_file_name, 'a') as csvfile:
-            csv_writer = csv.DictWriter(csvfile, fieldnames=headers, delimiter=delimiter, quotechar=quote_char, quoting=csv.QUOTE_MINIMAL)
+            csv_writer = csv.DictWriter(csvfile,
+                                        fieldnames=headers,
+                                        delimiter=delimiter,
+                                        quotechar=quote_char,
+                                        quoting=csv.QUOTE_MINIMAL)
             if write_header:
                 csv_writer.writeheader()
             csv_writer.writerows(output_rows)
