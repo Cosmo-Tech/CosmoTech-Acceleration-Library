@@ -6,7 +6,7 @@ from .scenario_downloader import ScenarioDownloader
 import json
 
 
-def generate_main(apply_update):
+def generate_main(apply_update, parallel=True):
     def main(req: func.HttpRequest) -> func.HttpResponse:
         scenario_id = req.params.get('scenario-id')
         organization_id = req.params.get('organization-id')
@@ -16,7 +16,8 @@ def generate_main(apply_update):
             return func.HttpResponse(body='Query is missing configuration', status_code=400)
 
         dl = ScenarioDownloader(workspace_id=workspace_id,
-                                organization_id=organization_id)
+                                organization_id=organization_id,
+                                parallel=parallel)
 
         content = dict()
 

@@ -25,7 +25,7 @@ env = MultiEnvironment()
 
 class ScenarioDownloader:
 
-    def __init__(self, workspace_id: str, organization_id: str, read_files=True):
+    def __init__(self, workspace_id: str, organization_id: str, read_files=True, parallel=True):
         self.credentials = DefaultAzureCredential()
         scope = env.api_scope
         token = self.credentials.get_token(scope)
@@ -40,6 +40,7 @@ class ScenarioDownloader:
         self.organization_id = organization_id
         self.dataset_file_temp_path = dict()
         self.read_files = read_files
+        self.parallel = parallel
 
     def get_scenario_data(self, scenario_id: str):
         with cosmotech_api.ApiClient(self.configuration) as api_client:
@@ -273,15 +274,22 @@ class ScenarioDownloader:
             else:
                 _return_dict[_dataset_id] = _c
 
-        manager = multiprocessing.Manager()
-        return_dict = manager.dict()
-        processes = [multiprocessing.Process(target=process, args=(dataset_id, return_dict)) for dataset_id in
-                     dataset_ids]
-        [p.start() for p in processes]
-        [p.join() for p in processes]
-        for p in processes:
-            if p.exitcode != 0:
-                raise ChildProcessError("One of the datasets was not downloaded.")
+        if self.parallel:
+            manager = multiprocessing.Manager()
+            return_dict = manager.dict()
+            processes = [
+                multiprocessing.Process(target=process, args=(dataset_id, return_dict))
+                for dataset_id in dataset_ids
+            ]
+            [p.start() for p in processes]
+            [p.join() for p in processes]
+            for p in processes:
+                if p.exitcode != 0:
+                    raise ChildProcessError("One of the datasets was not downloaded.")
+        else:
+            return_dict = {}
+            for dataset_id in dataset_ids:
+                process(dataset_id, return_dict)
         content = dict()
         for k, v in return_dict.items():
             if isinstance(v, tuple):
