@@ -47,7 +47,10 @@ class GraphHandler(RedisHandler):
             func(self, *args, **kwargs)
 
             # action complete on graph_tmp with no error replacing graph by graph_tmp
-            self.r.copy(f'{self.name}_tmp', self.name)
+            self.r.eval(
+                """local o = redis.call('DUMP', KEYS[1]);\
+                   redis.call('RENAME', KEYS[1], KEYS[2]);\
+                   redis.call('RESTORE', KEYS[1], 0, o)""", 2, f'{self.name}_tmp', self.name)
             # remove tmp graph
             self.r.delete(f'{self.name}_tmp')
             # set back the graph
