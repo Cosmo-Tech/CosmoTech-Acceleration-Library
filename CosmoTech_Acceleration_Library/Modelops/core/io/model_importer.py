@@ -43,7 +43,7 @@ class ModelImporter(GraphHandler):
                 command_parameters.append('--relations')
                 command_parameters.append(relationship_file_path)
 
-        command_parameters.append(self.name)
+        command_parameters.append(self.graph.name)
         logger.debug(command_parameters)
         # TODO: Think about use '--index Label:Property' command parameters to create indexes on default id properties
         try:
