@@ -1,9 +1,9 @@
 # Azure connection requirements
-azure-functions
-azure-digitaltwins-core
-azure-identity
-azure-kusto-data
-azure-kusto-ingest
+azure-functions==1.17.0
+azure-digitaltwins-core==1.2.0
+azure-identity==1.15.0
+azure-kusto-data==4.2.0
+azure-kusto-ingest==4.2.0
 
 # Modelops requirements
 redis==4.4.4
@@ -13,16 +13,8 @@ redisgraph_bulk_loader==0.10.2
 cosmotech-api
 
 # Other requirements
-openpyxl
-pandas
-python-dateutil
+openpyxl==3.1.2
+pandas==2.1.2
+python-dateutil==2.8.2
 
-# Documentation generation
-mkdocs
-mkdocs-gen-files
-mkdocs-material
-mkdocstrings[python]
-mkdocs-literate-nav
-pymdown-extensions
-requirements-parser
-mike
+

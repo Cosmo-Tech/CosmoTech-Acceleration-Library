@@ -1,0 +1,30 @@
+[metadata]
+long_description_content_type="text/markdown"
+licence_files=["LICENSE"]
+
+[project]
+name = "CosmoTech_Acceleration_Library"
+authors = [{ name = "Cosmo Tech", email = "platform@cosmotech.com" }]
+description = "Acceleration libraries for CosmoTech cloud based solution development"
+urls.Homepage = "https://www.cosmotech.com"
+urls.Source = "https://github.com/Cosmo-Tech/CosmoTech-Acceleration-Library"
+urls.Documentation = "https://cosmo-tech.github.io/CosmoTech-Acceleration-Library"
+dynamic = ["version", "dependencies", "optional-dependencies"]
+
+
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[tool.setuptools]
+include-package-data = true
+package-data."*" = [
+  "requirements.txt",
+  "documentation.requirements.txt"
+]
+zip-safe = false
+packages = ["CosmoTech_Acceleration_Library"]
+
+[tool.setuptools.dynamic]
+version.attr = "CosmoTech_Acceleration_Library.__version__"
+dependencies.file = "requirements.txt"
+optional-dependencies.doc.file = "requirements.doc.txt"

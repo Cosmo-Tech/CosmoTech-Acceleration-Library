@@ -2,7 +2,7 @@ from typing import IO
 
 import mkdocs_gen_files
 
-import CosmoTech_Acceleration_Library
+from CosmoTech_Acceleration_Library import __version__
 
 _md_file: IO
 with mkdocs_gen_files.open("index.md", "w") as _md_file, \
@@ -14,4 +14,4 @@ with mkdocs_gen_files.open("index.md", "w") as _md_file, \
         if "--README--" in _line:
             _md_file.writelines(_readme_content[1:])
             continue
-        _md_file.write(_line.replace("VERSION", CosmoTech_Acceleration_Library.__version__))
+        _md_file.write(_line.replace("VERSION", __version__))
