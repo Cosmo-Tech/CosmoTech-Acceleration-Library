@@ -1,0 +1,9 @@
+# Documentation generation
+mkdocs==1.5.3
+mkdocs-gen-files==0.5.0
+mkdocs-material==9.4.8
+mkdocstrings[python]==0.23.0
+mkdocs-literate-nav==0.6.1
+pymdown-extensions==10.3.1
+requirements-parser==0.5.0
+mike==2.0.0
