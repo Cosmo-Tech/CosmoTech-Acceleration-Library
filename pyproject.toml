@@ -1,5 +1,4 @@
 [metadata]
-long_description_content_type="text/markdown"
 licence_files=["LICENSE"]
 
 [project]
@@ -9,7 +8,8 @@ description = "Acceleration libraries for CosmoTech cloud based solution develop
 urls.Homepage = "https://www.cosmotech.com"
 urls.Source = "https://github.com/Cosmo-Tech/CosmoTech-Acceleration-Library"
 urls.Documentation = "https://cosmo-tech.github.io/CosmoTech-Acceleration-Library"
-dynamic = ["version", "dependencies", "optional-dependencies", "readme"]
+dynamic = ["version", "dependencies", "optional-dependencies"]
+readme = {file = "README.md", content-type = "text/markdown"}
 
 
 [build-system]
@@ -28,4 +28,3 @@ packages = ["CosmoTech_Acceleration_Library"]
 version.attr = "CosmoTech_Acceleration_Library.__version__"
 dependencies.file = "requirements.txt"
 optional-dependencies.doc.file = "requirements.doc.txt"
-readme.file = "README.md"
