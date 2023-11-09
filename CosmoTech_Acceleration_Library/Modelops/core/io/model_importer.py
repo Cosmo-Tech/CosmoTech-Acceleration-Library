@@ -26,10 +26,6 @@ class ModelImporter(GraphHandler):
         """
         command_parameters = ['--host', self.host, '--port', self.port]
 
-        if self.password is not None:
-            command_parameters.append('--password')
-            command_parameters.append(self.password)
-
         if enforce_schema:
             command_parameters.append('--enforce-schema')
 
@@ -45,6 +41,10 @@ class ModelImporter(GraphHandler):
 
         command_parameters.append(self.graph.name)
         logger.debug(command_parameters)
+
+        if self.password is not None:
+            command_parameters.append('--password')
+            command_parameters.append(self.password)
         # TODO: Think about use '--index Label:Property' command parameters to create indexes on default id properties
         try:
             bulk_insert(command_parameters)
