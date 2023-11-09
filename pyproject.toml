@@ -25,7 +25,7 @@ zip-safe = false
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["CosmoTech_Acceleration_Library.*"]
+include = ["CosmoTech_Acceleration_Library"]
 
 [tool.setuptools.dynamic]
 version.attr = "CosmoTech_Acceleration_Library.__version__"
