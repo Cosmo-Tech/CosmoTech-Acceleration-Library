@@ -9,7 +9,7 @@ description = "Acceleration libraries for CosmoTech cloud based solution develop
 urls.Homepage = "https://www.cosmotech.com"
 urls.Source = "https://github.com/Cosmo-Tech/CosmoTech-Acceleration-Library"
 urls.Documentation = "https://cosmo-tech.github.io/CosmoTech-Acceleration-Library"
-dynamic = ["version", "dependencies", "optional-dependencies"]
+dynamic = ["version", "dependencies", "optional-dependencies", "readme"]
 
 
 [build-system]
@@ -28,3 +28,4 @@ packages = ["CosmoTech_Acceleration_Library"]
 version.attr = "CosmoTech_Acceleration_Library.__version__"
 dependencies.file = "requirements.txt"
 optional-dependencies.doc.file = "requirements.doc.txt"
+readme.file = "README.md"
