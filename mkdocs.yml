@@ -27,6 +27,9 @@ nav:
 markdown_extensions:
     - attr_list
     - tables
+    - toc:
+        title: "In this page"
+        permalink: true
     - pymdownx.snippets
 
 plugins:
