@@ -274,29 +274,40 @@ class ScenarioDownloader:
                 dataset_id = parameter['value']
                 dataset_ids.append(dataset_id)
 
-        def process(_dataset_id, _return_dict):
-            _c = self.download_dataset(_dataset_id)
-            if _dataset_id in self.dataset_file_temp_path:
-                _return_dict[_dataset_id] = (_c, self.dataset_file_temp_path[_dataset_id], _dataset_id)
-            else:
-                _return_dict[_dataset_id] = _c
+        def download_dataset_process(_dataset_id, _return_dict, _error_dict):
+            try:
+                _c = self.download_dataset(_dataset_id)
+                if _dataset_id in self.dataset_file_temp_path:
+                    _return_dict[_dataset_id] = (_c, self.dataset_file_temp_path[_dataset_id], _dataset_id)
+                else:
+                    _return_dict[_dataset_id] = _c
+            except Exception as e:
+                _error_dict[_dataset_id] = f'{type(e).__name__}: {str(e)}'
+                raise e
 
         if self.parallel:
             manager = multiprocessing.Manager()
             return_dict = manager.dict()
+            error_dict = manager.dict()
             processes = [
-                multiprocessing.Process(target=process, args=(dataset_id, return_dict))
+                (dataset_id, multiprocessing.Process(target=download_dataset_process, args=(dataset_id, return_dict, error_dict)))
                 for dataset_id in dataset_ids
             ]
-            [p.start() for p in processes]
-            [p.join() for p in processes]
-            for p in processes:
+            [p.start() for _, p in processes]
+            [p.join() for _, p in processes]
+            for dataset_id, p in processes:
                 if p.exitcode != 0:
-                    raise ChildProcessError("One of the datasets was not downloaded.")
+                    raise ChildProcessError(
+                        f"Failed to download dataset '{dataset_id}': {error_dict.get(dataset_id, '')}")
         else:
             return_dict = {}
+            error_dict = {}
             for dataset_id in dataset_ids:
-                process(dataset_id, return_dict)
+                try:
+                    download_dataset_process(dataset_id, return_dict, error_dict)
+                except Exception as e:
+                    raise ChildProcessError(
+                        f"Failed to download dataset '{dataset_id}': {error_dict.get(dataset_id, '')}")
         content = dict()
         for k, v in return_dict.items():
             if isinstance(v, tuple):
