@@ -28,9 +28,3 @@ The library can be used by Data Scientists, Modelers, Developers, ...
 * `ModelWriter(host: str, port: int, name: str, version: int, graph_rotation:int = 1)` : will allow you to write data into a model instance
 * `ModelUtil` : a bunch of utilities to manipulate and facilitate interaction with model instance (result_set_to_json, print_query_result, ... )
 * `ModelMetadata`: will allow you to management graph metadata
-
-## How-to
-
-`python setup.py install --user`
-
-
