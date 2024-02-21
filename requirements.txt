@@ -10,7 +10,7 @@ redis==4.4.4
 redisgraph_bulk_loader==0.10.2
 
 # Cosmotech specific requirements
-cosmotech-api~=2.4.7
+cosmotech-api~=3.0
 
 # Other requirements
 openpyxl==3.1.2
