@@ -16,6 +16,7 @@ from cosmotech_api.api.scenario_api import ScenarioApi
 from cosmotech_api.api.twingraph_api import TwingraphApi
 from cosmotech_api.api.workspace_api import WorkspaceApi
 from cosmotech_api.model.twin_graph_query import TwinGraphQuery
+from cosmotech_api.model.dataset_twin_graph_query import DatasetTwinGraphQuery
 from openpyxl import load_workbook
 
 from CosmoTech_Acceleration_Library.Accelerators.utils.multi_environment import MultiEnvironment
@@ -23,8 +24,57 @@ from CosmoTech_Acceleration_Library.Accelerators.utils.multi_environment import 
 env = MultiEnvironment()
 
 
-class ScenarioDownloader:
+def get_content_from_twin_graph_data(nodes, relationships, restore_names=False):
+    '''
+    When restore_names is True, the "id" value inside the "properties" field in the cypher query response is used
+    instead of the numerical id found in the "id" field. When restore_names is set to False, this function
+    keeps the previous behavior implemented when adding support for twingraph in v2 (default: False)
 
+    Example with a sample of cypher response:
+    [{
+      n: {
+        id: "50"  <-- this id is used if restore_names is False
+        label: "Customer"
+        properties: {
+          Satisfaction: 0
+          SurroundingSatisfaction: 0
+          Thirsty: false
+          id: "Lars_Coret"  <-- this id is used if restore_names is True
+        }
+        type: "NODE"
+      }
+    }]
+    '''
+    content = dict()
+    # build keys
+    for item in relationships:
+        content[item['src']['label']] = list()
+        content[item['dest']['label']] = list()
+        content[item['rel']['label']] = list()
+
+    for item in nodes:
+        label = item['n']['label']
+        props = item['n']['properties']
+        if not restore_names:
+            props.update({'id': item['n']['id']})
+        content.setdefault(label, list())
+        content[label].append(props)
+
+    for item in relationships:
+        src = item['src']
+        dest = item['dest']
+        rel = item['rel']
+        props = item['rel']['properties']
+        content[rel['label']].append({
+            'id': rel['id'],
+            'source':  src['properties']['id'] if restore_names else src['id'],
+            'target': dest['properties']['id'] if restore_names else dest['id'],
+            **props
+        })
+    return content
+
+
+class ScenarioDownloader:
     def __init__(
         self,
         workspace_id: str,
@@ -67,7 +117,8 @@ class ScenarioDownloader:
             parameters = dataset['connector']['parameters_values']
 
             is_adt = 'AZURE_DIGITAL_TWINS_URL' in parameters
-            is_twin_cache = 'TWIN_CACHE_NAME' in parameters
+            is_twingraph = dataset['twingraph_id'] is not None
+            is_legacy_twin_cache = 'TWIN_CACHE_NAME' in parameters  # Legacy twingraph dataset with specific connector
 
             if is_adt:
                 return {
@@ -75,11 +126,17 @@ class ScenarioDownloader:
                     "content": self._download_adt_content(
                         adt_adress=parameters['AZURE_DIGITAL_TWINS_URL']),
                     "name": dataset['name']}
-            elif is_twin_cache:
+            elif is_twingraph:
+                return {
+                    "type": "adt",
+                    "content": self._read_twingraph_content(dataset_id),
+                    "name": dataset["name"]
+                }
+            elif is_legacy_twin_cache:
                 twin_cache_name = parameters['TWIN_CACHE_NAME']
                 return {
                     "type": "adt",
-                    "content": self._read_twingraph_content(twin_cache_name),
+                    "content": self._read_legacy_twingraph_content(twin_cache_name),
                     "name": dataset["name"]
                 }
             else:
@@ -93,12 +150,31 @@ class ScenarioDownloader:
                     "name": dataset['name']
                 }
 
-    def _read_twingraph_content(self, cache_name: str) -> dict:
+    def _read_twingraph_content(self, dataset_id: str) -> dict:
+        with cosmotech_api.ApiClient(self.configuration) as api_client:
+            dataset_api = DatasetApi(api_client)
+            nodes_query = DatasetTwinGraphQuery(query="MATCH(n) RETURN n")
+            edges_query = DatasetTwinGraphQuery(query="MATCH(n)-[r]->(m) RETURN n as src, r as rel, m as dest")
+
+            nodes = dataset_api.twingraph_query(
+                organization_id=self.organization_id,
+                dataset_id=dataset_id,
+                dataset_twin_graph_query=nodes_query
+            )
+            edges = dataset_api.twingraph_query(
+                organization_id=self.organization_id,
+                dataset_id=dataset_id,
+                dataset_twin_graph_query=edges_query
+            )
+            return get_content_from_twin_graph_data(nodes, edges, True)
+
+    def _read_legacy_twingraph_content(self, cache_name: str) -> dict:
         with cosmotech_api.ApiClient(self.configuration) as api_client:
             api_instance = TwingraphApi(api_client)
             _query_nodes = TwinGraphQuery(
                 query="MATCH(n) RETURN n"
             )
+
             nodes = api_instance.query(
                 organization_id=self.organization_id,
                 graph_id=cache_name,
@@ -112,33 +188,7 @@ class ScenarioDownloader:
                 graph_id=cache_name,
                 twin_graph_query=_query_rel
             )
-
-            content = dict()
-            # build keys
-            for item in rel:
-                content[item['src']['label']] = list()
-                content[item['dest']['label']] = list()
-                content[item['rel']['label']] = list()
-
-            for item in nodes:
-                label = item['n']['label']
-                prop = item['n']['properties']
-                prop.update({'id': item['n']['id']})
-                content.setdefault(label, list())
-                content[label].append(prop)
-
-            for item in rel:
-                src = item['src']
-                dest = item['dest']
-                rel = item['rel']
-                props = item['rel']['properties']
-                content[rel['label']].append({
-                    'id': rel['id'],
-                    'source': src['id'],
-                    'target': dest['id'],
-                    **props
-                })
-            return content
+            return get_content_from_twin_graph_data(nodes, rel, False)
 
     def _download_file(self, file_name: str):
         tmp_dataset_dir = tempfile.mkdtemp()
@@ -290,15 +340,20 @@ class ScenarioDownloader:
             return_dict = manager.dict()
             error_dict = manager.dict()
             processes = [
-                (dataset_id, multiprocessing.Process(target=download_dataset_process, args=(dataset_id, return_dict, error_dict)))
+                (dataset_id, multiprocessing.Process(target=download_dataset_process,
+                                                     args=(dataset_id, return_dict, error_dict)))
                 for dataset_id in dataset_ids
             ]
             [p.start() for _, p in processes]
             [p.join() for _, p in processes]
+
             for dataset_id, p in processes:
-                if p.exitcode != 0:
+                # We might hit the following bug: https://bugs.python.org/issue43944
+                # As a workaround, only treat non-null exit code as a real issue if we also have stored an error
+                # message
+                if p.exitcode != 0 and dataset_id in error_dict:
                     raise ChildProcessError(
-                        f"Failed to download dataset '{dataset_id}': {error_dict.get(dataset_id, '')}")
+                        f"Failed to download dataset '{dataset_id}': {error_dict[dataset_id]}")
         else:
             return_dict = {}
             error_dict = {}
