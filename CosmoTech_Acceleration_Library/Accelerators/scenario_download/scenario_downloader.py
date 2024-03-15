@@ -117,7 +117,7 @@ class ScenarioDownloader:
             parameters = dataset['connector']['parameters_values']
 
             is_adt = 'AZURE_DIGITAL_TWINS_URL' in parameters
-            is_twingraph = dataset['twingraph_id'] is not None
+            is_storage = 'AZURE_STORAGE_CONTAINER_BLOB_PREFIX' in parameters
             is_legacy_twin_cache = 'TWIN_CACHE_NAME' in parameters  # Legacy twingraph dataset with specific connector
 
             if is_adt:
@@ -126,12 +126,6 @@ class ScenarioDownloader:
                     "content": self._download_adt_content(
                         adt_adress=parameters['AZURE_DIGITAL_TWINS_URL']),
                     "name": dataset['name']}
-            elif is_twingraph:
-                return {
-                    "type": "adt",
-                    "content": self._read_twingraph_content(dataset_id),
-                    "name": dataset["name"]
-                }
             elif is_legacy_twin_cache:
                 twin_cache_name = parameters['TWIN_CACHE_NAME']
                 return {
@@ -139,7 +133,7 @@ class ScenarioDownloader:
                     "content": self._read_legacy_twingraph_content(twin_cache_name),
                     "name": dataset["name"]
                 }
-            else:
+            elif is_storage:
                 _file_name = parameters['AZURE_STORAGE_CONTAINER_BLOB_PREFIX'].replace(
                     '%WORKSPACE_FILE%/', '')
                 _content = self._download_file(_file_name)
@@ -148,6 +142,12 @@ class ScenarioDownloader:
                     "type": _file_name.split('.')[-1],
                     "content": _content,
                     "name": dataset['name']
+                }
+            else:
+                return {
+                    "type": "adt",
+                    "content": self._read_twingraph_content(dataset_id),
+                    "name": dataset["name"]
                 }
 
     def _read_twingraph_content(self, dataset_id: str) -> dict:
