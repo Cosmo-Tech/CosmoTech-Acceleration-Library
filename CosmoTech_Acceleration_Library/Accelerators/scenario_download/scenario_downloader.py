@@ -118,7 +118,7 @@ class ScenarioDownloader:
 
             is_adt = 'AZURE_DIGITAL_TWINS_URL' in parameters
             is_storage = 'AZURE_STORAGE_CONTAINER_BLOB_PREFIX' in parameters
-            is_legacy_twin_cache = 'TWIN_CACHE_NAME' in parameters  # Legacy twingraph dataset with specific connector
+            is_legacy_twin_cache = 'TWIN_CACHE_NAME' in parameters and dataset['twingraph_id'] is None  # Legacy twingraph dataset with specific connector
 
             if is_adt:
                 return {
@@ -129,7 +129,7 @@ class ScenarioDownloader:
             elif is_legacy_twin_cache:
                 twin_cache_name = parameters['TWIN_CACHE_NAME']
                 return {
-                    "type": "adt",
+                    "type": "twincache",
                     "content": self._read_legacy_twingraph_content(twin_cache_name),
                     "name": dataset["name"]
                 }
@@ -145,7 +145,7 @@ class ScenarioDownloader:
                 }
             else:
                 return {
-                    "type": "adt",
+                    "type": "twincache",
                     "content": self._read_twingraph_content(dataset_id),
                     "name": dataset["name"]
                 }
