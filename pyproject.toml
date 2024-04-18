@@ -35,3 +35,4 @@ include = ["CosmoTech_Acceleration_Library*"]
 version.attr = "CosmoTech_Acceleration_Library.__version__"
 dependencies.file = "requirements.txt"
 optional-dependencies.doc.file = "requirements.doc.txt"
+optional-dependencies.test.file = "requirements.test.txt"
