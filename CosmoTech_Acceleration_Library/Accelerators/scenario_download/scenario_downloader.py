@@ -376,7 +376,7 @@ class ScenarioDownloader:
         type = dataset_info['type']
         content = dataset_info['content']
         name = dataset_info['name']
-        if type == "adt":
+        if type in ["adt", "twincache"]:
             return self.adt_dataset(content, name, type)
         return self.dataset_file_temp_path[dataset_id]
 
