@@ -22,7 +22,6 @@ def __get_configuration():
 
     configuration = cosmotech_api.Configuration(
         host=api_url,
-        discard_unknown_keys=True,
         access_token=token.token
     )
     return configuration
