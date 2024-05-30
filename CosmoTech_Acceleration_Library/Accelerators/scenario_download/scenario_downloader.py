@@ -15,8 +15,8 @@ from cosmotech_api.api.dataset_api import DatasetApi
 from cosmotech_api.api.scenario_api import ScenarioApi
 from cosmotech_api.api.twingraph_api import TwingraphApi
 from cosmotech_api.api.workspace_api import WorkspaceApi
-from cosmotech_api.model.twin_graph_query import TwinGraphQuery
 from cosmotech_api.model.dataset_twin_graph_query import DatasetTwinGraphQuery
+from cosmotech_api.model.twin_graph_query import TwinGraphQuery
 from openpyxl import load_workbook
 
 from CosmoTech_Acceleration_Library.Accelerators.utils.multi_environment import MultiEnvironment
@@ -67,7 +67,7 @@ def get_content_from_twin_graph_data(nodes, relationships, restore_names=False):
         props = item['rel']['properties']
         content[rel['label']].append({
             'id': rel['id'],
-            'source':  src['properties']['id'] if restore_names else src['id'],
+            'source': src['properties']['id'] if restore_names else src['id'],
             'target': dest['properties']['id'] if restore_names else dest['id'],
             **props
         })
@@ -89,7 +89,6 @@ class ScenarioDownloader:
             access_token = self.credentials.get_token(scope).token
         self.configuration = cosmotech_api.Configuration(
             host=env.api_host,
-            discard_unknown_keys=True,
             access_token=access_token
         )
 
@@ -114,24 +113,24 @@ class ScenarioDownloader:
             dataset = api_instance.find_dataset_by_id(
                 organization_id=self.organization_id,
                 dataset_id=dataset_id)
-            parameters = dataset['connector']['parameters_values']
+            parameters = dataset.connector.parameters_values
 
             is_adt = 'AZURE_DIGITAL_TWINS_URL' in parameters
             is_storage = 'AZURE_STORAGE_CONTAINER_BLOB_PREFIX' in parameters
-            is_legacy_twin_cache = 'TWIN_CACHE_NAME' in parameters and dataset['twingraph_id'] is None  # Legacy twingraph dataset with specific connector
+            is_legacy_twin_cache = 'TWIN_CACHE_NAME' in parameters and dataset.twingraph_id is None  # Legacy twingraph dataset with specific connector
 
             if is_adt:
                 return {
                     "type": 'adt',
                     "content": self._download_adt_content(
                         adt_adress=parameters['AZURE_DIGITAL_TWINS_URL']),
-                    "name": dataset['name']}
+                    "name": dataset.name}
             elif is_legacy_twin_cache:
                 twin_cache_name = parameters['TWIN_CACHE_NAME']
                 return {
                     "type": "twincache",
                     "content": self._read_legacy_twingraph_content(twin_cache_name),
-                    "name": dataset["name"]
+                    "name": dataset.name
                 }
             elif is_storage:
                 _file_name = parameters['AZURE_STORAGE_CONTAINER_BLOB_PREFIX'].replace(
@@ -141,13 +140,13 @@ class ScenarioDownloader:
                 return {
                     "type": _file_name.split('.')[-1],
                     "content": _content,
-                    "name": dataset['name']
+                    "name": dataset.name
                 }
             else:
                 return {
                     "type": "twincache",
                     "content": self._read_twingraph_content(dataset_id),
-                    "name": dataset["name"]
+                    "name": dataset.name
                 }
 
     def _read_twingraph_content(self, dataset_id: str) -> dict:
@@ -200,8 +199,8 @@ class ScenarioDownloader:
                 self.organization_id, self.workspace_id)
 
             existing_files = list(
-                _f.to_dict().get('file_name') for _f in all_api_files
-                if _f.to_dict().get('file_name', '').startswith(file_name))
+                _f.file_name for _f in all_api_files
+                if _f.file_name.startswith(file_name))
 
             content = dict()
 
@@ -213,7 +212,7 @@ class ScenarioDownloader:
                 target_file = os.path.join(
                     tmp_dataset_dir, _file_name.split('/')[-1])
                 with open(target_file, "wb") as tmp_file:
-                    tmp_file.write(dl_file.read())
+                    tmp_file.write(dl_file)
                 if not self.read_files:
                     continue
                 if ".xls" in _file_name:
@@ -245,9 +244,10 @@ class ScenarioDownloader:
                         # Read every file in the input folder
                         current_filename = os.path.basename(target_file)[:-len(".csv")]
                         content[current_filename] = list()
-                        for row in csv.DictReader(file):
+                        for csv_row in csv.DictReader(file):
+                            csv_row: dict
                             new_row = dict()
-                            for key, value in row.items():
+                            for key, value in csv_row.items():
                                 try:
                                     # Try to convert any json row to dict object
                                     converted_value = json.load(
@@ -308,20 +308,20 @@ class ScenarioDownloader:
     def get_all_parameters(self, scenario_id) -> dict:
         scenario_data = self.get_scenario_data(scenario_id=scenario_id)
         content = dict()
-        for parameter in scenario_data['parameters_values']:
-            content[parameter['parameter_id']] = parameter['value']
+        for parameter in scenario_data.parameters_values:
+            content[parameter.parameter_id] = parameter.value
         return content
 
     def get_all_datasets(self, scenario_id: str) -> dict:
         scenario_data = self.get_scenario_data(scenario_id=scenario_id)
 
-        datasets = scenario_data['dataset_list']
+        datasets = scenario_data.dataset_list
 
         dataset_ids = datasets[:]
 
-        for parameter in scenario_data['parameters_values']:
-            if parameter['var_type'] == '%DATASETID%':
-                dataset_id = parameter['value']
+        for parameter in scenario_data.parameters_values:
+            if parameter.var_type == '%DATASETID%':
+                dataset_id = parameter.value
                 dataset_ids.append(dataset_id)
 
         def download_dataset_process(_dataset_id, _return_dict, _error_dict):
