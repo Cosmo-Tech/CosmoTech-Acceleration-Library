@@ -12,10 +12,19 @@ redisgraph_bulk_loader==0.10.2
 # Cosmotech specific requirements
 cosmotech-api~=3.2
 
+# Commands requirements
+boto3
+
+# CLI requirements
+click==8.1.7
+rich-click==1.7.3
+click-log==0.4.0
+
 # Other requirements
 openpyxl==3.1.2
 pandas==2.1.2
 python-dateutil==2.8.2
+rich==13.7.0
 
 # fix distutils missing from 3.12
 setuptools
