@@ -27,7 +27,7 @@ def get_connection(is_client=True):
               show_envvar=True,
               required=True)
 @click.option("--bucket-name",
-              envvar="CSM_BUCKET_NAME",
+              envvar="CSM_DATA_BUCKET_NAME",
               help="The bucket on S3 to download",
               metavar="BUCKET",
               type=str,
