@@ -15,6 +15,9 @@ cosmotech-api~=3.2
 # Commands requirements
 boto3
 
+# Orchestrator templates requirements
+cosmotech-run-orchestrator~=1.2.3
+
 # CLI requirements
 click==8.1.7
 rich-click==1.7.3
