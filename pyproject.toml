@@ -1,5 +1,5 @@
 [metadata]
-licence_files=["LICENSE"]
+licence_files = ["LICENSE"]
 
 [project]
 name = "CosmoTech_Acceleration_Library"
@@ -9,7 +9,7 @@ urls.Homepage = "https://www.cosmotech.com"
 urls.Source = "https://github.com/Cosmo-Tech/CosmoTech-Acceleration-Library"
 urls.Documentation = "https://cosmo-tech.github.io/CosmoTech-Acceleration-Library"
 dynamic = ["version", "dependencies", "optional-dependencies"]
-readme = {file = "README.md", content-type = "text/markdown"}
+readme = { file = "README.md", content-type = "text/markdown" }
 
 
 [build-system]
@@ -22,14 +22,18 @@ addopts = "--cov-report term-missing:skip-covered --cov=CosmoTech_Acceleration_L
 [tool.setuptools]
 include-package-data = true
 package-data."*" = [
-  "requirements.txt",
-  "documentation.requirements.txt"
+    "requirements.txt",
+    "requirements.doc.txt",
+    "requirements.test.txt"
 ]
 zip-safe = false
 
+[project.scripts]
+csm-data = "cosmotech.coal.cli.main:main"
+
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["CosmoTech_Acceleration_Library*"]
+include = ["CosmoTech_Acceleration_Library*", "cosmotech.*"]
 
 [tool.setuptools.dynamic]
 version.attr = "CosmoTech_Acceleration_Library.__version__"
