@@ -1,0 +1,53 @@
+{
+  "id": "csm-data rds-load-csv",
+  "command": "csm-data",
+  "arguments": [
+    "rds-load-csv",
+    "--target-folder",
+    "$CSM_DATASET_ABSOLUTE_PATH",
+    "--api-url",
+    "$CSM_API_URL",
+    "--api-key",
+    "$CSM_API_KEY",
+    "--api-key-header",
+    "$CSM_API_KEY_HEADER",
+    "--organization-id",
+    "$CSM_ORGANIZATION_ID",
+    "--workspace-id",
+    "$CSM_WORKSPACE_ID",
+    "--runner-id",
+    "$CSM_RUNNER_ID",
+    "--run-id",
+    "$CSM_RUN_ID"
+  ],
+  "description": "Use csm-data to query the results api and store it in a csv file, you need to add your arguments for filename and query while using this template",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_DATASET_ABSOLUTE_PATH": {
+      "description": "Target folder in which to write the resulting CSV file"
+    },
+    "CSM_API_URL": {
+      "description": "The URL to a Cosmo Tech API instance"
+    },
+    "CSM_API_KEY": {
+      "description": "An API key defined during the setup of the API instance granting access to the Run/data/send endpoint"
+    },
+    "CSM_API_KEY_HEADER": {
+      "description": "The header key required to use the API key previously defined",
+      "defaultValue": "X-CSM-API-KEY",
+      "optional": true
+    },
+    "CSM_ORGANIZATION_ID": {
+      "description": "An organization id for the Cosmo Tech API"
+    },
+    "CSM_WORKSPACE_ID": {
+      "description": "A workspace id for the Cosmo Tech API"
+    },
+    "CSM_RUNNER_ID": {
+      "description": "A runner id for the Cosmo Tech API"
+    },
+    "CSM_RUN_ID": {
+      "description": "A run id for the Cosmo Tech API"
+    }
+  }
+}
