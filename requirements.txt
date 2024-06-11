@@ -1,7 +1,7 @@
 # Azure connection requirements
 azure-functions==1.17.0
 azure-digitaltwins-core==1.2.0
-azure-identity==1.15.0
+azure-identity==1.16.1
 azure-kusto-data==4.2.0
 azure-kusto-ingest==4.2.0
 
