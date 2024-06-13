@@ -5,6 +5,7 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
+import json
 import pathlib
 from csv import DictReader
 
@@ -108,8 +109,19 @@ This implementation make use of an API Key
                 LOGGER.info(f"Sending data to table [cyan bold]CD_{table_name}[/]")
                 LOGGER.debug(f"  - Column list: {dr.fieldnames}")
                 data = []
+
                 for row in dr:
-                    data.append(row)
+                    n_row = dict()
+                    for k, v in row.items():
+                        if isinstance(v, str):
+                            try:
+                                n_row[k] = json.loads(v)
+                            except json.decoder.JSONDecodeError:
+                                n_row[k] = v
+                        else:
+                            n_row[k] = v
+                    data.append(n_row)
+
                 LOGGER.info(f"  - Sending {len(data)} rows")
                 api_run.send_run_data(organization_id,
                                       workspace_id,
