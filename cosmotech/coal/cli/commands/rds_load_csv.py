@@ -33,14 +33,14 @@ from cosmotech.coal.utils.logger import LOGGER
               required=True)
 @click.option("--api-key",
               envvar="CSM_API_KEY",
-              help="An API key configured in your Cosmo Tech tenant allowed to access runs/data/send",
+              help="An API key configured in your Cosmo Tech tenant allowed to access runs/data/query",
               metavar="API_KEY",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--api-key-header",
               envvar="CSM_API_KEY_HEADER",
-              help="An API key configured in your Cosmo Tech tenant allowed to access runs/data/send",
+              help="The header configured in your api to send an API key",
               metavar="HEADER",
               type=str,
               show_envvar=True,
@@ -51,31 +51,36 @@ from cosmotech.coal.utils.logger import LOGGER
               help="An organization id for the Cosmo Tech API",
               metavar="o-XXXXXXXX",
               type=str,
-              show_envvar=True)
+              show_envvar=True,
+              required=True)
 @click.option("--workspace-id",
               envvar="CSM_WORKSPACE_ID",
               help="A workspace id for the Cosmo Tech API",
               metavar="w-XXXXXXXX",
               type=str,
-              show_envvar=True)
+              show_envvar=True,
+              required=True)
 @click.option("--runner-id",
               envvar="CSM_RUNNER_ID",
               help="A runner id for the Cosmo Tech API",
               metavar="r-XXXXXXXX",
               type=str,
-              show_envvar=True)
+              show_envvar=True,
+              required=True)
 @click.option("--run-id",
               envvar="CSM_RUN_ID",
               help="A run id for the Cosmo Tech API",
               metavar="run-XXXXXX",
               type=str,
-              show_envvar=True)
+              show_envvar=True,
+              required=True)
 @click.option("--file-name",
               help="A file name to write the query results",
               metavar="NAME",
               type=str,
               default="results",
-              show_default=True)
+              show_default=True,
+              required=True)
 @click.option("--query",
               help="A run id for the Cosmo Tech API",
               metavar="run-XXXXXX",
@@ -94,7 +99,7 @@ def rds_load_csv_command(
     file_name,
     query
 ):
-    """Send all csv files from a folder to the results service of the Cosmo Tech API
+    """Download a CSV file from the Cosmo Tech Run API using a given SQL query
 
 Requires a valid connection to the API to send the data
 
