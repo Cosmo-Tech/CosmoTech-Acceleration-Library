@@ -11,6 +11,8 @@ from CosmoTech_Acceleration_Library import __version__
 from cosmotech.coal.cli.commands.rds_load_csv import rds_load_csv_command
 from cosmotech.coal.cli.commands.rds_send_csv import rds_send_csv_command
 from cosmotech.coal.cli.commands.s3_bucket_loader import s3_bucket_load_command
+from cosmotech.coal.cli.commands.wsf_send_file import wsf_send_file_command
+from cosmotech.coal.cli.commands.wsf_load_file import wsf_load_file_command
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.utils.logger import LOGGER
 
@@ -43,6 +45,8 @@ Command toolkit provinding quick implementation of data connections to use insid
 main.add_command(s3_bucket_load_command, "s3-bucket-load")
 main.add_command(rds_send_csv_command, "rds-send-csv")
 main.add_command(rds_load_csv_command, "rds-load-csv")
+main.add_command(wsf_send_file_command, "wsf-send-file")
+main.add_command(wsf_load_file_command, "wsf-load-file")
 
 if __name__ == "__main__":
     main()
