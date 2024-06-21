@@ -78,7 +78,6 @@ Requires a valid connection to the API to send the data
 
 This implementation make use of an API Key
     """
-
     configuration = cosmotech_api.Configuration(
         host=api_url,
     )

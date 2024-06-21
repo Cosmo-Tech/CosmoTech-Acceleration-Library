@@ -83,7 +83,7 @@ from cosmotech.coal.utils.logger import LOGGER
               required=True)
 @click.option("--query",
               help="A run id for the Cosmo Tech API",
-              metavar="run-XXXXXX",
+              metavar="SQL_QUERY",
               type=str,
               default="SELECT table_name FROM information_schema.tables WHERE table_schema='public'",
               show_default=True)

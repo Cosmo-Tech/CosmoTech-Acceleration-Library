@@ -4,15 +4,15 @@
 # Any use, reproduction, translation, broadcasting, transmission, distribution,
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
-
 import click_log
 
 from CosmoTech_Acceleration_Library import __version__
 from cosmotech.coal.cli.commands.rds_load_csv import rds_load_csv_command
 from cosmotech.coal.cli.commands.rds_send_csv import rds_send_csv_command
 from cosmotech.coal.cli.commands.s3_bucket_loader import s3_bucket_load_command
-from cosmotech.coal.cli.commands.wsf_send_file import wsf_send_file_command
+from cosmotech.coal.cli.commands.tdl_send_file import tdl_send_file_command
 from cosmotech.coal.cli.commands.wsf_load_file import wsf_load_file_command
+from cosmotech.coal.cli.commands.wsf_send_file import wsf_send_file_command
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.utils.logger import LOGGER
 
@@ -47,6 +47,7 @@ main.add_command(rds_send_csv_command, "rds-send-csv")
 main.add_command(rds_load_csv_command, "rds-load-csv")
 main.add_command(wsf_send_file_command, "wsf-send-file")
 main.add_command(wsf_load_file_command, "wsf-load-file")
+main.add_command(tdl_send_file_command, "tdl-send-files")
 
 if __name__ == "__main__":
     main()
