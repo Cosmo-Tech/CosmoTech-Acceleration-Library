@@ -105,6 +105,9 @@ def upload_workspace_file(
     if not target_file.exists():
         LOGGER.error(f'"{file_path}" does not exists')
         raise ValueError(f'"{file_path}" does not exists')
+    if not target_file.is_file():
+        LOGGER.error(f'"{file_path}" is not a single file')
+        raise ValueError(f'"{file_path}" is not a single file')
 
     api_ws = cosmotech_api.api.workspace_api.WorkspaceApi(api_client)
     destination = workspace_path + target_file.name if workspace_path.endswith("/") else workspace_path
