@@ -9,11 +9,11 @@ import json
 import pathlib
 from csv import DictReader
 
-import cosmotech_api
 from cosmotech_api import SendRunDataRequest
 from cosmotech_api.api.run_api import RunApi
 
 from cosmotech.coal.cli.utils.click import click
+from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
 
 
@@ -25,28 +25,6 @@ from cosmotech.coal.utils.logger import LOGGER
               type=str,
               show_envvar=True,
               required=True)
-@click.option("--api-url",
-              envvar="CSM_API_URL",
-              help="An URL to a Cosmo Tech API tenant",
-              metavar="URL",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--api-key",
-              envvar="CSM_API_KEY",
-              help="An API key configured in your Cosmo Tech tenant allowed to access runs/data/send",
-              metavar="API_KEY",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--api-key-header",
-              envvar="CSM_API_KEY_HEADER",
-              help="The header configured in your api to send an API key",
-              metavar="HEADER",
-              type=str,
-              show_envvar=True,
-              show_default=True,
-              default="X-CSM-API-KEY")
 @click.option("--organization-id",
               envvar="CSM_ORGANIZATION_ID",
               help="An organization id for the Cosmo Tech API",
@@ -77,9 +55,6 @@ from cosmotech.coal.utils.logger import LOGGER
               required=True)
 def rds_send_csv_command(
     source_folder,
-    api_url,
-    api_key,
-    api_key_header,
     organization_id,
     workspace_id,
     runner_id,
@@ -88,8 +63,6 @@ def rds_send_csv_command(
     """Send all csv files from a folder to the results service of the Cosmo Tech API
 
 Requires a valid connection to the API to send the data
-
-This implementation make use of an API Key
     """
 
     source_dir = pathlib.Path(source_folder)
@@ -98,12 +71,7 @@ This implementation make use of an API Key
         LOGGER.error(f"{source_dir} does not exists")
         return 1
 
-    configuration = cosmotech_api.Configuration(
-        host=api_url,
-    )
-    with cosmotech_api.ApiClient(configuration,
-                                 api_key_header,
-                                 api_key) as api_client:
+    with get_api_client()[0] as api_client:
 
         api_run = RunApi(api_client)
         for csv_path in source_dir.glob("*.csv"):

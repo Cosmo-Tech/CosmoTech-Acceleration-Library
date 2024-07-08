@@ -8,11 +8,11 @@
 import pathlib
 from csv import DictWriter
 
-import cosmotech_api
 from cosmotech_api import RunDataQuery
 from cosmotech_api.api.run_api import RunApi
 
 from cosmotech.coal.cli.utils.click import click
+from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
 
 
@@ -24,28 +24,6 @@ from cosmotech.coal.utils.logger import LOGGER
               type=str,
               show_envvar=True,
               required=True)
-@click.option("--api-url",
-              envvar="CSM_API_URL",
-              help="An URL to a Cosmo Tech API tenant",
-              metavar="URL",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--api-key",
-              envvar="CSM_API_KEY",
-              help="An API key configured in your Cosmo Tech tenant allowed to access runs/data/query",
-              metavar="API_KEY",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--api-key-header",
-              envvar="CSM_API_KEY_HEADER",
-              help="The header configured in your api to send an API key",
-              metavar="HEADER",
-              type=str,
-              show_envvar=True,
-              show_default=True,
-              default="X-CSM-API-KEY")
 @click.option("--organization-id",
               envvar="CSM_ORGANIZATION_ID",
               help="An organization id for the Cosmo Tech API",
@@ -89,9 +67,6 @@ from cosmotech.coal.utils.logger import LOGGER
               show_default=True)
 def rds_load_csv_command(
     target_folder,
-    api_url,
-    api_key,
-    api_key_header,
     organization_id,
     workspace_id,
     runner_id,
@@ -102,20 +77,13 @@ def rds_load_csv_command(
     """Download a CSV file from the Cosmo Tech Run API using a given SQL query
 
 Requires a valid connection to the API to send the data
-
-This implementation make use of an API Key
     """
 
     target_dir = pathlib.Path(target_folder)
 
     target_dir.mkdir(parents=True, exist_ok=True)
 
-    configuration = cosmotech_api.Configuration(
-        host=api_url,
-    )
-    with cosmotech_api.ApiClient(configuration,
-                                 api_key_header,
-                                 api_key) as api_client:
+    with get_api_client()[0] as api_client:
         api_run = RunApi(api_client)
         query = api_run.query_run_data(organization_id,
                                        workspace_id,
@@ -125,8 +93,10 @@ This implementation make use of an API Key
         if query.result:
             LOGGER.info(f"Query returned {len(query.result)} rows")
             with open(target_dir / (file_name + ".csv"), "w") as _f:
-                headers = query.result[0].keys()
-                dw = DictWriter(_f, fieldnames=headers)
+                headers = set()
+                for r in query.result:
+                    headers = headers | set(r.keys())
+                dw = DictWriter(_f, fieldnames=sorted(headers))
                 dw.writeheader()
                 dw.writerows(query.result)
             LOGGER.info(f"Results saved as {target_dir / file_name}.csv")

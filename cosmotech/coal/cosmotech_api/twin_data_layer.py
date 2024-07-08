@@ -57,6 +57,9 @@ class CSVSourceFile:
         self.content_fields = {_f: _f for _f in self.fields if
                                _f not in [self.id_column, self.source_column, self.target_column]}
         self.content_fields[ID_COLUMN] = self.id_column
+        if is_relation:
+            self.content_fields[SOURCE_COLUMN] = self.source_column
+            self.content_fields[TARGET_COLUMN] = self.target_column
 
     def reload(self, inplace: bool = False) -> 'CSVSourceFile':
         if inplace:
@@ -70,14 +73,26 @@ class CSVSourceFile:
         :return: the Cypher query for CREATE
         """
 
+        field_names = sorted(self.content_fields.keys(), key=len, reverse=True)
+
         if self.is_node:
             query = ("CREATE (:" + self.object_type + " {" + ", ".join(
-                f"{property_name}: ${field}" for property_name, field in self.content_fields.items()) + "})")
+                f"{property_name}: ${self.content_fields[property_name]}" for property_name in field_names) + "})")
+            # query = ("UNWIND $params AS params " +
+            #          f"MERGE (n:{self.object_type}) " +
+            #          "SET n += params")
         else:
-            query = ("MERGE (source {" + ID_COLUMN + ":$" + self.source_column + "})\n" +
-                     "MERGE (target {" + ID_COLUMN + ":$" + self.target_column + "})\n" +
+            query = ("MATCH " +
+                     "(source {" + ID_COLUMN + ":$" + self.source_column + "}),\n" +
+                     "(target {" + ID_COLUMN + ":$" + self.target_column + "})\n" +
                      "CREATE (source)-[rel:" + self.object_type +
                      " {" + ", ".join(
-                        f"{property_name}: ${field}" for property_name, field in self.content_fields.items()) + "}" +
+                        f"{property_name}: ${self.content_fields[property_name]}" for property_name in
+                        field_names) + "}" +
                      "]->(target)\n")
+            # query = ("UNWIND $params AS params " +
+            #          "MATCH (source {" + ID_COLUMN + ":params." + self.source_column + "})\n" +
+            #          "MATCH (target {" + ID_COLUMN + ":params." + self.target_column + "})\n" +
+            #          f"CREATE (from) - [rel:{self.object_type}]->(to)" +
+            #          "SET rel += params")
         return query
