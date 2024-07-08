@@ -11,12 +11,12 @@ from typing import Union
 import cosmotech_api
 from azure.digitaltwins.core import DigitalTwinsClient
 from azure.identity import DefaultAzureCredential
-from cosmotech_api.api.dataset_api import DatasetApi
-from cosmotech_api.api.scenario_api import ScenarioApi
-from cosmotech_api.api.twingraph_api import TwingraphApi
-from cosmotech_api.api.workspace_api import WorkspaceApi
-from cosmotech_api.model.dataset_twin_graph_query import DatasetTwinGraphQuery
-from cosmotech_api.model.twin_graph_query import TwinGraphQuery
+from cosmotech_api import DatasetApi
+from cosmotech_api import ScenarioApi
+from cosmotech_api import TwingraphApi
+from cosmotech_api import WorkspaceApi
+from cosmotech_api import DatasetTwinGraphQuery
+from cosmotech_api import TwinGraphQuery
 from openpyxl import load_workbook
 
 from CosmoTech_Acceleration_Library.Accelerators.utils.multi_environment import MultiEnvironment

@@ -14,6 +14,7 @@ from io import StringIO
 import requests
 from cosmotech_api import DatasetApi
 from cosmotech_api import DatasetTwinGraphQuery
+from cosmotech_api import RunnerApi
 
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cosmotech_api.connection import get_api_client
@@ -36,10 +37,17 @@ from cosmotech.coal.utils.logger import LOGGER
               type=str,
               show_envvar=True,
               required=True)
-@click.option("--dataset-id",
-              envvar="CSM_DATASET_ID",
-              help="A dataset id for the Cosmo Tech API",
-              metavar="d-XXXXXXXX",
+@click.option("--workspace-id",
+              envvar="CSM_WORKSPACE_ID",
+              help="A workspace id for the Cosmo Tech API",
+              metavar="w-XXXXXXXX",
+              type=str,
+              show_envvar=True,
+              required=True)
+@click.option("--runner-id",
+              envvar="CSM_RUNNER_ID",
+              help="A runner id for the Cosmo Tech API",
+              metavar="r-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
@@ -62,7 +70,8 @@ from cosmotech.coal.utils.logger import LOGGER
 def tdl_send_file_command(
     api_url,
     organization_id,
-    dataset_id,
+    workspace_id,
+    runner_id,
     directory_path,
     clear: bool
 ):
@@ -80,6 +89,19 @@ Requires a valid connection to the API to send the data
 
     api_client, connection_type = get_api_client()
     api_ds = DatasetApi(api_client)
+    api_runner = RunnerApi(api_client)
+
+    runner_info = api_runner.get_runner(organization_id,
+                                        workspace_id,
+                                        runner_id)
+
+    if len(runner_info.dataset_list) != 1:
+        LOGGER.error(f"Runner {runner_id} is not tied to a single dataset")
+        LOGGER.debug(runner_info)
+        raise click.Abort()
+
+    dataset_id = runner_info.dataset_list[0]
+
     dataset_info = api_ds.find_dataset_by_id(organization_id,
                                              dataset_id)
 
@@ -117,6 +139,7 @@ Requires a valid connection to the API to send the data
 
     if clear:
         LOGGER.info("Clearing all dataset content")
+
         clear_query = "MATCH (n) DETACH DELETE n"
         api_ds.twingraph_query(organization_id,
                                dataset_id,
@@ -161,3 +184,9 @@ Requires a valid connection to the API to send the data
                 raise click.Abort()
 
     LOGGER.info("Sent all data found")
+
+    dataset_info.ingestion_status = "SUCCESS"
+
+    api_ds.update_dataset(organization_id,
+                          dataset_id,
+                          dataset_info)

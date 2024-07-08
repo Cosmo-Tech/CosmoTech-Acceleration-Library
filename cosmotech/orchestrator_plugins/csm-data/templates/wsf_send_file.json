@@ -1,24 +1,22 @@
 {
-  "id": "csm-data rds-send-csv",
+  "id": "csm-data wsf-send-file",
   "command": "csm-data",
   "arguments": [
-    "rds-send-csv",
-    "--source-folder",
-    "$CSM_DATASET_ABSOLUTE_PATH",
+    "wsf-send-file",
+    "--file-path",
+    "$CSM_FILE_PATH",
     "--organization-id",
     "$CSM_ORGANIZATION_ID",
     "--workspace-id",
     "$CSM_WORKSPACE_ID",
-    "--runner-id",
-    "$CSM_RUNNER_ID",
-    "--run-id",
-    "$CSM_RUN_ID"
+    "--workspace-path",
+    "$CSM_WORKSPACE_PATH"
   ],
-  "description": "Use csm-data to send the content of all csv of a folder to the Cosmo Tech API as custom results data",
+  "description": "Use csm-data to send a file to a workspace inside the API",
   "useSystemEnvironment": true,
   "environment": {
-    "CSM_DATASET_ABSOLUTE_PATH": {
-      "description": "Target folder in which to find CSV files to send to the Cosmo Tech API"
+    "CSM_FILE_PATH": {
+      "description": "Path to the file to send as a workspace file"
     },
     "CSM_API_URL": {
       "description": "The URL to a Cosmo Tech API instance"
@@ -38,11 +36,8 @@
     "CSM_WORKSPACE_ID": {
       "description": "A workspace id for the Cosmo Tech API"
     },
-    "CSM_RUNNER_ID": {
-      "description": "A runner id for the Cosmo Tech API"
-    },
-    "CSM_RUN_ID": {
-      "description": "A run id for the Cosmo Tech API"
+    "CSM_WORKSPACE_PATH": {
+      "description": "Path inside the workspace to store the file (end with '/' for a folder))"
     }
   }
 }

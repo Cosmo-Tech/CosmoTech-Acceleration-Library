@@ -1,24 +1,22 @@
 {
-  "id": "csm-data rds-load-csv",
+  "id": "csm-data wsf-load-file",
   "command": "csm-data",
   "arguments": [
-    "rds-load-csv",
+    "wsf-load-file",
     "--target-folder",
     "$CSM_DATASET_ABSOLUTE_PATH",
     "--organization-id",
     "$CSM_ORGANIZATION_ID",
     "--workspace-id",
     "$CSM_WORKSPACE_ID",
-    "--runner-id",
-    "$CSM_RUNNER_ID",
-    "--run-id",
-    "$CSM_RUN_ID"
+    "--workspace-path",
+    "$CSM_WORKSPACE_PATH"
   ],
-  "description": "Use csm-data to query the results api and store it in a csv file, you need to add your arguments for filename and query while using this template",
+  "description": "Use csm-data to load files from a workspace inside the API",
   "useSystemEnvironment": true,
   "environment": {
     "CSM_DATASET_ABSOLUTE_PATH": {
-      "description": "Target folder in which to write the resulting CSV file"
+      "description": "Target folder in which to write the file from the Cosmo Tech API"
     },
     "CSM_API_URL": {
       "description": "The URL to a Cosmo Tech API instance"
@@ -38,11 +36,8 @@
     "CSM_WORKSPACE_ID": {
       "description": "A workspace id for the Cosmo Tech API"
     },
-    "CSM_RUNNER_ID": {
-      "description": "A runner id for the Cosmo Tech API"
-    },
-    "CSM_RUN_ID": {
-      "description": "A run id for the Cosmo Tech API"
+    "CSM_WORKSPACE_PATH": {
+      "description": "Path inside the workspace to load (end with '/' for a folder)"
     }
   }
 }
