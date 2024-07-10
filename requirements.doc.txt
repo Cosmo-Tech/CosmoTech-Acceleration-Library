@@ -1,11 +1,13 @@
 # Documentation generation
-mkdocs~=1.5
+mkdocs~=1.5.3
 mkdocs-click~=0.8.1
-mkdocs-gen-files~=0.5
-mkdocs-material~=9.4
-mkdocstrings[python]~=0.23
-mkdocs-literate-nav~=0.6
-pymdown-extensions~=10.3
-requirements-parser~=0.5
+mkdocs-gen-files~=0.5.0
+mkdocstrings[python]~=0.24
+mkdocs-literate-nav~=0.6.1
+pymdown-extensions~=10.7
+requirements-parser~=0.5.0
 setuptools~=69.1
-mike~=2.0
+mike~=2.0.0
+mkdocs-include-dir-to-nav~=1.2.0
+mkdocs-material[imaging]~=9.5.5
+mkdocs-table-reader-plugin~=2.0.3

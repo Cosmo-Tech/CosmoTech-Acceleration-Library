@@ -1,4 +1,8 @@
 site_name: Cosmotech Acceleration Library Docs
+repo_url: https://github.com/Cosmo-Tech/CosmoTech-Acceleration-Library
+repo_name: Cosmo-Tech/CosmoTech-Acceleration-Library
+site_description: Acceleration library for CosmoTech cloud based solution development 
+site_url: https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/
 
 theme:
   name: material
@@ -6,13 +10,41 @@ theme:
   font:
     code: Fira Mono
   palette:
-    scheme: slate
-    primary: orange
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
   features:
+    - content.code.copy
+    - content.code.annotate
+    - content.tooltips
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.expand
     - navigation.top
+    - navigation.indexes
+    - navigation.instant
+    - navigation.footer
+    - navigation.sections
   custom_dir: docs/overrides
+  icon:
+    repo: fontawesome/brands/github
+
+extra_css:
+  - stylesheets/extra.css
+  - stylesheets/templates.css
+
+extra_javascript:
+  - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
+  - javascript/tablesort.js
 
 extra:
   version:
@@ -21,28 +53,52 @@ extra:
 nav:
   - Home: 'index.md'
   - Getting started:
-    - Dependencies: 'dependencies.md'
+      - Dependencies: 'dependencies.md'
   - References: references/
   - csm-data: cli/
 
 markdown_extensions:
-    - attr_list
-    - mkdocs-click
-    - tables
-    - toc:
-        title: "In this page"
-        permalink: true
-    - pymdownx.snippets
+  - admonition
+  - attr_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      title: "In this page"
+      permalink: true
+  - def_list
+  - mkdocs-click
+  - pymdownx.details
+  - pymdownx.snippets:
+      url_download: true
+  - pymdownx.betterem
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+
 
 plugins:
-  - search
+  - search:
+      lang:
+        - en
   - mkdocstrings:
-     default_handler: python
-     handlers:
-       python:
-         options:
-           docstring_style: sphinx
-           line_lenth: 120
+      default_handler: python
+      handlers:
+        python:
+          options:
+            docstring_style: sphinx
+            line_lenth: 120
   - gen-files:
       scripts:
         - docs/scripts/generate_references.py
@@ -50,3 +106,6 @@ plugins:
         - docs/scripts/generate_index.py
   - literate-nav
   - mike
+  - social
+  - table-reader
+  - include_dir_to_nav
