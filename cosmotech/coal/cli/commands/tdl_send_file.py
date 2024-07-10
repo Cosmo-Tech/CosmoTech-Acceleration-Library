@@ -21,6 +21,7 @@ from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.twin_data_layer import CSVSourceFile
 from cosmotech.coal.utils.logger import LOGGER
 
+BATCH_SIZE_LIMIT = 10000
 
 @click.command()
 @click.option("--api-url",
@@ -160,24 +161,45 @@ Requires a valid connection to the API to send the data
             #                        _q)
 
             content = StringIO()
+            size = 0
+            batch = 1
+            errors = []
+            query_craft = (api_url +
+                           f"/organizations/{organization_id}"
+                           f"/datasets/{dataset_id}"
+                           f"/batch?query={query}")
+            LOGGER.info(f"Sending content of '{file_path}")
+
             with open(file_path, "r") as _f:
                 dr = DictReader(_f)
                 dw = DictWriter(content, fieldnames=sorted(dr.fieldnames, key=len, reverse=True))
                 dw.writeheader()
                 for row in dr:
                     dw.writerow(row)
+                    size += 1
+                    if size > BATCH_SIZE_LIMIT:
+                        LOGGER.info(f"Found row count of {batch * BATCH_SIZE_LIMIT}, sending now")
+                        batch += 1
+                        content.seek(0)
+                        post = requests.post(query_craft,
+                                             data=content.read(),
+                                             headers=header)
+                        post.raise_for_status()
+                        errors.extend(json.loads(post.content)["errors"])
+                        content = StringIO()
+                        dw = DictWriter(content, fieldnames=sorted(dr.fieldnames, key=len, reverse=True))
+                        dw.writeheader()
+                        size = 0
+
+            if size > 0:
                 content.seek(0)
-            query_craft = (api_url +
-                           f"/organizations/{organization_id}"
-                           f"/datasets/{dataset_id}"
-                           f"/batch?query={query}")
-            LOGGER.info(f"Sending content of '{file_path}")
-            post = requests.post(query_craft,
-                                 data=content.read(),
-                                 headers=header)
-            post.raise_for_status()
-            results = json.loads(post.content)
-            if len(errors := results["errors"]):
+                post = requests.post(query_craft,
+                                     data=content.read(),
+                                     headers=header)
+                post.raise_for_status()
+                errors.extend(json.loads(post.content)["errors"])
+
+            if len(errors):
                 LOGGER.error(f"Found {len(errors)} errors while importing: ")
                 for _err in errors:
                     LOGGER.error(f"{_err}")
