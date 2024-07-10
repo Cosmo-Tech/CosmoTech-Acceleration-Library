@@ -2,6 +2,7 @@
   "id": "csm-data wsf-load-file",
   "command": "csm-data",
   "arguments": [
+    "api",
     "wsf-load-file",
     "--target-folder",
     "$CSM_DATASET_ABSOLUTE_PATH",

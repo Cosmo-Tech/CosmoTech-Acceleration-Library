@@ -2,6 +2,7 @@
   "id": "csm-data rds-load-csv",
   "command": "csm-data",
   "arguments": [
+    "api",
     "rds-load-csv",
     "--target-folder",
     "$CSM_DATASET_ABSOLUTE_PATH",

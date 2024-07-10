@@ -2,6 +2,7 @@
   "id": "csm-data tdl-load-files",
   "command": "csm-data",
   "arguments": [
+    "api",
     "tdl-load-files",
     "--dir",
     "$CSM_DATASET_ABSOLUTE_PATH",
