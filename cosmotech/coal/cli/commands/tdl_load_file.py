@@ -92,28 +92,43 @@ Requires a valid connection to the API to send the data
         raise click.Abort()
 
     directory_path.mkdir(parents=True, exist_ok=True)
+    item_queries = dict()
 
-    nodes_query: list[dict] = api_ds.twingraph_query(os.environ.get("CSM_ORGANIZATION_ID"),
-                                                     os.environ.get("CSM_DATASET_ID"),
-                                                     DatasetTwinGraphQuery(query="MATCH (n) RETURN n"))
+    get_node_properties_query = "MATCH (n) RETURN distinct labels(n)[0] as label,  keys(n) as keys"
+    node_properties_results: list[dict] = api_ds.twingraph_query(os.environ.get("CSM_ORGANIZATION_ID"),
+                                                                 os.environ.get("CSM_DATASET_ID"),
+                                                                 DatasetTwinGraphQuery(query=get_node_properties_query))
+    for _r in node_properties_results:
+        label = _r["label"]
+        keys = _r["keys"]
+        node_query = f"MATCH (n:{label}) RETURN {', '.join(map(lambda k: f'n.{k} as {k}', keys))}"
+        item_queries[label] = node_query
 
-    relationships_query: list[dict] = api_ds.twingraph_query(os.environ.get("CSM_ORGANIZATION_ID"),
-                                                             os.environ.get("CSM_DATASET_ID"),
-                                                             DatasetTwinGraphQuery(query="MATCH ()-[n]->() return n"))
+    get_relationship_properties_query = "MATCH ()-[r]->() RETURN distinct type(r) as label, keys(r) as keys"
+    relationship_properties_results: list[dict] = api_ds.twingraph_query(os.environ.get("CSM_ORGANIZATION_ID"),
+                                                                         os.environ.get("CSM_DATASET_ID"),
+                                                                         DatasetTwinGraphQuery(
+                                                                             query=get_relationship_properties_query))
+
+    for _r in relationship_properties_results:
+        label = _r["label"]
+        keys = _r["keys"]
+        node_query = f"MATCH ()-[n:{label}]->() RETURN {', '.join(map(lambda k: f'n.{k} as {k}', keys))}"
+        item_queries[label] = node_query
 
     files_content = dict()
     files_headers = dict()
 
-    for element_query in [nodes_query, relationships_query]:
+    for element_type, query in item_queries.items():
+        element_query: list[dict] = api_ds.twingraph_query(os.environ.get("CSM_ORGANIZATION_ID"),
+                                                           os.environ.get("CSM_DATASET_ID"),
+                                                           DatasetTwinGraphQuery(query=query))
         for element in element_query:
-            data = element.get('n', dict())
-            element_type = data.get('label', "")
-            properties = data.get("properties", dict())
             if element_type not in files_content:
                 files_content[element_type] = list()
                 files_headers[element_type] = set()
-            files_content[element_type].append(properties)
-            files_headers[element_type].update(properties.keys())
+            files_content[element_type].append(element)
+            files_headers[element_type].update(element.keys())
 
     for file_name in files_content.keys():
         file_path = directory_path / (file_name + ".csv")
