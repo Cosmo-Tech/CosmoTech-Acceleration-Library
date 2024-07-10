@@ -10,8 +10,8 @@ from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
 
 
-@click.command()
-def api_connect_command():
+@click.group(invoke_without_command=True)
+def api_connect_group():
     """Cosmo Tech API helper command
 
 This command will inform you of which connection is available to use for the Cosmo Tech API

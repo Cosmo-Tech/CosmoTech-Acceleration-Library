@@ -2,6 +2,7 @@
   "id": "csm-data wsf-send-file",
   "command": "csm-data",
   "arguments": [
+    "api",
     "wsf-send-file",
     "--file-path",
     "$CSM_FILE_PATH",

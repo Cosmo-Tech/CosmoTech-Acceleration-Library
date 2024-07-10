@@ -7,7 +7,7 @@
 import click_log
 
 from CosmoTech_Acceleration_Library import __version__
-from cosmotech.coal.cli.commands.api_connect import api_connect_command
+from cosmotech.coal.cli.commands.api_connect import api_connect_group
 from cosmotech.coal.cli.commands.rds_load_csv import rds_load_csv_command
 from cosmotech.coal.cli.commands.rds_send_csv import rds_send_csv_command
 from cosmotech.coal.cli.commands.s3_bucket_loader import s3_bucket_load_command
@@ -44,14 +44,14 @@ Command toolkit provinding quick implementation of data connections to use insid
     pass
 
 
-main.add_command(api_connect_command, "try-api-connection")
+main.add_command(api_connect_group, "api")
 main.add_command(s3_bucket_load_command, "s3-bucket-load")
-main.add_command(rds_send_csv_command, "rds-send-csv")
-main.add_command(rds_load_csv_command, "rds-load-csv")
-main.add_command(wsf_send_file_command, "wsf-send-file")
-main.add_command(wsf_load_file_command, "wsf-load-file")
-main.add_command(tdl_send_file_command, "tdl-send-files")
-main.add_command(tdl_load_file_command, "tdl-load-files")
+api_connect_group.add_command(rds_send_csv_command, "rds-send-csv")
+api_connect_group.add_command(rds_load_csv_command, "rds-load-csv")
+api_connect_group.add_command(wsf_send_file_command, "wsf-send-file")
+api_connect_group.add_command(wsf_load_file_command, "wsf-load-file")
+api_connect_group.add_command(tdl_send_file_command, "tdl-send-files")
+api_connect_group.add_command(tdl_load_file_command, "tdl-load-files")
 
 if __name__ == "__main__":
     main()
