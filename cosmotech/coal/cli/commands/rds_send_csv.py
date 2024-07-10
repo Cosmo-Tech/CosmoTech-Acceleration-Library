@@ -53,7 +53,7 @@ from cosmotech.coal.utils.logger import LOGGER
               type=str,
               show_envvar=True,
               required=True)
-def rds_send_csv_command(
+def rds_send_csv(
     source_folder,
     organization_id,
     workspace_id,

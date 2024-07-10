@@ -11,7 +11,7 @@ from cosmotech.coal.utils.logger import LOGGER
 
 
 @click.group(invoke_without_command=True)
-def api_connect_group():
+def api():
     """Cosmo Tech API helper command
 
 This command will inform you of which connection is available to use for the Cosmo Tech API

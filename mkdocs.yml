@@ -23,9 +23,11 @@ nav:
   - Getting started:
     - Dependencies: 'dependencies.md'
   - References: references/
+  - csm-data: cli/
 
 markdown_extensions:
     - attr_list
+    - mkdocs-click
     - tables
     - toc:
         title: "In this page"

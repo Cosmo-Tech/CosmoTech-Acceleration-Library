@@ -40,7 +40,7 @@ from cosmotech.coal.cosmotech_api.workspace import list_workspace_files
               envvar="CSM_DATASET_ABSOLUTE_PATH",
               show_envvar=True,
               required=True)
-def wsf_load_file_command(
+def wsf_load_file(
     organization_id,
     workspace_id,
     workspace_path: str,

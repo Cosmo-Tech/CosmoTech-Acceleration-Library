@@ -42,7 +42,7 @@ from cosmotech.coal.cosmotech_api.workspace import upload_workspace_file
               default=True,
               show_default=True,
               type=bool)
-def wsf_send_file_command(
+def wsf_send_file(
     organization_id,
     workspace_id,
     file_path,

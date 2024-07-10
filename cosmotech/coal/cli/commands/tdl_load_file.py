@@ -48,7 +48,7 @@ from cosmotech.coal.utils.logger import LOGGER
               envvar="CSM_DATASET_ABSOLUTE_PATH",
               show_envvar=True,
               required=True)
-def tdl_load_file_command(
+def tdl_load_file(
     organization_id,
     workspace_id,
     runner_id,

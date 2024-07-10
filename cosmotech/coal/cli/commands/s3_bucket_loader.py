@@ -33,7 +33,7 @@ def get_connection(is_client=True):
               type=str,
               show_envvar=True,
               required=True)
-def s3_bucket_load_command(target_folder, bucket_name):
+def s3_bucket_load(target_folder, bucket_name):
     """Download S3 bucket content to a given folder
 
 Make use of the default AWS/S3 configuration to access the bucket

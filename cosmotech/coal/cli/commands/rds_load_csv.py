@@ -65,7 +65,7 @@ from cosmotech.coal.utils.logger import LOGGER
               type=str,
               default="SELECT table_name FROM information_schema.tables WHERE table_schema='public'",
               show_default=True)
-def rds_load_csv_command(
+def rds_load_csv(
     target_folder,
     organization_id,
     workspace_id,
