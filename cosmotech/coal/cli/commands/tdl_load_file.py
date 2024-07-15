@@ -95,8 +95,8 @@ Requires a valid connection to the API to send the data
     item_queries = dict()
 
     get_node_properties_query = "MATCH (n) RETURN distinct labels(n)[0] as label,  keys(n) as keys"
-    node_properties_results: list[dict] = api_ds.twingraph_query(os.environ.get("CSM_ORGANIZATION_ID"),
-                                                                 os.environ.get("CSM_DATASET_ID"),
+    node_properties_results: list[dict] = api_ds.twingraph_query(organization_id,
+                                                                 dataset_id,
                                                                  DatasetTwinGraphQuery(query=get_node_properties_query))
     for _r in node_properties_results:
         label = _r["label"]
@@ -105,8 +105,8 @@ Requires a valid connection to the API to send the data
         item_queries[label] = node_query
 
     get_relationship_properties_query = "MATCH ()-[r]->() RETURN distinct type(r) as label, keys(r) as keys"
-    relationship_properties_results: list[dict] = api_ds.twingraph_query(os.environ.get("CSM_ORGANIZATION_ID"),
-                                                                         os.environ.get("CSM_DATASET_ID"),
+    relationship_properties_results: list[dict] = api_ds.twingraph_query(organization_id,
+                                                                         dataset_id,
                                                                          DatasetTwinGraphQuery(
                                                                              query=get_relationship_properties_query))
 
@@ -120,8 +120,8 @@ Requires a valid connection to the API to send the data
     files_headers = dict()
 
     for element_type, query in item_queries.items():
-        element_query: list[dict] = api_ds.twingraph_query(os.environ.get("CSM_ORGANIZATION_ID"),
-                                                           os.environ.get("CSM_DATASET_ID"),
+        element_query: list[dict] = api_ds.twingraph_query(organization_id,
+                                                           dataset_id,
                                                            DatasetTwinGraphQuery(query=query))
         for element in element_query:
             if element_type not in files_content:
