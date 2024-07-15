@@ -1,0 +1,92 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+abstract class RedisHandler {
+ host: str
+ port: int
+ name: str
+ r: Redis
+ metadata_key: str
+}
+
+abstract class GraphHandler {
+ graph: Graph
+ m_metadata: ModelMetadata
+}
+
+abstract class VersionedGraphHandler {
+ version: int
+ versioned_name: str
+ fill_versioned_graph_data(graph_name: str, version: int)
+}
+
+abstract class RotatedGraphHandler {
+ graph_rotation: int
+ handle_graph_rotation(self, graph_name: str, graph_rotation: int) -> int
+}
+
+abstract class ExportableGraphHandler {
+ export_dir: str
+}
+
+class ModelExporter {
+  mr: ModelReader
+  export_all_twins()
+  export_all_relationships()
+  export_all_data()
+}
+
+class ModelMetadata {
+  get_metadata() -> dict
+  get_last_graph_version() -> str
+  get_graph_name() -> str
+  get_graph_source_url() -> str
+  get_graph_rotation() -> str
+  get_last_modified_date() -> datetime
+  set_all_metadata(metadata: dict)
+  set_metadata(last_graph_version: int, graph_source_url: str, graph_rotation: int) -> dict
+  set_last_graph_version(last_graph_version: int)
+  set_graph_source_url(graph_source_url: str)
+  set_graph_rotation(graph_rotation: int)
+  update_last_modified_date()
+  update_last_version()
+}
+
+class ModelImporter {
+  bulk_import(twin_file_paths: list = [], relationship_file_paths: list = [], enforce_schema: bool = False)
+}
+
+class ModelReader {
+  get_twin_types() -> list
+  get_twins_by_type(twin_type: str, limit: int = 0) -> QueryResult
+  get_twin_properties_by_type(twin_type: str) -> list
+  get_relationship_types() -> list
+  get_relationships_by_type(relationship_type: str, limit: int = 0) -> QueryResult
+  get_relationship_properties_by_type(relationship_type: str) -> list
+  query(query: str, params: dict = None, timeout: int = None, read_only: bool = False) -> QueryResult
+  exists(key) -> bool
+}
+
+class ModelWriter {
+  create_twin(twin_type: str, properties: dict)
+  create_relationship(relationship_type: str, properties: dict)
+}
+
+RedisHandler <|-- GraphHandler
+
+RedisHandler <|-- ModelMetadata
+
+GraphHandler <|-- VersionedGraphHandler
+
+VersionedGraphHandler <|-- RotatedGraphHandler
+
+VersionedGraphHandler <|-- ExportableGraphHandler
+
+VersionedGraphHandler <|-- ModelReader
+
+RotatedGraphHandler <|-- ModelImporter
+
+RotatedGraphHandler <|-- ModelWriter
+
+ExportableGraphHandler <|-- ModelExporter
+@enduml
