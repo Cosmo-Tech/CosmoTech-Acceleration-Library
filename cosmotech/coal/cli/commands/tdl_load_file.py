@@ -4,7 +4,6 @@
 # Any use, reproduction, translation, broadcasting, transmission, distribution,
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
-import os
 import pathlib
 from csv import DictWriter
 
@@ -98,9 +97,16 @@ Requires a valid connection to the API to send the data
     node_properties_results: list[dict] = api_ds.twingraph_query(organization_id,
                                                                  dataset_id,
                                                                  DatasetTwinGraphQuery(query=get_node_properties_query))
+
+    properties_nodes = dict()
     for _r in node_properties_results:
         label = _r["label"]
         keys = _r["keys"]
+        if label not in properties_nodes:
+            properties_nodes[label] = set()
+        properties_nodes[label].update(keys)
+
+    for label, keys in properties_nodes.items():
         node_query = f"MATCH (n:{label}) RETURN {', '.join(map(lambda k: f'n.{k} as {k}', keys))}"
         item_queries[label] = node_query
 
@@ -110,9 +116,15 @@ Requires a valid connection to the API to send the data
                                                                          DatasetTwinGraphQuery(
                                                                              query=get_relationship_properties_query))
 
+    properties_relationships = dict()
     for _r in relationship_properties_results:
         label = _r["label"]
         keys = _r["keys"]
+        if label not in properties_relationships:
+            properties_relationships[label] = set()
+        properties_relationships[label].update(keys)
+
+    for label, keys in properties_relationships.items():
         node_query = f"MATCH ()-[n:{label}]->() RETURN {', '.join(map(lambda k: f'n.{k} as {k}', keys))}"
         item_queries[label] = node_query
 
