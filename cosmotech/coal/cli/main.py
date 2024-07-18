@@ -11,8 +11,8 @@ from cosmotech.coal.cli.commands.api import api
 from cosmotech.coal.cli.commands.rds_load_csv import rds_load_csv
 from cosmotech.coal.cli.commands.rds_send_csv import rds_send_csv
 from cosmotech.coal.cli.commands.s3_bucket_loader import s3_bucket_load
-from cosmotech.coal.cli.commands.tdl_load_file import tdl_load_file
-from cosmotech.coal.cli.commands.tdl_send_file import tdl_send_file
+from cosmotech.coal.cli.commands.tdl_load_files import tdl_load_files
+from cosmotech.coal.cli.commands.tdl_send_files import tdl_send_files
 from cosmotech.coal.cli.commands.wsf_load_file import wsf_load_file
 from cosmotech.coal.cli.commands.wsf_send_file import wsf_send_file
 from cosmotech.coal.cli.utils.click import click
@@ -50,8 +50,8 @@ api.add_command(rds_send_csv, "rds-send-csv")
 api.add_command(rds_load_csv, "rds-load-csv")
 api.add_command(wsf_send_file, "wsf-send-file")
 api.add_command(wsf_load_file, "wsf-load-file")
-api.add_command(tdl_send_file, "tdl-send-files")
-api.add_command(tdl_load_file, "tdl-load-files")
+api.add_command(tdl_send_files, "tdl-send-files")
+api.add_command(tdl_load_files, "tdl-load-files")
 
 if __name__ == "__main__":
     main()
