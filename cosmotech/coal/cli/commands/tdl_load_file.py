@@ -4,6 +4,7 @@
 # Any use, reproduction, translation, broadcasting, transmission, distribution,
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
+import json
 import pathlib
 from csv import DictWriter
 
@@ -158,6 +159,15 @@ Requires a valid connection to the API to send the data
             dw = DictWriter(_f,
                             fieldnames=headers)
             dw.writeheader()
-            dw.writerows(sorted(files_content[file_name], key=lambda r: r.get('id')))
+            for row in sorted(files_content[file_name], key=lambda r: r.get('id')):
+                dw.writerow({
+                    key: (
+                        json.dumps(value)
+                        if isinstance(value, (bool, dict, list))
+                        else value
+                    )
+                    for key, value
+                    in row.items()
+                })
 
     LOGGER.info("All CSV are written")
