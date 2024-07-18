@@ -48,7 +48,7 @@ from cosmotech.coal.utils.logger import LOGGER
               envvar="CSM_DATASET_ABSOLUTE_PATH",
               show_envvar=True,
               required=True)
-def tdl_load_file(
+def tdl_load_files(
     organization_id,
     workspace_id,
     runner_id,
@@ -58,7 +58,7 @@ def tdl_load_file(
 
 Will create 1 csv file per node type / relationship type
 
-The twingraph must have been populated using the "tdl-send-file" command for this to work correctly
+The twingraph must have been populated using the "tdl-send-files" command for this to work correctly
 
 Requires a valid connection to the API to send the data
     """

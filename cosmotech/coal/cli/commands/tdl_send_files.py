@@ -68,7 +68,7 @@ BATCH_SIZE_LIMIT = 10000
               default=True,
               show_default=True,
               type=bool)
-def tdl_send_file(
+def tdl_send_files(
     api_url,
     organization_id,
     workspace_id,
