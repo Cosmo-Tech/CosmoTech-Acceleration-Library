@@ -28,8 +28,13 @@
     "CSM_WORKSPACE_ID": {
       "description": "A workspace id for the Cosmo Tech API"
     },
+    "CSM_SCENARIO_ID": {
+      "description": "A scenario id for the Cosmo Tech API",
+      "optional": true
+    },
     "CSM_RUNNER_ID": {
-      "description": "A runner id for the Cosmo Tech API"
+      "description": "A runner id for the Cosmo Tech API",
+      "optional": true
     }
   }
 }

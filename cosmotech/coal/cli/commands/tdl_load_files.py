@@ -11,6 +11,7 @@ from csv import DictWriter
 from cosmotech_api import DatasetApi
 from cosmotech_api import DatasetTwinGraphQuery
 from cosmotech_api import RunnerApi
+from cosmotech_api import ScenarioApi
 
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cosmotech_api.connection import get_api_client
@@ -32,13 +33,20 @@ from cosmotech.coal.utils.logger import LOGGER
               type=str,
               show_envvar=True,
               required=True)
+@click.option("--scenario-id",
+              envvar="CSM_SCENARIO_ID",
+              help="A scenario id for the Cosmo Tech API",
+              metavar="s-XXXXXXXX",
+              type=str,
+              show_envvar=True,
+              required=False)
 @click.option("--runner-id",
               envvar="CSM_RUNNER_ID",
               help="A runner id for the Cosmo Tech API",
               metavar="r-XXXXXXXX",
               type=str,
               show_envvar=True,
-              required=True)
+              required=False)
 @click.option("--dir",
               "directory_path",
               help="Path to the directory to write the results to",
@@ -51,6 +59,7 @@ from cosmotech.coal.utils.logger import LOGGER
 def tdl_load_files(
     organization_id,
     workspace_id,
+    scenario_id,
     runner_id,
     directory_path
 ):
@@ -65,11 +74,27 @@ Requires a valid connection to the API to send the data
 
     api_client, connection_type = get_api_client()
     api_ds = DatasetApi(api_client)
-    api_runner = RunnerApi(api_client)
 
-    runner_info = api_runner.get_runner(organization_id,
-                                        workspace_id,
-                                        runner_id)
+    runner_info = None
+    if scenario_id:
+        if runner_id:
+            LOGGER.info(f"Both scenario ({scenario_id}) and runner ({runner_id}) id are defined; defaulting to scenario.")
+        scenario_api = ScenarioApi(api_client)
+        runner_info = scenario_api.find_scenario_by_id(
+            organization_id,
+            workspace_id,
+            scenario_id,
+        )
+    elif runner_id:
+        api_runner = RunnerApi(api_client)
+        runner_info = api_runner.get_runner(
+            organization_id,
+            workspace_id,
+            runner_id,
+        )
+    else:
+        LOGGER.error(f"Neither scenario nor runner id is defined.")
+        raise click.Abort()
 
     if len(runner_info.dataset_list) != 1:
         LOGGER.error(f"Runner {runner_id} is not tied to a single dataset")
