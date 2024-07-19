@@ -1692,18 +1692,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#csm-data-api-tdl-load-file" class="md-nav__link">
+  <a href="#csm-data-api-tdl-load-files" class="md-nav__link">
     <span class="md-ellipsis">
-      tdl-load-file
+      tdl-load-files
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#csm-data-api-tdl-send-file" class="md-nav__link">
+  <a href="#csm-data-api-tdl-send-files" class="md-nav__link">
     <span class="md-ellipsis">
-      tdl-send-file
+      tdl-send-files
     </span>
   </a>
   
@@ -1791,8 +1791,8 @@
 <ul>
 <li><em><a href="#csm-data-api-rds-load-csv">rds-load-csv</a></em>: Download a CSV file from the Cosmo Tech Run API using a given SQL query</li>
 <li><em><a href="#csm-data-api-rds-send-csv">rds-send-csv</a></em>: Send all csv files from a folder to the results service of the Cosmo Tech API</li>
-<li><em><a href="#csm-data-api-tdl-load-file">tdl-load-file</a></em>: Query a twingraph and loads all the data from it</li>
-<li><em><a href="#csm-data-api-tdl-send-file">tdl-send-file</a></em>: Reads a folder CSVs and send those to the Cosmo Tech API as a Dataset</li>
+<li><em><a href="#csm-data-api-tdl-load-files">tdl-load-files</a></em>: Query a twingraph and loads all the data from it</li>
+<li><em><a href="#csm-data-api-tdl-send-files">tdl-send-files</a></em>: Reads a folder CSVs and send those to the Cosmo Tech API as a Dataset</li>
 <li><em><a href="#csm-data-api-wsf-load-file">wsf-load-file</a></em>: Load files from a workspace inside the API</li>
 <li><em><a href="#csm-data-api-wsf-send-file">wsf-send-file</a></em>: Send a file to a workspace inside the API</li>
 </ul>
@@ -1840,26 +1840,28 @@
                                 CSM_RUN_ID; required]
   --help                        Show this message and exit.
 </code></pre></div>
-<h3 id="csm-data-api-tdl-load-file">csm-data api tdl-load-file<a class="headerlink" href="#csm-data-api-tdl-load-file" title="Permanent link">&para;</a></h3>
+<h3 id="csm-data-api-tdl-load-files">csm-data api tdl-load-files<a class="headerlink" href="#csm-data-api-tdl-load-files" title="Permanent link">&para;</a></h3>
 <p>Query a twingraph and loads all the data from it</p>
 <p>Will create 1 csv file per node type / relationship type</p>
-<p>The twingraph must have been populated using the "tdl-send-file" command for this to work correctly</p>
+<p>The twingraph must have been populated using the "tdl-send-files" command for this to work correctly</p>
 <p>Requires a valid connection to the API to send the data</p>
 <p><strong>Usage:</strong></p>
-<div class="highlight"><pre><span></span><code>csm-data api tdl-load-file [OPTIONS]
+<div class="highlight"><pre><span></span><code>csm-data api tdl-load-files [OPTIONS]
 </code></pre></div>
 <p><strong>Options:</strong></p>
 <div class="highlight"><pre><span></span><code>  --organization-id o-XXXXXXXX  An organization id for the Cosmo Tech API
                                 [env var: CSM_ORGANIZATION_ID; required]
   --workspace-id w-XXXXXXXX     A workspace id for the Cosmo Tech API  [env
                                 var: CSM_WORKSPACE_ID; required]
+  --scenario-id s-XXXXXXXX      A scenario id for the Cosmo Tech API  [env
+                                var: CSM_SCENARIO_ID]
   --runner-id r-XXXXXXXX        A runner id for the Cosmo Tech API  [env var:
-                                CSM_RUNNER_ID; required]
+                                CSM_RUNNER_ID]
   --dir PATH                    Path to the directory to write the results to
                                 [env var: CSM_DATASET_ABSOLUTE_PATH; required]
   --help                        Show this message and exit.
 </code></pre></div>
-<h3 id="csm-data-api-tdl-send-file">csm-data api tdl-send-file<a class="headerlink" href="#csm-data-api-tdl-send-file" title="Permanent link">&para;</a></h3>
+<h3 id="csm-data-api-tdl-send-files">csm-data api tdl-send-files<a class="headerlink" href="#csm-data-api-tdl-send-files" title="Permanent link">&para;</a></h3>
 <p>Reads a folder CSVs and send those to the Cosmo Tech API as a Dataset</p>
 <p>CSVs must follow a given format :
   - Nodes files must have an <code>id</code> column
@@ -1868,7 +1870,7 @@
 the relationship will not be created instead.</p>
 <p>Requires a valid connection to the API to send the data</p>
 <p><strong>Usage:</strong></p>
-<div class="highlight"><pre><span></span><code>csm-data api tdl-send-file [OPTIONS]
+<div class="highlight"><pre><span></span><code>csm-data api tdl-send-files [OPTIONS]
 </code></pre></div>
 <p><strong>Options:</strong></p>
 <div class="highlight"><pre><span></span><code>  --api-url URI                 The URI to a Cosmo Tech API instance  [env
