@@ -93,11 +93,12 @@ Requires a valid connection to the API to send the data
             runner_id,
         )
     else:
-        LOGGER.error(f"Neither scenario nor runner id is defined.")
+        LOGGER.error("Neither scenario nor runner id is defined.")
         raise click.Abort()
 
     if len(runner_info.dataset_list) != 1:
-        LOGGER.error(f"Runner {runner_id} is not tied to a single dataset")
+        api_object = f"Scenario {scenario_id}" if scenario_id else f"Runner {runner_id}"
+        LOGGER.error(f"{api_object} is not tied to a single dataset")
         LOGGER.debug(runner_info)
         raise click.Abort()
 
