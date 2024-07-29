@@ -74,31 +74,29 @@ Requires a valid connection to the API to send the data
 
     api_client, connection_type = get_api_client()
     api_ds = DatasetApi(api_client)
+    api_runner = RunnerApi(api_client)
+    api_scenario = ScenarioApi(api_client)
 
-    runner_info = None
-    if scenario_id:
-        if runner_id:
-            LOGGER.info(f"Both scenario ({scenario_id}) and runner ({runner_id}) id are defined; defaulting to scenario.")
-        scenario_api = ScenarioApi(api_client)
-        runner_info = scenario_api.find_scenario_by_id(
-            organization_id,
-            workspace_id,
-            scenario_id,
-        )
-    elif runner_id:
-        api_runner = RunnerApi(api_client)
+    if (scenario_id is None) == (runner_id is None):
+        LOGGER.error('Requires a single Scenario ID or Runner ID to work.' +
+                     f'{"Both" if runner_id else "None"} were defined.')
+        raise click.Abort()
+
+    if runner_id:
         runner_info = api_runner.get_runner(
             organization_id,
             workspace_id,
             runner_id,
         )
     else:
-        LOGGER.error("Neither scenario nor runner id is defined.")
-        raise click.Abort()
+        runner_info = api_scenario.find_scenario_by_id(
+            organization_id,
+            workspace_id,
+            scenario_id,
+        )
 
-    if len(runner_info.dataset_list) != 1:
-        api_object = f"Scenario {scenario_id}" if scenario_id else f"Runner {runner_id}"
-        LOGGER.error(f"{api_object} is not tied to a single dataset")
+    if (datasets_len := len(runner_info.dataset_list)) != 1:
+        LOGGER.error(f"{runner_info.id} is not tied to a single dataset but {datasets_len}")
         LOGGER.debug(runner_info)
         raise click.Abort()
 
