@@ -9,9 +9,7 @@
     "--organization-id",
     "$CSM_ORGANIZATION_ID",
     "--workspace-id",
-    "$CSM_WORKSPACE_ID",
-    "--runner-id",
-    "$CSM_RUNNER_ID"
+    "$CSM_WORKSPACE_ID"
   ],
   "description": "Use csm-data to query a twingraph and loads all the data from it",
   "useSystemEnvironment": true,
