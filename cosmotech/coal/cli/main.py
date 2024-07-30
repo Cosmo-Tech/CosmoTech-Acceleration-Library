@@ -7,15 +7,12 @@
 import click_log
 
 from CosmoTech_Acceleration_Library import __version__
-from cosmotech.coal.cli.commands.api import api
-from cosmotech.coal.cli.commands.rds_load_csv import rds_load_csv
-from cosmotech.coal.cli.commands.rds_send_csv import rds_send_csv
+from cosmotech.coal.cli.commands.adx_send_scenariodata import adx_send_scenariodata
+from cosmotech.coal.cli.commands.api.api import api
+from cosmotech.coal.cli.commands.legacy.legacy import legacy
 from cosmotech.coal.cli.commands.s3_bucket_loader import s3_bucket_load
-from cosmotech.coal.cli.commands.tdl_load_files import tdl_load_files
-from cosmotech.coal.cli.commands.tdl_send_files import tdl_send_files
-from cosmotech.coal.cli.commands.wsf_load_file import wsf_load_file
-from cosmotech.coal.cli.commands.wsf_send_file import wsf_send_file
 from cosmotech.coal.cli.utils.click import click
+from cosmotech.coal.cli.utils.decorators import web_help
 from cosmotech.coal.utils.logger import LOGGER
 
 
@@ -37,6 +34,7 @@ def print_version(ctx, param, value):
               expose_value=False,
               is_eager=True,
               help="Print version number and return.")
+@web_help("csm-data")
 def main():
     """Cosmo Tect Data Interface
 
@@ -45,13 +43,9 @@ Command toolkit provinding quick implementation of data connections to use insid
 
 
 main.add_command(api, "api")
+main.add_command(legacy, "legacy")
 main.add_command(s3_bucket_load, "s3-bucket-load")
-api.add_command(rds_send_csv, "rds-send-csv")
-api.add_command(rds_load_csv, "rds-load-csv")
-api.add_command(wsf_send_file, "wsf-send-file")
-api.add_command(wsf_load_file, "wsf-load-file")
-api.add_command(tdl_send_files, "tdl-send-files")
-api.add_command(tdl_load_files, "tdl-load-files")
+main.add_command(adx_send_scenariodata, "adx-send-scenariodata")
 
 if __name__ == "__main__":
     main()

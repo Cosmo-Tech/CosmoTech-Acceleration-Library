@@ -55,7 +55,7 @@ nav:
   - Getting started:
       - Dependencies: 'dependencies.md'
   - References: references/
-  - csm-data: cli/
+  - csm-data: csm-data/
 
 markdown_extensions:
   - admonition
@@ -104,8 +104,9 @@ plugins:
         - docs/scripts/generate_references.py
         - docs/scripts/generate_dependencies_markdown.py
         - docs/scripts/generate_index.py
-  - literate-nav
+        - docs/scripts/generate_command_helps.py
   - mike
   - social
   - table-reader
-  - include_dir_to_nav
+  - awesome-pages
+  - literate-nav

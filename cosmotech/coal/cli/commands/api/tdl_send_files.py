@@ -17,6 +17,7 @@ from cosmotech_api import DatasetTwinGraphQuery
 from cosmotech_api import RunnerApi
 
 from cosmotech.coal.cli.utils.click import click
+from cosmotech.coal.cli.utils.decorators import web_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.twin_data_layer import CSVSourceFile
 from cosmotech.coal.utils.logger import LOGGER
@@ -68,6 +69,7 @@ BATCH_SIZE_LIMIT = 10000
               default=True,
               show_default=True,
               type=bool)
+@web_help("csm-data/api/tdl-send-files")
 def tdl_send_files(
     api_url,
     organization_id,
