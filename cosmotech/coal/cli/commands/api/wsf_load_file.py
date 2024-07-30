@@ -7,6 +7,7 @@
 import pathlib
 
 from cosmotech.coal.cli.utils.click import click
+from cosmotech.coal.cli.utils.decorators import web_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.workspace import download_workspace_file
 from cosmotech.coal.cosmotech_api.workspace import list_workspace_files
@@ -40,6 +41,7 @@ from cosmotech.coal.cosmotech_api.workspace import list_workspace_files
               envvar="CSM_DATASET_ABSOLUTE_PATH",
               show_envvar=True,
               required=True)
+@web_help("csm-data/api/wsf-load-file")
 def wsf_load_file(
     organization_id,
     workspace_id,

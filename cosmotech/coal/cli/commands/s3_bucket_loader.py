@@ -10,6 +10,7 @@ import pathlib
 import boto3
 
 from cosmotech.coal.cli.utils.click import click
+from cosmotech.coal.cli.utils.decorators import web_help
 from cosmotech.coal.utils.logger import LOGGER
 
 
@@ -33,6 +34,7 @@ def get_connection(is_client=True):
               type=str,
               show_envvar=True,
               required=True)
+@web_help("csm-data/s3-bucket-load")
 def s3_bucket_load(target_folder, bucket_name):
     """Download S3 bucket content to a given folder
 

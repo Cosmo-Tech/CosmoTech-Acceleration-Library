@@ -14,6 +14,7 @@ from cosmotech_api import RunnerApi
 from cosmotech_api import ScenarioApi
 
 from cosmotech.coal.cli.utils.click import click
+from cosmotech.coal.cli.utils.decorators import web_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
 
@@ -56,6 +57,7 @@ from cosmotech.coal.utils.logger import LOGGER
               envvar="CSM_DATASET_ABSOLUTE_PATH",
               show_envvar=True,
               required=True)
+@web_help("csm-data/api/tdl-load-file")
 def tdl_load_files(
     organization_id,
     workspace_id,

@@ -6,6 +6,7 @@
 # specifically authorized by written means by Cosmo Tech.
 
 from cosmotech.coal.cli.utils.click import click
+from cosmotech.coal.cli.utils.decorators import web_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.workspace import upload_workspace_file
 
@@ -42,6 +43,7 @@ from cosmotech.coal.cosmotech_api.workspace import upload_workspace_file
               default=True,
               show_default=True,
               type=bool)
+@web_help("csm-data/api/wsf-send-file")
 def wsf_send_file(
     organization_id,
     workspace_id,

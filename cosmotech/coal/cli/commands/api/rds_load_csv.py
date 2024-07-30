@@ -5,22 +5,22 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import json
 import pathlib
-from csv import DictReader
+from csv import DictWriter
 
-from cosmotech_api import SendRunDataRequest
+from cosmotech_api import RunDataQuery
 from cosmotech_api.api.run_api import RunApi
 
 from cosmotech.coal.cli.utils.click import click
+from cosmotech.coal.cli.utils.decorators import web_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
 
 
 @click.command()
-@click.option("--source-folder",
+@click.option("--target-folder",
               envvar="CSM_DATASET_ABSOLUTE_PATH",
-              help="The folder containing csvs to send",
+              help="The folder where the csv will be written",
               metavar="PATH",
               type=str,
               show_envvar=True,
@@ -53,51 +53,54 @@ from cosmotech.coal.utils.logger import LOGGER
               type=str,
               show_envvar=True,
               required=True)
-def rds_send_csv(
-    source_folder,
+@click.option("--file-name",
+              help="A file name to write the query results",
+              metavar="NAME",
+              type=str,
+              default="results",
+              show_default=True,
+              required=True)
+@click.option("--query",
+              help="A run id for the Cosmo Tech API",
+              metavar="SQL_QUERY",
+              type=str,
+              default="SELECT table_name FROM information_schema.tables WHERE table_schema='public'",
+              show_default=True)
+@web_help("csm-data/api/rds-load-csv")
+def rds_load_csv(
+    target_folder,
     organization_id,
     workspace_id,
     runner_id,
-    run_id
+    run_id,
+    file_name,
+    query
 ):
-    """Send all csv files from a folder to the results service of the Cosmo Tech API
+    """Download a CSV file from the Cosmo Tech Run API using a given SQL query
 
 Requires a valid connection to the API to send the data
     """
 
-    source_dir = pathlib.Path(source_folder)
+    target_dir = pathlib.Path(target_folder)
 
-    if not source_dir.exists():
-        LOGGER.error(f"{source_dir} does not exists")
-        return 1
+    target_dir.mkdir(parents=True, exist_ok=True)
 
     with get_api_client()[0] as api_client:
-
         api_run = RunApi(api_client)
-        for csv_path in source_dir.glob("*.csv"):
-            with open(csv_path) as _f:
-                dr = DictReader(_f)
-                table_name = csv_path.name.replace(".csv", "")
-                LOGGER.info(f"Sending data to table [cyan bold]CD_{table_name}[/]")
-                LOGGER.debug(f"  - Column list: {dr.fieldnames}")
-                data = []
-
-                for row in dr:
-                    n_row = dict()
-                    for k, v in row.items():
-                        if isinstance(v, str):
-                            try:
-                                n_row[k] = json.loads(v)
-                            except json.decoder.JSONDecodeError:
-                                n_row[k] = v
-                        else:
-                            n_row[k] = v
-                    data.append(n_row)
-
-                LOGGER.info(f"  - Sending {len(data)} rows")
-                api_run.send_run_data(organization_id,
-                                      workspace_id,
-                                      runner_id,
-                                      run_id,
-                                      SendRunDataRequest(id=table_name,
-                                                         data=data))
+        query = api_run.query_run_data(organization_id,
+                                       workspace_id,
+                                       runner_id,
+                                       run_id,
+                                       RunDataQuery(query=query))
+        if query.result:
+            LOGGER.info(f"Query returned {len(query.result)} rows")
+            with open(target_dir / (file_name + ".csv"), "w") as _f:
+                headers = set()
+                for r in query.result:
+                    headers = headers | set(r.keys())
+                dw = DictWriter(_f, fieldnames=sorted(headers))
+                dw.writeheader()
+                dw.writerows(query.result)
+            LOGGER.info(f"Results saved as {target_dir / file_name}.csv")
+        else:
+            LOGGER.info("No results returned by the query")
