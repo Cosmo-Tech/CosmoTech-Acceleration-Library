@@ -33,6 +33,7 @@ class Store:
         if table_name in self._tables and not replace:
             raise FileExistsError(f"Table {table_name} already exists, consider using replace to replace is")
         table_path = self.store_location / f"{table_name}.parquet"
+        table_path.parent.mkdir(parents=True, exist_ok=True)
         pq.write_table(data, table_path)
         return table_path
 
