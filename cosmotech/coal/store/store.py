@@ -8,16 +8,19 @@ import pyarrow.parquet as pq
 class Store:
     _instance = None
 
-    def __new__(class_, *args, **kwargs):
-        if not isinstance(class_._instance, class_):
-            class_._instance = object.__new__(class_, *args, **kwargs)
-        return class_._instance
+    def __new__(cls, *args, **kwargs):
+        if not isinstance(cls._instance, cls):
+            cls._instance = object.__new__(cls)
+        return cls._instance
 
-    def __init__(self):
+    def __init__(self, reset=False):
         self.store_location = pathlib.Path(os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH", ".coal")) / "store"
         self.store_location.mkdir(parents=True, exist_ok=True)
         self._tables = dict()
         for existing_path in self.store_location.glob("*.parquet"):
+            if reset:
+                existing_path.unlink()
+                continue
             table_name = existing_path.name.split('.')[0]
             self._tables[table_name] = existing_path
 
