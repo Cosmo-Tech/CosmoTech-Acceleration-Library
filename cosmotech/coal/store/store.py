@@ -14,7 +14,7 @@ class Store:
         return cls._instance
 
     def __init__(self, reset=False):
-        self.store_location = pathlib.Path(os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH", ".coal")) / "store"
+        self.store_location = pathlib.Path(os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH", ".")) / ".coal/store"
         self.store_location.mkdir(parents=True, exist_ok=True)
         self._tables = dict()
         for existing_path in self.store_location.glob("*.parquet"):
