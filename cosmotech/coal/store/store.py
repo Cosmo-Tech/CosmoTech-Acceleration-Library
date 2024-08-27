@@ -12,6 +12,10 @@ from cosmotech.coal.utils.logger import LOGGER
 
 class Store(metaclass=Singleton):
 
+    @staticmethod
+    def sanitize_column(column_name: str) -> str:
+        return column_name.replace(" ", "_").lower()
+
     def __init__(self, reset=False):
         self.store_location = pathlib.Path(os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH", ".")) / ".coal/store"
         self.store_location.mkdir(parents=True, exist_ok=True)
@@ -24,14 +28,11 @@ class Store(metaclass=Singleton):
     def get_table(self, table_name: str, columns: Optional[list[str]] = None) -> pyarrow.Table:
         if not self.table_exists(table_name):
             raise ValueError(f"No table with name {table_name} exists")
-        return self.execute_query(f"select * from \"{table_name}\"")
+        return self.execute_query(f"select * from {table_name}")
         return pq.read_table(self._tables[table_name], columns=columns)
 
     def table_exists(self, table_name) -> bool:
-        with dbapi.connect(self._database) as conn:
-            with conn.cursor() as curs:
-                curs.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}';")
-                return len(curs.fetchall()) > 0
+        return table_name in self.list_tables()
 
     def get_table_schema(self, table_name: str) -> pyarrow.Schema:
         if not self.table_exists(table_name):

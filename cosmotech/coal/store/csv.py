@@ -4,13 +4,13 @@ import pyarrow.csv as pc
 
 from cosmotech.coal.store.store import Store
 
-
 def store_csv_file(table_name: str, csv_path: pathlib.Path, replace_existsing_file: bool = False):
     if not csv_path.exists():
         raise FileNotFoundError(f"File {csv_path} does not exists")
 
     data = pc.read_csv(csv_path)
-
+    _c = data.column_names
+    data = data.rename_columns([Store.sanitize_column(_column) for _column in _c])
     _s = Store()
 
     _s.add_table(table_name=table_name,
