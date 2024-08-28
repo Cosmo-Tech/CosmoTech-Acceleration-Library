@@ -56,7 +56,7 @@ from cosmotech.coal.utils.logger import LOGGER
               type=str,
               show_envvar=True,
               required=True)
-@web_help("csm-data/api/rds-send-csv")
+@web_help("csm-data/api/rds-send-store")
 def rds_send_store(
     store_folder,
     organization_id,
