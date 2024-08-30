@@ -7,6 +7,7 @@
 import click_log
 
 from CosmoTech_Acceleration_Library import __version__
+from cosmotech.coal.cli.commands.postgres_send_csv import postgres_send_csv
 from cosmotech.coal.cli.commands.adx_send_scenariodata import adx_send_scenariodata
 from cosmotech.coal.cli.commands.api.api import api
 from cosmotech.coal.cli.commands.legacy.legacy import legacy
@@ -46,6 +47,7 @@ main.add_command(api, "api")
 main.add_command(legacy, "legacy")
 main.add_command(s3_bucket_load, "s3-bucket-load")
 main.add_command(adx_send_scenariodata, "adx-send-scenariodata")
+main.add_command(postgres_send_csv, "postgres-send-csv")
 
 if __name__ == "__main__":
     main()
