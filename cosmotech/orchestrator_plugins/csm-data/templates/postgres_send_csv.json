@@ -1,0 +1,55 @@
+{
+  "id": "csm-data postgres-send-csv",
+  "command": "csm-data",
+  "arguments": [
+    "postgres-send-csv",
+    "--output-absolute-folder", "${CSM_OUTPUT_ABSOLUTE_PATH}",
+    "--postgres-host", "${CSM_POSTGRES_HOST}",
+    "--postgres-port", "${CSM_POSTGRES_PORT}",
+    "--postgres-db", "${CSM_POSTGRES_DB}",
+    "--postgres-schema", "${CSM_POSTGRES_SCHEMA}",
+    "--postgres-user", "${CSM_POSTGRES_USER}",
+    "--postgres-password", "${CSM_POSTGRES_PASSWORD}",
+    "--organization-id", "${CSM_ORGANIZATION_ID}",
+    "--workspace-id", "${CSM_WORKSPACE_ID}",
+    "--runner-id", "${CSM_RUNNER_ID}",
+    "--run-id", "${CSM_RUN_ID}"
+  ],
+  "description": "Use csm-data to send the content of all csv of the output folder to a postgres database with unique name and automatically generated schema",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_OUTPUT_ABSOLUTE_PATH": {
+      "description": "Target folder in which to find CSV files to send to the postgres database"
+    },
+    "CSM_POSTGRES_HOST": {
+      "description": "The host URI of the postgres database"
+    },
+    "CSM_POSTGRES_PORT": {
+      "description": "The host port of the postgres database"
+    },
+    "CSM_POSTGRES_DB": {
+      "description": "The name of the postgres database"
+    },
+    "CSM_POSTGRES_SCHEMA": {
+      "description": "The name of the postgres database schema"
+    },
+    "CSM_POSTGRES_USER": {
+      "description": "The user name to connect to the postgres database"
+    },
+    "CSM_POSTGRES_PASSWORD": {
+      "description": "The user password to connect to the postgres database"
+    },
+    "CSM_ORGANIZATION_ID": {
+      "description": "An organization id for the Cosmo Tech API"
+    },
+    "CSM_WORKSPACE_ID": {
+      "description": "A workspace id for the Cosmo Tech API"
+    },
+    "CSM_RUNNER_ID": {
+      "description": "A runner id for the Cosmo Tech API"
+    },
+    "CSM_RUN_ID": {
+      "description": "A run id for the Cosmo Tech API"
+    }
+  }
+}
