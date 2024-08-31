@@ -21,15 +21,18 @@ class Store(metaclass=Singleton):
         self.store_location.mkdir(parents=True, exist_ok=True)
         self._tables = dict()
         self._database_path = self.store_location / "db.sqlite"
-        if reset and self._database_path.exists():
-            self._database_path.unlink()
+        if reset:
+            self.reset()
         self._database = str(self._database_path)
 
-    def get_table(self, table_name: str, columns: Optional[list[str]] = None) -> pyarrow.Table:
+    def reset(self):
+        if self._database_path.exists():
+            self._database_path.unlink()
+
+    def get_table(self, table_name: str) -> pyarrow.Table:
         if not self.table_exists(table_name):
             raise ValueError(f"No table with name {table_name} exists")
         return self.execute_query(f"select * from {table_name}")
-        return pq.read_table(self._tables[table_name], columns=columns)
 
     def table_exists(self, table_name) -> bool:
         return table_name in self.list_tables()

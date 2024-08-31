@@ -13,6 +13,6 @@ def store_pylist(table_name: str, data: list[dict], replace_existsing_file: bool
                  replace=replace_existsing_file)
 
 
-def load_table_as_pylist(table_name: str):
+def convert_table_as_pylist(table_name: str):
     _s = Store()
     return _s.get_table(table_name).to_pylist()
