@@ -20,6 +20,11 @@ requests~=2.32.3
 # Orchestrator templates requirements
 cosmotech-run-orchestrator~=1.2.4
 
+# Data store requirements
+pyarrow~=17.0.0
+adbc-driver-manager~=1.1.0
+adbc-driver-sqlite~=1.1.0
+
 # CLI requirements
 click~=8.1.7
 rich-click~=1.7.3

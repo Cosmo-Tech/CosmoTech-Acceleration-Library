@@ -24,7 +24,8 @@ include-package-data = true
 package-data."*" = [
     "requirements.txt",
     "requirements.doc.txt",
-    "requirements.test.txt"
+    "requirements.test.txt",
+    "requirements.extra.txt"
 ]
 zip-safe = false
 
@@ -40,3 +41,5 @@ version.attr = "CosmoTech_Acceleration_Library.__version__"
 dependencies.file = "requirements.txt"
 optional-dependencies.doc.file = "requirements.doc.txt"
 optional-dependencies.test.file = "requirements.test.txt"
+optional-dependencies.extra.file = "requirements.extra.txt"
+optional-dependencies.all.file = "requirements.all.txt"

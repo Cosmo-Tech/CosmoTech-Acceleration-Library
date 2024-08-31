@@ -7,6 +7,7 @@
 
 from cosmotech.coal.cli.commands.api.rds_load_csv import rds_load_csv
 from cosmotech.coal.cli.commands.api.rds_send_csv import rds_send_csv
+from cosmotech.coal.cli.commands.api.rds_send_store import rds_send_store
 from cosmotech.coal.cli.commands.api.run_load_data import run_load_data
 from cosmotech.coal.cli.commands.api.runtemplate_load_handler import runtemplate_load_handler
 from cosmotech.coal.cli.commands.api.scenariorun_load_data import scenariorun_load_data
@@ -40,6 +41,7 @@ You can use this command in a csm-orc template to make sure that API connection 
 
 
 api.add_command(rds_send_csv, "rds-send-csv")
+api.add_command(rds_send_store, "rds-send-store")
 api.add_command(rds_load_csv, "rds-load-csv")
 api.add_command(wsf_send_file, "wsf-send-file")
 api.add_command(wsf_load_file, "wsf-load-file")
