@@ -43,7 +43,7 @@ class CSVSourceFile:
         has_source = self.source_column is not None
         has_target = self.target_column is not None
 
-        is_relation = all([has_id, has_source, has_target])
+        is_relation = all([has_source, has_target])
 
         if not has_id and not is_relation:
             LOGGER.error(f"'{file_path}' does not contains valid nodes or relationships")
@@ -56,7 +56,8 @@ class CSVSourceFile:
 
         self.content_fields = {_f: _f for _f in self.fields if
                                _f not in [self.id_column, self.source_column, self.target_column]}
-        self.content_fields[ID_COLUMN] = self.id_column
+        if has_id:
+            self.content_fields[ID_COLUMN] = self.id_column
         if is_relation:
             self.content_fields[SOURCE_COLUMN] = self.source_column
             self.content_fields[TARGET_COLUMN] = self.target_column

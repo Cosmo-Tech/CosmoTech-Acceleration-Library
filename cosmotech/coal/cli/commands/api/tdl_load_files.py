@@ -8,15 +8,14 @@ import json
 import pathlib
 from csv import DictWriter
 
-from cosmotech_api import DatasetApi
-from cosmotech_api import DatasetTwinGraphQuery
-from cosmotech_api import RunnerApi
-from cosmotech_api import ScenarioApi
-
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech_api import DatasetApi
+from cosmotech_api import DatasetTwinGraphQuery
+from cosmotech_api import RunnerApi
+from cosmotech_api import ScenarioApi
 
 
 @click.command()
@@ -174,18 +173,23 @@ Requires a valid connection to the API to send the data
         LOGGER.info(f"Writing {len(files_content[file_name])} lines in {file_path}")
         with (file_path.open("w") as _f):
             headers = files_headers[file_name]
-            headers.remove("id")
-            if "src" in headers:
+            has_id = "id" in headers
+            is_relation = "src" in headers
+            new_headers = []
+            if has_id:
+                headers.remove("id")
+                new_headers.append("id")
+            if is_relation:
                 headers.remove("src")
                 headers.remove("dest")
-                headers = ["id", "src", "dest"] + sorted(headers)
-            else:
-                headers = ["id"] + sorted(headers)
+                new_headers.append("src")
+                new_headers.append("dest")
+            headers = new_headers + sorted(headers)
 
             dw = DictWriter(_f,
                             fieldnames=headers)
             dw.writeheader()
-            for row in sorted(files_content[file_name], key=lambda r: r.get('id')):
+            for row in sorted(files_content[file_name], key=lambda r: r.get('id',"")):
                 dw.writerow({
                     key: (
                         json.dumps(value)

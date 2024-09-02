@@ -5,24 +5,23 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 import json
-import os
 import pathlib
 from csv import DictReader
 from csv import DictWriter
 from io import StringIO
 
 import requests
-from cosmotech_api import DatasetApi
-from cosmotech_api import DatasetTwinGraphQuery
-from cosmotech_api import RunnerApi
-
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.twin_data_layer import CSVSourceFile
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech_api import DatasetApi
+from cosmotech_api import DatasetTwinGraphQuery
+from cosmotech_api import RunnerApi
 
 BATCH_SIZE_LIMIT = 10000
+
 
 @click.command()
 @click.option("--api-url",
@@ -134,8 +133,7 @@ Requires a valid connection to the API to send the data
         'Content-Type': 'text/csv',
         'User-Agent': 'OpenAPI-Generator/1.0.0/python',
     }
-    if connection_type == "Cosmo Tech API Key":
-        header[os.environ.get("CSM_API_KEY_HEADER", "X-CSM-API-KEY")] = os.environ.get("CSM_API_KEY_HEADER")
+    header.update(api_client.default_headers)
 
     for authtype, authinfo in api_ds.api_client.configuration.auth_settings().items():
         api_ds.api_client._apply_auth_params(header, None, None, None, None, authinfo)
