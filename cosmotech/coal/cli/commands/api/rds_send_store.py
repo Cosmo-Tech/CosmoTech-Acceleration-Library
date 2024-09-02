@@ -12,7 +12,7 @@ from csv import DictReader
 from cosmotech_api import SendRunDataRequest
 from cosmotech_api.api.run_api import RunApi
 from cosmotech.coal.store.store import Store
-from cosmotech.coal.store.native_python import load_table_as_pylist
+from cosmotech.coal.store.native_python import convert_table_as_pylist
 
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help
@@ -80,7 +80,7 @@ Requires a valid connection to the API to send the data
         api_run = RunApi(api_client)
         _s = Store()
         for table_name in _s.list_tables():
-            data = load_table_as_pylist(table_name)
+            data = convert_table_as_pylist(table_name)
             fieldnames = _s.get_table_schema(table_name).names
             LOGGER.info(f"Sending data to table [cyan bold]CD_{table_name}[/]")
             LOGGER.debug(f"  - Column list: {fieldnames}")
