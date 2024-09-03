@@ -20,6 +20,7 @@ from cosmotech_api import TwinGraphQuery
 from openpyxl import load_workbook
 
 from CosmoTech_Acceleration_Library.Accelerators.utils.multi_environment import MultiEnvironment
+from cosmotech.coal.cosmotech_api.connection import get_api_client
 
 env = MultiEnvironment()
 
@@ -83,14 +84,11 @@ class ScenarioDownloader:
         read_files=True,
         parallel=True
     ):
-        self.credentials = DefaultAzureCredential()
-        scope = env.api_scope
-        if not access_token:
-            access_token = self.credentials.get_token(scope).token
-        self.configuration = cosmotech_api.Configuration(
-            host=env.api_host,
-            access_token=access_token
-        )
+        if get_api_client()[1] == "Azure Entra Connection":
+            self.credentials = DefaultAzureCredential()
+        else:
+            self.credentials = None
+        
 
         self.workspace_id = workspace_id
         self.organization_id = organization_id
@@ -99,7 +97,7 @@ class ScenarioDownloader:
         self.parallel = parallel
 
     def get_scenario_data(self, scenario_id: str):
-        with cosmotech_api.ApiClient(self.configuration) as api_client:
+        with get_api_client()[0] as api_client:
             api_instance = ScenarioApi(api_client)
             scenario_data = api_instance.find_scenario_by_id(organization_id=self.organization_id,
                                                              workspace_id=self.workspace_id,
@@ -107,7 +105,7 @@ class ScenarioDownloader:
         return scenario_data
 
     def download_dataset(self, dataset_id: str) -> (str, str, Union[str, None]):
-        with cosmotech_api.ApiClient(self.configuration) as api_client:
+        with get_api_client()[0] as api_client:
             api_instance = DatasetApi(api_client)
 
             dataset = api_instance.find_dataset_by_id(
@@ -150,7 +148,7 @@ class ScenarioDownloader:
                 }
 
     def _read_twingraph_content(self, dataset_id: str) -> dict:
-        with cosmotech_api.ApiClient(self.configuration) as api_client:
+        with get_api_client()[0] as api_client:
             dataset_api = DatasetApi(api_client)
             nodes_query = DatasetTwinGraphQuery(query="MATCH(n) RETURN n")
             edges_query = DatasetTwinGraphQuery(query="MATCH(n)-[r]->(m) RETURN n as src, r as rel, m as dest")
@@ -168,7 +166,7 @@ class ScenarioDownloader:
             return get_content_from_twin_graph_data(nodes, edges, True)
 
     def _read_legacy_twingraph_content(self, cache_name: str) -> dict:
-        with cosmotech_api.ApiClient(self.configuration) as api_client:
+        with get_api_client()[0] as api_client:
             api_instance = TwingraphApi(api_client)
             _query_nodes = TwinGraphQuery(
                 query="MATCH(n) RETURN n"
@@ -192,7 +190,7 @@ class ScenarioDownloader:
     def _download_file(self, file_name: str):
         tmp_dataset_dir = tempfile.mkdtemp()
         self.dataset_file_temp_path[file_name] = tmp_dataset_dir
-        with cosmotech_api.ApiClient(self.configuration) as api_client:
+        with get_api_client()[0] as api_client:
             api_ws = WorkspaceApi(api_client)
 
             all_api_files = api_ws.find_all_workspace_files(

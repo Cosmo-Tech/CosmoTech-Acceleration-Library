@@ -82,6 +82,10 @@ Requires a valid connection to the API to send the data
         for table_name in _s.list_tables():
             data = convert_table_as_pylist(table_name)
             fieldnames = _s.get_table_schema(table_name).names
+            for row in data:
+                for field in fieldnames:
+                    if row[field] is None:
+                        del row[field]
             LOGGER.info(f"Sending data to table [cyan bold]CD_{table_name}[/]")
             LOGGER.debug(f"  - Column list: {fieldnames}")
             LOGGER.info(f"  - Sending {len(data)} rows")

@@ -1,9 +1,7 @@
 import os
 import pathlib
-from typing import Optional
 
 import pyarrow
-import pyarrow.parquet as pq
 from adbc_driver_sqlite import dbapi
 from cosmotech.orchestrator.utils.singleton import Singleton
 
