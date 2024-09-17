@@ -23,7 +23,8 @@ from cosmotech.coal.utils.logger import LOGGER
 
 @click.group(invoke_without_command=True)
 @web_help("csm-data/api")
-def api():
+@click.pass_context
+def api(ctx: click.Context):
     """Cosmo Tech API helper command
 
 This command will inform you of which connection is available to use for the Cosmo Tech API
@@ -32,12 +33,13 @@ If no connection is available, will list all possible set of parameters and retu
 
 You can use this command in a csm-orc template to make sure that API connection is available.
     """
-    try:
-        api_client, description = get_api_client()
+    if ctx.invoked_subcommand is None:
+        try:
+            api_client, description = get_api_client()
 
-        LOGGER.info(f"Found valid connection of type: {description}")
-    except EnvironmentError:
-        raise click.Abort()
+            LOGGER.info(f"Found valid connection of type: {description}")
+        except EnvironmentError:
+            raise click.Abort()
 
 
 api.add_command(rds_send_csv, "rds-send-csv")
