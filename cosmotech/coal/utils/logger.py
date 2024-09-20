@@ -11,18 +11,19 @@ import os
 from rich.logging import RichHandler
 
 LOGGER = logging.getLogger("csm.data")
-
+HANDLER = RichHandler(rich_tracebacks=True,
+                      omit_repeated_times=False,
+                      show_path=False,
+                      markup=True)
 _format = "%(message)s"
 
 if "PAILLETTES" in os.environ:
     paillettes = "[bold yellow blink]***[/]"
     _format = f"{paillettes} {_format} {paillettes}"
 
-logging.basicConfig(
-    format=_format,
-    datefmt="[%Y/%m/%d-%X]",
-    handlers=[RichHandler(rich_tracebacks=True,
-                          omit_repeated_times=False,
-                          show_path=False,
-                          markup=True)])
-LOGGER.setLevel(logging.INFO)
+FORMATTER = logging.Formatter(fmt=_format,
+                              datefmt="[%Y/%m/%d-%X]",
+                              )
+
+HANDLER.setFormatter(FORMATTER)
+LOGGER.addHandler(HANDLER)
