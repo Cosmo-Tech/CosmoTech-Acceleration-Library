@@ -27,3 +27,4 @@ FORMATTER = logging.Formatter(fmt=_format,
 
 HANDLER.setFormatter(FORMATTER)
 LOGGER.addHandler(HANDLER)
+LOGGER.setLevel(logging.INFO)
