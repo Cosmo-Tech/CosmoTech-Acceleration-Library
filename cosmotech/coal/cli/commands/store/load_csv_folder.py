@@ -10,6 +10,7 @@ import pathlib
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help
 from cosmotech.coal.store.csv import store_csv_file
+from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
 
 
@@ -33,4 +34,4 @@ def load_csv_folder(store_folder, csv_folder):
     """Running this command will find all csvs in the given folder and put them in the store"""
     for csv_path in pathlib.Path(csv_folder).glob("*.csv"):
         LOGGER.info(f"Found {csv_path.name}, storing it")
-        store_csv_file(csv_path.name[:-4], csv_path)
+        store_csv_file(csv_path.name[:-4], csv_path, store=Store(False, store_folder))

@@ -9,9 +9,9 @@ import click_log
 from CosmoTech_Acceleration_Library import __version__
 from cosmotech.coal.cli.commands.adx_send_scenariodata import adx_send_scenariodata
 from cosmotech.coal.cli.commands.api.api import api
-from cosmotech.coal.cli.commands.store.store import store
 from cosmotech.coal.cli.commands.legacy.legacy import legacy
 from cosmotech.coal.cli.commands.s3_bucket_loader import s3_bucket_load
+from cosmotech.coal.cli.commands.store.store import store
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help
 from cosmotech.coal.utils.logger import LOGGER
@@ -22,7 +22,7 @@ def print_version(ctx, param, value):
         return
     click.echo(f"Cosmo Tech Data Interface {__version__}")
     ctx.exit()
-
+    
 
 @click.group("csm-data")
 @click_log.simple_verbosity_option(LOGGER,

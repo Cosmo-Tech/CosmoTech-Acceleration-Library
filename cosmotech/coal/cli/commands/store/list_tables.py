@@ -26,8 +26,8 @@ from cosmotech.coal.utils.logger import LOGGER
               type=bool,
               default=False)
 def list_tables(store_folder, schema):
-    """Running this command will reset the state of your store"""
-    _s = Store()
+    """Running this command will list the existing tables in your datastore"""
+    _s = Store(store_location=store_folder)
     tables = list(_s.list_tables())
     if len(tables):
         LOGGER.info("Data store contains the following tables")
