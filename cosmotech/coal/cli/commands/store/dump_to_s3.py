@@ -5,29 +5,38 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import pathlib
+from io import BytesIO
 from typing import Optional
 
 import boto3
+import pyarrow.csv as pc
+import pyarrow.parquet as pq
 
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
+
+VALID_TYPES = (
+    "sqlite",
+    "csv",
+    "parquet",
+)
 
 
 @click.command()
-@click.option("--source-folder",
-              envvar="CSM_DATASET_ABSOLUTE_PATH",
-              help="The folder/file to upload to the target bucket",
+@click.option("--store-folder",
+              envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
+              help="The folder containing the store files",
               metavar="PATH",
               type=str,
               show_envvar=True,
               required=True)
-@click.option("--recursive/--no-recursive",
-              default=False,
-              help="Recursively send the content of every folder inside the starting folder to the bucket",
-              type=bool,
-              is_flag=True)
+@click.option("--output-type",
+              default="sqlite",
+              help="Choose the type of file output to use",
+              type=click.Choice(VALID_TYPES,
+                                case_sensitive=False))
 @click.option("--bucket-name",
               envvar="CSM_DATA_BUCKET_NAME",
               help="The bucket on S3 to upload to",
@@ -78,21 +87,26 @@ from cosmotech.coal.utils.logger import LOGGER
               show_envvar=True,
               metavar="PATH",
               envvar="CSM_S3_CA_BUNDLE")
-@web_help("csm-data/s3-bucket-upload")
-def s3_bucket_upload(
-    source_folder,
+@web_help("csm-data/store/dump-to-s3")
+def dump_to_s3(
+    store_folder,
     bucket_name: str,
     endpoint_url: str,
     access_id: str,
     secret_key: str,
+    output_type: str,
     file_prefix: str = "",
     use_ssl: bool = True,
-    ssl_cert_bundle: Optional[str] = None,
-    recursive: bool = False
+    ssl_cert_bundle: Optional[str] = None
 ):
-    """Upload a folder to a S3 Bucket
+    """Dump a datastore to a S3
 
-Will upload everything from a given folder to a S3 bucket. If a single file is passed only it will be uploaded, and recursive will be ignored
+Will upload everything from a given data store to a S3 bucket.
+
+3 modes currently exists :
+  - sqlite : will dump the data store underlying database as is
+  - csv : will convert every table of the datastore to csv and send them as separate files
+  - parquet : will convert every table of the datastore to parquet and send them as separate files
 
 Giving a prefix will add it to every upload (finishing the prefix with a "/" will allow to upload in a folder inside the bucket)
 
@@ -101,10 +115,11 @@ Make use of the boto3 library to access the bucket
 More information is available on this page: 
 [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html)
 """
-    source_path = pathlib.Path(source_folder)
-    if not source_path.exists():
-        LOGGER.error(f"{source_folder} does not exists")
-        raise FileNotFoundError(f"{source_folder} does not exists")
+    _s = Store(store_location=store_folder)
+
+    if output_type not in VALID_TYPES:
+        LOGGER.error(f"{output_type} is not a valid type of output")
+        raise ValueError(f"{output_type} is not a valid type of output")
 
     boto3_parameters = {
         "use_ssl": use_ssl,
@@ -117,16 +132,31 @@ More information is available on this page:
 
     s3_client = boto3.client("s3", **boto3_parameters)
 
-    def file_upload(file_path: pathlib.Path, file_name: str):
+    def data_upload(data_stream: BytesIO, file_name: str):
         uploaded_file_name = file_prefix + file_name
-        LOGGER.info(f"Sending {file_path} as {uploaded_file_name}")
-        s3_client.upload_file(file_path, bucket_name, uploaded_file_name)
+        data_stream.seek(0)
+        size = len(data_stream.read())
+        data_stream.seek(0)
 
-    if source_path.is_dir():
-        _source_name = str(source_path)
-        for _file_path in source_path.glob("**/*" if recursive else "*"):
-            if _file_path.is_file():
-                _file_name = str(_file_path).removeprefix(_source_name).removeprefix("/")
-                file_upload(_file_path, _file_name)
+        LOGGER.info(f"  Sending {size} bytes of data")
+        s3_client.upload_fileobj(data_stream, bucket_name, uploaded_file_name)
+
+    if output_type == "sqlite":
+        _file_path = _s._database_path
+        _file_name = "db.sqlite"
+        _uploaded_file_name = file_prefix + _file_name
+        LOGGER.info(f"Sending {_file_path} as {_uploaded_file_name}")
+        s3_client.upload_file(_file_path, bucket_name, _uploaded_file_name)
     else:
-        file_upload(source_path, source_path.name)
+        tables = list(_s.list_tables())
+        for table_name in tables:
+            _data_stream = BytesIO()
+            _file_name = None
+            if output_type == "csv":
+                _file_name = table_name + ".csv"
+                pc.write_csv(_s.get_table(table_name), _data_stream)
+            elif output_type == "parquet":
+                _file_name = table_name + ".parquet"
+                pq.write_table(_s.get_table(table_name), _data_stream)
+            LOGGER.info(f"Sending table {table_name} as {output_type}")
+            data_upload(_data_stream, _file_name)
