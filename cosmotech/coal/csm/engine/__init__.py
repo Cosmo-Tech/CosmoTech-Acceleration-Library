@@ -1,17 +1,18 @@
 # Copyright (c) Cosmo Tech corporation.
 # Licensed under the MIT license.
-import os
 import csv
 import glob
 import json
-from . import parametersPath
+import os
 
 
-def apply_simple_csv_parameter_to_simulator(simulator,
-                                            parameter_name: str,
-                                            target_attribute_name: str,
-                                            csv_id_column: str = "id",
-                                            csv_value_column: str = "value"):
+def apply_simple_csv_parameter_to_simulator(
+    simulator,
+    parameter_name: str,
+    target_attribute_name: str,
+    csv_id_column: str = "id",
+    csv_value_column: str = "value"
+    ):
     """
     Accelerator used to apply CSV parameters directly to a simulator
     Will raise a ValueError if the parameter does not exist
@@ -23,7 +24,7 @@ def apply_simple_csv_parameter_to_simulator(simulator,
     :param csv_value_column: Column in the CSV file used for the attribute value to change
     :return: None
     """
-    parameter_path = os.path.join(parametersPath, parameter_name)
+    parameter_path = os.path.join(os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH"), parameter_name)
     if os.path.exists(parameter_path):
         csv_files = glob.glob(os.path.join(parameter_path, "*.csv"))
         for csv_filename in csv_files:
@@ -37,3 +38,6 @@ def apply_simple_csv_parameter_to_simulator(simulator,
                         entity.SetAttributeAsString(target_attribute_name, json.dumps(value))
     else:
         raise ValueError(f"Parameter {parameter_name} does not exists.")
+
+
+__all__ = [apply_simple_csv_parameter_to_simulator]
