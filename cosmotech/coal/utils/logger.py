@@ -25,7 +25,7 @@ if "PAILLETTES" in os.environ:
     _format = f"{paillettes} {_format} {paillettes}"
 
 FORMATTER = logging.Formatter(fmt=_format,
-                              datefmt="[%Y/%m/%d-%X]",
+                              datefmt="[%Y/%m/%d-%H:%M:%S]",
                               )
 
 HANDLER.setFormatter(FORMATTER)
