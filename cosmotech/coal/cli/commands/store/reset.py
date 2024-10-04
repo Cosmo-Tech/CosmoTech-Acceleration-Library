@@ -22,5 +22,5 @@ from cosmotech.coal.utils.logger import LOGGER
               required=True)
 def reset(store_folder):
     """Running this command will reset the state of your store"""
-    Store().reset()
+    Store(True, store_folder)
     LOGGER.info(f"Data store in {store_folder} got reset")

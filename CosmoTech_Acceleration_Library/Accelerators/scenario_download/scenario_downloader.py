@@ -19,10 +19,7 @@ from cosmotech_api import DatasetTwinGraphQuery
 from cosmotech_api import TwinGraphQuery
 from openpyxl import load_workbook
 
-from CosmoTech_Acceleration_Library.Accelerators.utils.multi_environment import MultiEnvironment
 from cosmotech.coal.cosmotech_api.connection import get_api_client
-
-env = MultiEnvironment()
 
 
 def get_content_from_twin_graph_data(nodes, relationships, restore_names=False):

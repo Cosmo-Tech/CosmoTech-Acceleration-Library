@@ -9,12 +9,15 @@ import logging
 import os
 
 from rich.logging import RichHandler
+from rich.highlighter import NullHighlighter
 
 LOGGER = logging.getLogger("csm.data")
+HIGLIGHTER = NullHighlighter()
 HANDLER = RichHandler(rich_tracebacks=True,
                       omit_repeated_times=False,
                       show_path=False,
-                      markup=True)
+                      markup=True,
+                      highlighter=HIGLIGHTER)
 _format = "%(message)s"
 
 if "PAILLETTES" in os.environ:
@@ -22,7 +25,7 @@ if "PAILLETTES" in os.environ:
     _format = f"{paillettes} {_format} {paillettes}"
 
 FORMATTER = logging.Formatter(fmt=_format,
-                              datefmt="[%Y/%m/%d-%X]",
+                              datefmt="[%Y/%m/%d-%H:%M:%S]",
                               )
 
 HANDLER.setFormatter(FORMATTER)

@@ -3,19 +3,23 @@ import pathlib
 
 import pyarrow
 from adbc_driver_sqlite import dbapi
-from cosmotech.orchestrator.utils.singleton import Singleton
 
 from cosmotech.coal.utils.logger import LOGGER
 
 
-class Store(metaclass=Singleton):
+class Store:
 
     @staticmethod
     def sanitize_column(column_name: str) -> str:
         return column_name.replace(" ", "_").lower()
 
-    def __init__(self, reset=False):
-        self.store_location = pathlib.Path(os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH", ".")) / ".coal/store"
+    def __init__(
+        self,
+        reset=False,
+        store_location: pathlib.Path = pathlib.Path(os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH",
+                                                                   "."))
+    ):
+        self.store_location = pathlib.Path(store_location) / ".coal/store"
         self.store_location.mkdir(parents=True, exist_ok=True)
         self._tables = dict()
         self._database_path = self.store_location / "db.sqlite"
