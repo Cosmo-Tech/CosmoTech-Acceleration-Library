@@ -1,6 +1,20 @@
 # CosmoTech-Acceleration-Library
 Acceleration library for CosmoTech cloud based solution development
 
+## csm-data
+
+`csm-data` is a CLI made to give CosmoTech solution modelers and integrators accelerators to start interacting with multiple systems.
+
+It gives a first entrypoint to get ready to use commands to send and retrieve data from a number of systems in which a Cosmo Tech API could be integrated
+
+## data-store
+
+The data store gives a way to keep local data during simulations and comes with `csm-data` commands to easily send those data to a target system allowing to easily send results anywhere.
+
+
+# Legacy part
+The following description is tied to the legacy part of CoAL that is getting slowly moved to the new code organization before a 1.0.0 release
+
 ## Code organisation
 
 In project root directory you'll find 4 main directories:

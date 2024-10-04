@@ -80,6 +80,11 @@ def dump_to_postgresql(
     """Running this command will dump your store to a given postgresql database
     
     Tables names from the store will be prepended with table-prefix in target database
+    
+    The postgresql user must have USAGE granted on the schema for this script to work due to the use of the command `COPY FROM STDIN`
+    
+    You can simply give him that grant by running the command :
+    `GRANT USAGE ON SCHEMA <schema> TO <username>`
     """
     _s = Store(store_location=store_folder)
 
