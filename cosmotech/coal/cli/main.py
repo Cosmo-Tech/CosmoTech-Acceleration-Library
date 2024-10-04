@@ -10,7 +10,7 @@ from CosmoTech_Acceleration_Library import __version__
 from cosmotech.coal.cli.commands.adx_send_scenariodata import adx_send_scenariodata
 from cosmotech.coal.cli.commands.api.api import api
 from cosmotech.coal.cli.commands.legacy.legacy import legacy
-from cosmotech.coal.cli.commands.s3_bucket_loader import s3_bucket_load
+from cosmotech.coal.cli.commands.s3_bucket_download import s3_bucket_download
 from cosmotech.coal.cli.commands.s3_bucket_upload import s3_bucket_upload
 from cosmotech.coal.cli.commands.store.store import store
 from cosmotech.coal.cli.utils.click import click
@@ -47,7 +47,7 @@ Command toolkit provinding quick implementation of data connections to use insid
 main.add_command(api, "api")
 main.add_command(legacy, "legacy")
 main.add_command(store, "store")
-main.add_command(s3_bucket_load, "s3-bucket-load")
+main.add_command(s3_bucket_download, "s3-bucket-download")
 main.add_command(s3_bucket_upload, "s3-bucket-upload")
 main.add_command(adx_send_scenariodata, "adx-send-scenariodata")
 

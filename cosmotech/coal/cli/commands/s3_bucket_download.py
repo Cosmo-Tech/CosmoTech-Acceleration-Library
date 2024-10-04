@@ -30,7 +30,7 @@ from cosmotech.coal.utils.logger import LOGGER
               type=str,
               show_envvar=True,
               required=True)
-@click.option("--prefix",
+@click.option("--prefix-filter",
               "file_prefix",
               envvar="CSM_DATA_BUCKET_PREFIX",
               help="A prefix by which all downloaded files should start in the bucket",
@@ -72,8 +72,8 @@ from cosmotech.coal.utils.logger import LOGGER
               show_envvar=True,
               metavar="PATH",
               envvar="CSM_S3_CA_BUNDLE")
-@web_help("csm-data/s3-bucket-load")
-def s3_bucket_load(
+@web_help("csm-data/s3-bucket-download")
+def s3_bucket_download(
     target_folder: str,
     bucket_name: str,
     file_prefix: str,
@@ -85,7 +85,7 @@ def s3_bucket_load(
 ):
     """Download S3 bucket content to a given folder
 
-Will download everything in the bucket unless a prefix is set, then only file following the given preix will be downloaded
+Will download everything in the bucket unless a prefix is set, then only file following the given prefix will be downloaded
 
 Make use of the boto3 library to access the bucket
 
