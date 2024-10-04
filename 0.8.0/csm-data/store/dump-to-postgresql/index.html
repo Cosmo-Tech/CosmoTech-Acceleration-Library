@@ -2591,6 +2591,12 @@
  Tables names from the store will be prepended with table-prefix in target      
  database                                                                       
 
+ The postgresql user must have USAGE granted on the schema for this script to   
+ work due to the use of the command COPY FROM STDIN                             
+
+ You can simply give him that grant by running the command : GRANT USAGE ON     
+ SCHEMA &lt;schema&gt; TO &lt;username&gt;                                                  
+
 ╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
 │ *  --store-folder         PATH     The folder containing the store files     │
 │                                    ENV: CSM_PARAMETERS_ABSOLUTE_PATH         │
