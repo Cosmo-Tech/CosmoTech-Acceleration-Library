@@ -6,32 +6,32 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Acceleration library for CosmoTech cloud based solution development">
+        <meta name="description" content="Command help: `csm-data s3-bucket-upload`">
       
       
       
-        <link rel="canonical" href="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/references/Accelerators/csm_engine/">
+        <link rel="canonical" href="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/csm-data/s3-bucket-upload/">
       
       
-        <link rel="prev" href="../adx_wrapper/">
+        <link rel="prev" href="../s3-bucket-download/">
       
       
-        <link rel="next" href="../scenario_download/azure_function_main/">
+        <link rel="next" href="../api/">
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.18">
     
     
       
-        <title>csm_engine - Cosmotech Acceleration Library Docs</title>
+        <title>s3-bucket-upload - Cosmotech Acceleration Library Docs</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.66ac8b77.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.66ac8b77.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -50,13 +50,13 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-      <link rel="stylesheet" href="../../../stylesheets/templates.css">
+      <link rel="stylesheet" href="../../stylesheets/templates.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -65,11 +65,11 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="csm_engine - Cosmotech Acceleration Library Docs" >
+        <meta  property="og:title"  content="s3-bucket-upload - Cosmotech Acceleration Library Docs" >
       
-        <meta  property="og:description"  content="Acceleration library for CosmoTech cloud based solution development" >
+        <meta  property="og:description"  content="Command help: `csm-data s3-bucket-upload`" >
       
-        <meta  property="og:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/assets/images/social/references/Accelerators/csm_engine.png" >
+        <meta  property="og:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/assets/images/social/csm-data/s3-bucket-upload.png" >
       
         <meta  property="og:image:type"  content="image/png" >
       
@@ -77,15 +77,15 @@
       
         <meta  property="og:image:height"  content="630" >
       
-        <meta  property="og:url"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/references/Accelerators/csm_engine/" >
+        <meta  property="og:url"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/csm-data/s3-bucket-upload/" >
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="csm_engine - Cosmotech Acceleration Library Docs" >
+        <meta  name="twitter:title"  content="s3-bucket-upload - Cosmotech Acceleration Library Docs" >
       
-        <meta  name="twitter:description"  content="Acceleration library for CosmoTech cloud based solution development" >
+        <meta  name="twitter:description"  content="Command help: `csm-data s3-bucket-upload`" >
       
-        <meta  name="twitter:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/assets/images/social/references/Accelerators/csm_engine.png" >
+        <meta  name="twitter:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/assets/images/social/csm-data/s3-bucket-upload.png" >
       
     
     
@@ -108,7 +108,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cosmotech_acceleration_libraryacceleratorscsm_engine" class="md-skip">
+        <a href="#s3-bucket-upload" class="md-skip">
           Skip to content
         </a>
       
@@ -128,9 +128,9 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="Cosmotech Acceleration Library Docs" class="md-header__button md-logo" aria-label="Cosmotech Acceleration Library Docs" data-md-component="logo">
+    <a href="../.." title="Cosmotech Acceleration Library Docs" class="md-header__button md-logo" aria-label="Cosmotech Acceleration Library Docs" data-md-component="logo">
       
-  <img src="../../../assets/logo.png" alt="logo">
+  <img src="../../assets/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -147,7 +147,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              csm_engine
+              s3-bucket-upload
             
           </span>
         </div>
@@ -248,7 +248,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../.." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -267,7 +267,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../dependencies/" class="md-tabs__link">
+        <a href="../../dependencies/" class="md-tabs__link">
           
   
     
@@ -287,7 +287,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../tutorials/" class="md-tabs__link">
+        <a href="../../tutorials/" class="md-tabs__link">
           
   
     
@@ -303,7 +303,11 @@
         
   
   
+  
     
+    
+      
+  
   
   
     
@@ -311,21 +315,11 @@
       
   
   
-    
-  
   
     
     
-      
-  
-  
-    
-  
-  
-    
-    
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../cosmo_api/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../references/Accelerators/adx_wrapper/" class="md-tabs__link">
           
   
     
@@ -347,11 +341,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../../csm-data/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
     
@@ -381,6 +377,8 @@
           
             
               
+                
+              
               <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -392,9 +390,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="Cosmotech Acceleration Library Docs" class="md-nav__button md-logo" aria-label="Cosmotech Acceleration Library Docs" data-md-component="logo">
+    <a href="../.." title="Cosmotech Acceleration Library Docs" class="md-nav__button md-logo" aria-label="Cosmotech Acceleration Library Docs" data-md-component="logo">
       
-  <img src="../../../assets/logo.png" alt="logo">
+  <img src="../../assets/logo.png" alt="logo">
 
     </a>
     Cosmotech Acceleration Library Docs
@@ -421,7 +419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -487,7 +485,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../dependencies/" class="md-nav__link">
+      <a href="../../dependencies/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -544,7 +542,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../tutorials/" class="md-nav__link ">
+            <a href="../../tutorials/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -577,7 +575,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorials/csm-data/" class="md-nav__link">
+      <a href="../../tutorials/csm-data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -598,7 +596,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorials/datastore/" class="md-nav__link">
+      <a href="../../tutorials/datastore/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -623,10 +621,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -635,22 +631,21 @@
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -661,7 +656,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             References
@@ -672,10 +667,8 @@
                 
   
   
-    
   
   
-  
     
     
       
@@ -687,21 +680,20 @@
     
       
       
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
         
           
-          
         
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
         
           
-          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -712,7 +704,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_1">
             <span class="md-nav__icon md-icon"></span>
             References
@@ -723,18 +715,10 @@
                 
   
   
-    
   
   
-  
     
     
-      
-        
-      
-        
-      
-        
       
         
       
@@ -748,11 +732,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_1" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_1" >
         
           
           <label class="md-nav__link" for="__nav_4_1_1" id="__nav_4_1_1_label" tabindex="0">
@@ -766,7 +752,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_1_1">
             <span class="md-nav__icon md-icon"></span>
             Accelerators
@@ -780,28 +766,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cosmo_api/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    cosmo_api
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../adx_wrapper/" class="md-nav__link">
+      <a href="../../references/Accelerators/adx_wrapper/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -810,93 +775,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    csm_engine
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    csm_engine
-  </span>
-  
-
-      </a>
-      
-        
-
-  
-
-<nav class="md-nav md-nav--secondary" aria-label="In this page">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      In this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#CosmoTech_Acceleration_Library.Accelerators.csm_engine" class="md-nav__link">
-    <span class="md-ellipsis">
-      csm_engine
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="csm_engine">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#CosmoTech_Acceleration_Library.Accelerators.csm_engine.apply_simple_csv_parameter_to_simulator" class="md-nav__link">
-    <span class="md-ellipsis">
-      apply_simple_csv_parameter_to_simulator
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -931,10 +809,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_1_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_1_2" >
         
           
-          <label class="md-nav__link" for="__nav_4_1_1_4" id="__nav_4_1_1_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_1_1_2" id="__nav_4_1_1_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -945,8 +823,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_1_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_1_1_4">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_1_2">
             <span class="md-nav__icon md-icon"></span>
             scenario_download
           </label>
@@ -959,7 +837,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../scenario_download/azure_function_main/" class="md-nav__link">
+      <a href="../../references/Accelerators/scenario_download/azure_function_main/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -980,7 +858,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../scenario_download/scenario_downloader_test/" class="md-nav__link">
+      <a href="../../references/Accelerators/scenario_download/scenario_downloader_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1001,86 +879,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../scenario_download/scenario_downloader/" class="md-nav__link">
+      <a href="../../references/Accelerators/scenario_download/scenario_downloader/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     scenario_downloader
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-      
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_1_5" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_1_1_5" id="__nav_4_1_1_5_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    utils
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_1_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_1_1_5">
-            <span class="md-nav__icon md-icon"></span>
-            utils
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../utils/multi_environment/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    multi_environment
   </span>
   
 
@@ -1263,7 +1066,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/io/model_reader/" class="md-nav__link">
+      <a href="../../references/Modelops/core/io/model_reader/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1284,7 +1087,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/io/model_writer/" class="md-nav__link">
+      <a href="../../references/Modelops/core/io/model_writer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1305,7 +1108,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/io/model_importer/" class="md-nav__link">
+      <a href="../../references/Modelops/core/io/model_importer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1326,7 +1129,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/io/model_exporter/" class="md-nav__link">
+      <a href="../../references/Modelops/core/io/model_exporter/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1401,7 +1204,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/tests/redis_test/" class="md-nav__link">
+      <a href="../../references/Modelops/core/tests/redis_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1478,7 +1281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/utils/model_util/" class="md-nav__link">
+      <a href="../../references/Modelops/core/utils/model_util/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1545,7 +1348,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/utils/tests/model_util_test/" class="md-nav__link">
+      <a href="../../references/Modelops/core/utils/tests/model_util_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1632,7 +1435,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/common/redis_handler/" class="md-nav__link">
+      <a href="../../references/Modelops/core/common/redis_handler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1653,7 +1456,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/common/graph_handler/" class="md-nav__link">
+      <a href="../../references/Modelops/core/common/graph_handler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1720,7 +1523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/common/writer/CsvWriter/" class="md-nav__link">
+      <a href="../../references/Modelops/core/common/writer/CsvWriter/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1785,6 +1588,8 @@
       
   
   
+    
+  
   
   
     
@@ -1804,26 +1609,29 @@
       
         
       
+        
+      
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../csm-data/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1834,13 +1642,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             csm-data
@@ -1856,7 +1664,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/adx-send-scenariodata/" class="md-nav__link">
+      <a href="../adx-send-scenariodata/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1877,15 +1685,46 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/s3-bucket-load/" class="md-nav__link">
+      <a href="../s3-bucket-download/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    s3-bucket-load
+    s3-bucket-download
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    s3-bucket-upload
+  </span>
+  
+
+      </a>
+      
     </li>
   
 
@@ -1929,21 +1768,24 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_5" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../csm-data/api/" class="md-nav__link ">
+            <a href="../api/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1954,14 +1796,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
             <span class="md-nav__icon md-icon"></span>
             Api
           </label>
@@ -1976,7 +1818,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/rds-load-csv/" class="md-nav__link">
+      <a href="../api/rds-load-csv/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1997,7 +1839,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/rds-send-csv/" class="md-nav__link">
+      <a href="../api/rds-send-csv/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2018,7 +1860,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/rds-send-store/" class="md-nav__link">
+      <a href="../api/rds-send-store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2039,7 +1881,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/run-load-data/" class="md-nav__link">
+      <a href="../api/run-load-data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2060,7 +1902,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/runtemplate-load-handler/" class="md-nav__link">
+      <a href="../api/runtemplate-load-handler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2081,7 +1923,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/scenariorun-load-data/" class="md-nav__link">
+      <a href="../api/scenariorun-load-data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2102,7 +1944,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/tdl-load-files/" class="md-nav__link">
+      <a href="../api/tdl-load-files/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2123,7 +1965,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/tdl-send-files/" class="md-nav__link">
+      <a href="../api/tdl-send-files/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2144,7 +1986,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/wsf-load-file/" class="md-nav__link">
+      <a href="../api/wsf-load-file/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2165,7 +2007,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/wsf-send-file/" class="md-nav__link">
+      <a href="../api/wsf-send-file/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2209,21 +2051,24 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_5" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_6" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../csm-data/legacy/" class="md-nav__link ">
+            <a href="../legacy/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2234,14 +2079,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_6" id="__nav_5_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6">
             <span class="md-nav__icon md-icon"></span>
             Legacy
           </label>
@@ -2280,12 +2125,12 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_5_2" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_6_2" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../csm-data/legacy/generate-orchestrator/" class="md-nav__link ">
+            <a href="../legacy/generate-orchestrator/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2296,14 +2141,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_5_2" id="__nav_5_5_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_6_2" id="__nav_5_6_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6_2">
             <span class="md-nav__icon md-icon"></span>
             Generate orchestrator
           </label>
@@ -2318,7 +2163,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/legacy/generate-orchestrator/from-api/" class="md-nav__link">
+      <a href="../legacy/generate-orchestrator/from-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2339,7 +2184,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/legacy/generate-orchestrator/from-file/" class="md-nav__link">
+      <a href="../legacy/generate-orchestrator/from-file/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2392,12 +2237,12 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_5_3" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_6_3" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../csm-data/legacy/init-local-parameter-folder/" class="md-nav__link ">
+            <a href="../legacy/init-local-parameter-folder/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2408,14 +2253,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_5_3" id="__nav_5_5_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_6_3" id="__nav_5_6_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5_3">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6_3">
             <span class="md-nav__icon md-icon"></span>
             Init local parameter folder
           </label>
@@ -2430,7 +2275,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/legacy/init-local-parameter-folder/cloud/" class="md-nav__link">
+      <a href="../legacy/init-local-parameter-folder/cloud/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2451,7 +2296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/legacy/init-local-parameter-folder/solution/" class="md-nav__link">
+      <a href="../legacy/init-local-parameter-folder/solution/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2502,26 +2347,33 @@
       
         
       
-    
-    
-      
+        
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_6" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_7" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../csm-data/store/" class="md-nav__link ">
+            <a href="../store/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2532,14 +2384,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_7" id="__nav_5_7_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_7">
             <span class="md-nav__icon md-icon"></span>
             Store
           </label>
@@ -2554,7 +2406,49 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/store/list-tables/" class="md-nav__link">
+      <a href="../store/dump-to-postgresql/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    dump-to-postgresql
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../store/dump-to-s3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    dump-to-s3
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../store/list-tables/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2575,7 +2469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/store/load-csv-folder/" class="md-nav__link">
+      <a href="../store/load-csv-folder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2596,7 +2490,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/store/rds-send-store/" class="md-nav__link">
+      <a href="../store/rds-send-store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2617,7 +2511,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/store/reset/" class="md-nav__link">
+      <a href="../store/reset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2654,7 +2548,9 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -2668,38 +2564,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      In this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#CosmoTech_Acceleration_Library.Accelerators.csm_engine" class="md-nav__link">
-    <span class="md-ellipsis">
-      csm_engine
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="csm_engine">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#CosmoTech_Acceleration_Library.Accelerators.csm_engine.apply_simple_csv_parameter_to_simulator" class="md-nav__link">
-    <span class="md-ellipsis">
-      apply_simple_csv_parameter_to_simulator
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -2712,128 +2576,64 @@
                 
                   
 
-
-<h1 id="cosmotech_acceleration_libraryacceleratorscsm_engine">CosmoTech_Acceleration_Library.Accelerators.csm_engine<a class="headerlink" href="#cosmotech_acceleration_libraryacceleratorscsm_engine" title="Permanent link">&para;</a></h1>
-
-
-<div class="doc doc-object doc-module">
+  
+  
 
 
+<h1 id="s3-bucket-upload">s3-bucket-upload<a class="headerlink" href="#s3-bucket-upload" title="Permanent link">&para;</a></h1>
+<div class="admonition info">
+<p class="admonition-title">Help command</p>
+<div class="highlight"><pre><span></span><code>&gt; csm-data s3-bucket-upload --help
 
-<h2 id="CosmoTech_Acceleration_Library.Accelerators.csm_engine" class="doc doc-heading">
-            <code>csm_engine</code>
+ Usage: csm-data s3-bucket-upload [OPTIONS]                                     
 
+ Upload a folder to a S3 Bucket                                                 
+ Will upload everything from a given folder to a S3 bucket. If a single file is 
+ passed only it will be uploaded, and recursive will be ignored                 
 
-<a href="#CosmoTech_Acceleration_Library.Accelerators.csm_engine" class="headerlink" title="Permanent link">&para;</a></h2>
+ Giving a prefix will add it to every upload (finishing the prefix with a &quot;/&quot;   
+ will allow to upload in a folder inside the bucket)                            
 
-    <div class="doc doc-contents first">
+ Make use of the boto3 library to access the bucket                             
 
+ More information is available on this page:                                    
+ d=184565;https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html\https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.ht]8;;\ 
+ d=184565;https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html\ml]8;;\                                                                             
 
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="CosmoTech_Acceleration_Library.Accelerators.csm_engine.apply_simple_csv_parameter_to_simulator" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">apply_simple_csv_parameter_to_simulator</span><span class="p">(</span><span class="n">simulator</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">target_attribute_name</span><span class="p">,</span> <span class="n">csv_id_column</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">csv_value_column</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">)</span></code>
-
-<a href="#CosmoTech_Acceleration_Library.Accelerators.csm_engine.apply_simple_csv_parameter_to_simulator" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-      <p>Accelerator used to apply CSV parameters directly to a simulator
-Will raise a ValueError if the parameter does not exist
-If an entity is not found, will skip the row in the CSV
-:param simulator: The simulator object to which the parameter will be applied
-:param parameter_name: The name of the parameter fetched from the API
-:param target_attribute_name: Target attribute of the entities listed in the CSV
-:param csv_id_column: Column in the CSV file used for the entity ID
-:param csv_value_column: Column in the CSV file used for the attribute value to change
-:return: None</p>
-
-            <details class="quote">
-              <summary>Source code in <code>CosmoTech_Acceleration_Library/Accelerators/csm_engine.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">apply_simple_csv_parameter_to_simulator</span><span class="p">(</span><span class="n">simulator</span><span class="p">,</span>
-                                            <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                                            <span class="n">target_attribute_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                                            <span class="n">csv_id_column</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span>
-                                            <span class="n">csv_value_column</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Accelerator used to apply CSV parameters directly to a simulator</span>
-<span class="sd">    Will raise a ValueError if the parameter does not exist</span>
-<span class="sd">    If an entity is not found, will skip the row in the CSV</span>
-<span class="sd">    :param simulator: The simulator object to which the parameter will be applied</span>
-<span class="sd">    :param parameter_name: The name of the parameter fetched from the API</span>
-<span class="sd">    :param target_attribute_name: Target attribute of the entities listed in the CSV</span>
-<span class="sd">    :param csv_id_column: Column in the CSV file used for the entity ID</span>
-<span class="sd">    :param csv_value_column: Column in the CSV file used for the attribute value to change</span>
-<span class="sd">    :return: None</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parameter_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parametersPath</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">parameter_path</span><span class="p">):</span>
-        <span class="n">csv_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parameter_path</span><span class="p">,</span> <span class="s2">&quot;*.csv&quot;</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">csv_filename</span> <span class="ow">in</span> <span class="n">csv_files</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">GetModel</span><span class="p">()</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">csv_filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">):</span>
-                    <span class="n">entity_name</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">csv_id_column</span><span class="p">)</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">csv_value_column</span><span class="p">))</span>
-                    <span class="n">entity</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">FindEntityByName</span><span class="p">(</span><span class="n">entity_name</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">entity</span><span class="p">:</span>
-                        <span class="n">entity</span><span class="o">.</span><span class="n">SetAttributeAsString</span><span class="p">(</span><span class="n">target_attribute_name</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="n">parameter_name</span><span class="si">}</span><span class="s2"> does not exists.&quot;</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-
-
-  </div>
-
-    </div>
-
+╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
+│ *  --source-folder               PATH    The folder/file to upload to the    │
+│                                          target bucket                       │
+│                                          ENV: CSM_DATASET_ABSOLUTE_PATH      │
+│                                          [required]                          │
+│    --recursive/--no-recursive            Recursively send the content of     │
+│                                          every folder inside the starting    │
+│                                          folder to the bucket                │
+│ *  --bucket-name                 BUCKET  The bucket on S3 to upload to       │
+│                                          ENV: CSM_DATA_BUCKET_NAME           │
+│                                          [required]                          │
+│    --prefix                      PREFIX  A prefix by which all uploaded      │
+│                                          files should start with in the      │
+│                                          bucket                              │
+│                                          ENV: CSM_DATA_BUCKET_PREFIX         │
+│    --use-ssl/--no-ssl                    Use SSL to secure connection to S3  │
+│ *  --s3-url                      URL     URL to connect to the S3 system     │
+│                                          ENV: AWS_ENDPOINT_URL               │
+│                                          [required]                          │
+│ *  --access-id                   ID      Identity used to connect to the S3  │
+│                                          system                              │
+│                                          ENV: AWS_ACCESS_KEY_ID              │
+│                                          [required]                          │
+│ *  --secret-key                  ID      Secret tied to the ID used to       │
+│                                          connect to the S3 system            │
+│                                          ENV: AWS_SECRET_ACCESS_KEY          │
+│                                          [required]                          │
+│    --ssl-cert-bundle             PATH    Path to an alternate CA Bundle to   │
+│                                          validate SSL connections            │
+│                                          ENV: CSM_S3_CA_BUNDLE               │
+│    --web-help                            Open the web documentation          │
+│    --help                                Show this message and exit.         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+</code></pre></div>
 </div>
 
 
@@ -2847,6 +2647,8 @@ If an entity is not found, will skip the row in the CSV
 
 
 
+
+  
 
 
 
@@ -2870,10 +2672,12 @@ If an entity is not found, will skip the row in the CSV
   
     
       
+        
+      
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../adx_wrapper/" class="md-footer__link md-footer__link--prev" aria-label="Previous: adx_wrapper">
+          <a href="../s3-bucket-download/" class="md-footer__link md-footer__link--prev" aria-label="Previous: s3-bucket-download">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -2883,20 +2687,20 @@ If an entity is not found, will skip the row in the CSV
                 Previous
               </span>
               <div class="md-ellipsis">
-                adx_wrapper
+                s3-bucket-download
               </div>
             </div>
           </a>
         
         
           
-          <a href="../scenario_download/azure_function_main/" class="md-footer__link md-footer__link--next" aria-label="Next: azure_function_main">
+          <a href="../api/" class="md-footer__link md-footer__link--next" aria-label="Next: api">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                azure_function_main
+                api
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2911,11 +2715,14 @@ If an entity is not found, will skip the row in the CSV
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
-  
-  Made by
-  <a href="https://cosmotech.com/" target="_blank" rel="noopener">
-    Cosmotech
-  </a>
+    
+    Made by
+    <a href="https://cosmotech.com/" target="_blank" rel="noopener">
+        Cosmotech
+    </a>
+    <br/>
+    <br/>
+    <a href="#__consent">Change cookie settings</a>
 </div>
       
     </div>
@@ -2928,14 +2735,71 @@ If an entity is not found, will skip the row in the CSV
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.code.annotate", "content.tooltips", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.top", "navigation.indexes", "navigation.instant", "navigation.footer", "navigation.sections"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+  
+    
+  
+
+
+
+  
+
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences, as well as to measure the effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="github" checked>
+          <span class="task-list-indicator"></span>
+          GitHub
+        </label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
     
     
-      <script src="../../../assets/javascripts/bundle.3220b9d7.min.js"></script>
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Manage settings</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.annotate", "content.tooltips", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.top", "navigation.indexes", "navigation.instant", "navigation.footer", "navigation.sections"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.3220b9d7.min.js"></script>
       
         <script src="https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js"></script>
       
-        <script src="../../../javascript/tablesort.js"></script>
+        <script src="../../javascript/tablesort.js"></script>
       
     
   </body>

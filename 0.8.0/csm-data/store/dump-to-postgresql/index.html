@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Acceleration library for CosmoTech cloud based solution development">
+        <meta name="description" content="Command help: `csm-data store dump-to-postgresql`">
       
       
       
-        <link rel="canonical" href="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/references/Accelerators/cosmo_api/">
+        <link rel="canonical" href="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/csm-data/store/dump-to-postgresql/">
       
       
-        <link rel="prev" href="../../../tutorials/datastore/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../adx_wrapper/">
+        <link rel="next" href="../dump-to-s3/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>cosmo_api - Cosmotech Acceleration Library Docs</title>
+        <title>dump-to-postgresql - Cosmotech Acceleration Library Docs</title>
       
     
     
@@ -65,11 +65,11 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="cosmo_api - Cosmotech Acceleration Library Docs" >
+        <meta  property="og:title"  content="dump-to-postgresql - Cosmotech Acceleration Library Docs" >
       
-        <meta  property="og:description"  content="Acceleration library for CosmoTech cloud based solution development" >
+        <meta  property="og:description"  content="Command help: `csm-data store dump-to-postgresql`" >
       
-        <meta  property="og:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/assets/images/social/references/Accelerators/cosmo_api.png" >
+        <meta  property="og:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/assets/images/social/csm-data/store/dump-to-postgresql.png" >
       
         <meta  property="og:image:type"  content="image/png" >
       
@@ -77,15 +77,15 @@
       
         <meta  property="og:image:height"  content="630" >
       
-        <meta  property="og:url"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/references/Accelerators/cosmo_api/" >
+        <meta  property="og:url"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/csm-data/store/dump-to-postgresql/" >
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="cosmo_api - Cosmotech Acceleration Library Docs" >
+        <meta  name="twitter:title"  content="dump-to-postgresql - Cosmotech Acceleration Library Docs" >
       
-        <meta  name="twitter:description"  content="Acceleration library for CosmoTech cloud based solution development" >
+        <meta  name="twitter:description"  content="Command help: `csm-data store dump-to-postgresql`" >
       
-        <meta  name="twitter:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/assets/images/social/references/Accelerators/cosmo_api.png" >
+        <meta  name="twitter:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.0/assets/images/social/csm-data/store/dump-to-postgresql.png" >
       
     
     
@@ -108,7 +108,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cosmotech_acceleration_libraryacceleratorscosmo_api" class="md-skip">
+        <a href="#dump-to-postgresql" class="md-skip">
           Skip to content
         </a>
       
@@ -147,7 +147,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              cosmo_api
+              dump-to-postgresql
             
           </span>
         </div>
@@ -303,7 +303,11 @@
         
   
   
+  
     
+    
+      
+  
   
   
     
@@ -311,21 +315,11 @@
       
   
   
-    
-  
   
     
     
-      
-  
-  
-    
-  
-  
-    
-    
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../../references/Accelerators/adx_wrapper/" class="md-tabs__link">
           
   
     
@@ -347,11 +341,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../../csm-data/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
           
   
     
@@ -380,6 +376,8 @@
         <div class="md-main__inner md-grid">
           
             
+              
+                
               
               <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
@@ -623,10 +621,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -635,22 +631,21 @@
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -661,7 +656,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             References
@@ -672,10 +667,8 @@
                 
   
   
-    
   
   
-  
     
     
       
@@ -687,21 +680,20 @@
     
       
       
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
         
           
-          
         
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
         
           
-          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -712,7 +704,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_1">
             <span class="md-nav__icon md-icon"></span>
             References
@@ -723,18 +715,10 @@
                 
   
   
-    
   
   
-  
     
     
-      
-        
-      
-        
-      
-        
       
         
       
@@ -748,11 +732,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_1" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_1" >
         
           
           <label class="md-nav__link" for="__nav_4_1_1" id="__nav_4_1_1_label" tabindex="0">
@@ -766,7 +752,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_1_1">
             <span class="md-nav__icon md-icon"></span>
             Accelerators
@@ -777,140 +763,14 @@
                 
   
   
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    cosmo_api
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    cosmo_api
-  </span>
-  
-
-      </a>
-      
-        
-
-  
-
-<nav class="md-nav md-nav--secondary" aria-label="In this page">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      In this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#CosmoTech_Acceleration_Library.Accelerators.cosmo_api" class="md-nav__link">
-    <span class="md-ellipsis">
-      cosmo_api
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="cosmo_api">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#CosmoTech_Acceleration_Library.Accelerators.cosmo_api.get_current_scenario_data" class="md-nav__link">
-    <span class="md-ellipsis">
-      get_current_scenario_data
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#CosmoTech_Acceleration_Library.Accelerators.cosmo_api.send_dataframe_to_api" class="md-nav__link">
-    <span class="md-ellipsis">
-      send_dataframe_to_api
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#CosmoTech_Acceleration_Library.Accelerators.cosmo_api.send_file_to_api" class="md-nav__link">
-    <span class="md-ellipsis">
-      send_file_to_api
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
   
   
     <li class="md-nav__item">
-      <a href="../adx_wrapper/" class="md-nav__link">
+      <a href="../../../references/Accelerators/adx_wrapper/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     adx_wrapper
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../csm_engine/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    csm_engine
   </span>
   
 
@@ -949,10 +809,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_1_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_1_2" >
         
           
-          <label class="md-nav__link" for="__nav_4_1_1_4" id="__nav_4_1_1_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_1_1_2" id="__nav_4_1_1_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -963,8 +823,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_1_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_1_1_4">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_1_2">
             <span class="md-nav__icon md-icon"></span>
             scenario_download
           </label>
@@ -977,7 +837,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../scenario_download/azure_function_main/" class="md-nav__link">
+      <a href="../../../references/Accelerators/scenario_download/azure_function_main/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -998,7 +858,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../scenario_download/scenario_downloader_test/" class="md-nav__link">
+      <a href="../../../references/Accelerators/scenario_download/scenario_downloader_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1019,86 +879,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../scenario_download/scenario_downloader/" class="md-nav__link">
+      <a href="../../../references/Accelerators/scenario_download/scenario_downloader/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     scenario_downloader
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-      
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_1_5" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_1_1_5" id="__nav_4_1_1_5_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    utils
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_1_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_1_1_5">
-            <span class="md-nav__icon md-icon"></span>
-            utils
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../utils/multi_environment/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    multi_environment
   </span>
   
 
@@ -1281,7 +1066,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/io/model_reader/" class="md-nav__link">
+      <a href="../../../references/Modelops/core/io/model_reader/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1302,7 +1087,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/io/model_writer/" class="md-nav__link">
+      <a href="../../../references/Modelops/core/io/model_writer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1323,7 +1108,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/io/model_importer/" class="md-nav__link">
+      <a href="../../../references/Modelops/core/io/model_importer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1344,7 +1129,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/io/model_exporter/" class="md-nav__link">
+      <a href="../../../references/Modelops/core/io/model_exporter/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1419,7 +1204,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/tests/redis_test/" class="md-nav__link">
+      <a href="../../../references/Modelops/core/tests/redis_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1496,7 +1281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/utils/model_util/" class="md-nav__link">
+      <a href="../../../references/Modelops/core/utils/model_util/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1563,7 +1348,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/utils/tests/model_util_test/" class="md-nav__link">
+      <a href="../../../references/Modelops/core/utils/tests/model_util_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1650,7 +1435,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/common/redis_handler/" class="md-nav__link">
+      <a href="../../../references/Modelops/core/common/redis_handler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1671,7 +1456,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/common/graph_handler/" class="md-nav__link">
+      <a href="../../../references/Modelops/core/common/graph_handler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1738,7 +1523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Modelops/core/common/writer/CsvWriter/" class="md-nav__link">
+      <a href="../../../references/Modelops/core/common/writer/CsvWriter/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1803,6 +1588,8 @@
       
   
   
+    
+  
   
   
     
@@ -1822,26 +1609,29 @@
       
         
       
+        
+      
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../csm-data/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1852,13 +1642,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             csm-data
@@ -1874,7 +1664,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/adx-send-scenariodata/" class="md-nav__link">
+      <a href="../../adx-send-scenariodata/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1895,11 +1685,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/s3-bucket-load/" class="md-nav__link">
+      <a href="../../s3-bucket-download/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    s3-bucket-load
+    s3-bucket-download
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../s3-bucket-upload/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    s3-bucket-upload
   </span>
   
 
@@ -1947,21 +1758,24 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_5" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../csm-data/api/" class="md-nav__link ">
+            <a href="../../api/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1972,14 +1786,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
             <span class="md-nav__icon md-icon"></span>
             Api
           </label>
@@ -1994,7 +1808,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/rds-load-csv/" class="md-nav__link">
+      <a href="../../api/rds-load-csv/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2015,7 +1829,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/rds-send-csv/" class="md-nav__link">
+      <a href="../../api/rds-send-csv/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2036,7 +1850,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/rds-send-store/" class="md-nav__link">
+      <a href="../../api/rds-send-store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2057,7 +1871,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/run-load-data/" class="md-nav__link">
+      <a href="../../api/run-load-data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2078,7 +1892,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/runtemplate-load-handler/" class="md-nav__link">
+      <a href="../../api/runtemplate-load-handler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2099,7 +1913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/scenariorun-load-data/" class="md-nav__link">
+      <a href="../../api/scenariorun-load-data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2120,7 +1934,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/tdl-load-files/" class="md-nav__link">
+      <a href="../../api/tdl-load-files/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2141,7 +1955,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/tdl-send-files/" class="md-nav__link">
+      <a href="../../api/tdl-send-files/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2162,7 +1976,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/wsf-load-file/" class="md-nav__link">
+      <a href="../../api/wsf-load-file/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2183,7 +1997,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/api/wsf-send-file/" class="md-nav__link">
+      <a href="../../api/wsf-send-file/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2227,21 +2041,24 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_5" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_6" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../csm-data/legacy/" class="md-nav__link ">
+            <a href="../../legacy/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2252,14 +2069,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_6" id="__nav_5_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6">
             <span class="md-nav__icon md-icon"></span>
             Legacy
           </label>
@@ -2298,12 +2115,12 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_5_2" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_6_2" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../csm-data/legacy/generate-orchestrator/" class="md-nav__link ">
+            <a href="../../legacy/generate-orchestrator/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2314,14 +2131,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_5_2" id="__nav_5_5_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_6_2" id="__nav_5_6_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6_2">
             <span class="md-nav__icon md-icon"></span>
             Generate orchestrator
           </label>
@@ -2336,7 +2153,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/legacy/generate-orchestrator/from-api/" class="md-nav__link">
+      <a href="../../legacy/generate-orchestrator/from-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2357,7 +2174,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/legacy/generate-orchestrator/from-file/" class="md-nav__link">
+      <a href="../../legacy/generate-orchestrator/from-file/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2410,12 +2227,12 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_5_3" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_6_3" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../csm-data/legacy/init-local-parameter-folder/" class="md-nav__link ">
+            <a href="../../legacy/init-local-parameter-folder/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2426,14 +2243,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_5_3" id="__nav_5_5_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_6_3" id="__nav_5_6_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_5_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_5_3">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6_3">
             <span class="md-nav__icon md-icon"></span>
             Init local parameter folder
           </label>
@@ -2448,7 +2265,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/legacy/init-local-parameter-folder/cloud/" class="md-nav__link">
+      <a href="../../legacy/init-local-parameter-folder/cloud/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2469,7 +2286,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/legacy/init-local-parameter-folder/solution/" class="md-nav__link">
+      <a href="../../legacy/init-local-parameter-folder/solution/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2503,6 +2320,8 @@
                 
   
   
+    
+  
   
   
     
@@ -2520,26 +2339,31 @@
       
         
       
-    
-    
-      
+        
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
       
-        
+      
         
           
+          
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_6" >
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../csm-data/store/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2550,14 +2374,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_7" id="__nav_5_7_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_7">
             <span class="md-nav__icon md-icon"></span>
             Store
           </label>
@@ -2569,10 +2393,62 @@
                 
   
   
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    dump-to-postgresql
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/store/list-tables/" class="md-nav__link">
+      <a href="../dump-to-s3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    dump-to-s3
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../list-tables/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2593,7 +2469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/store/load-csv-folder/" class="md-nav__link">
+      <a href="../load-csv-folder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2614,7 +2490,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/store/rds-send-store/" class="md-nav__link">
+      <a href="../rds-send-store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2635,7 +2511,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../csm-data/store/reset/" class="md-nav__link">
+      <a href="../reset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2672,7 +2548,9 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -2686,56 +2564,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      In this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#CosmoTech_Acceleration_Library.Accelerators.cosmo_api" class="md-nav__link">
-    <span class="md-ellipsis">
-      cosmo_api
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="cosmo_api">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#CosmoTech_Acceleration_Library.Accelerators.cosmo_api.get_current_scenario_data" class="md-nav__link">
-    <span class="md-ellipsis">
-      get_current_scenario_data
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#CosmoTech_Acceleration_Library.Accelerators.cosmo_api.send_dataframe_to_api" class="md-nav__link">
-    <span class="md-ellipsis">
-      send_dataframe_to_api
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#CosmoTech_Acceleration_Library.Accelerators.cosmo_api.send_file_to_api" class="md-nav__link">
-    <span class="md-ellipsis">
-      send_file_to_api
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -2748,175 +2576,48 @@
                 
                   
 
-
-<h1 id="cosmotech_acceleration_libraryacceleratorscosmo_api">CosmoTech_Acceleration_Library.Accelerators.cosmo_api<a class="headerlink" href="#cosmotech_acceleration_libraryacceleratorscosmo_api" title="Permanent link">&para;</a></h1>
-
-
-<div class="doc doc-object doc-module">
+  
+  
 
 
+<h1 id="dump-to-postgresql">dump-to-postgresql<a class="headerlink" href="#dump-to-postgresql" title="Permanent link">&para;</a></h1>
+<div class="admonition info">
+<p class="admonition-title">Help command</p>
+<div class="highlight"><pre><span></span><code>&gt; csm-data store dump-to-postgresql --help
 
-<h2 id="CosmoTech_Acceleration_Library.Accelerators.cosmo_api" class="doc doc-heading">
-            <code>cosmo_api</code>
+ Usage: csm-data store dump-to-postgresql [OPTIONS]                             
 
+ Running this command will dump your store to a given postgresql database       
+ Tables names from the store will be prepended with table-prefix in target      
+ database                                                                       
 
-<a href="#CosmoTech_Acceleration_Library.Accelerators.cosmo_api" class="headerlink" title="Permanent link">&para;</a></h2>
-
-    <div class="doc doc-contents first">
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="CosmoTech_Acceleration_Library.Accelerators.cosmo_api.get_current_scenario_data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_current_scenario_data</span><span class="p">()</span></code>
-
-<a href="#CosmoTech_Acceleration_Library.Accelerators.cosmo_api.get_current_scenario_data" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-      <p>Uses environment vars to find the current scenario data from the cosmotech api
-:return: a dict containing the data of the scenario from the API or None in another context</p>
-
-            <details class="quote">
-              <summary>Source code in <code>CosmoTech_Acceleration_Library/Accelerators/cosmo_api.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_current_scenario_data</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Uses environment vars to find the current scenario data from the cosmotech api</span>
-<span class="sd">    :return: a dict containing the data of the scenario from the API or None in another context</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">organization_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CSM_ORGANIZATION_ID&quot;</span><span class="p">)</span>
-    <span class="n">workspace_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CSM_WORKSPACE_ID&quot;</span><span class="p">)</span>
-    <span class="n">scenario_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CSM_SCENARIO_ID&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">scenario_id</span><span class="p">]):</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">with</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">ApiClient</span><span class="p">(</span><span class="n">__get_configuration</span><span class="p">())</span> <span class="k">as</span> <span class="n">api_client</span><span class="p">:</span>
-        <span class="n">api_instance</span> <span class="o">=</span> <span class="n">ScenarioApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
-        <span class="n">scenario_data</span> <span class="o">=</span> <span class="n">api_instance</span><span class="o">.</span><span class="n">find_scenario_by_id</span><span class="p">(</span><span class="n">organization_id</span><span class="o">=</span><span class="n">organization_id</span><span class="p">,</span>
-                                                         <span class="n">workspace_id</span><span class="o">=</span><span class="n">workspace_id</span><span class="p">,</span>
-                                                         <span class="n">scenario_id</span><span class="o">=</span><span class="n">scenario_id</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">scenario_data</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="CosmoTech_Acceleration_Library.Accelerators.cosmo_api.send_dataframe_to_api" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">send_dataframe_to_api</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span></code>
-
-<a href="#CosmoTech_Acceleration_Library.Accelerators.cosmo_api.send_dataframe_to_api" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-      <p>Send a dataframe to the API</p>
-
-            <details class="quote">
-              <summary>Source code in <code>CosmoTech_Acceleration_Library/Accelerators/cosmo_api.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">send_dataframe_to_api</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Send a dataframe to the API&quot;&quot;&quot;</span>
-    <span class="n">file_content</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
-    <span class="n">dataframe</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">file_content</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">file_content</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">file_content</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">file_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">send_file_to_api</span><span class="p">(</span><span class="n">file_content</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="CosmoTech_Acceleration_Library.Accelerators.cosmo_api.send_file_to_api" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">send_file_to_api</span><span class="p">(</span><span class="n">file_content</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span></code>
-
-<a href="#CosmoTech_Acceleration_Library.Accelerators.cosmo_api.send_file_to_api" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-      <p>Send a file to the api</p>
-
-            <details class="quote">
-              <summary>Source code in <code>CosmoTech_Acceleration_Library/Accelerators/cosmo_api.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">send_file_to_api</span><span class="p">(</span><span class="n">file_content</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Send a file to the api&quot;&quot;&quot;</span>
-    <span class="n">organization_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CSM_ORGANIZATION_ID&quot;</span><span class="p">)</span>
-    <span class="n">workspace_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CSM_WORKSPACE_ID&quot;</span><span class="p">)</span>
-
-    <span class="k">with</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">ApiClient</span><span class="p">(</span><span class="n">__get_configuration</span><span class="p">())</span> <span class="k">as</span> <span class="n">api_client</span><span class="p">:</span>
-        <span class="n">api_ws</span> <span class="o">=</span> <span class="n">WorkspaceApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
-        <span class="n">api_ws</span><span class="o">.</span><span class="n">upload_workspace_file</span><span class="p">(</span><span class="n">organization_id</span><span class="o">=</span><span class="n">organization_id</span><span class="p">,</span>
-                                     <span class="n">workspace_id</span><span class="o">=</span><span class="n">workspace_id</span><span class="p">,</span>
-                                     <span class="n">file</span><span class="o">=</span><span class="n">file_content</span><span class="p">,</span>
-                                     <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                     <span class="n">destination</span><span class="o">=</span><span class="n">file_name</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-
-
-  </div>
-
-    </div>
-
+╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
+│ *  --store-folder         PATH     The folder containing the store files     │
+│                                    ENV: CSM_PARAMETERS_ABSOLUTE_PATH         │
+│                                    [required]                                │
+│    --table-prefix         PREFIX   Prefix to add to the table name           │
+│ *  --postgres-host        TEXT     Postgresql host URI                       │
+│                                    ENV: POSTGRES_HOST_URI                    │
+│                                    [required]                                │
+│    --postgres-port        INTEGER  Postgresql database port                  │
+│                                    ENV: POSTGRES_HOST_PORT                   │
+│ *  --postgres-db          TEXT     Postgresql database name                  │
+│                                    ENV: POSTGRES_DB_NAME                     │
+│                                    [required]                                │
+│ *  --postgres-schema      TEXT     Postgresql schema name                    │
+│                                    ENV: POSTGRES_DB_SCHEMA                   │
+│                                    [required]                                │
+│ *  --postgres-user        TEXT     Postgresql connection user name           │
+│                                    ENV: POSTGRES_USER_NAME                   │
+│                                    [required]                                │
+│ *  --postgres-password    TEXT     Postgresql connection password            │
+│                                    ENV: POSTGRES_USER_PASSWORD               │
+│                                    [required]                                │
+│    --replace/--append              Append data on existing tables            │
+│                                    DEFAULT: replace                          │
+│    --help                          Show this message and exit.               │
+╰──────────────────────────────────────────────────────────────────────────────╯
+</code></pre></div>
 </div>
 
 
@@ -2930,6 +2631,8 @@
 
 
 
+
+  
 
 
 
@@ -2953,10 +2656,12 @@
   
     
       
+        
+      
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../../tutorials/datastore/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Datastore">
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: store">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -2966,20 +2671,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Datastore
+                store
               </div>
             </div>
           </a>
         
         
           
-          <a href="../adx_wrapper/" class="md-footer__link md-footer__link--next" aria-label="Next: adx_wrapper">
+          <a href="../dump-to-s3/" class="md-footer__link md-footer__link--next" aria-label="Next: dump-to-s3">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                adx_wrapper
+                dump-to-s3
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2994,11 +2699,14 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
-  
-  Made by
-  <a href="https://cosmotech.com/" target="_blank" rel="noopener">
-    Cosmotech
-  </a>
+    
+    Made by
+    <a href="https://cosmotech.com/" target="_blank" rel="noopener">
+        Cosmotech
+    </a>
+    <br/>
+    <br/>
+    <a href="#__consent">Change cookie settings</a>
 </div>
       
     </div>
@@ -3010,6 +2718,63 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+  
+    
+  
+
+
+
+  
+
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences, as well as to measure the effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="github" checked>
+          <span class="task-list-indicator"></span>
+          GitHub
+        </label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Manage settings</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
     
     <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.code.annotate", "content.tooltips", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.top", "navigation.indexes", "navigation.instant", "navigation.footer", "navigation.sections"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
