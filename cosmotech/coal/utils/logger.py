@@ -11,7 +11,6 @@ import os
 from rich.logging import RichHandler
 from rich.highlighter import NullHighlighter
 
-LOGGER = logging.getLogger("csm.data")
 HIGLIGHTER = NullHighlighter()
 HANDLER = RichHandler(rich_tracebacks=True,
                       omit_repeated_times=False,
@@ -29,5 +28,17 @@ FORMATTER = logging.Formatter(fmt=_format,
                               )
 
 HANDLER.setFormatter(FORMATTER)
-LOGGER.addHandler(HANDLER)
-LOGGER.setLevel(logging.INFO)
+
+
+def get_logger(
+    logger_name: str,
+    level=logging.INFO
+) -> logging.Logger:
+    _logger = logging.getLogger(logger_name)
+    if not _logger.hasHandlers():
+        _logger.addHandler(HANDLER)
+    _logger.setLevel(level)
+    return _logger
+
+
+LOGGER = get_logger("csm.data")
