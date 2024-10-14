@@ -78,11 +78,11 @@ def dump_to_postgresql(
     replace: bool
 ):
     """Running this command will dump your store to a given postgresql database
-    
+
     Tables names from the store will be prepended with table-prefix in target database
-    
+
     The postgresql user must have USAGE granted on the schema for this script to work due to the use of the command `COPY FROM STDIN`
-    
+
     You can simply give him that grant by running the command :
     `GRANT USAGE ON SCHEMA <schema> TO <username>`
     """
@@ -105,7 +105,11 @@ def dump_to_postgresql(
                 with conn.cursor() as curs:
                     _s_time = perf_counter()
                     target_table_name = f"{table_prefix}{table_name}"
+                    LOGGER.info(f"  - [yellow]{target_table_name}[/]:")
                     data = _s.get_table(table_name)
+                    if not len(data):
+                        LOGGER.info(f"   -> [cyan bold]0[/] rows (skipping)")
+                        continue
                     _dl_time = perf_counter()
                     rows = curs.adbc_ingest(
                         target_table_name,
@@ -114,7 +118,7 @@ def dump_to_postgresql(
                         db_schema_name=postgres_schema)
                     total_rows += rows
                     _up_time = perf_counter()
-                    LOGGER.info(f"  - [yellow]{target_table_name}[/] : [cyan bold]{rows}[/] rows")
+                    LOGGER.info(f"   -> [cyan bold]{rows}[/] rows")
                     LOGGER.debug(f"   -> Load from datastore took [blue]{_dl_time - _s_time:0.3}s[/]")
                     LOGGER.debug(f"   -> Send to postgresql took [blue]{_up_time - _dl_time:0.3}s[/]")
         _process_end = perf_counter()
