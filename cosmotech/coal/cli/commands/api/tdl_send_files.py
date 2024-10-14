@@ -208,6 +208,7 @@ Requires a valid connection to the API to send the data
     LOGGER.info("Sent all data found")
 
     dataset_info.ingestion_status = "SUCCESS"
+    dataset_info.twincache_status = "FULL"
 
     api_ds.update_dataset(organization_id,
                           dataset_id,
