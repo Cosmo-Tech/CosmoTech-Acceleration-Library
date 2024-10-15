@@ -80,13 +80,16 @@ Requires a valid connection to the API to send the data
         api_run = RunApi(api_client)
         _s = Store()
         for table_name in _s.list_tables():
+            LOGGER.info(f"Sending data to table [cyan bold]CD_{table_name}[/]")
             data = convert_table_as_pylist(table_name)
+            if not len(data):
+                LOGGER.info("  - No rows : skipping")
+                continue
             fieldnames = _s.get_table_schema(table_name).names
             for row in data:
                 for field in fieldnames:
                     if row[field] is None:
                         del row[field]
-            LOGGER.info(f"Sending data to table [cyan bold]CD_{table_name}[/]")
             LOGGER.debug(f"  - Column list: {fieldnames}")
             LOGGER.info(f"  - Sending {len(data)} rows")
             api_run.send_run_data(organization_id,

@@ -152,11 +152,15 @@ More information is available on this page:
         for table_name in tables:
             _data_stream = BytesIO()
             _file_name = None
+            _data = _s.get_table(table_name)
+            if not len(_data):
+                LOGGER.info(f"Table {table_name} is empty (skipping)")
+                continue
             if output_type == "csv":
                 _file_name = table_name + ".csv"
-                pc.write_csv(_s.get_table(table_name), _data_stream)
+                pc.write_csv(_data, _data_stream)
             elif output_type == "parquet":
                 _file_name = table_name + ".parquet"
-                pq.write_table(_s.get_table(table_name), _data_stream)
+                pq.write_table(_data, _data_stream)
             LOGGER.info(f"Sending table {table_name} as {output_type}")
             data_upload(_data_stream, _file_name)
