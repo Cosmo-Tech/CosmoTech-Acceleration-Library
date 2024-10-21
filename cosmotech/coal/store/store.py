@@ -11,7 +11,7 @@ class Store:
 
     @staticmethod
     def sanitize_column(column_name: str) -> str:
-        return column_name.replace(" ", "_").lower()
+        return column_name.replace(" ", "_")
 
     def __init__(
         self,
