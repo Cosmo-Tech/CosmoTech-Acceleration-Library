@@ -10,7 +10,6 @@ import os
 import pathlib
 from shutil import copytree
 
-from cosmotech_api.api.dataset_api import DatasetApi
 from cosmotech_api.api.runner_api import RunnerApi
 from cosmotech_api.api.workspace_api import WorkspaceApi
 
@@ -35,11 +34,16 @@ def download_runner_data(organization_id: str, workspace_id: str, runner_id: str
     _dl = ScenarioDownloader(workspace_id=workspace_id, organization_id=organization_id, read_files=False)
     with get_api_client()[0] as api_client:
         runner_api_instance = RunnerApi(api_client)
-        dataset_api_instance = DatasetApi(api_client)
         workspace_api_instance = WorkspaceApi(api_client)
         runner_data = runner_api_instance.get_runner(organization_id=organization_id,
                                                      workspace_id=workspace_id,
                                                      runner_id=runner_id)
+
+        # skip if no parameters found
+        if not runner_data.parameters_values:
+            LOGGER.warning('no parameters found in the runner')
+            return
+
         LOGGER.info("Loaded run data")
         # Pre-read of all workspace files to ensure ready to download AZ storage files
         all_api_files = workspace_api_instance.find_all_workspace_files(

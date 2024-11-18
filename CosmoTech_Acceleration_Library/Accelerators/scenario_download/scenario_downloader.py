@@ -113,6 +113,7 @@ class ScenarioDownloader:
             is_adt = 'AZURE_DIGITAL_TWINS_URL' in parameters
             is_storage = 'AZURE_STORAGE_CONTAINER_BLOB_PREFIX' in parameters
             is_legacy_twin_cache = 'TWIN_CACHE_NAME' in parameters and dataset.twingraph_id is None  # Legacy twingraph dataset with specific connector
+            is_in_workspace_file = 'workspaceFile' in dataset.tags
 
             if is_adt:
                 return {
@@ -137,6 +138,16 @@ class ScenarioDownloader:
                     "content": _content,
                     "name": dataset.name
                 }
+            elif is_in_workspace_file:
+                _file_name = dataset.source.location
+                _content = self._download_file(_file_name)
+                self.dataset_file_temp_path[dataset_id] = self.dataset_file_temp_path[_file_name]
+                return {
+                    "type": _file_name.split('.')[-1],
+                    "content": _content,
+                    "name": dataset.name
+                }
+
             else:
                 return {
                     "type": "twincache",
