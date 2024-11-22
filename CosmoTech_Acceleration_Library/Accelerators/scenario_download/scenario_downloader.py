@@ -108,7 +108,10 @@ class ScenarioDownloader:
             dataset = api_instance.find_dataset_by_id(
                 organization_id=self.organization_id,
                 dataset_id=dataset_id)
-            parameters = dataset.connector.parameters_values
+            if dataset.connector is None:
+                parameters = []
+            else:
+                parameters = dataset.connector.parameters_values
 
             is_adt = 'AZURE_DIGITAL_TWINS_URL' in parameters
             is_storage = 'AZURE_STORAGE_CONTAINER_BLOB_PREFIX' in parameters
