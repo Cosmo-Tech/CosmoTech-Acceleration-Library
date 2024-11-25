@@ -3207,7 +3207,10 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 <span class="normal">419</span>
 <span class="normal">420</span>
 <span class="normal">421</span>
-<span class="normal">422</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ScenarioDownloader</span><span class="p">:</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ScenarioDownloader</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3243,7 +3246,10 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
             <span class="n">dataset</span> <span class="o">=</span> <span class="n">api_instance</span><span class="o">.</span><span class="n">find_dataset_by_id</span><span class="p">(</span>
                 <span class="n">organization_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">organization_id</span><span class="p">,</span>
                 <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">)</span>
-            <span class="n">parameters</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">parameters_values</span>
+            <span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">connector</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">parameters</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">parameters</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">parameters_values</span>
 
             <span class="n">is_adt</span> <span class="o">=</span> <span class="s1">&#39;AZURE_DIGITAL_TWINS_URL&#39;</span> <span class="ow">in</span> <span class="n">parameters</span>
             <span class="n">is_storage</span> <span class="o">=</span> <span class="s1">&#39;AZURE_STORAGE_CONTAINER_BLOB_PREFIX&#39;</span> <span class="ow">in</span> <span class="n">parameters</span>
