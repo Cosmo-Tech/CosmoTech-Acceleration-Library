@@ -5,8 +5,10 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 import os
+import pathlib
 
 import cosmotech_api
+
 from cosmotech.coal.utils.logger import LOGGER
 
 api_env_keys = {"CSM_API_KEY", "CSM_API_URL"}
@@ -33,10 +35,15 @@ def get_api_client() -> (cosmotech_api.ApiClient, str):
         server_url = os.environ.get("IDP_BASE_URL")
         if server_url[-1] != "/":
             server_url = server_url + "/"
-        keycloak_openid = KeycloakOpenID(server_url=server_url,
-                                         client_id=os.environ.get("IDP_CLIENT_ID"),
-                                         realm_name=os.environ.get("IDP_TENANT_ID"),
-                                         client_secret_key=os.environ.get("IDP_CLIENT_SECRET"))
+        keycloack_parameters = dict(server_url=server_url,
+                                   client_id=os.environ.get("IDP_CLIENT_ID"),
+                                   realm_name=os.environ.get("IDP_TENANT_ID"),
+                                   client_secret_key=os.environ.get("IDP_CLIENT_SECRET"))
+        if ca_cert_path := os.environ.get("IDP_CA_CERT") and pathlib.Path(os.environ.get("IDP_CA_CERT")).is_file():
+            LOGGER.info("Found Certificate Authority override for IDP connection, using it.")
+            keycloack_parameters["cert"] = ca_cert_path
+
+        keycloak_openid = KeycloakOpenID(**keycloack_parameters)
 
         access_token = keycloak_openid.token(grant_type="client_credentials")
 
