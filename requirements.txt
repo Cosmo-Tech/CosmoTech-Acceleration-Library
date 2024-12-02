@@ -7,7 +7,7 @@ azure-kusto-ingest~=4.4.1
 tenacity~=8.3.0
 
 # Keycloak connection
-python-keycloak~=4.3.0
+python-keycloak~=4.7.3
 
 # Modelops requirements
 redis==4.4.4
