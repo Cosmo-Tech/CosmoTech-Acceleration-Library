@@ -8,6 +8,7 @@
 from time import perf_counter
 
 from adbc_driver_postgresql import dbapi
+import pyarrow as pa
 
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help

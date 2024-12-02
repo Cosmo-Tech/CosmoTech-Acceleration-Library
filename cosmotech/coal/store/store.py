@@ -52,10 +52,17 @@ class Store:
                 LOGGER.debug(f"Inserted {rows} rows in table {table_name}")
 
     def execute_query(self, sql_query: str) -> pyarrow.Table:
-        with dbapi.connect(self._database, autocommit=True) as conn:
-            with conn.cursor() as curs:
-                curs.execute(sql_query)
-                return curs.fetch_arrow_table()
+        batch_size = 1024
+        batch_size_increment = 1024
+        while True:
+            try:
+                with dbapi.connect(self._database, autocommit=True) as conn:
+                    with conn.cursor() as curs:
+                        curs.adbc_statement.set_options(**{"adbc.sqlite.query.batch_rows":str(batch_size)})
+                        curs.execute(sql_query)
+                        return curs.fetch_arrow_table()
+            except OSError:
+                batch_size += batch_size_increment
 
     def list_tables(self) -> list[str]:
         with dbapi.connect(self._database) as conn:
