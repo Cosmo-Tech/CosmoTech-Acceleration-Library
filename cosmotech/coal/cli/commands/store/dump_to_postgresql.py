@@ -111,12 +111,6 @@ def dump_to_postgresql(
                     if not len(data):
                         LOGGER.info(f"   -> [cyan bold]0[/] rows (skipping)")
                         continue
-                    # Test updating schema to string if null are detected
-                    schema = data.schema
-                    for index, entry in enumerate(schema.types):
-                        if entry.equals(pa.null()):
-                            schema = schema.set(index, schema.field(index).with_type(pa.string()))
-                    data.cast(schema)
                     _dl_time = perf_counter()
                     rows = curs.adbc_ingest(
                         target_table_name,
