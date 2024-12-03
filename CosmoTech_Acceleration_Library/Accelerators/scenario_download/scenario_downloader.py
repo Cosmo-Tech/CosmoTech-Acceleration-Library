@@ -8,15 +8,14 @@ import os
 import tempfile
 from typing import Union
 
-import cosmotech_api
 from azure.digitaltwins.core import DigitalTwinsClient
 from azure.identity import DefaultAzureCredential
 from cosmotech_api import DatasetApi
+from cosmotech_api import DatasetTwinGraphQuery
 from cosmotech_api import ScenarioApi
+from cosmotech_api import TwinGraphQuery
 from cosmotech_api import TwingraphApi
 from cosmotech_api import WorkspaceApi
-from cosmotech_api import DatasetTwinGraphQuery
-from cosmotech_api import TwinGraphQuery
 from openpyxl import load_workbook
 
 from cosmotech.coal.cosmotech_api.connection import get_api_client
@@ -85,7 +84,6 @@ class ScenarioDownloader:
             self.credentials = DefaultAzureCredential()
         else:
             self.credentials = None
-        
 
         self.workspace_id = workspace_id
         self.organization_id = organization_id
@@ -104,7 +102,6 @@ class ScenarioDownloader:
     def download_dataset(self, dataset_id: str) -> (str, str, Union[str, None]):
         with get_api_client()[0] as api_client:
             api_instance = DatasetApi(api_client)
-
             dataset = api_instance.find_dataset_by_id(
                 organization_id=self.organization_id,
                 dataset_id=dataset_id)
@@ -112,11 +109,10 @@ class ScenarioDownloader:
                 parameters = []
             else:
                 parameters = dataset.connector.parameters_values
-
             is_adt = 'AZURE_DIGITAL_TWINS_URL' in parameters
             is_storage = 'AZURE_STORAGE_CONTAINER_BLOB_PREFIX' in parameters
             is_legacy_twin_cache = 'TWIN_CACHE_NAME' in parameters and dataset.twingraph_id is None  # Legacy twingraph dataset with specific connector
-            is_in_workspace_file = 'workspaceFile' in dataset.tags
+            is_in_workspace_file = False if dataset.tags is None else 'workspaceFile' in dataset.tags
 
             if is_adt:
                 return {
@@ -329,7 +325,7 @@ class ScenarioDownloader:
         dataset_ids = datasets[:]
 
         for parameter in scenario_data.parameters_values:
-            if parameter.var_type == '%DATASETID%':
+            if parameter.var_type == '%DATASETID%' and parameter.value:
                 dataset_id = parameter.value
                 dataset_ids.append(dataset_id)
 
@@ -344,7 +340,7 @@ class ScenarioDownloader:
                 _error_dict[_dataset_id] = f'{type(e).__name__}: {str(e)}'
                 raise e
 
-        if self.parallel:
+        if self.parallel and len(dataset_ids) > 1:
             manager = multiprocessing.Manager()
             return_dict = manager.dict()
             error_dict = manager.dict()
