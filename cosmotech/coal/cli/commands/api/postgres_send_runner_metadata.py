@@ -10,6 +10,7 @@ from adbc_driver_postgresql import dbapi
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.run import get_run_metadata
+from cosmotech.coal.cosmotech_api.runner import get_runner_metadata
 from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.coal.utils.postgresql import generate_postgresql_full_uri
 
@@ -33,13 +34,6 @@ from cosmotech.coal.utils.postgresql import generate_postgresql_full_uri
               envvar="CSM_RUNNER_ID",
               help="A runner id for the Cosmo Tech API",
               metavar="r-XXXXXXXX",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--run-id",
-              envvar="CSM_RUN_ID",
-              help="A run id for the Cosmo Tech API",
-              metavar="run-XXXXXX",
               type=str,
               show_envvar=True,
               required=True)
@@ -79,11 +73,10 @@ from cosmotech.coal.utils.postgresql import generate_postgresql_full_uri
               envvar="POSTGRES_USER_PASSWORD",
               show_envvar=True,
               required=True)
-def postgres_send_run_metadata(
+def postgres_send_runner_metadata(
     organization_id,
     workspace_id,
     runner_id,
-    run_id,
     table_prefix: str,
     postgres_host,
     postgres_port,
@@ -100,7 +93,7 @@ This implementation make use of an API Key
     """
 
     with get_api_client()[0] as api_client:
-        runner = get_run_metadata(api_client, organization_id, workspace_id, runner_id, run_id)
+        runner = get_runner_metadata(api_client, organization_id, workspace_id, runner_id)
 
     postgresql_full_uri = generate_postgresql_full_uri(postgres_host,
                                                        postgres_port,
