@@ -4,7 +4,7 @@
 # Any use, reproduction, translation, broadcasting, transmission, distribution,
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
-
+from cosmotech.coal.cli.commands.api.postgres_send_run_metadata import postgres_send_run_metadata
 from cosmotech.coal.cli.commands.api.rds_load_csv import rds_load_csv
 from cosmotech.coal.cli.commands.api.rds_send_csv import rds_send_csv
 from cosmotech.coal.cli.commands.api.rds_send_store import rds_send_store
@@ -52,3 +52,4 @@ api.add_command(tdl_load_files, "tdl-load-files")
 api.add_command(runtemplate_load_handler, "runtemplate-load-handler")
 api.add_command(run_load_data, "run-load-data")
 api.add_command(scenariorun_load_data, "scenariorun-load-data")
+api.add_command(postgres_send_run_metadata, "postgres-send-run-metadata")

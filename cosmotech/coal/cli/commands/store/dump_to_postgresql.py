@@ -7,12 +7,11 @@
 
 from time import perf_counter
 
-from adbc_driver_postgresql import dbapi
-
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.coal.utils.postgresql import send_pyarrow_table_to_postgresql
 
 
 @click.command()
@@ -88,39 +87,34 @@ def dump_to_postgresql(
     """
     _s = Store(store_location=store_folder)
 
-    postgresql_full_uri = (f'postgresql://'
-                           f'{postgres_user}'
-                           f':{postgres_password}'
-                           f'@{postgres_host}'
-                           f':{postgres_port}'
-                           f'/{postgres_db}')
-
     tables = list(_s.list_tables())
     if len(tables):
         LOGGER.info(f"Sending tables to [green bold]{postgres_db}.{postgres_schema}[/]")
         total_rows = 0
         _process_start = perf_counter()
-        with dbapi.connect(postgresql_full_uri, autocommit=True) as conn:
-            for table_name in tables:
-                with conn.cursor() as curs:
-                    _s_time = perf_counter()
-                    target_table_name = f"{table_prefix}{table_name}"
-                    LOGGER.info(f"  - [yellow]{target_table_name}[/]:")
-                    data = _s.get_table(table_name)
-                    if not len(data):
-                        LOGGER.info(f"   -> [cyan bold]0[/] rows (skipping)")
-                        continue
-                    _dl_time = perf_counter()
-                    rows = curs.adbc_ingest(
-                        target_table_name,
-                        data,
-                        "replace" if replace else "create_append",
-                        db_schema_name=postgres_schema)
-                    total_rows += rows
-                    _up_time = perf_counter()
-                    LOGGER.info(f"   -> [cyan bold]{rows}[/] rows")
-                    LOGGER.debug(f"   -> Load from datastore took [blue]{_dl_time - _s_time:0.3}s[/]")
-                    LOGGER.debug(f"   -> Send to postgresql took [blue]{_up_time - _dl_time:0.3}s[/]")
+        for table_name in tables:
+            _s_time = perf_counter()
+            target_table_name = f"{table_prefix}{table_name}"
+            LOGGER.info(f"  - [yellow]{target_table_name}[/]:")
+            data = _s.get_table(table_name)
+            if not len(data):
+                LOGGER.info(f"   -> [cyan bold]0[/] rows (skipping)")
+                continue
+            _dl_time = perf_counter()
+            rows = send_pyarrow_table_to_postgresql(data,
+                                                    target_table_name,
+                                                    postgres_host,
+                                                    postgres_port,
+                                                    postgres_db,
+                                                    postgres_schema,
+                                                    postgres_user,
+                                                    postgres_password,
+                                                    replace)
+            total_rows += rows
+            _up_time = perf_counter()
+            LOGGER.info(f"   -> [cyan bold]{rows}[/] rows")
+            LOGGER.debug(f"   -> Load from datastore took [blue]{_dl_time - _s_time:0.3}s[/]")
+            LOGGER.debug(f"   -> Send to postgresql took [blue]{_up_time - _dl_time:0.3}s[/]")
         _process_end = perf_counter()
         LOGGER.info(f"Sent [cyan bold]{total_rows}[/] rows "
                     f"in [blue]{_process_end - _process_start:0.3}s[/]")
