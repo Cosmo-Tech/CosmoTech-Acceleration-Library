@@ -2592,38 +2592,40 @@
 │ --help          Show this message and exit.                                  │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ postgres-send-run-metadata  Send a file to a workspace inside the API        │
-│ rds-load-csv                Download a CSV file from the Cosmo Tech Run API  │
-│                             using a given SQL query                          │
-│ rds-send-csv                Send all csv files from a folder to the results  │
-│                             service of the Cosmo Tech API                    │
-│ rds-send-store              Send all CoAL Datastore content to the results   │
-│                             service of the Cosmo Tech API                    │
-│ run-load-data               Download a runner data from the Cosmo Tech API   │
-│                             Requires a valid Azure connection either with:   │
+│ postgres-send-runner-metadata  Send a file to a workspace inside the API     │
+│ rds-load-csv                   Download a CSV file from the Cosmo Tech Run   │
+│                                API using a given SQL query                   │
+│ rds-send-csv                   Send all csv files from a folder to the       │
+│                                results service of the Cosmo Tech API         │
+│ rds-send-store                 Send all CoAL Datastore content to the        │
+│                                results service of the Cosmo Tech API         │
+│ run-load-data                  Download a runner data from the Cosmo Tech    │
+│                                API Requires a valid Azure connection either  │
+│                                with:                                         │
 │                                                                              │
-│                              • The AZ cli command: az login                  │
-│                              • A triplet of env var AZURE_TENANT_ID,         │
-│                                AZURE_CLIENT_ID, AZURE_CLIENT_SECRET          │
+│                                 • The AZ cli command: az login               │
+│                                 • A triplet of env var AZURE_TENANT_ID,      │
+│                                   AZURE_CLIENT_ID, AZURE_CLIENT_SECRET       │
 │                                                                              │
-│                             Requires env var CSM_API_URL     The URL to a    │
-│                             Cosmotech API                                    │
-│                             Requires env var CSM_API_SCOPE   The             │
-│                             identification scope of a Cosmotech API          │
-│ runtemplate-load-handler    Uses environment variables to download cloud     │
-│                             based Template steps                             │
-│ scenariorun-load-data       Uses environment variables to call the           │
-│                             download_scenario_data function Requires a valid │
-│                             Azure connection either with:                    │
+│                                Requires env var CSM_API_URL     The URL to a │
+│                                Cosmotech API                                 │
+│                                Requires env var CSM_API_SCOPE   The          │
+│                                identification scope of a Cosmotech API       │
+│ runtemplate-load-handler       Uses environment variables to download cloud  │
+│                                based Template steps                          │
+│ scenariorun-load-data          Uses environment variables to call the        │
+│                                download_scenario_data function Requires a    │
+│                                valid Azure connection either with:           │
 │                                                                              │
-│                              • The AZ cli command: az login                  │
-│                              • A triplet of env var AZURE_TENANT_ID,         │
-│                                AZURE_CLIENT_ID, AZURE_CLIENT_SECRET          │
-│ tdl-load-files              Query a twingraph and loads all the data from it │
-│ tdl-send-files              Reads a folder CSVs and send those to the Cosmo  │
-│                             Tech API as a Dataset                            │
-│ wsf-load-file               Load files from a workspace inside the API       │
-│ wsf-send-file               Send a file to a workspace inside the API        │
+│                                 • The AZ cli command: az login               │
+│                                 • A triplet of env var AZURE_TENANT_ID,      │
+│                                   AZURE_CLIENT_ID, AZURE_CLIENT_SECRET       │
+│ tdl-load-files                 Query a twingraph and loads all the data from │
+│                                it                                            │
+│ tdl-send-files                 Reads a folder CSVs and send those to the     │
+│                                Cosmo Tech API as a Dataset                   │
+│ wsf-load-file                  Load files from a workspace inside the API    │
+│ wsf-send-file                  Send a file to a workspace inside the API     │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
