@@ -40,12 +40,9 @@ def get_api_client() -> (cosmotech_api.ApiClient, str):
                                    client_id=os.environ.get("IDP_CLIENT_ID"),
                                    realm_name=os.environ.get("IDP_TENANT_ID"),
                                    client_secret_key=os.environ.get("IDP_CLIENT_SECRET"))
-        if (ca_cert_path := os.environ.get("IDP_CA_CERT")) and pathlib.Path(os.environ.get("IDP_CA_CERT")).exists():
+        if (ca_cert_path := os.environ.get("IDP_CA_CERT")) and pathlib.Path(ca_cert_path).exists():
             LOGGER.info("Found Certificate Authority override for IDP connection, using it.")
-            if pathlib.Path(ca_cert_path).is_file():
-                keycloack_parameters["verify"] = ssl.create_default_context(cafile=ca_cert_path)
-            else:
-                keycloack_parameters["verify"] = ssl.create_default_context(capath=ca_cert_path)
+            keycloack_parameters["verify"] = ca_cert_path
         keycloak_openid = KeycloakOpenID(**keycloack_parameters)
 
         access_token = keycloak_openid.token(grant_type="client_credentials")
