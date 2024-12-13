@@ -12,6 +12,7 @@ from cosmotech.coal.cli.utils.decorators import web_help
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.coal.utils.postgresql import send_pyarrow_table_to_postgresql
+from cosmotech.coal.utils.pyarrow import replace_null_characters
 
 
 @click.command()
@@ -100,6 +101,7 @@ def dump_to_postgresql(
             if not len(data):
                 LOGGER.info(f"   -> [cyan bold]0[/] rows (skipping)")
                 continue
+            data = replace_null_characters(data,'NULL')
             _dl_time = perf_counter()
             rows = send_pyarrow_table_to_postgresql(data,
                                                     target_table_name,
