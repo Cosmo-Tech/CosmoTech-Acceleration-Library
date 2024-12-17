@@ -8,15 +8,20 @@
 import logging
 import os
 
+from rich.console import Console
 from rich.logging import RichHandler
 from rich.highlighter import NullHighlighter
+
+HEADER_LENGTH = 32
+CONTENT_LENGTH = 180
 
 HIGLIGHTER = NullHighlighter()
 HANDLER = RichHandler(rich_tracebacks=True,
                       omit_repeated_times=False,
                       show_path=False,
                       markup=True,
-                      highlighter=HIGLIGHTER)
+                      highlighter=HIGLIGHTER,
+                      console=Console(width=HEADER_LENGTH+CONTENT_LENGTH))
 _format = "%(message)s"
 
 if "PAILLETTES" in os.environ:
