@@ -2,247 +2,247 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/dependencies/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/adx-send-scenariodata/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/s3-bucket-download/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/s3-bucket-upload/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/api/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/api/rds-load-csv/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/api/rds-send-csv/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/api/rds-send-store/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/api/run-load-data/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/api/runtemplate-load-handler/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/api/scenariorun-load-data/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/api/tdl-load-files/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/api/tdl-send-files/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/api/wsf-load-file/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/api/wsf-send-file/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/legacy/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/legacy/generate-orchestrator/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/legacy/generate-orchestrator/from-api/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/legacy/generate-orchestrator/from-file/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/legacy/init-local-parameter-folder/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/legacy/init-local-parameter-folder/cloud/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/legacy/init-local-parameter-folder/solution/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/store/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/store/dump-to-postgresql/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/store/dump-to-s3/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/store/list-tables/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/store/load-csv-folder/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/store/rds-send-store/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/csm-data/store/reset/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/SUMMARY/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Accelerators/adx_wrapper/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Accelerators/scenario_download/azure_function_main/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Accelerators/scenario_download/scenario_downloader/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Accelerators/scenario_download/scenario_downloader_test/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Modelops/core/common/graph_handler/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Modelops/core/common/redis_handler/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Modelops/core/common/writer/CsvWriter/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Modelops/core/io/model_exporter/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Modelops/core/io/model_importer/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Modelops/core/io/model_reader/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Modelops/core/io/model_writer/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Modelops/core/tests/redis_test/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Modelops/core/utils/model_util/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/references/Modelops/core/utils/tests/model_util_test/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/tutorials/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/tutorials/csm-data/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/0.8.8/tutorials/datastore/</loc>
-         <lastmod>2024-12-17</lastmod>
+         <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
