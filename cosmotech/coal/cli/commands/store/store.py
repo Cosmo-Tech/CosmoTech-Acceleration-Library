@@ -6,7 +6,7 @@
 # specifically authorized by written means by Cosmo Tech.
 
 from cosmotech.coal.cli.commands.api.rds_send_store import rds_send_store
-from cosmotech.coal.cli.commands.store import dump_to_azure
+from cosmotech.coal.cli.commands.store.dump_to_azure import dump_to_azure
 from cosmotech.coal.cli.commands.store.dump_to_postgresql import dump_to_postgresql
 from cosmotech.coal.cli.commands.store.dump_to_s3 import dump_to_s3
 from cosmotech.coal.cli.commands.store.list_tables import list_tables
