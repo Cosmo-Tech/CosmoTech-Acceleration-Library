@@ -12,7 +12,7 @@ def replace_null_characters(table: pa.Table, replacement_value: str = "") -> pa.
         col_index = table.column_names.index(column_name)
         field = table.field(col_index)
         original_column = table.column(col_index)
-        new_data = pc.replace_substring_text(original_column, "\x00", replacement_value)
+        new_data = pc.replace_substring(original_column, "\x00", replacement_value)
         table = table.set_column(col_index, field, new_data)
 
     return table
