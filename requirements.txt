@@ -19,6 +19,7 @@ cosmotech-api~=3.2
 # Commands requirements
 boto3~=1.34
 requests~=2.32.3
+singlestoredb~=1.10.0
 
 # Orchestrator templates requirements
 cosmotech-run-orchestrator~=1.6.0
