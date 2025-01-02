@@ -12,6 +12,7 @@ from cosmotech.coal.cli.commands.api.api import api
 from cosmotech.coal.cli.commands.legacy.legacy import legacy
 from cosmotech.coal.cli.commands.s3_bucket_download import s3_bucket_download
 from cosmotech.coal.cli.commands.s3_bucket_upload import s3_bucket_upload
+from cosmotech.coal.cli.commands.s3_bucket_delete import s3_bucket_delete
 from cosmotech.coal.cli.commands.store.store import store
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help
@@ -23,7 +24,7 @@ def print_version(ctx, param, value):
         return
     click.echo(f"Cosmo Tech Data Interface {__version__}")
     ctx.exit()
-    
+
 
 @click.group("csm-data")
 @click_log.simple_verbosity_option(LOGGER,
@@ -49,6 +50,7 @@ main.add_command(legacy, "legacy")
 main.add_command(store, "store")
 main.add_command(s3_bucket_download, "s3-bucket-download")
 main.add_command(s3_bucket_upload, "s3-bucket-upload")
+main.add_command(s3_bucket_delete, "s3-bucket-delete")
 main.add_command(adx_send_scenariodata, "adx-send-scenariodata")
 
 if __name__ == "__main__":
