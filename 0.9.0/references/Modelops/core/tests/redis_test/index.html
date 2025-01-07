@@ -2408,6 +2408,8 @@
       
         
       
+        
+      
     
     
       
@@ -2549,6 +2551,27 @@
   
   <span class="md-ellipsis">
     load-csv-folder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../csm-data/store/load-from-singlestore/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    load-from-singlestore
   </span>
   
 
@@ -2734,7 +2757,7 @@
 <span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s1">&#39;session&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">redis_service</span><span class="p">(</span><span class="n">docker_ip</span><span class="p">,</span> <span class="n">docker_services</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">redis_service</span><span class="p">(</span><span class="n">docker_ip</span><span class="p">,</span> <span class="n">docker_services</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;ensure redis is up and running&quot;&quot;&quot;</span>
 
     <span class="n">host</span> <span class="o">=</span> <span class="n">docker_ip</span>

@@ -2417,6 +2417,8 @@
       
         
       
+        
+      
     
     
       
@@ -2558,6 +2560,27 @@
   
   <span class="md-ellipsis">
     load-csv-folder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../csm-data/store/load-from-singlestore/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    load-from-singlestore
   </span>
   
 
@@ -2805,7 +2828,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 <span class="normal">68</span>
 <span class="normal">69</span>
 <span class="normal">70</span>
-<span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_content_from_twin_graph_data</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">relationships</span><span class="p">,</span> <span class="n">restore_names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_content_from_twin_graph_data</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">relationships</span><span class="p">,</span> <span class="n">restore_names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    When restore_names is True, the &quot;id&quot; value inside the &quot;properties&quot; field in the cypher query response is used</span>
 <span class="sd">    instead of the numerical id found in the &quot;id&quot; field. When restore_names is set to False, this function</span>
@@ -3230,8 +3253,8 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 <span class="normal">418</span>
 <span class="normal">419</span>
 <span class="normal">420</span>
-<span class="normal">421</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ScenarioDownloader</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">421</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ScenarioDownloader</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">organization_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3250,7 +3273,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
         <span class="bp">self</span><span class="o">.</span><span class="n">read_files</span> <span class="o">=</span> <span class="n">read_files</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parallel</span> <span class="o">=</span> <span class="n">parallel</span>
 
-    <span class="k">def</span> <span class="nf">get_scenario_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_scenario_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">with</span> <span class="n">get_api_client</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">as</span> <span class="n">api_client</span><span class="p">:</span>
             <span class="n">api_instance</span> <span class="o">=</span> <span class="n">ScenarioApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
             <span class="n">scenario_data</span> <span class="o">=</span> <span class="n">api_instance</span><span class="o">.</span><span class="n">find_scenario_by_id</span><span class="p">(</span><span class="n">organization_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">organization_id</span><span class="p">,</span>
@@ -3258,7 +3281,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
                                                              <span class="n">scenario_id</span><span class="o">=</span><span class="n">scenario_id</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">scenario_data</span>
 
-    <span class="k">def</span> <span class="nf">download_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">download_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]):</span>
         <span class="k">with</span> <span class="n">get_api_client</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">as</span> <span class="n">api_client</span><span class="p">:</span>
             <span class="n">api_instance</span> <span class="o">=</span> <span class="n">DatasetApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
             <span class="n">dataset</span> <span class="o">=</span> <span class="n">api_instance</span><span class="o">.</span><span class="n">find_dataset_by_id</span><span class="p">(</span>
@@ -3313,7 +3336,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
                     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">name</span>
                 <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">_read_twingraph_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_read_twingraph_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">get_api_client</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">as</span> <span class="n">api_client</span><span class="p">:</span>
             <span class="n">dataset_api</span> <span class="o">=</span> <span class="n">DatasetApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
             <span class="n">nodes_query</span> <span class="o">=</span> <span class="n">DatasetTwinGraphQuery</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;MATCH(n) RETURN n&quot;</span><span class="p">)</span>
@@ -3331,7 +3354,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
             <span class="p">)</span>
             <span class="k">return</span> <span class="n">get_content_from_twin_graph_data</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_read_legacy_twingraph_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_read_legacy_twingraph_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">get_api_client</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">as</span> <span class="n">api_client</span><span class="p">:</span>
             <span class="n">api_instance</span> <span class="o">=</span> <span class="n">TwingraphApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
             <span class="n">_query_nodes</span> <span class="o">=</span> <span class="n">TwinGraphQuery</span><span class="p">(</span>
@@ -3353,7 +3376,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
             <span class="p">)</span>
             <span class="k">return</span> <span class="n">get_content_from_twin_graph_data</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">rel</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_download_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_download_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">tmp_dataset_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataset_file_temp_path</span><span class="p">[</span><span class="n">file_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp_dataset_dir</span>
         <span class="k">with</span> <span class="n">get_api_client</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">as</span> <span class="n">api_client</span><span class="p">:</span>
@@ -3387,7 +3410,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
                         <span class="n">headers</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">sheet</span><span class="o">.</span><span class="n">iter_rows</span><span class="p">(</span>
                             <span class="n">max_row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">values_only</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 
-                        <span class="k">def</span> <span class="nf">item</span><span class="p">(</span><span class="n">_row</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+                        <span class="k">def</span><span class="w"> </span><span class="nf">item</span><span class="p">(</span><span class="n">_row</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
                             <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">_row</span><span class="p">)}</span>
 
                         <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">sheet</span><span class="o">.</span><span class="n">iter_rows</span><span class="p">(</span><span class="n">min_row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">values_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -3434,7 +3457,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
                             <span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">_file</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">content</span>
 
-    <span class="k">def</span> <span class="nf">_download_adt_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adt_adress</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_download_adt_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adt_adress</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">DigitalTwinsClient</span><span class="p">(</span><span class="n">adt_adress</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">)</span>
         <span class="n">query_expression</span> <span class="o">=</span> <span class="s1">&#39;SELECT * FROM digitaltwins&#39;</span>
         <span class="n">query_result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query_twins</span><span class="p">(</span><span class="n">query_expression</span><span class="p">)</span>
@@ -3469,14 +3492,14 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 
         <span class="k">return</span> <span class="n">json_content</span>
 
-    <span class="k">def</span> <span class="nf">get_all_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_all_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="n">scenario_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_scenario_data</span><span class="p">(</span><span class="n">scenario_id</span><span class="o">=</span><span class="n">scenario_id</span><span class="p">)</span>
         <span class="n">content</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">scenario_data</span><span class="o">.</span><span class="n">parameters_values</span><span class="p">:</span>
             <span class="n">content</span><span class="p">[</span><span class="n">parameter</span><span class="o">.</span><span class="n">parameter_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">value</span>
         <span class="k">return</span> <span class="n">content</span>
 
-    <span class="k">def</span> <span class="nf">get_all_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_all_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scenario_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="n">scenario_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_scenario_data</span><span class="p">(</span><span class="n">scenario_id</span><span class="o">=</span><span class="n">scenario_id</span><span class="p">)</span>
 
         <span class="n">datasets</span> <span class="o">=</span> <span class="n">scenario_data</span><span class="o">.</span><span class="n">dataset_list</span>
@@ -3488,7 +3511,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
                 <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">value</span>
                 <span class="n">dataset_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">download_dataset_process</span><span class="p">(</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="n">_return_dict</span><span class="p">,</span> <span class="n">_error_dict</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">download_dataset_process</span><span class="p">(</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="n">_return_dict</span><span class="p">,</span> <span class="n">_error_dict</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">download_dataset</span><span class="p">(</span><span class="n">_dataset_id</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">_dataset_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_file_temp_path</span><span class="p">:</span>
@@ -3536,7 +3559,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
                 <span class="n">content</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
         <span class="k">return</span> <span class="n">content</span>
 
-    <span class="k">def</span> <span class="nf">dataset_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">dataset_info</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dataset_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">dataset_info</span><span class="p">):</span>
         <span class="nb">type</span> <span class="o">=</span> <span class="n">dataset_info</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">dataset_info</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">dataset_info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
@@ -3545,7 +3568,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_file_temp_path</span><span class="p">[</span><span class="n">dataset_id</span><span class="p">]</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">sheet_to_header</span><span class="p">(</span><span class="n">sheet_content</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sheet_to_header</span><span class="p">(</span><span class="n">sheet_content</span><span class="p">):</span>
         <span class="n">fieldnames</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">has_src</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">has_id</span> <span class="o">=</span> <span class="kc">False</span>
@@ -3564,7 +3587,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
             <span class="n">fieldnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="p">]</span> <span class="o">+</span> <span class="n">fieldnames</span>
         <span class="k">return</span> <span class="n">fieldnames</span>
 
-    <span class="k">def</span> <span class="nf">adt_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">_name</span><span class="p">,</span> <span class="n">_type</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">adt_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">_name</span><span class="p">,</span> <span class="n">_type</span><span class="p">):</span>
         <span class="n">tmp_dataset_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">_filename</span><span class="p">,</span> <span class="n">_filecontent</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmp_dataset_dir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">_filename</span> <span class="o">+</span> <span class="s2">&quot;.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">_file</span><span class="p">:</span>

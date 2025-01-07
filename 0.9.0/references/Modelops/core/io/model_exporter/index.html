@@ -2444,6 +2444,8 @@
       
         
       
+        
+      
     
     
       
@@ -2585,6 +2587,27 @@
   
   <span class="md-ellipsis">
     load-csv-folder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../csm-data/store/load-from-singlestore/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    load-from-singlestore
   </span>
   
 
@@ -2926,12 +2949,12 @@
 <span class="normal">162</span>
 <span class="normal">163</span>
 <span class="normal">164</span>
-<span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ModelExporter</span><span class="p">(</span><span class="n">GraphHandler</span><span class="p">):</span>
+<span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ModelExporter</span><span class="p">(</span><span class="n">GraphHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Model Exporter for cached data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">export_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">export_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
         <span class="n">Path</span><span class="p">(</span><span class="n">export_dir</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">export_dir</span> <span class="o">=</span> <span class="n">export_dir</span>
@@ -2943,7 +2966,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">already_exported_edges</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="nd">@GraphHandler</span><span class="o">.</span><span class="n">do_if_graph_exist</span>
-    <span class="k">def</span> <span class="nf">export_all_twins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">export_all_twins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Export all twins</span>
 <span class="sd">        :return: Csv files containing all twin instances exported into {export_dir} folder named by twin type</span>
@@ -2972,7 +2995,7 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;... End exporting twins&quot;</span><span class="p">)</span>
 
     <span class="nd">@GraphHandler</span><span class="o">.</span><span class="n">do_if_graph_exist</span>
-    <span class="k">def</span> <span class="nf">export_all_relationships</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">export_all_relationships</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Export all relationships</span>
 <span class="sd">        :return: Csv files containing all relationship instances exported into {export_dir}</span>
@@ -3002,7 +3025,7 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;... End exporting relationships&quot;</span><span class="p">)</span>
 
     <span class="nd">@GraphHandler</span><span class="o">.</span><span class="n">do_if_graph_exist</span>
-    <span class="k">def</span> <span class="nf">export_all_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">export_all_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Export all data</span>
 <span class="sd">        :return: a bunch of csv files corresponding to graph data</span>
@@ -3011,7 +3034,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">export_all_relationships</span><span class="p">()</span>
 
     <span class="nd">@GraphHandler</span><span class="o">.</span><span class="n">do_if_graph_exist</span>
-    <span class="k">def</span> <span class="nf">export_from_queries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queries</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">export_from_queries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queries</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Export data from queries</span>
 <span class="sd">        Queries must be Cypher queries and return nodes and relationships objects to be exported</span>
@@ -3066,7 +3089,7 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;... End exporting data from queries&quot;</span><span class="p">)</span>
 
     <span class="nd">@lru_cache</span>
-    <span class="k">def</span> <span class="nf">get_node_id_from_sys_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sys_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_node_id_from_sys_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sys_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get node id from system id (RedisGraph id)</span>
 <span class="sd">        :param sys_id: system id</span>
@@ -3115,7 +3138,7 @@
 <span class="normal">96</span>
 <span class="normal">97</span>
 <span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@GraphHandler</span><span class="o">.</span><span class="n">do_if_graph_exist</span>
-<span class="k">def</span> <span class="nf">export_all_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">export_all_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Export all data</span>
 <span class="sd">    :return: a bunch of csv files corresponding to graph data</span>
@@ -3174,7 +3197,7 @@ folder named by relationship type</p>
 <span class="normal">87</span>
 <span class="normal">88</span>
 <span class="normal">89</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@GraphHandler</span><span class="o">.</span><span class="n">do_if_graph_exist</span>
-<span class="k">def</span> <span class="nf">export_all_relationships</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">export_all_relationships</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Export all relationships</span>
 <span class="sd">    :return: Csv files containing all relationship instances exported into {export_dir}</span>
@@ -3252,7 +3275,7 @@ folder named by relationship type</p>
 <span class="normal">57</span>
 <span class="normal">58</span>
 <span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@GraphHandler</span><span class="o">.</span><span class="n">do_if_graph_exist</span>
-<span class="k">def</span> <span class="nf">export_all_twins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">export_all_twins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Export all twins</span>
 <span class="sd">    :return: Csv files containing all twin instances exported into {export_dir} folder named by twin type</span>
@@ -3358,7 +3381,7 @@ Multiple instances of the same node or relationship will not be exported</p>
 <span class="normal">151</span>
 <span class="normal">152</span>
 <span class="normal">153</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@GraphHandler</span><span class="o">.</span><span class="n">do_if_graph_exist</span>
-<span class="k">def</span> <span class="nf">export_from_queries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queries</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">export_from_queries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queries</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Export data from queries</span>
 <span class="sd">    Queries must be Cypher queries and return nodes and relationships objects to be exported</span>
@@ -3449,7 +3472,7 @@ Multiple instances of the same node or relationship will not be exported</p>
 <span class="normal">163</span>
 <span class="normal">164</span>
 <span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@lru_cache</span>
-<span class="k">def</span> <span class="nf">get_node_id_from_sys_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sys_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_node_id_from_sys_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sys_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get node id from system id (RedisGraph id)</span>
 <span class="sd">    :param sys_id: system id</span>

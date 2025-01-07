@@ -2408,6 +2408,8 @@
       
         
       
+        
+      
     
     
       
@@ -2549,6 +2551,27 @@
   
   <span class="md-ellipsis">
     load-csv-folder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../csm-data/store/load-from-singlestore/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    load-from-singlestore
   </span>
   
 
@@ -2745,13 +2768,13 @@
 <span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
-<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ModelImporter</span><span class="p">(</span><span class="n">GraphHandler</span><span class="p">):</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ModelImporter</span><span class="p">(</span><span class="n">GraphHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Model Exporter for cached data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@GraphHandler</span><span class="o">.</span><span class="n">handle_graph_replace</span>
-    <span class="k">def</span> <span class="nf">bulk_import</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">twin_file_paths</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">relationship_file_paths</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">enforce_schema</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bulk_import</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">twin_file_paths</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">relationship_file_paths</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">enforce_schema</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Import all csv data</span>
 <span class="sd">        :param twin_file_paths: the file paths of all twin csv files</span>
@@ -2857,7 +2880,7 @@
 <span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@GraphHandler</span><span class="o">.</span><span class="n">handle_graph_replace</span>
-<span class="k">def</span> <span class="nf">bulk_import</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">twin_file_paths</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">relationship_file_paths</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">enforce_schema</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">bulk_import</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">twin_file_paths</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">relationship_file_paths</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">enforce_schema</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Import all csv data</span>
 <span class="sd">    :param twin_file_paths: the file paths of all twin csv files</span>

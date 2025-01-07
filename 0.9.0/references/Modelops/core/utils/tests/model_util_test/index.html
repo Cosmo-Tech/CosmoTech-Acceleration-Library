@@ -2393,6 +2393,8 @@
       
         
       
+        
+      
     
     
       
@@ -2534,6 +2536,27 @@
   
   <span class="md-ellipsis">
     load-csv-folder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../csm-data/store/load-from-singlestore/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    load-from-singlestore
   </span>
   
 
@@ -2762,7 +2785,7 @@
 <span class="normal">94</span>
 <span class="normal">95</span>
 <span class="normal">96</span>
-<span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TestModelUtil</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TestModelUtil</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
     <span class="c1"># Global variables</span>
     <span class="n">simple_parameters</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;Twin1&quot;</span><span class="p">,</span>
@@ -2821,26 +2844,26 @@
                                               <span class="s1">&#39;with_quotes : &quot;</span><span class="se">\&#39;</span><span class="s1">12345</span><span class="se">\&#39;</span><span class="s1">&quot;, &#39;</span> \
                                               <span class="s1">&#39;colors : [&quot;red&quot;,&quot;white&quot;,&quot;blue&quot;]}&#39;</span>
 
-    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model_util</span> <span class="o">=</span> <span class="n">ModelUtil</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">test_dict_to_cypher_parameters_with_simple_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_dict_to_cypher_parameters_with_simple_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_simple_parameters</span><span class="p">,</span>
                          <span class="bp">self</span><span class="o">.</span><span class="n">model_util</span><span class="o">.</span><span class="n">dict_to_cypher_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">simple_parameters</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">test_create_index_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_create_index_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">expected_result</span> <span class="o">=</span> <span class="s2">&quot;CREATE INDEX ON :Entity_Test(property_name_test)&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected_result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_util</span><span class="o">.</span><span class="n">create_index_query</span><span class="p">(</span><span class="s2">&quot;Entity_Test&quot;</span><span class="p">,</span> <span class="s2">&quot;property_name_test&quot;</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">test_create_twin_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_create_twin_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">expected_result</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;CREATE (:Entity_Test </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_simple_parameters</span><span class="si">}</span><span class="s2">)&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected_result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_util</span><span class="o">.</span><span class="n">create_twin_query</span><span class="p">(</span><span class="s2">&quot;Entity_Test&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple_parameters</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">test_create_twin_query_Exception</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_create_twin_query_Exception</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">twin_name</span> <span class="o">=</span> <span class="s1">&#39;Twin_name&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">Exception</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_util</span><span class="o">.</span><span class="n">create_twin_query</span><span class="p">,</span> <span class="n">twin_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_simple_parameters</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">test_create_relationship_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_create_relationship_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">source_id</span> <span class="o">=</span> <span class="s1">&#39;Node1&#39;</span>
         <span class="n">destination_id</span> <span class="o">=</span> <span class="s1">&#39;Node2&#39;</span>
         <span class="n">relation_name</span> <span class="o">=</span> <span class="s1">&#39;Relation_Name&#39;</span>
@@ -2848,7 +2871,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected_result</span><span class="p">,</span>
                          <span class="bp">self</span><span class="o">.</span><span class="n">model_util</span><span class="o">.</span><span class="n">create_relationship_query</span><span class="p">(</span><span class="n">relation_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationship_simple_parameters</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">test_create_relationship_query_Exception</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_create_relationship_query_Exception</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">relation_name</span> <span class="o">=</span> <span class="s1">&#39;Relation_Name&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">Exception</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_util</span><span class="o">.</span><span class="n">create_relationship_query</span><span class="p">,</span> <span class="n">relation_name</span><span class="p">,</span>
                           <span class="bp">self</span><span class="o">.</span><span class="n">expected_simple_parameters</span><span class="p">)</span>

@@ -2345,6 +2345,8 @@
       
         
       
+        
+      
     
     
       
@@ -2503,6 +2505,27 @@
   
   
     <li class="md-nav__item">
+      <a href="load-from-singlestore/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    load-from-singlestore
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="rds-send-store/" class="md-nav__link">
         
   
@@ -2609,17 +2632,25 @@
 │ --help          Show this message and exit.                                  │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ dump-to-azure       Dump a datastore to a Azure storage account.             │
-│ dump-to-postgresql  Running this command will dump your store to a given     │
-│                     postgresql database                                      │
-│ dump-to-s3          Dump a datastore to a S3                                 │
-│ list-tables         Running this command will list the existing tables in    │
-│                     your datastore                                           │
-│ load-csv-folder     Running this command will find all csvs in the given     │
-│                     folder and put them in the store                         │
-│ rds-send-store      Send all CoAL Datastore content to the results service   │
-│                     of the Cosmo Tech API                                    │
-│ reset               Running this command will reset the state of your store  │
+│ dump-to-azure          Dump a datastore to a Azure storage account.          │
+│ dump-to-postgresql     Running this command will dump your store to a given  │
+│                        postgresql database                                   │
+│ dump-to-s3             Dump a datastore to a S3                              │
+│ list-tables            Running this command will list the existing tables in │
+│                        your datastore                                        │
+│ load-csv-folder        Running this command will find all csvs in the given  │
+│                        folder and put them in the store                      │
+│ load-from-singlestore  Load data from SingleStore tables into the store.     │
+│                        Will download everything from a given SingleStore     │
+│                        database following some configuration into the store. │
+│                        Make use of the singlestoredb to access to            │
+│                        SingleStore More information is available on this     │
+│                        page:                                                 │
+│                        [https://docs.singlestore.com/cloud/developer-resour… │
+│ rds-send-store         Send all CoAL Datastore content to the results        │
+│                        service of the Cosmo Tech API                         │
+│ reset                  Running this command will reset the state of your     │
+│                        store                                                 │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>

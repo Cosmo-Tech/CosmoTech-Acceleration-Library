@@ -2395,6 +2395,8 @@
       
         
       
+        
+      
     
     
       
@@ -2552,6 +2554,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../csm-data/store/load-from-singlestore/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    load-from-singlestore
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../csm-data/store/rds-send-store/" class="md-nav__link">
         
   
@@ -2672,8 +2695,8 @@
 <p>The idea behind it is to give you a robust system in which you can send data, query data or even create complex interactions.</p>
 <p>Instead of putting all your data in csvs or json or other heavy file formats you can store them in the datastore and easily get them back later.</p>
 <h2 id="basic-example">Basic example<a class="headerlink" href="#basic-example" title="Permanent link">&para;</a></h2>
-<div class="highlight"><span class="filename">Basic use of the datastore</span><pre><span></span><code><span class="kn">from</span> <span class="nn">cosmotech.coal.store.store</span> <span class="kn">import</span> <span class="n">Store</span>
-<span class="kn">from</span> <span class="nn">cosmotech.coal.store.native_python</span> <span class="kn">import</span> <span class="n">store_pylist</span>
+<div class="highlight"><span class="filename">Basic use of the datastore</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.native_python</span><span class="w"> </span><span class="kn">import</span> <span class="n">store_pylist</span>
 
 <span class="c1"># We initialize and reset the data store</span>
 <span class="n">my_datastore</span> <span class="o">=</span> <span class="n">Store</span><span class="p">(</span><span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
