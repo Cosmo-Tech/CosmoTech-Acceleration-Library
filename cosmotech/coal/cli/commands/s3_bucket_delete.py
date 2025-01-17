@@ -94,20 +94,15 @@ More information is available on this page:
 
     s3_resource = boto3.resource("s3",
                                  **boto3_parameters)
-
     bucket = s3_resource.Bucket(bucket_name)
 
-    remove_prefix = False
     if file_prefix:
         bucket_files = bucket.objects.filter(Prefix=file_prefix)
-        if file_prefix.endswith("/"):
-            remove_prefix = True
     else:
         bucket_files = bucket.objects.all()
-    for _file in bucket_files:
-        if not (path_name := str(_file.key)).endswith("/"):
-            target_file = path_name
-            if remove_prefix:
-                target_file = target_file.removeprefix(file_prefix)
-            LOGGER.info(f"Deleting {path_name}")
-            bucket.delete_key(_file.key)
+
+    boto_objects = [{'Key': _file.key} for _file in bucket_files if _file.key != file_prefix]
+    if boto_objects:
+        LOGGER.info(f'Deleting {boto_objects}')
+        boto_delete_request = {'Objects': boto_objects}
+        bucket.delete_objects(Delete=boto_delete_request)
