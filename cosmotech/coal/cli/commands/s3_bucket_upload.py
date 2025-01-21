@@ -98,7 +98,7 @@ Giving a prefix will add it to every upload (finishing the prefix with a "/" wil
 
 Make use of the boto3 library to access the bucket
 
-More information is available on this page: 
+More information is available on this page:
 [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html)
 """
     source_path = pathlib.Path(source_folder)
@@ -115,12 +115,12 @@ More information is available on this page:
     if ssl_cert_bundle:
         boto3_parameters["verify"] = ssl_cert_bundle
 
-    s3_client = boto3.client("s3", **boto3_parameters)
+    s3_resource = boto3.resource("s3", **boto3_parameters)
 
     def file_upload(file_path: pathlib.Path, file_name: str):
         uploaded_file_name = file_prefix + file_name
         LOGGER.info(f"Sending {file_path} as {uploaded_file_name}")
-        s3_client.upload_file(file_path, bucket_name, uploaded_file_name)
+        s3_resource.Bucket(bucket_name).upload_file(file_path, uploaded_file_name)
 
     if source_path.is_dir():
         _source_name = str(source_path)
