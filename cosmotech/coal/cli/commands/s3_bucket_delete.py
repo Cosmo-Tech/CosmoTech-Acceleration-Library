@@ -106,3 +106,5 @@ More information is available on this page:
         LOGGER.info(f'Deleting {boto_objects}')
         boto_delete_request = {'Objects': boto_objects}
         bucket.delete_objects(Delete=boto_delete_request)
+    else:
+        LOGGER.info('No objects to delete')
