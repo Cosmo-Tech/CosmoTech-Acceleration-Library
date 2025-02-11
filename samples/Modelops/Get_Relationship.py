@@ -1,4 +1,4 @@
-# Copyright (c) Cosmo Tech corporation.
+# Copyright (C) - 2023 - 2025 - Cosmo Tech
 # Licensed under the MIT license.
 from CosmoTech_Acceleration_Library.Modelops.core.io.model_reader import ModelReader
 from CosmoTech_Acceleration_Library.Modelops.core.utils.model_util import ModelUtil

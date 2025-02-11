@@ -1,4 +1,4 @@
-# Copyright (C) - 2023 - 2023 - Cosmo Tech
+# Copyright (C) - 2023 - 2025 - Cosmo Tech
 # This document and all information contained herein is the exclusive property -
 # including all intellectual property rights pertaining thereto - of Cosmo Tech.
 # Any use, reproduction, translation, broadcasting, transmission, distribution,
