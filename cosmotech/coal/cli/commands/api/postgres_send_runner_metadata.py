@@ -119,7 +119,7 @@ This implementation make use of an API Key
                   DO
                     UPDATE SET name = EXCLUDED.name, last_run_id = EXCLUDED.last_run_id;
             """
-            LOGGER.info(f"creating table [cyan bold]{schema_table}[/]")
+            LOGGER.info(f"creating table {schema_table}")
             curs.execute(sql_create_table)
             conn.commit()
             LOGGER.info(f"adding/updating runner metadata")

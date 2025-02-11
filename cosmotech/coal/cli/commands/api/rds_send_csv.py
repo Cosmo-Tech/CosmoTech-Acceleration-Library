@@ -80,7 +80,7 @@ Requires a valid connection to the API to send the data
             with open(csv_path) as _f:
                 dr = DictReader(_f)
                 table_name = csv_path.name.replace(".csv", "")
-                LOGGER.info(f"Sending data to table [cyan bold]CD_{table_name}[/]")
+                LOGGER.info(f"Sending data to table CD_{table_name}")
                 LOGGER.debug(f"  - Column list: {dr.fieldnames}")
                 data = []
 

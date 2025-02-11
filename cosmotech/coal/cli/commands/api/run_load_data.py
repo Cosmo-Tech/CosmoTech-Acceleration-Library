@@ -82,8 +82,8 @@ def download_runner_data(organization_id: str, workspace_id: str, runner_id: str
                 "varType": var_type,
                 "isInherited": is_inherited
             })
-            LOGGER.debug(f"  - [yellow]{param_id:<{max_name_size}}[/] [cyan]{var_type:<{max_type_size}}[/] "
-                         f"\"{value}\"{' [red bold]inherited[/]' if is_inherited else ''}")
+            LOGGER.debug(f"  - {param_id:<{max_name_size}} {var_type:<{max_type_size}} "
+                         f"\"{value}\"{' inherited' if is_inherited else ''}")
 
         write_parameters(parameter_folder, parameters)
 

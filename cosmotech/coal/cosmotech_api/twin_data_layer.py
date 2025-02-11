@@ -47,9 +47,9 @@ class CSVSourceFile:
 
         if not has_id and not is_relation:
             LOGGER.error(f"'{file_path}' does not contains valid nodes or relationships")
-            LOGGER.error(f"  - Valid nodes contains at least the property [bold yellow]{ID_COLUMN}[/]")
+            LOGGER.error(f"  - Valid nodes contains at least the property {ID_COLUMN} ")
             LOGGER.error("  - Valid relationships contains at least the properties " +
-                         f"[bold yellow]{ID_COLUMN}, {SOURCE_COLUMN}, {TARGET_COLUMN}[/]")
+                         f"{ID_COLUMN}, {SOURCE_COLUMN}, {TARGET_COLUMN} ")
             raise ValueError(f"'{file_path}' does not contains valid nodes or relations")
 
         self.is_node = has_id and not is_relation

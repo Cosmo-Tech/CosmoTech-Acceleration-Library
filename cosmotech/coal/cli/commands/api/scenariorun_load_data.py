@@ -59,12 +59,12 @@ def download_scenario_data(
         for k in datasets.keys():
             if k in scenario_data.dataset_list:
                 shutil.copytree(dl.dataset_to_file(k, datasets[k]), dataset_folder, dirs_exist_ok=True)
-                LOGGER.debug(f"  - [yellow]{dataset_folder}[/] ([green]{k}[/])")
+                LOGGER.debug(f"  - {dataset_folder} ({k} )")
             if k in datasets_parameters_ids.keys():
                 param_dir = os.path.join(parameter_folder, datasets_parameters_ids[k])
                 pathlib.Path(param_dir).mkdir(exist_ok=True, parents=True)
                 shutil.copytree(dl.dataset_to_file(k, datasets[k]), param_dir, dirs_exist_ok=True)
-                LOGGER.debug(f"  - [yellow]{datasets_parameters_ids[k]}[/] ([green]{k}[/])")
+                LOGGER.debug(f"  - {datasets_parameters_ids[k]} ({k} )")
     else:
         LOGGER.info("No dataset write asked, skipping")
 
@@ -91,8 +91,8 @@ def download_scenario_data(
                 "varType": var_type,
                 "isInherited": is_inherited
             })
-            LOGGER.debug(f"  - [yellow]{parameter_name:<{max_name_size}}[/] [cyan]{var_type:<{max_type_size}}[/] "
-                         f"\"{value}\"{' [red bold]inherited[/]' if is_inherited else ''}")
+            LOGGER.debug(f"  - {parameter_name:<{max_name_size}} {var_type:<{max_type_size}} "
+                         f"\"{value}\"{' inherited' if is_inherited else ''}")
         write_parameters(parameter_folder, parameters, write_csv, write_json)
 
 

@@ -109,7 +109,7 @@ Requires a valid Azure connection either with:
                                    cluster_url=adx_uri,
                                    ingest_url=adx_ingest_uri)
     for k, v in queries.items():
-        LOGGER.info(f"Create table query: [bold green]{v}[/]")
+        LOGGER.info(f"Create table query: {v}")
         r: KustoResponseDataSet = adx_client.run_query(v)
         if r.errors_count == 0:
             LOGGER.info(f"Table {k} created successfully")
@@ -233,8 +233,8 @@ def insert_csv_files(files_data, adx_client: ADXQueriesWrapper, simulation_id, d
         status_color_mapping[IngestionStatus.FAILURE.value] = "red"
         status_color_mapping[IngestionStatus.SUCCESS.value] = "green"
         for _id, status in adx_client.check_ingestion_status(source_ids=list(ingestion_ids.keys())):
-            LOGGER.info(f"[bold cyan]{ingestion_ids[_id]}[/] - "
-                        f"[bold {status_color_mapping[status.value]}]{status.name}[/]")
+            LOGGER.info(f"{ingestion_ids[_id]} - "
+                        f"{status.name}")
     else:
         LOGGER.info("No wait for ingestion result")
 

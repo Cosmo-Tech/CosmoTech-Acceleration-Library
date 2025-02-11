@@ -60,8 +60,8 @@ Uses environment variables to download cloud based Template steps
         try:
             r_data: Workspace = api_w.find_workspace_by_id(organization_id=organization_id, workspace_id=workspace_id)
         except ServiceException as e:
-            LOGGER.error(f"Workspace [green bold]{workspace_id}[/] was not found "
-                         f"in Organization [green bold]{organization_id}[/]")
+            LOGGER.error(f"Workspace {workspace_id} was not found "
+                         f"in Organization {organization_id}")
             LOGGER.debug(e.body)
             raise click.Abort()
         solution_id = r_data.solution.solution_id
@@ -72,7 +72,7 @@ Uses environment variables to download cloud based Template steps
         template_path = root_path / run_template_id
         for handler_id in handler_list.split(','):
             handler_path: pathlib.Path = template_path / handler_id
-            LOGGER.info(f"Querying Handler [green bold]{handler_id}[/] for [green bold]{run_template_id}[/]")
+            LOGGER.info(f"Querying Handler {handler_id} for {run_template_id} ")
             try:
                 rt_data = api_sol.download_run_template_handler(organization_id=organization_id,
                                                                 solution_id=solution_id,
@@ -80,9 +80,9 @@ Uses environment variables to download cloud based Template steps
                                                                 handler_id=handler_id)
             except ServiceException as e:
                 LOGGER.error(
-                    f"Handler [green bold]{handler_id}[/] was not found "
-                    f"for Run Template [green bold]{run_template_id}[/] "
-                    f"in Solution [green bold]{solution_id}[/]")
+                    f"Handler {handler_id} was not found "
+                    f"for Run Template {run_template_id} "
+                    f"in Solution {solution_id} ")
                 LOGGER.debug(e.body)
                 has_errors = True
                 continue
@@ -93,7 +93,7 @@ Uses environment variables to download cloud based Template steps
                 with ZipFile(BytesIO(rt_data)) as _zip:
                     _zip.extractall(handler_path)
             except BadZipfile:
-                LOGGER.error(f"Handler [green bold]{handler_id}[/] is not a [blue]zip file[/]")
+                LOGGER.error(f"Handler {handler_id} is not a zip file ")
                 has_errors = True
         if has_errors:
             LOGGER.error("Issues were met during run, please check the previous logs")

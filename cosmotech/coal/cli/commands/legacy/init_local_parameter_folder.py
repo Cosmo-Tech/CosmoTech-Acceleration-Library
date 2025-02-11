@@ -146,13 +146,13 @@ def generate_parameters(
     write_json: bool,
     write_csv: bool
 ):
-    LOGGER.info(f"Searching [green bold]{run_template_id}[/] in the solution")
+    LOGGER.info(f"Searching {run_template_id} in the solution")
     if _t := [t for t in solution.run_templates if t.id == run_template_id]:
         template: RunTemplate = _t[0]
     else:
-        LOGGER.error(f"Run template [green bold]{run_template_id}[/] was not found.")
+        LOGGER.error(f"Run template {run_template_id} was not found.")
         raise click.Abort()
-    LOGGER.info(f"Found [green bold]{run_template_id}[/] in the solution generating json file")
+    LOGGER.info(f"Found {run_template_id} in the solution generating json file")
     parameter_groups = template.parameter_groups
     parameter_names = []
     for param_group in solution.parameter_groups:
@@ -173,7 +173,7 @@ def generate_parameters(
                 "isInherited": False
             })
     if not (write_csv or write_json or dataset_parameters):
-        LOGGER.warning(f"No parameters to write for [green bold]{run_template_id}[/]")
+        LOGGER.warning(f"No parameters to write for {run_template_id} ")
         return 1
     output_folder_path = pathlib.Path(output_folder)
     output_folder_path.mkdir(parents=True, exist_ok=True)

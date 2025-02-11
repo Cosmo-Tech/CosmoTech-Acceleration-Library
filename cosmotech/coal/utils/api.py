@@ -49,8 +49,8 @@ def get_solution(organization_id, workspace_id) -> Optional[Solution]:
         try:
             r_data: Workspace = api_w.find_workspace_by_id(organization_id=organization_id, workspace_id=workspace_id)
         except ServiceException as e:
-            LOGGER.error(f"Workspace [green bold]{workspace_id}[/] was not found "
-                         f"in Organization [green bold]{organization_id}[/]")
+            LOGGER.error(f"Workspace {workspace_id} was not found "
+                         f"in Organization {organization_id}")
             LOGGER.debug(e.body)
             return None
         solution_id = r_data.solution.solution_id

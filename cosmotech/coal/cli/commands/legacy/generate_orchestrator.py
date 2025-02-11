@@ -89,13 +89,13 @@ def from_api(workspace_id, organization_id, run_template_id, output, describe):
 
 
 def generate_from_solution(sol: Solution, run_template_id, output: str, describe: bool = False):
-    LOGGER.info(f"Searching [green bold]{run_template_id}[/] in the solution")
+    LOGGER.info(f"Searching {run_template_id} in the solution")
     if _t := [t for t in sol.run_templates if t.id == run_template_id]:
         template: RunTemplate = _t[0]
     else:
-        LOGGER.error(f"Run template [green bold]{run_template_id}[/] was not found.")
+        LOGGER.error(f"Run template {run_template_id} was not found.")
         raise click.Abort()
-    LOGGER.info(f"Found [green bold]{run_template_id}[/] in the solution generating json file")
+    LOGGER.info(f"Found {run_template_id} in the solution generating json file")
     generate_from_template(template, output)
     if describe:
         f = Orchestrator()
@@ -110,7 +110,7 @@ def generate_from_template(template: RunTemplate, output: str):
     previous = None
     LOGGER.debug(template)
     if template.fetch_datasets is not False or template.fetch_scenario_parameters:
-        LOGGER.info("- [green]fetch_scenario_parameters[/] step found")
+        LOGGER.info("- fetch_scenario_parameters step found")
         _s = Step(id="fetch_scenario_parameters",
                   commandId="csm-orc fetch-scenariorun-data",
                   stop_library_load=True)
@@ -122,7 +122,7 @@ def generate_from_template(template: RunTemplate, output: str):
         template_is_active = template.get(condition) if template.get(condition) is not None else default
         if template_is_active:
             if template.get(source) == "cloud":
-                LOGGER.info(f"- [green]{name}_cloud[/] step found")
+                LOGGER.info(f"- {name}_cloud step found")
                 _name = f"{name}_cloud"
                 _step_dl_cloud = Step(id=_name,
                                       command="csm-orc",
@@ -168,7 +168,7 @@ def generate_from_template(template: RunTemplate, output: str):
                     _step_dl_cloud.precedents = [_previous]
                 _previous = _name
                 _steps.append(_step_dl_cloud)
-            LOGGER.info(f"- [green]{name}[/] step found")
+            LOGGER.info(f"- {name} step found")
             _run_step = Step(id=name,
                              commandId="csm-orc run-step",
                              environment={
@@ -197,7 +197,7 @@ def generate_from_template(template: RunTemplate, output: str):
     previous, new_steps = run_template_phase("validator", "validate_data", "validator_source", previous, False)
     steps.extend(new_steps)
     if template.send_datasets_to_data_warehouse is True or template.send_input_parameters_to_data_warehouse is True:
-        LOGGER.info("- [green]send_to_adx[/] step found")
+        LOGGER.info("- send_to_adx step found")
         _send_to_adx_step = Step(id="send_to_adx",
                                  command="csm-orc",
                                  arguments=["send-to-adx"],

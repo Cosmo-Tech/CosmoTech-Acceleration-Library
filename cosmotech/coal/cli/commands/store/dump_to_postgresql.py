@@ -89,16 +89,16 @@ def dump_to_postgresql(
 
     tables = list(_s.list_tables())
     if len(tables):
-        LOGGER.info(f"Sending tables to [green bold]{postgres_db}.{postgres_schema}[/]")
+        LOGGER.info(f"Sending tables to {postgres_db}.{postgres_schema} ")
         total_rows = 0
         _process_start = perf_counter()
         for table_name in tables:
             _s_time = perf_counter()
             target_table_name = f"{table_prefix}{table_name}"
-            LOGGER.info(f"  - [yellow]{target_table_name}[/]:")
+            LOGGER.info(f"  - {target_table_name} :")
             data = _s.get_table(table_name)
             if not len(data):
-                LOGGER.info(f"   -> [cyan bold]0[/] rows (skipping)")
+                LOGGER.info(f"   -> 0 rows (skipping)")
                 continue
             _dl_time = perf_counter()
             rows = send_pyarrow_table_to_postgresql(data,
@@ -112,11 +112,11 @@ def dump_to_postgresql(
                                                     replace)
             total_rows += rows
             _up_time = perf_counter()
-            LOGGER.info(f"   -> [cyan bold]{rows}[/] rows")
-            LOGGER.debug(f"   -> Load from datastore took [blue]{_dl_time - _s_time:0.3}s[/]")
-            LOGGER.debug(f"   -> Send to postgresql took [blue]{_up_time - _dl_time:0.3}s[/]")
+            LOGGER.info(f"   -> {rows} rows")
+            LOGGER.debug(f"   -> Load from datastore took {_dl_time - _s_time:0.3}s ")
+            LOGGER.debug(f"   -> Send to postgresql took {_up_time - _dl_time:0.3}s ")
         _process_end = perf_counter()
-        LOGGER.info(f"Sent [cyan bold]{total_rows}[/] rows "
-                    f"in [blue]{_process_end - _process_start:0.3}s[/]")
+        LOGGER.info(f"Sent {total_rows} rows "
+                    f"in {_process_end - _process_start:0.3}s ")
     else:
         LOGGER.info("Data store is empty")

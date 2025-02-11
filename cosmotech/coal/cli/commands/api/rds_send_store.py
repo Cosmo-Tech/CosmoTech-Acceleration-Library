@@ -80,7 +80,7 @@ Requires a valid connection to the API to send the data
         api_run = RunApi(api_client)
         _s = Store()
         for table_name in _s.list_tables():
-            LOGGER.info(f"Sending data to table [cyan bold]CD_{table_name}[/]")
+            LOGGER.info(f"Sending data to table CD_{table_name}")
             data = convert_table_as_pylist(table_name)
             if not len(data):
                 LOGGER.info("  - No rows : skipping")

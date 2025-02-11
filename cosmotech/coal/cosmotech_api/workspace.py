@@ -35,7 +35,7 @@ def list_workspace_files(
             target_list.append(workspace_file.file_name)
 
     if not target_list:
-        LOGGER.error(f"No workspace file were found with filter [bold green]{file_prefix}[/]")
+        LOGGER.error(f"No workspace file were found with filter {file_prefix}")
         raise ValueError(f"No workspace file were found with filter {file_prefix} in workspace {workspace_id}")
 
     return target_list
@@ -62,7 +62,7 @@ def download_workspace_file(
         raise ValueError(f"{target_dir} is a file and not a directory")
     api_ws = cosmotech_api.api.workspace_api.WorkspaceApi(api_client)
 
-    LOGGER.info(f"Loading [bold green]{file_name}[/] from the API")
+    LOGGER.info(f"Loading {file_name} from the API")
 
     _file_content = api_ws.download_workspace_file(organization_id,
                                                    workspace_id,
@@ -74,7 +74,7 @@ def download_workspace_file(
     with open(local_target_file, "wb") as _file:
         _file.write(_file_content)
 
-    LOGGER.info(f"[bold green]{local_target_file}[/] successfuly loaded from the API")
+    LOGGER.info(f"{local_target_file} successfuly loaded from the API")
 
     return local_target_file
 
@@ -112,7 +112,7 @@ def upload_workspace_file(
     api_ws = cosmotech_api.api.workspace_api.WorkspaceApi(api_client)
     destination = workspace_path + target_file.name if workspace_path.endswith("/") else workspace_path
 
-    LOGGER.info(f"Sending [bold green]{target_file.name}[/] as [bold green]{destination}[/] to the API")
+    LOGGER.info(f"Sending {destination} to the API")
     try:
         _file = api_ws.upload_workspace_file(organization_id,
                                              workspace_id,
@@ -120,8 +120,8 @@ def upload_workspace_file(
                                              overwrite,
                                              destination=destination)
     except cosmotech_api.exceptions.ApiException as e:
-        LOGGER.error(f"[bold green]{destination}[/] already exists, use the [cyan]overwrite flag[/] to replace it")
+        LOGGER.error(f"{destination}already exists, use the overwrite flag to replace it")
         raise e
 
-    LOGGER.info(f"[bold green]{_file.file_name}[/] successfuly sent to the API")
+    LOGGER.info(f"{_file.file_name} successfuly sent to the API")
     return _file.file_name
