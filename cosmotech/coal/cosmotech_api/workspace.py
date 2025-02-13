@@ -116,7 +116,7 @@ def upload_workspace_file(
     try:
         _file = api_ws.upload_workspace_file(organization_id,
                                              workspace_id,
-                                             target_file,
+                                             file_path,
                                              overwrite,
                                              destination=destination)
     except cosmotech_api.exceptions.ApiException as e:
