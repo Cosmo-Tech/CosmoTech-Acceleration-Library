@@ -9,9 +9,10 @@ import pathlib
 from csv import DictWriter
 
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 from cosmotech_api import DatasetApi
 from cosmotech_api import DatasetTwinGraphQuery
 from cosmotech_api import RunnerApi
@@ -21,35 +22,35 @@ from cosmotech_api import ScenarioApi
 @click.command()
 @click.option("--organization-id",
               envvar="CSM_ORGANIZATION_ID",
-              help="An organization id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.tdl_load_files.parameters.organization_id"),
               metavar="o-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--workspace-id",
               envvar="CSM_WORKSPACE_ID",
-              help="A workspace id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.tdl_load_files.parameters.workspace_id"),
               metavar="w-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--scenario-id",
               envvar="CSM_SCENARIO_ID",
-              help="A scenario id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.tdl_load_files.parameters.scenario_id"),
               metavar="s-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=False)
 @click.option("--runner-id",
               envvar="CSM_RUNNER_ID",
-              help="A runner id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.tdl_load_files.parameters.runner_id"),
               metavar="r-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=False)
 @click.option("--dir",
               "directory_path",
-              help="Path to the directory to write the results to",
+              help=T("coal-help.commands.api.tdl_load_files.parameters.dir"),
               metavar="PATH",
               default="./",
               type=str,
@@ -57,6 +58,7 @@ from cosmotech_api import ScenarioApi
               show_envvar=True,
               required=True)
 @web_help("csm-data/api/tdl-load-file")
+@translate_help("coal-help.commands.api.tdl_load_files.description")
 def tdl_load_files(
     organization_id,
     workspace_id,
@@ -64,23 +66,14 @@ def tdl_load_files(
     runner_id,
     directory_path
 ):
-    """Query a twingraph and loads all the data from it
-
-Will create 1 csv file per node type / relationship type
-
-The twingraph must have been populated using the "tdl-send-files" command for this to work correctly
-
-Requires a valid connection to the API to send the data
-    """
-
     api_client, connection_type = get_api_client()
     api_ds = DatasetApi(api_client)
     api_runner = RunnerApi(api_client)
     api_scenario = ScenarioApi(api_client)
 
     if (scenario_id is None) == (runner_id is None):
-        LOGGER.error('Requires a single Scenario ID or Runner ID to work.' +
-                     f'{"Both" if runner_id else "None"} were defined.')
+        LOGGER.error('Requires a single Scenario ID or Runner ID to work. ' +
+                    ('Both' if runner_id else 'None') + ' were defined.')
         raise click.Abort()
 
     if runner_id:
@@ -97,7 +90,7 @@ Requires a valid connection to the API to send the data
         )
 
     if (datasets_len := len(runner_info.dataset_list)) != 1:
-        LOGGER.error(f"{runner_info.id} is not tied to a single dataset but {datasets_len}")
+        LOGGER.error(T("coal.logs.runner.not_single_dataset").format(runner_id=runner_info.id, count=datasets_len))
         LOGGER.debug(runner_info)
         raise click.Abort()
 
@@ -107,13 +100,13 @@ Requires a valid connection to the API to send the data
                                              dataset_id)
 
     if dataset_info.ingestion_status != "SUCCESS":
-        LOGGER.error(f"Dataset {dataset_id} is in state {dataset_info.ingestion_status}")
+        LOGGER.error(T("coal.logs.runner.dataset_state").format(dataset_id=dataset_id, status=dataset_info.ingestion_status))
         LOGGER.debug(dataset_info)
         raise click.Abort()
 
     directory_path = pathlib.Path(directory_path)
     if directory_path.is_file():
-        LOGGER.error(f"{directory_path} is not a directory.")
+        LOGGER.error(T("coal.errors.file_system.not_directory").format(target_dir=directory_path))
         raise click.Abort()
 
     directory_path.mkdir(parents=True, exist_ok=True)
@@ -170,7 +163,7 @@ Requires a valid connection to the API to send the data
 
     for file_name in files_content.keys():
         file_path = directory_path / (file_name + ".csv")
-        LOGGER.info(f"Writing {len(files_content[file_name])} lines in {file_path}")
+        LOGGER.info(T("coal.logs.storage.writing_lines").format(count=len(files_content[file_name]), file=file_path))
         with (file_path.open("w") as _f):
             headers = files_headers[file_name]
             has_id = "id" in headers
@@ -200,4 +193,4 @@ Requires a valid connection to the API to send the data
                     in row.items()
                 })
 
-    LOGGER.info("All CSV are written")
+    LOGGER.info(T("coal.logs.storage.all_csv_written"))

@@ -13,9 +13,10 @@ import pyarrow.csv as pc
 import pyarrow.parquet as pq
 
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 VALID_TYPES = (
     "sqlite",
@@ -27,19 +28,19 @@ VALID_TYPES = (
 @click.command()
 @click.option("--store-folder",
               envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              help="The folder containing the store files",
+              help=T("coal-help.commands.store.dump_to_s3.parameters.store_folder"),
               metavar="PATH",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--output-type",
               default="sqlite",
-              help="Choose the type of file output to use",
+              help=T("coal-help.commands.store.dump_to_s3.parameters.output_type"),
               type=click.Choice(VALID_TYPES,
                                 case_sensitive=False))
 @click.option("--bucket-name",
               envvar="CSM_DATA_BUCKET_NAME",
-              help="The bucket on S3 to upload to",
+              help=T("coal-help.commands.store.dump_to_s3.parameters.bucket_name"),
               metavar="BUCKET",
               type=str,
               show_envvar=True,
@@ -47,19 +48,19 @@ VALID_TYPES = (
 @click.option("--prefix",
               "file_prefix",
               envvar="CSM_DATA_BUCKET_PREFIX",
-              help="A prefix by which all uploaded files should start with in the bucket",
+              help=T("coal-help.commands.store.dump_to_s3.parameters.prefix"),
               metavar="PREFIX",
               type=str,
               show_envvar=True,
               default="")
 @click.option("--use-ssl/--no-ssl",
               default=True,
-              help="Use SSL to secure connection to S3",
+              help=T("coal-help.commands.store.dump_to_s3.parameters.use_ssl"),
               type=bool,
               is_flag=True)
 @click.option("--s3-url",
               "endpoint_url",
-              help="URL to connect to the S3 system",
+              help=T("coal-help.commands.store.dump_to_s3.parameters.s3_url"),
               type=str,
               required=True,
               show_envvar=True,
@@ -67,7 +68,7 @@ VALID_TYPES = (
               envvar="AWS_ENDPOINT_URL")
 @click.option("--access-id",
               "access_id",
-              help="Identity used to connect to the S3 system",
+              help=T("coal-help.commands.store.dump_to_s3.parameters.access_id"),
               type=str,
               required=True,
               show_envvar=True,
@@ -75,19 +76,20 @@ VALID_TYPES = (
               envvar="AWS_ACCESS_KEY_ID")
 @click.option("--secret-key",
               "secret_key",
-              help="Secret tied to the ID used to connect to the S3 system",
+              help=T("coal-help.commands.store.dump_to_s3.parameters.secret_key"),
               type=str,
               required=True,
               show_envvar=True,
               metavar="ID",
               envvar="AWS_SECRET_ACCESS_KEY")
 @click.option("--ssl-cert-bundle",
-              help="Path to an alternate CA Bundle to validate SSL connections",
+              help=T("coal-help.commands.store.dump_to_s3.parameters.ssl_cert_bundle"),
               type=str,
               show_envvar=True,
               metavar="PATH",
               envvar="CSM_S3_CA_BUNDLE")
 @web_help("csm-data/store/dump-to-s3")
+@translate_help("coal-help.commands.store.dump_to_s3.description")
 def dump_to_s3(
     store_folder,
     bucket_name: str,
@@ -99,27 +101,11 @@ def dump_to_s3(
     use_ssl: bool = True,
     ssl_cert_bundle: Optional[str] = None
 ):
-    """Dump a datastore to a S3
-
-Will upload everything from a given data store to a S3 bucket.
-
-3 modes currently exists :
-  - sqlite : will dump the data store underlying database as is
-  - csv : will convert every table of the datastore to csv and send them as separate files
-  - parquet : will convert every table of the datastore to parquet and send them as separate files
-
-Giving a prefix will add it to every upload (finishing the prefix with a "/" will allow to upload in a folder inside the bucket)
-
-Make use of the boto3 library to access the bucket
-
-More information is available on this page: 
-[https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html)
-"""
     _s = Store(store_location=store_folder)
 
     if output_type not in VALID_TYPES:
-        LOGGER.error(f"{output_type} is not a valid type of output")
-        raise ValueError(f"{output_type} is not a valid type of output")
+        LOGGER.error(T("coal.errors.data.invalid_output_type").format(output_type=output_type))
+        raise ValueError(T("coal.errors.data.invalid_output_type").format(output_type=output_type))
 
     boto3_parameters = {
         "use_ssl": use_ssl,
@@ -138,14 +124,14 @@ More information is available on this page:
         size = len(data_stream.read())
         data_stream.seek(0)
 
-        LOGGER.info(f"  Sending {size} bytes of data")
+        LOGGER.info(T("coal.logs.data_transfer.sending_data").format(size=size))
         s3_client.upload_fileobj(data_stream, bucket_name, uploaded_file_name)
 
     if output_type == "sqlite":
         _file_path = _s._database_path
         _file_name = "db.sqlite"
         _uploaded_file_name = file_prefix + _file_name
-        LOGGER.info(f"Sending {_file_path} as {_uploaded_file_name}")
+        LOGGER.info(T("coal.logs.data_transfer.file_sent").format(file_path=_file_path, uploaded_name=_uploaded_file_name))
         s3_client.upload_file(_file_path, bucket_name, _uploaded_file_name)
     else:
         tables = list(_s.list_tables())
@@ -154,7 +140,7 @@ More information is available on this page:
             _file_name = None
             _data = _s.get_table(table_name)
             if not len(_data):
-                LOGGER.info(f"Table {table_name} is empty (skipping)")
+                LOGGER.info(T("coal.logs.data_transfer.table_empty").format(table_name=table_name))
                 continue
             if output_type == "csv":
                 _file_name = table_name + ".csv"
@@ -162,5 +148,5 @@ More information is available on this page:
             elif output_type == "parquet":
                 _file_name = table_name + ".parquet"
                 pq.write_table(_data, _data_stream)
-            LOGGER.info(f"Sending table {table_name} as {output_type}")
+            LOGGER.info(T("coal.logs.data_transfer.sending_table").format(table_name=table_name, output_type=output_type))
             data_upload(_data_stream, _file_name)

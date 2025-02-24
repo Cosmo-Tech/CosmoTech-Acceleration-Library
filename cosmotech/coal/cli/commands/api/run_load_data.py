@@ -16,9 +16,10 @@ from cosmotech_api.api.workspace_api import WorkspaceApi
 from CosmoTech_Acceleration_Library.Accelerators.scenario_download.scenario_downloader import ScenarioDownloader
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import require_env
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 def download_runner_data(organization_id: str, workspace_id: str, runner_id: str, parameter_folder: str) -> None:
@@ -29,7 +30,7 @@ def download_runner_data(organization_id: str, workspace_id: str, runner_id: str
     :param parameter_folder: a local folder where all parameters will be downloaded
     :return: Nothing
     """
-    LOGGER.info("Starting the Run data download")
+    LOGGER.info(T("coal.logs.runner.starting_download"))
     parameters = list()
     _dl = ScenarioDownloader(workspace_id=workspace_id, organization_id=organization_id, read_files=False)
     with get_api_client()[0] as api_client:
@@ -41,10 +42,10 @@ def download_runner_data(organization_id: str, workspace_id: str, runner_id: str
 
         # skip if no parameters found
         if not runner_data.parameters_values:
-            LOGGER.warning('no parameters found in the runner')
+            LOGGER.warning(T("coal.logs.runner.no_parameters"))
             return
 
-        LOGGER.info("Loaded run data")
+        LOGGER.info(T("coal.logs.runner.loaded_data"))
         # Pre-read of all workspace files to ensure ready to download AZ storage files
         all_api_files = workspace_api_instance.find_all_workspace_files(
             organization_id=organization_id,
@@ -58,7 +59,7 @@ def download_runner_data(organization_id: str, workspace_id: str, runner_id: str
             var_type = parameter.var_type
             param_id = parameter.parameter_id
             is_inherited = parameter.is_inherited
-            LOGGER.info(f"Found parameter '{param_id}' with value '{value}'")
+            LOGGER.info(T("coal.logs.runner.found_parameter").format(param_id=param_id, value=value))
 
             # Download "%DATASETID%" files if AZ storage + workspace file based
             if var_type == "%DATASETID%":
@@ -82,8 +83,14 @@ def download_runner_data(organization_id: str, workspace_id: str, runner_id: str
                 "varType": var_type,
                 "isInherited": is_inherited
             })
-            LOGGER.debug(f"  - {param_id:<{max_name_size}} {var_type:<{max_type_size}} "
-                         f"\"{value}\"{' inherited' if is_inherited else ''}")
+            LOGGER.debug(T("coal.logs.runner.parameter_debug").format(
+                param_id=param_id,
+                max_name_size=max_name_size,
+                var_type=var_type,
+                max_type_size=max_type_size,
+                value=value,
+                inherited=' inherited' if is_inherited else ''
+            ))
 
         write_parameters(parameter_folder, parameters)
 
@@ -91,7 +98,7 @@ def download_runner_data(organization_id: str, workspace_id: str, runner_id: str
 def write_parameters(parameter_folder, parameters):
     pathlib.Path(parameter_folder).mkdir(exist_ok=True, parents=True)
     tmp_parameter_file = os.path.join(parameter_folder, "parameters.json")
-    LOGGER.info(f"Generating {tmp_parameter_file}")
+    LOGGER.info(T("coal.logs.scenario.generating_file").format(file=tmp_parameter_file))
     with open(tmp_parameter_file, "w") as _file:
         json.dump(parameters, _file, indent=2)
 
@@ -100,42 +107,37 @@ def write_parameters(parameter_folder, parameters):
 @click.option("--organization-id",
               envvar="CSM_ORGANIZATION_ID",
               show_envvar=True,
-              help="The id of an organization in the cosmotech api",
+              help=T("coal-help.commands.api.run_load_data.parameters.organization_id"),
               metavar="o-##########",
               required=True)
 @click.option("--workspace-id",
               envvar="CSM_WORKSPACE_ID",
               show_envvar=True,
-              help="The id of a workspace in the cosmotech api",
+              help=T("coal-help.commands.api.run_load_data.parameters.workspace_id"),
               metavar="w-##########",
               required=True)
 @click.option("--runner-id",
               envvar="CSM_RUNNER_ID",
               show_envvar=True,
-              help="The id of a runner in the cosmotech api",
+              help=T("coal-help.commands.api.run_load_data.parameters.runner_id"),
               metavar="s-##########",
               required=True)
 @click.option("--parameters-absolute-path",
               envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
               metavar="PATH",
               show_envvar=True,
-              help="A local folder to store the parameters content",
+              help=T("coal-help.commands.api.run_load_data.parameters.parameters_absolute_path"),
               required=True)
 @require_env('CSM_API_SCOPE', "The identification scope of a Cosmotech API")
 @require_env('CSM_API_URL', "The URL to a Cosmotech API")
 @web_help("csm-data/api/run-load-data")
+@translate_help("coal-help.commands.api.run_load_data.description")
 def run_load_data(
     runner_id: str,
     workspace_id: str,
     organization_id: str,
     parameters_absolute_path: str,
 ):
-    """
-Download a runner data from the Cosmo Tech API
-Requires a valid Azure connection either with:
-- The AZ cli command: **az login**
-- A triplet of env var `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`
-    """
     return download_runner_data(organization_id, workspace_id, runner_id, parameters_absolute_path)
 
 

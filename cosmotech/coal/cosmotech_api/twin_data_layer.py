@@ -8,6 +8,7 @@ import pathlib
 from csv import DictReader
 
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 ID_COLUMN = "id"
 
@@ -21,7 +22,7 @@ class CSVSourceFile:
     def __init__(self, file_path: pathlib.Path):
         self.file_path = file_path
         if not file_path.name.endswith(".csv"):
-            raise ValueError(f"'{file_path}' is not a csv file")
+            raise ValueError(T("coal.errors.validation.not_csv_file").format(file_path=file_path))
         with open(file_path) as _file:
             dr = DictReader(_file)
             self.fields = list(dr.fieldnames)
@@ -46,11 +47,14 @@ class CSVSourceFile:
         is_relation = all([has_source, has_target])
 
         if not has_id and not is_relation:
-            LOGGER.error(f"'{file_path}' does not contains valid nodes or relationships")
-            LOGGER.error(f"  - Valid nodes contains at least the property {ID_COLUMN} ")
-            LOGGER.error("  - Valid relationships contains at least the properties " +
-                         f"{ID_COLUMN}, {SOURCE_COLUMN}, {TARGET_COLUMN} ")
-            raise ValueError(f"'{file_path}' does not contains valid nodes or relations")
+            LOGGER.error(T("coal.errors.validation.invalid_nodes_relations").format(file_path=file_path))
+            LOGGER.error(T("coal.errors.validation.node_requirements").format(id_column=ID_COLUMN))
+            LOGGER.error(T("coal.errors.validation.relationship_requirements").format(
+                id_column=ID_COLUMN,
+                source_column=SOURCE_COLUMN,
+                target_column=TARGET_COLUMN
+            ))
+            raise ValueError(T("coal.errors.validation.invalid_nodes_relations").format(file_path=file_path))
 
         self.is_node = has_id and not is_relation
 

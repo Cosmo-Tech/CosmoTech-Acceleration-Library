@@ -12,10 +12,11 @@ from io import StringIO
 
 import requests
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.twin_data_layer import CSVSourceFile
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 from cosmotech_api import DatasetApi
 from cosmotech_api import DatasetTwinGraphQuery
 from cosmotech_api import RunnerApi
@@ -26,35 +27,35 @@ BATCH_SIZE_LIMIT = 10000
 @click.command()
 @click.option("--api-url",
               envvar="CSM_API_URL",
-              help="The URI to a Cosmo Tech API instance",
+              help=T("coal-help.commands.api.tdl_send_files.parameters.api_url"),
               metavar="URI",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--organization-id",
               envvar="CSM_ORGANIZATION_ID",
-              help="An organization id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.tdl_send_files.parameters.organization_id"),
               metavar="o-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--workspace-id",
               envvar="CSM_WORKSPACE_ID",
-              help="A workspace id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.tdl_send_files.parameters.workspace_id"),
               metavar="w-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--runner-id",
               envvar="CSM_RUNNER_ID",
-              help="A runner id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.tdl_send_files.parameters.runner_id"),
               metavar="r-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--dir",
               "directory_path",
-              help="Path to the directory containing csvs to send",
+              help=T("coal-help.commands.api.tdl_send_files.parameters.dir"),
               metavar="PATH",
               default="./",
               type=str,
@@ -62,13 +63,13 @@ BATCH_SIZE_LIMIT = 10000
               show_envvar=True,
               required=True)
 @click.option("--clear/--keep",
-              help="Flag to clear the target dataset first "
-                   "(if set to True will clear the dataset before sending anything, irreversibly)",
+              help=T("coal-help.commands.api.tdl_send_files.parameters.clear"),
               is_flag=True,
               default=True,
               show_default=True,
               type=bool)
 @web_help("csm-data/api/tdl-send-files")
+@translate_help("coal-help.commands.api.tdl_send_files.description")
 def tdl_send_files(
     api_url,
     organization_id,
@@ -77,17 +78,6 @@ def tdl_send_files(
     directory_path,
     clear: bool
 ):
-    """Reads a folder CSVs and send those to the Cosmo Tech API as a Dataset
-
-CSVs must follow a given format :
-  - Nodes files must have an `id` column
-  - Relationship files must have `id`, `src` and `dest` columns
-
-Non-existing relationship (aka dest or src does not point to existing node) won't trigger an error, 
-the relationship will not be created instead.
-
-Requires a valid connection to the API to send the data
-    """
 
     api_client, connection_type = get_api_client()
     api_ds = DatasetApi(api_client)
@@ -98,7 +88,7 @@ Requires a valid connection to the API to send the data
                                         runner_id)
 
     if len(runner_info.dataset_list) != 1:
-        LOGGER.error(f"Runner {runner_id} is not tied to a single dataset")
+        LOGGER.error(T("coal.logs.runner.not_single_dataset").format(runner_id=runner_id, count=len(runner_info.dataset_list)))
         LOGGER.debug(runner_info)
         raise click.Abort()
 
@@ -117,15 +107,15 @@ Requires a valid connection to the API to send the data
 
     content_path = pathlib.Path(directory_path)
     if not content_path.is_dir():
-        LOGGER.error(f"'{directory_path}' is not a directory")
+        LOGGER.error(T("coal.errors.file_system.not_directory").format(target_dir=directory_path))
 
     for file_path in content_path.glob("*.csv"):
         _csv = CSVSourceFile(file_path)
         if _csv.is_node:
-            LOGGER.info(f"Detected '{file_path}' to be a nodes containing file")
+            LOGGER.info(T("coal.logs.storage.sending_content").format(file=file_path))
             entities_queries[file_path] = _csv.generate_query_insert()
         else:
-            LOGGER.info(f"Detected '{file_path}' to be a relationships containing file")
+            LOGGER.info(T("coal.logs.storage.sending_content").format(file=file_path))
             relation_queries[file_path] = _csv.generate_query_insert()
 
     header = {
@@ -139,7 +129,7 @@ Requires a valid connection to the API to send the data
         api_ds.api_client._apply_auth_params(header, None, None, None, None, authinfo)
 
     if clear:
-        LOGGER.info("Clearing all dataset content")
+        LOGGER.info(T("coal.logs.storage.clearing_content"))
 
         clear_query = "MATCH (n) DETACH DELETE n"
         api_ds.twingraph_query(organization_id,
@@ -168,7 +158,7 @@ Requires a valid connection to the API to send the data
                            f"/organizations/{organization_id}"
                            f"/datasets/{dataset_id}"
                            f"/batch?query={query}")
-            LOGGER.info(f"Sending content of '{file_path}")
+            LOGGER.info(T("coal.logs.storage.sending_content").format(file=file_path))
 
             with open(file_path, "r") as _f:
                 dr = DictReader(_f)
@@ -178,7 +168,7 @@ Requires a valid connection to the API to send the data
                     dw.writerow(row)
                     size += 1
                     if size > BATCH_SIZE_LIMIT:
-                        LOGGER.info(f"Found row count of {batch * BATCH_SIZE_LIMIT}, sending now")
+                        LOGGER.info(T("coal.logs.storage.row_batch").format(count=batch * BATCH_SIZE_LIMIT))
                         batch += 1
                         content.seek(0)
                         post = requests.post(query_craft,
@@ -200,12 +190,12 @@ Requires a valid connection to the API to send the data
                 errors.extend(json.loads(post.content)["errors"])
 
             if len(errors):
-                LOGGER.error(f"Found {len(errors)} errors while importing: ")
+                LOGGER.error(T("coal.logs.storage.import_errors").format(count=len(errors)))
                 for _err in errors:
-                    LOGGER.error(f"{_err}")
+                    LOGGER.error(str(_err))
                 raise click.Abort()
 
-    LOGGER.info("Sent all data found")
+    LOGGER.info(T("coal.logs.storage.all_data_sent"))
 
     dataset_info.ingestion_status = "SUCCESS"
     dataset_info.twincache_status = "FULL"

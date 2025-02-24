@@ -7,34 +7,35 @@
 import pathlib
 
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.workspace import download_workspace_file
 from cosmotech.coal.cosmotech_api.workspace import list_workspace_files
+from cosmotech.orchestrator.utils.translate import T
 
 
 @click.command()
 @click.option("--organization-id",
               envvar="CSM_ORGANIZATION_ID",
-              help="An organization id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.wsf_load_file.parameters.organization_id"),
               metavar="o-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--workspace-id",
               envvar="CSM_WORKSPACE_ID",
-              help="A workspace id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.wsf_load_file.parameters.workspace_id"),
               metavar="w-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--workspace-path",
-              help="Path inside the workspace to load (end with '/' for a folder)",
+              help=T("coal-help.commands.api.wsf_load_file.parameters.workspace_path"),
               metavar="PATH",
               default="/",
               type=str)
 @click.option("--target-folder",
-              help="Folder in which to send the downloaded file",
+              help=T("coal-help.commands.api.wsf_load_file.parameters.target_folder"),
               metavar="PATH",
               default="./",
               type=str,
@@ -42,16 +43,13 @@ from cosmotech.coal.cosmotech_api.workspace import list_workspace_files
               show_envvar=True,
               required=True)
 @web_help("csm-data/api/wsf-load-file")
+@translate_help("coal-help.commands.api.wsf_load_file.description")
 def wsf_load_file(
     organization_id,
     workspace_id,
     workspace_path: str,
     target_folder: str
 ):
-    """Load files from a workspace inside the API
-
-Requires a valid connection to the API to send the data
-    """
     with get_api_client()[0] as api_client:
         target_list = list_workspace_files(api_client,
                                            organization_id,

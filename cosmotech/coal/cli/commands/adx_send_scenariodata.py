@@ -20,68 +20,70 @@ from azure.kusto.ingest import ReportLevel
 from CosmoTech_Acceleration_Library.Accelerators.adx_wrapper import ADXQueriesWrapper
 from CosmoTech_Acceleration_Library.Accelerators.adx_wrapper import IngestionStatus
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 @click.command()
+@web_help("csm-data/adx-send-scenario-data")
+@translate_help("coal-help.commands.storage.adx_send_scenariodata.description")
 @click.option("--dataset-absolute-path",
               envvar="CSM_DATASET_ABSOLUTE_PATH",
               show_envvar=True,
-              help="A local folder to store the main dataset content",
+              help=T("coal-help.commands.storage.adx_send_scenariodata.parameters.dataset_absolute_path"),
               metavar="PATH",
               required=True)
 @click.option("--parameters-absolute-path",
               envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
               metavar="PATH",
               show_envvar=True,
-              help="A local folder to store the parameters content",
+              help=T("coal-help.commands.storage.adx_send_scenariodata.parameters.parameters_absolute_path"),
               required=True)
 @click.option("--simulation-id",
               envvar="CSM_SIMULATION_ID",
               show_envvar=True,
               required=True,
               metavar="UUID",
-              help="the Simulation Id to add to records")
+              help=T("coal-help.commands.storage.adx_send_scenariodata.parameters.simulation_id"))
 @click.option("--adx-uri",
               envvar="AZURE_DATA_EXPLORER_RESOURCE_URI",
               show_envvar=True,
               required=True,
               metavar="URI",
-              help="the ADX cluster path (URI info can be found into ADX cluster page)")
+              help=T("coal-help.commands.storage.adx_send_scenariodata.parameters.adx_uri"))
 @click.option("--adx-ingest-uri",
               envvar="AZURE_DATA_EXPLORER_RESOURCE_INGEST_URI",
               show_envvar=True,
               required=True,
               metavar="URI",
-              help="The ADX cluster ingest path (URI info can be found into ADX cluster page)")
+              help=T("coal-help.commands.storage.adx_send_scenariodata.parameters.adx_ingest_uri"))
 @click.option("--database-name",
               envvar="AZURE_DATA_EXPLORER_DATABASE_NAME",
               show_envvar=True,
               required=True,
               metavar="NAME",
-              help="The targeted database name")
+              help=T("coal-help.commands.storage.adx_send_scenariodata.parameters.database_name"))
 @click.option("--send-parameters/--no-send-parameters",
               type=bool,
               envvar="CSM_SEND_DATAWAREHOUSE_PARAMETERS",
               show_envvar=True,
               default=False,
               show_default=True,
-              help="whether or not to send parameters (parameters path is mandatory then)")
+              help=T("coal-help.commands.storage.adx_send_scenariodata.parameters.send_parameters"))
 @click.option("--send-datasets/--no-send-datasets",
               type=bool,
               envvar="CSM_SEND_DATAWAREHOUSE_DATASETS",
               show_envvar=True,
               default=False,
               show_default=True,
-              help="whether or not to send datasets (parameters path is mandatory then)")
+              help=T("coal-help.commands.storage.adx_send_scenariodata.parameters.send_datasets"))
 @click.option("--wait/--no-wait",
               envvar="WAIT_FOR_INGESTION",
               show_envvar=True,
               default=False,
               show_default=True,
-              help="Toggle waiting for the ingestion results")
-@web_help("csm-data/adx-send-scenario-data")
+              help=T("coal-help.commands.storage.adx_send_scenariodata.parameters.wait"))
 def adx_send_scenariodata(
     send_parameters: bool,
     send_datasets: bool,
@@ -93,12 +95,6 @@ def adx_send_scenariodata(
     database_name: str,
     wait: bool
 ):
-    """
-Uses environment variables to send content of CSV files to ADX
-Requires a valid Azure connection either with:
-- The AZ cli command: **az login**
-- A triplet of env var `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`
-    """
     csv_data = dict()
     if send_parameters:
         csv_data.update(prepare_csv_content(parameters_absolute_path))
@@ -109,12 +105,12 @@ Requires a valid Azure connection either with:
                                    cluster_url=adx_uri,
                                    ingest_url=adx_ingest_uri)
     for k, v in queries.items():
-        LOGGER.info(f"Create table query: {v}")
+        LOGGER.info(T("coal.logs.ingestion.creating_table").format(query=v))
         r: KustoResponseDataSet = adx_client.run_query(v)
         if r.errors_count == 0:
-            LOGGER.info(f"Table {k} created successfully")
+            LOGGER.info(T("coal.logs.ingestion.table_created").format(table=k))
         else:
-            LOGGER.error(f"Issue creating table {k}")
+            LOGGER.error(T("coal.logs.ingestion.table_creation_failed").format(table=k))
             LOGGER.error(r.get_exceptions())
             raise click.Abort()
     insert_csv_files(files_data=csv_data,
@@ -190,7 +186,7 @@ def insert_csv_files(files_data, adx_client: ADXQueriesWrapper, simulation_id, d
         fields = file_info.get('headers')
         with open(file_path) as _f:
             file_size = sum(map(len, _f.readlines()))
-            LOGGER.debug(f"{file_path} size: {file_size}")
+            LOGGER.debug(T("coal.logs.data_transfer.sending_data").format(size=file_size))
         fd = FileDescriptor(file_path, file_size)
         ord = 0
         mappings = list()
@@ -212,7 +208,7 @@ def insert_csv_files(files_data, adx_client: ADXQueriesWrapper, simulation_id, d
                                                    drop_by_tags=[simulation_id, ],
                                                    report_level=ReportLevel.FailuresAndSuccesses,
                                                    additional_properties={"ignoreFirstRecord": "true"})
-        LOGGER.info(f"Ingesting {filename}")
+        LOGGER.info(T("coal.logs.ingestion.ingesting").format(table=filename))
         results: IngestionResult = adx_client.ingest_client.ingest_from_file(fd, ingestion_properties)
         ingestion_ids[str(results.source_id)] = filename
     if wait:
@@ -223,20 +219,25 @@ def insert_csv_files(files_data, adx_client: ADXQueriesWrapper, simulation_id, d
                       adx_client.check_ingestion_status(source_ids=list(ingestion_ids.keys())))):
             count += 1
             if count > limit:
-                LOGGER.warning("Max number of retry, stop waiting")
+                LOGGER.warning(T("coal.logs.ingestion.max_retry"))
                 break
-            LOGGER.info(f"Waiting for ingestion results, retry in {pause_duration}s ({count}/{limit})")
+            LOGGER.info(T("coal.logs.ingestion.waiting_results").format(
+                duration=pause_duration,
+                count=count,
+                limit=limit
+            ))
             time.sleep(pause_duration)
 
-        LOGGER.info("Status of ingestion:")
-        status_color_mapping = defaultdict(lambda: "bright_black")
-        status_color_mapping[IngestionStatus.FAILURE.value] = "red"
-        status_color_mapping[IngestionStatus.SUCCESS.value] = "green"
+        LOGGER.info(T("coal.logs.ingestion.status"))
         for _id, status in adx_client.check_ingestion_status(source_ids=list(ingestion_ids.keys())):
-            LOGGER.info(f"{ingestion_ids[_id]} - "
-                        f"{status.name}")
+            color = "red" if status == IngestionStatus.FAILURE else "green" if status == IngestionStatus.SUCCESS else "bright_black"
+            LOGGER.info(T("coal.logs.ingestion.status_report").format(
+                table=ingestion_ids[_id],
+                status=status.name,
+                color=color
+            ))
     else:
-        LOGGER.info("No wait for ingestion result")
+        LOGGER.info(T("coal.logs.ingestion.no_wait"))
 
 
 if __name__ == "__main__":

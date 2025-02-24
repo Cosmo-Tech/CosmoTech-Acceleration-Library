@@ -8,68 +8,72 @@
 from adbc_driver_postgresql import dbapi
 
 from cosmotech.coal.cli.utils.click import click
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.run import get_run_metadata
 from cosmotech.coal.cosmotech_api.runner import get_runner_metadata
 from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.coal.utils.postgresql import generate_postgresql_full_uri
+from cosmotech.orchestrator.utils.translate import T
 
 
 @click.command()
+@web_help("csm-data/api/postgres-send-runner-metadata")
+@translate_help("coal-help.commands.api.postgres_send_runner_metadata.description")
 @click.option("--organization-id",
               envvar="CSM_ORGANIZATION_ID",
-              help="An organization id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.organization_id"),
               metavar="o-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--workspace-id",
               envvar="CSM_WORKSPACE_ID",
-              help="A workspace id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.workspace_id"),
               metavar="w-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--runner-id",
               envvar="CSM_RUNNER_ID",
-              help="A runner id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.runner_id"),
               metavar="r-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--table-prefix",
-              help="Prefix to add to the table name",
+              help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.table_prefix"),
               metavar="PREFIX",
               type=str,
               default="Cosmotech_")
 @click.option('--postgres-host',
-              help='Postgresql host URI',
+              help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_host"),
               envvar="POSTGRES_HOST_URI",
               show_envvar=True,
               required=True)
 @click.option('--postgres-port',
-              help='Postgresql database port',
+              help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_port"),
               envvar="POSTGRES_HOST_PORT",
               show_envvar=True,
               required=False,
               default=5432)
 @click.option('--postgres-db',
-              help='Postgresql database name',
+              help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_db"),
               envvar="POSTGRES_DB_NAME",
               show_envvar=True,
               required=True)
 @click.option('--postgres-schema',
-              help='Postgresql schema name',
+              help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_schema"),
               envvar="POSTGRES_DB_SCHEMA",
               show_envvar=True,
               required=True)
 @click.option('--postgres-user',
-              help='Postgresql connection user name',
+              help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_user"),
               envvar="POSTGRES_USER_NAME",
               show_envvar=True,
               required=True)
 @click.option('--postgres-password',
-              help='Postgresql connection password',
+              help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_password"),
               envvar="POSTGRES_USER_PASSWORD",
               show_envvar=True,
               required=True)
@@ -85,13 +89,6 @@ def postgres_send_runner_metadata(
     postgres_user,
     postgres_password
 ):
-    """Send a file to a workspace inside the API
-
-Requires a valid connection to the API to send the data
-
-This implementation make use of an API Key
-    """
-
     with get_api_client()[0] as api_client:
         runner = get_runner_metadata(api_client, organization_id, workspace_id, runner_id)
 

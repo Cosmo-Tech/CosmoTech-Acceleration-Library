@@ -1,0 +1,452 @@
+commands:
+  main:
+    description: |
+      Interface de données Cosmo Tech
+
+      Boîte à outils de commandes fournissant une implémentation rapide des connexions de données à utiliser dans la plateforme Cosmo Tech
+
+  api:
+    description: |
+      Commande d'aide pour l'API Cosmo Tech
+
+      Cette commande vous informera des connexions disponibles pour l'API Cosmo Tech
+
+      Si aucune connexion n'est disponible, elle listera tous les ensembles de paramètres possibles et retournera un code d'erreur,
+
+      Vous pouvez utiliser cette commande dans un modèle csm-orc pour vous assurer que la connexion API est disponible.
+
+    tdl_send_files:
+      description: |
+        Lit les fichiers CSV d'un dossier et les envoie à l'API Cosmo Tech en tant que jeu de données
+
+        Les CSV doivent suivre un format spécifique :
+          - Les fichiers de nœuds doivent avoir une colonne id
+          - Les fichiers de relations doivent avoir des colonnes id, src et dest
+
+        Les relations non existantes (c'est-à-dire dest ou src ne pointant pas vers un nœud existant) ne déclencheront pas d'erreur,
+        la relation ne sera simplement pas créée.
+
+        Nécessite une connexion valide à l'API pour envoyer les données
+
+      parameters:
+        api_url: L'URI vers une instance de l'API Cosmo Tech
+        organization_id: Un identifiant d'organisation pour l'API Cosmo Tech
+        workspace_id: Un identifiant d'espace de travail pour l'API Cosmo Tech
+        runner_id: Un identifiant de runner pour l'API Cosmo Tech
+        dir: Chemin vers le répertoire contenant les csv à envoyer
+        clear: Indicateur pour effacer d'abord le jeu de données cible (si défini à True, effacera le jeu de données avant d'envoyer quoi que ce soit, de manière irréversible)
+
+    tdl_load_files:
+      description: |
+        Interroge un twingraph et charge toutes les données
+
+        Créera 1 fichier csv par type de nœud / type de relation
+
+        Le twingraph doit avoir été peuplé en utilisant la commande "tdl-send-files" pour que cela fonctionne correctement
+
+        Nécessite une connexion valide à l'API pour envoyer les données
+
+      parameters:
+        organization_id: Un identifiant d'organisation pour l'API Cosmo Tech
+        workspace_id: Un identifiant d'espace de travail pour l'API Cosmo Tech
+        scenario_id: Un identifiant de scénario pour l'API Cosmo Tech (requis si runner-id n'est pas fourni)
+        runner_id: Un identifiant de runner pour l'API Cosmo Tech (requis si scenario-id n'est pas fourni)
+        dir: Chemin vers le répertoire où écrire les résultats
+
+    runtemplate_load_handler:
+      description: |
+        Utilise les variables d'environnement pour télécharger les étapes de modèle basées sur le cloud
+
+      parameters:
+        organization_id: L'identifiant d'une organisation dans l'API Cosmo Tech
+        workspace_id: L'identifiant d'une solution dans l'API Cosmo Tech
+        run-template_id: Le nom du modèle d'exécution dans l'API Cosmo Tech
+        handler_list: Une liste de gestionnaires à télécharger (séparés par des virgules)
+
+    run_load_data:
+      description: |
+        Télécharge les données d'un runner depuis l'API Cosmo Tech
+        Nécessite une connexion Azure valide soit avec :
+        - La commande AZ cli : az login
+        - Un triplet de variables d'environnement AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+
+      parameters:
+        organization_id: L'identifiant d'une organisation dans l'API Cosmo Tech
+        workspace_id: L'identifiant d'un espace de travail dans l'API Cosmo Tech
+        runner_id: L'identifiant d'un runner dans l'API Cosmo Tech
+        parameters_absolute_path: Un dossier local pour stocker le contenu des paramètres
+
+    scenariorun_load_data:
+      description: |
+        Utilise les variables d'environnement pour appeler la fonction download_scenario_data
+        Nécessite une connexion Azure valide soit avec :
+        - La commande AZ cli : az login
+        - Un triplet de variables d'environnement AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+
+      parameters:
+        organization_id: L'identifiant d'une organisation dans l'API Cosmo Tech
+        workspace_id: L'identifiant d'un espace de travail dans l'API Cosmo Tech
+        scenario_id: L'identifiant d'un scénario dans l'API Cosmo Tech
+        dataset_absolute_path: Un dossier local pour stocker le contenu du jeu de données principal
+        parameters_absolute_path: Un dossier local pour stocker le contenu des paramètres
+        write_json: Active l'écriture des paramètres au format json
+        write_csv: Active l'écriture des paramètres au format csv
+        fetch_dataset: Active la récupération des jeux de données
+        parallel: Active la parallélisation lors de la récupération des jeux de données
+
+    rds_load_csv:
+      description: |
+        Charge les données d'une base de données RDS d'un runner dans un fichier CSV.
+        
+        Exécute une requête SQL sur la base de données RDS du runner et enregistre les résultats dans un fichier CSV.
+        Par défaut, il listera toutes les tables du schéma public si aucune requête spécifique n'est fournie.
+      parameters:
+        target_folder: Le dossier où le csv sera écrit
+        organization_id: Un identifiant d'organisation pour l'API Cosmo Tech
+        workspace_id: Un identifiant d'espace de travail pour l'API Cosmo Tech
+        runner_id: Un identifiant de runner pour l'API Cosmo Tech
+        run_id: Un identifiant d'exécution pour l'API Cosmo Tech
+        file_name: Un nom de fichier pour écrire les résultats de la requête
+        query: Requête SQL à exécuter (par défaut, liste toutes les tables du schéma public)
+
+    rds_send_csv:
+      description: |
+        Envoie des fichiers CSV vers une base de données RDS d'un runner.
+        
+        Prend tous les fichiers CSV d'un dossier source et envoie leur contenu à la base de données RDS du runner.
+        Chaque fichier CSV sera envoyé dans une table nommée d'après le fichier (sans l'extension .csv).
+        Le nom de la table sera préfixé par "CD_" dans la base de données.
+      parameters:
+        source_folder: Le dossier contenant les csv à envoyer
+        organization_id: Un identifiant d'organisation pour l'API Cosmo Tech
+        workspace_id: Un identifiant d'espace de travail pour l'API Cosmo Tech
+        runner_id: Un identifiant de runner pour l'API Cosmo Tech
+        run_id: Un identifiant d'exécution pour l'API Cosmo Tech
+
+    rds_send_store:
+      description: |
+        Envoie des données d'un store vers une base de données RDS d'un runner.
+        
+        Prend toutes les tables d'un store et envoie leur contenu à la base de données RDS du runner.
+        Chaque table sera envoyée dans une table du même nom, préfixée par "CD_" dans la base de données.
+        Les valeurs nulles dans les lignes seront supprimées avant l'envoi.
+      parameters:
+        store_folder: Le dossier contenant les fichiers du store
+        organization_id: Un identifiant d'organisation pour l'API Cosmo Tech
+        workspace_id: Un identifiant d'espace de travail pour l'API Cosmo Tech
+        runner_id: Un identifiant de runner pour l'API Cosmo Tech
+        run_id: Un identifiant d'exécution pour l'API Cosmo Tech
+
+    wsf_load_file:
+      description: |
+        Télécharge des fichiers depuis un espace de travail.
+        
+        Télécharge des fichiers depuis un chemin spécifié dans un espace de travail vers un dossier local cible.
+        Si le chemin de l'espace de travail se termine par '/', il sera traité comme un dossier et tous les fichiers qu'il contient seront téléchargés.
+      parameters:
+        organization_id: Un identifiant d'organisation pour l'API Cosmo Tech
+        workspace_id: Un identifiant d'espace de travail pour l'API Cosmo Tech
+        workspace_path: Chemin dans l'espace de travail à charger (terminer par '/' pour un dossier)
+        target_folder: Dossier dans lequel envoyer le fichier téléchargé
+
+    wsf_send_file:
+      description: |
+        Téléverse un fichier vers un espace de travail.
+        
+        Téléverse un fichier local vers un chemin spécifié dans un espace de travail.
+        Si le chemin de l'espace de travail se termine par '/', le fichier sera téléversé dans ce dossier avec son nom d'origine.
+        Sinon, le fichier sera téléversé avec le nom spécifié dans le chemin de l'espace de travail.
+      parameters:
+        organization_id: Un identifiant d'organisation pour l'API Cosmo Tech
+        workspace_id: Un identifiant d'espace de travail pour l'API Cosmo Tech
+        file_path: Chemin vers le fichier à envoyer comme fichier d'espace de travail
+        workspace_path: Chemin dans l'espace de travail pour stocker le fichier (terminer par '/' pour un dossier)
+        overwrite: Indicateur pour écraser le fichier cible s'il existe
+
+    postgres_send_runner_metadata:
+      description: |
+        Envoie les métadonnées du runner vers une base de données PostgreSQL.
+        
+        Crée ou met à jour une table dans PostgreSQL avec les métadonnées du runner incluant l'id, le nom, le dernier id d'exécution et l'id du modèle d'exécution.
+        La table sera créée si elle n'existe pas, et les enregistrements existants seront mis à jour en fonction de l'id du runner.
+      parameters:
+        organization_id: Un identifiant d'organisation pour l'API Cosmo Tech
+        workspace_id: Un identifiant d'espace de travail pour l'API Cosmo Tech
+        runner_id: Un identifiant de runner pour l'API Cosmo Tech
+        table_prefix: Préfixe à ajouter au nom de la table
+        postgres_host: URI de l'hôte PostgreSQL
+        postgres_port: Port de la base de données PostgreSQL
+        postgres_db: Nom de la base de données PostgreSQL
+        postgres_schema: Nom du schéma PostgreSQL
+        postgres_user: Nom d'utilisateur de connexion PostgreSQL
+        postgres_password: Mot de passe de connexion PostgreSQL
+
+  store:
+    description: |
+      Groupe de commandes CoAL Data Store
+
+      Ce groupe de commandes vous donnera des commandes d'aide pour interagir avec le datastore
+
+    list_tables:
+      description: |
+        L'exécution de cette commande listera les tables existantes dans votre datastore
+      parameters:
+        store_folder: Le dossier contenant les fichiers du store
+        schema: Affiche le schéma des tables
+
+    reset:
+      description: |
+        L'exécution de cette commande réinitialisera l'état de votre store
+      parameters:
+        store_folder: Le dossier contenant les fichiers du store
+
+    load_csv_folder:
+      description: |
+        L'exécution de cette commande trouvera tous les csv dans le dossier donné et les mettra dans le store
+      parameters:
+        store_folder: Le dossier contenant les fichiers du store
+        csv_folder: Le dossier contenant les fichiers csv à stocker
+
+    load_from_singlestore:
+      description: |
+        Charge les données des tables SingleStore dans le store.
+        Téléchargera tout depuis une base de données SingleStore donnée selon une configuration dans le store.
+
+        Utilise singlestoredb pour accéder à SingleStore
+
+        Plus d'informations sont disponibles sur cette page :
+        [https://docs.singlestore.com/cloud/developer-resources/connect-with-application-development-tools/connect-with-python/connect-using-the-singlestore-python-client/]
+      parameters:
+        singlestore_host: URI de l'instance SingleStore
+        singlestore_port: Port SingleStore
+        singlestore_db: Nom de la base de données SingleStore
+        singlestore_user: Nom d'utilisateur de connexion SingleStore
+        singlestore_password: Mot de passe de connexion SingleStore
+        singlestore_tables: Noms des tables SingleStore à récupérer (séparés par des virgules)
+        store_folder: Le dossier contenant les fichiers du store
+
+    dump_to_postgresql:
+      description: |
+        L'exécution de cette commande déversera votre store dans une base de données postgresql donnée
+
+        Les noms des tables du store seront préfixés avec table-prefix dans la base de données cible
+
+        L'utilisateur postgresql doit avoir USAGE accordé sur le schéma pour que ce script fonctionne en raison de l'utilisation de la commande COPY FROM STDIN
+
+        Vous pouvez simplement lui donner cette autorisation en exécutant la commande :
+        GRANT USAGE ON SCHEMA <schema> TO <username>
+      parameters:
+        store_folder: Le dossier contenant les fichiers du store
+        table_prefix: Préfixe à ajouter au nom de la table
+        postgres_host: URI de l'hôte PostgreSQL
+        postgres_port: Port de la base de données PostgreSQL
+        postgres_db: Nom de la base de données PostgreSQL
+        postgres_schema: Nom du schéma PostgreSQL
+        postgres_user: Nom d'utilisateur de connexion PostgreSQL
+        postgres_password: Mot de passe de connexion PostgreSQL
+        replace: Ajoute des données aux tables existantes
+
+    dump_to_azure:
+      description: |
+        Déverse un datastore vers un compte de stockage Azure.
+
+        Téléversera tout depuis un data store donné vers un conteneur de stockage Azure.
+
+        3 modes existent actuellement :
+          - sqlite : déversera la base de données sous-jacente du data store telle quelle
+          - csv : convertira chaque table du datastore en csv et les enverra comme fichiers séparés
+          - parquet : convertira chaque table du datastore en parquet et les enverra comme fichiers séparés
+
+        Utilise la bibliothèque azure.storage.blob pour accéder au conteneur
+
+        Plus d'informations sont disponibles sur cette page :
+        [https://learn.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-python?tabs=managed-identity%2Croles-azure-portal%2Csign-in-azure-cli&pivots=blob-storage-quickstart-scratch]
+      parameters:
+        store_folder: Le dossier contenant les fichiers du store
+        output_type: Choisir le type de fichier de sortie à utiliser (sqlite, csv, parquet)
+        account_name: Le nom du compte sur Azure pour le téléversement
+        container_name: Le nom du conteneur sur Azure pour le téléversement
+        prefix: Un préfixe par lequel tous les fichiers téléversés doivent commencer dans le conteneur
+        tenant_id: Identité du locataire utilisée pour se connecter au système de stockage Azure
+        client_id: Identité du client utilisée pour se connecter au système de stockage Azure
+        client_secret: Secret client lié à l'ID utilisé pour se connecter au système de stockage Azure
+
+    dump_to_s3:
+      description: |
+        Déverse un datastore vers S3
+
+        Téléversera tout depuis un data store donné vers un bucket S3.
+
+        3 modes existent actuellement :
+          - sqlite : déversera la base de données sous-jacente du data store telle quelle
+          - csv : convertira chaque table du datastore en csv et les enverra comme fichiers séparés
+          - parquet : convertira chaque table du datastore en parquet et les enverra comme fichiers séparés
+
+        Donner un préfixe l'ajoutera à chaque téléversement (terminer le préfixe par "/" permettra de téléverser dans un dossier à l'intérieur du bucket)
+
+        Utilise la bibliothèque boto3 pour accéder au bucket
+
+        Plus d'informations sont disponibles sur cette page :
+        [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html]
+      parameters:
+        store_folder: Le dossier contenant les fichiers du store
+        output_type: Choisir le type de fichier de sortie à utiliser (sqlite, csv, parquet)
+        bucket_name: Le bucket sur S3 pour le téléversement
+        prefix: Un préfixe par lequel tous les fichiers téléversés doivent commencer dans le bucket
+        use_ssl: Utiliser SSL pour sécuriser la connexion à S3
+        s3_url: URL pour se connecter au système S3
+        access_id: Identité utilisée pour se connecter au système S3
+        secret_key: Secret lié à l'ID utilisé pour se connecter au système S3
+        ssl_cert_bundle: Chemin vers un bundle CA alternatif pour valider les connexions SSL
+
+  storage:
+    s3_bucket_upload:
+      description: |
+        Téléverse un dossier vers un bucket S3
+
+        Téléversera tout depuis un dossier donné vers un bucket S3. Si un seul fichier est passé, il sera téléversé et récursif sera ignoré
+
+        Donner un préfixe l'ajoutera à chaque téléversement (terminer le préfixe par "/" permettra de téléverser dans un dossier à l'intérieur du bucket)
+
+        Utilise la bibliothèque boto3 pour accéder au bucket
+
+        Plus d'informations sont disponibles sur cette page :
+        [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html]
+      parameters:
+        source_folder: Le dossier/fichier à téléverser vers le bucket cible
+        recursive: Envoie récursivement le contenu de chaque dossier à l'intérieur du dossier de départ vers le bucket
+        bucket_name: Le bucket sur S3 pour le téléversement
+        prefix: Un préfixe par lequel tous les fichiers téléversés doivent commencer dans le bucket
+        use_ssl: Utiliser SSL pour sécuriser la connexion à S3
+        s3_url: URL pour se connecter au système S3
+        access_id: Identité utilisée pour se connecter au système S3
+        secret_key: Secret lié à l'ID utilisé pour se connecter au système S3
+        ssl_cert_bundle: Chemin vers un bundle CA alternatif pour valider les connexions SSL
+
+    s3_bucket_download:
+      description: |
+        Télécharge le contenu du bucket S3 vers un dossier donné
+
+        Téléchargera tout dans le bucket sauf si un préfixe est défini, alors seuls les fichiers suivant le préfixe donné seront téléchargés
+
+        Utilise la bibliothèque boto3 pour accéder au bucket
+
+        Plus d'informations sont disponibles sur cette page :
+        [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html]
+      parameters:
+        target_folder: Le dossier dans lequel télécharger le contenu du bucket
+        bucket_name: Le bucket sur S3 à télécharger
+        prefix_filter: Un préfixe par lequel tous les fichiers téléchargés doivent commencer dans le bucket
+        use_ssl: Utiliser SSL pour sécuriser la connexion à S3
+        s3_url: URL pour se connecter au système S3
+        access_id: Identité utilisée pour se connecter au système S3
+        secret_key: Secret lié à l'ID utilisé pour se connecter au système S3
+        ssl_cert_bundle: Chemin vers un bundle CA alternatif pour valider les connexions SSL
+
+    s3_bucket_delete:
+      description: |
+        Supprime le contenu du bucket S3 vers un dossier donné
+
+        Supprimera tout dans le bucket sauf si un préfixe est défini, alors seuls les fichiers suivant le préfixe donné seront supprimés
+
+        Utilise la bibliothèque boto3 pour accéder au bucket
+
+        Plus d'informations sont disponibles sur cette page :
+        [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html]
+      parameters:
+        bucket_name: Le bucket sur S3 à supprimer
+        prefix_filter: Un préfixe par lequel tous les fichiers supprimés doivent commencer dans le bucket
+        use_ssl: Utiliser SSL pour sécuriser la connexion à S3
+        s3_url: URL pour se connecter au système S3
+        access_id: Identité utilisée pour se connecter au système S3
+        secret_key: Secret lié à l'ID utilisé pour se connecter au système S3
+        ssl_cert_bundle: Chemin vers un bundle CA alternatif pour valider les connexions SSL
+
+    az_storage_upload:
+      description: |
+        Téléverse un dossier vers un Blob de stockage Azure
+      parameters:
+        source_folder: Le dossier/fichier à téléverser vers le stockage blob cible
+        recursive: Envoie récursivement le contenu de chaque dossier à l'intérieur du dossier de départ vers le stockage blob
+        blob_name: Le nom du blob dans le service de stockage Azure pour le téléversement
+        prefix: Un préfixe par lequel tous les fichiers téléversés doivent commencer dans le stockage blob
+        az_storage_sas_url: URL SAS permettant l'accès au conteneur de stockage AZ
+
+    adx_send_scenariodata:
+      description: |
+        Utilise les variables d'environnement pour envoyer le contenu des fichiers CSV vers ADX
+        Nécessite une connexion Azure valide soit avec :
+        - La commande AZ cli : az login
+        - Un triplet de variables d'environnement AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+      parameters:
+        dataset_absolute_path: Un dossier local pour stocker le contenu du jeu de données principal
+        parameters_absolute_path: Un dossier local pour stocker le contenu des paramètres
+        simulation_id: l'ID de simulation à ajouter aux enregistrements
+        adx_uri: le chemin du cluster ADX (les informations URI peuvent être trouvées dans la page du cluster ADX)
+        adx_ingest_uri: Le chemin d'ingestion du cluster ADX (les informations URI peuvent être trouvées dans la page du cluster ADX)
+        database_name: Le nom de la base de données ciblée
+        send_parameters: s'il faut envoyer ou non les paramètres (le chemin des paramètres est alors obligatoire)
+        send_datasets: s'il faut envoyer ou non les jeux de données (le chemin des paramètres est alors obligatoire)
+        wait: Active l'attente des résultats d'ingestion
+
+  legacy:
+    description: |
+      Groupe API legacy Cosmo Tech
+
+      Ce groupe vous permettra de vous connecter à l'API CosmoTech et de migrer des solutions des versions pré-3.0 vers des solutions compatibles 3.X
+
+    generate_orchestrator:
+      description: |
+        Génère un fichier de configuration d'orchestrateur à partir du modèle d'exécution d'une solution.
+        
+        Ce groupe de commandes fournit des outils pour générer des fichiers de configuration d'orchestrateur soit à partir d'un fichier de solution local
+        soit directement depuis l'API Cosmo Tech.
+
+      from_file:
+        description: |
+          Génère une configuration d'orchestrateur à partir d'un fichier de solution local.
+
+        parameters:
+          solution_file: Chemin vers le fichier de solution à lire
+          output: Chemin où écrire la configuration générée
+          run_template_id: L'ID du modèle d'exécution à utiliser
+          describe: Affiche une description du modèle généré après la génération
+
+      from_api:
+        description: |
+          Génère une configuration d'orchestrateur en récupérant la solution depuis l'API.
+        parameters:
+          output: Chemin où écrire la configuration générée
+          organization_id: L'identifiant d'une organisation dans l'API Cosmo Tech
+          workspace_id: L'identifiant d'une solution dans l'API Cosmo Tech
+          run_template_id: Le nom du modèle d'exécution dans l'API Cosmo Tech
+          describe: Affiche une description du modèle généré après la génération
+
+    init_local_parameter_folder:
+      description: |
+        Initialise une structure de dossier de paramètres locale à partir du modèle d'exécution d'une solution.
+        
+        Ce groupe de commandes fournit des outils pour créer une structure de dossier de paramètres locale soit à partir d'un fichier de solution local
+        soit directement depuis l'API Cosmo Tech. Le dossier contiendra des fichiers de paramètres aux formats CSV et/ou JSON.
+
+      solution:
+        description: |
+          Initialise le dossier de paramètres à partir d'un fichier de solution local.
+
+        Parameters:
+          solution_file: Chemin vers le fichier de solution à lire
+          output_folder: Chemin où créer la structure de dossier de paramètres
+          run_template_id: L'ID du modèle d'exécution à utiliser
+          write_json: Active l'écriture des paramètres au format json
+          write_csv: Active l'écriture des paramètres au format csv
+
+      cloud:
+        description: |
+          Initialise le dossier de paramètres en récupérant la solution depuis l'API.
+        parameters:
+          output_folder: Chemin où créer la structure de dossier de paramètres
+          organization_id: L'identifiant d'une organisation dans l'API Cosmo Tech
+          workspace_id: L'identifiant d'une solution dans l'API Cosmo Tech
+          run_template_id: Le nom du modèle d'exécution dans l'API Cosmo Tech
+          write_json: Active l'écriture des paramètres au format json
+          write_csv: Active l'écriture des paramètres au format csv

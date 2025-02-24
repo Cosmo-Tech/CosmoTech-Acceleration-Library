@@ -6,44 +6,46 @@
 # specifically authorized by written means by Cosmo Tech.
 
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.workspace import upload_workspace_file
+from cosmotech.orchestrator.utils.translate import T
 
 
 @click.command()
 @click.option("--organization-id",
               envvar="CSM_ORGANIZATION_ID",
-              help="An organization id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.wsf_send_file.parameters.organization_id"),
               metavar="o-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--workspace-id",
               envvar="CSM_WORKSPACE_ID",
-              help="A workspace id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.wsf_send_file.parameters.workspace_id"),
               metavar="w-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--file-path",
-              help="Path to the file to send as a workspace file",
+              help=T("coal-help.commands.api.wsf_send_file.parameters.file_path"),
               metavar="PATH",
               type=str,
               required=True)
 @click.option("--workspace-path",
-              help="Path inside the workspace to store the file (end with '/' for a folder)",
+              help=T("coal-help.commands.api.wsf_send_file.parameters.workspace_path"),
               metavar="PATH",
               default="/",
               type=str,
               required=True)
 @click.option("--overwrite/--keep",
-              help="Flag to overwrite the target file",
+              help=T("coal-help.commands.api.wsf_send_file.parameters.overwrite"),
               is_flag=True,
               default=True,
               show_default=True,
               type=bool)
 @web_help("csm-data/api/wsf-send-file")
+@translate_help("coal-help.commands.api.wsf_send_file.description")
 def wsf_send_file(
     organization_id,
     workspace_id,
@@ -51,13 +53,6 @@ def wsf_send_file(
     workspace_path: str,
     overwrite: bool
 ):
-    """Send a file to a workspace inside the API
-
-Requires a valid connection to the API to send the data
-
-This implementation make use of an API Key
-    """
-
     with get_api_client()[0] as api_client:
         upload_workspace_file(api_client,
                               organization_id,

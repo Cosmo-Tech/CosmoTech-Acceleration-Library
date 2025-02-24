@@ -14,19 +14,17 @@ from cosmotech_api.api.solution_api import RunTemplate
 from cosmotech_api.api.solution_api import Solution
 
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.utils.api import get_solution
 from cosmotech.coal.utils.api import read_solution_file
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 @click.group()
 @web_help("csm-data/legacy/generate-orchestrator")
+@translate_help("coal-help.commands.legacy.generate_orchestrator.description")
 def generate_orchestrator():
-    """Base command for the json generator using legacy files  
-Check the help of the sub commands for more information:  
-- `cloud` requires access to a fully deployed solution  
-- `solution` requires a `Solution.yaml` file"""
     pass
 
 
@@ -45,8 +43,8 @@ Check the help of the sub commands for more information:
               show_default=True, default=False,
               help="Show a description of the generated template after generation")
 @web_help("csm-data/legacy/generate-orchestrator/from-file")
+@translate_help("coal-help.commands.legacy.generate_orchestrator.from_file.description")
 def from_file(solution_file, run_template_id, output, describe):
-    """Read SOLUTION_FILE to get a RUN_TEMPLATE_ID and generate an orchestrator file at OUTPUT"""
     if _solution := read_solution_file(solution_file):
         return generate_from_solution(sol=_solution, run_template_id=run_template_id, output=output, describe=describe)
     return 1
@@ -60,28 +58,27 @@ def from_file(solution_file, run_template_id, output, describe):
 @click.option("--organization-id",
               envvar="CSM_ORGANIZATION_ID",
               show_envvar=True,
-              help="The id of an organization in the cosmotech api",
+              help=T("coal-help.commands.legacy.generate_orchestrator.from_api.parameters.organization_id"),
               metavar="o-##########",
               required=True)
 @click.option("--workspace-id",
               envvar="CSM_WORKSPACE_ID",
               show_envvar=True,
-              help="The id of a solution in the cosmotech api",
+              help=T("coal-help.commands.legacy.generate_orchestrator.from_api.parameters.workspace_id"),
               metavar="w-##########",
               required=True)
 @click.option("--run-template-id",
               envvar="CSM_RUN_TEMPLATE_ID",
               show_envvar=True,
-              help="The name of the run template in the cosmotech api",
+              help=T("coal-help.commands.legacy.generate_orchestrator.from_api.parameters.run_template_id"),
               metavar="NAME",
               required=True)
 @click.option("--describe/--no-describe",
               show_default=True, default=False,
-              help="Show a description of the generated template after generation")
+              help=T("coal-help.commands.legacy.generate_orchestrator.from_api.parameters.describe"))
 @web_help("csm-data/legacy/generate-orchestrator/from-api")
+@translate_help("coal-help.commands.legacy.generate_orchestrator.from_api.description")
 def from_api(workspace_id, organization_id, run_template_id, output, describe):
-    """Connect to the cosmotech API to download a run template and generate an orchestrator file at OUTPUT"""
-
     if sol := get_solution(organization_id=organization_id,
                            workspace_id=workspace_id):
         return generate_from_solution(sol=sol, run_template_id=run_template_id, output=output, describe=describe)

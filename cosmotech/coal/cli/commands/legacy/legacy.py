@@ -7,16 +7,14 @@
 from cosmotech.coal.cli.commands.legacy.generate_orchestrator import generate_orchestrator
 from cosmotech.coal.cli.commands.legacy.init_local_parameter_folder import init_local_parameter_folder
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
+from cosmotech.orchestrator.utils.translate import T
 
 
 @click.group()
 @web_help("csm-data/legacy")
+@translate_help("coal-help.commands.legacy.description")
 def legacy():
-    """Cosmo Tech legacy API group
-
-This group will allow you to connect to the CosmoTech API and migrate solutions from pre-3.0 version to 3.X compatible solutions
-    """
     pass
 
 

@@ -1,0 +1,190 @@
+errors:
+  validation:
+    not_csv_file: "'{file_path}' n'est pas un fichier csv"
+    invalid_nodes_relations: "'{file_path}' ne contient pas de nœuds ou relations valides"
+    invalid_truth_value: "'{string}' n'est pas une valeur de vérité reconnue"
+  environment:
+    no_env_vars: |
+      Aucun ensemble de variables d'environnement trouvé pour une connexion API Cosmo Tech valide
+    no_valid_connection: |
+      Aucune connexion valide disponible pour l'API Cosmo Tech
+    missing_env_var: |
+      Variable d'environnement manquante : {envvar}
+  file_system:
+    file_not_found: "{source_folder} n'existe pas"
+    file_exists: "Le fichier {csv_path} existe déjà"
+    not_directory: "{target_dir} est un fichier et non un répertoire"
+    file_not_exists: "'{file_path}' n'existe pas"
+    not_single_file: "'{file_path}' n'est pas un fichier unique"
+  data:
+    no_table: |
+      Aucune table avec le nom {table_name} n'existe
+    parameter_not_exists: |
+      Le paramètre {parameter_name} n'existe pas
+    invalid_output_type: |
+      {output_type} n'est pas un type de sortie valide
+    no_workspace_files: |
+      Aucun fichier d'espace de travail n'a été trouvé avec le filtre {file_prefix} dans l'espace de travail {workspace_id}
+  workspace:
+    not_found: |
+      L'espace de travail {workspace_id} n'a pas été trouvé dans l'Organisation {organization_id}
+
+  solution:
+    loaded: "Chargé {path}"
+    api_configured: "Configuration de l'api définie"
+    loading_workspace: |
+      Chargement des informations de l'espace de travail pour obtenir l'ID de la Solution
+  errors:
+    solution:
+      invalid_file: "{file} n'est pas un fichier `.yaml` ou `.json`"
+    environment:
+      missing_var: |
+        Variable d'environnement manquante : {envvar}
+
+web:
+  failed_open: |
+    Échec de l'ouverture : {url}
+  opened: |
+    Ouvert {url} dans votre navigateur
+
+logs:
+  connection:
+    existing_sets: "Les ensembles existants sont :"
+    azure_connection: "  Connexion Azure Entra : {keys}"
+    api_key_connection: "  Clé API Cosmo Tech : {keys}"
+    keycloak_connection: "  Connexion Keycloak : {keys}"
+    found_keycloak: "Informations de connexion Keycloak trouvées"
+    found_cert_authority: |
+      Remplacement de l'autorité de certification trouvé pour la connexion IDP, utilisation en cours.
+    found_api_key: "Informations de clé Api trouvées"
+    found_azure: "Informations de connexion Azure Entra trouvées"
+    found_valid: |
+      Connexion valide trouvée de type : {type}
+  data_transfer:
+    sending_table: |
+      Envoi de la table {table_name} en tant que {output_type}
+    sending_data: "  Envoi de {size} octets de données"
+    table_empty: |
+      La table {table_name} est vide (ignorée)
+    rows_inserted: |
+      Insertion de {rows} lignes dans la table {table_name}
+    file_sent: |
+      Envoi de {file_path} en tant que {uploaded_name}
+  ingestion:
+    creating_table: |
+      Requête de création de table : {query}
+    table_created: |
+      Table {table} créée avec succès
+    table_creation_failed: |
+      Problème lors de la création de la table {table}
+    ingesting: "Ingestion de {table}"
+    waiting_results: |
+      Attente des résultats d'ingestion, nouvelle tentative dans {duration}s ({count}/{limit})
+    max_retry: "Nombre maximum de tentatives atteint, arrêt de l'attente"
+    status_report: "{table} - {status}"
+    no_wait: "Pas d'attente pour le résultat d'ingestion"
+  progress:
+    loading_file: |
+      Chargement de {file_name} depuis l'API
+    file_loaded: |
+      {file} chargé avec succès depuis l'API
+    operation_timing: |
+      {operation} a pris {time:0.3}s
+
+  scenario:
+    starting_connector: "Démarrage du connecteur"
+    loading_data: "Chargement des données du scénario"
+    downloading_datasets: "Téléchargement des jeux de données"
+    storing_datasets: "Stockage des jeux de données"
+    no_dataset_write: "Aucune écriture de jeu de données demandée, ignoré"
+    preparing_parameters: "Préparation des paramètres"
+    no_parameters_write: "Aucune écriture de paramètres demandée, ignoré"
+    generating_file: "Génération de {file}"
+    dataset_debug: "  - {folder} ({id})"
+
+  runner:
+    starting_download: "Démarrage du téléchargement des données d'exécution"
+    no_parameters: "aucun paramètre trouvé dans le runner"
+    loaded_data: "Données d'exécution chargées"
+    found_parameter: |
+      Paramètre '{param_id}' trouvé avec la valeur '{value}'
+    parameter_debug: |
+      - {param_id:<{max_name_size}} {var_type:<{max_type_size}} '{value}'{inherited}
+    not_single_dataset: |
+      {runner_id} n'est pas lié à un seul jeu de données mais à {count}
+    dataset_state: |
+      Le jeu de données {dataset_id} est dans l'état {status}
+
+  database:
+    creating_table: "création de la table {table}"
+    updating_metadata: "ajout/mise à jour des métadonnées du runner"
+    metadata_updated: "La table des métadonnées du runner a été mise à jour"
+    sending_data: |
+      Envoi des données à la table {table}
+    no_rows: "  - Pas de lignes : ignoré"
+    column_list: "  - Liste des colonnes : {columns}"
+    row_count: "  - Envoi de {count} lignes"
+    query_results: |
+      La requête a retourné {count} lignes
+    saved_results: |
+      Résultats sauvegardés en tant que {file}
+    no_results: "Aucun résultat retourné par la requête"
+    store_empty: "Le data store est vide"
+    store_tables: "Le data store contient les tables suivantes"
+    table_entry: "  - {table}"
+    store_reset: |
+      Le data store dans {folder} a été réinitialisé
+    rows_fetched: |
+      Lignes récupérées dans la table {table} : {count} en {time} secondes
+    tables_to_fetch: |
+      Tables à récupérer : {tables}
+    full_dataset: |
+      Jeu de données complet récupéré et écrit en {time} secondes
+
+  storage:
+    deleting_objects: "Suppression de {objects}"
+    no_objects: "Aucun objet à supprimer"
+    downloading: |
+      Téléchargement de {path} vers {output}
+    sending_file: |
+      Envoi de {file} en tant que {name}
+    found_file: |
+      Trouvé {file}, stockage en cours
+    clearing_content: "Effacement de tout le contenu du jeu de données"
+    sending_content: |
+      Envoi du contenu de '{file}'
+    row_batch: |
+      Trouvé un nombre de lignes de {count}, envoi en cours
+    import_errors: |
+      Trouvé {count} erreurs lors de l'importation : 
+    all_data_sent: "Toutes les données trouvées ont été envoyées"
+    writing_lines: |
+      Écriture de {count} lignes dans {file}
+    all_csv_written: "Tous les CSV sont écrits"
+
+  orchestrator:
+    searching_template: |
+      Recherche de {template} dans la solution
+    template_not_found: |
+      Le modèle d'exécution {template} n'a pas été trouvé.
+    generating_json: |
+      Trouvé {template} dans la solution, génération du fichier json
+    no_parameters: |
+      Pas de paramètres à écrire pour {template}
+    creating_folders: "Création des dossiers pour les paramètres du jeu de données"
+    folder_created: "- {folder}"
+    step_found: "- étape {step} trouvée"
+    steps_summary: |
+      {count} étape{plural} trouvée{plural}, écriture du fichier json
+    loading_solution: |
+      Chargement des informations de l'espace de travail pour obtenir l'ID de la Solution
+    querying_handler: |
+      Interrogation du gestionnaire {handler} pour {template}
+    handler_not_found: |
+      Le gestionnaire {handler} n'a pas été trouvé pour le modèle d'exécution {template} dans la Solution {solution}
+    extracting_handler: |
+      Extraction du gestionnaire vers {path}
+    handler_not_zip: |
+      Le gestionnaire {handler} n'est pas un fichier zip
+    run_issues: |
+      Des problèmes ont été rencontrés pendant l'exécution, veuillez vérifier les logs précédents

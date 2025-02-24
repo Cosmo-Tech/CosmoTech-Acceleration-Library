@@ -16,8 +16,9 @@ from cosmotech.coal.cli.commands.s3_bucket_upload import s3_bucket_upload
 from cosmotech.coal.cli.commands.s3_bucket_delete import s3_bucket_delete
 from cosmotech.coal.cli.commands.store.store import store
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import translate_help, web_help
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 def print_version(ctx, param, value):
@@ -39,10 +40,8 @@ def print_version(ctx, param, value):
               is_eager=True,
               help="Print version number and return.")
 @web_help("csm-data")
+@translate_help("coal-help.commands.main.description")
 def main():
-    """Cosmo Tect Data Interface
-
-Command toolkit provinding quick implementation of data connections to use inside the Cosmo Tech Platform"""
     pass
 
 

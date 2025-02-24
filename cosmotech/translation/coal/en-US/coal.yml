@@ -1,0 +1,136 @@
+errors:
+  validation:
+    not_csv_file: "'{file_path}' is not a csv file"
+    invalid_nodes_relations: "'{file_path}' does not contains valid nodes or relations"
+    invalid_truth_value: '"{string} is not a recognized truth value'
+  environment:
+    no_env_vars: "No set of environment variables found for a valid Cosmo Tech API connection"
+    no_valid_connection: "No valid connection available to the Cosmo Tech API"
+    missing_env_var: "Missing the following environment variable: {envvar}"
+  file_system:
+    file_not_found: "{source_folder} does not exists"
+    file_exists: "File {csv_path} already exists"
+    not_directory: "{target_dir} is a file and not a directory"
+    file_not_exists: '"{file_path}" does not exists'
+    not_single_file: '"{file_path}" is not a single file'
+  data:
+    no_table: "No table with name {table_name} exists"
+    parameter_not_exists: "Parameter {parameter_name} does not exists"
+    invalid_output_type: "{output_type} is not a valid type of output"
+    no_workspace_files: "No workspace file were found with filter {file_prefix} in workspace {workspace_id}"
+  workspace:
+    not_found: "Workspace {workspace_id} was not found in Organization {organization_id}"
+
+  solution:
+    loaded: "Loaded {path}"
+    api_configured: "Configuration to the api set"
+    loading_workspace: "Loading Workspace information to get Solution ID"
+  errors:
+    solution:
+      invalid_file: "{file} is not a `.yaml` or `.json` file"
+    environment:
+      missing_var: "Missing the following environment variable: {envvar}"
+
+web:
+  failed_open: "Failed to open: {url}"
+  opened: "Opened {url} in your navigator"
+
+logs:
+  connection:
+    existing_sets: "Existing sets are:"
+    azure_connection: "  Azure Entra Connection : {keys}"
+    api_key_connection: "  Cosmo Tech API Key : {keys}"
+    keycloak_connection: "  Keycloak connection : {keys}"
+    found_keycloak: "Found Keycloack connection info"
+    found_cert_authority: "Found Certificate Authority override for IDP connection, using it."
+    found_api_key: "Found Api Key connection info"
+    found_azure: "Found Azure Entra connection info"
+    found_valid: "Found valid connection of type: {type}"
+  data_transfer:
+    sending_table: "Sending table {table_name} as {output_type}"
+    sending_data: "  Sending {size} bytes of data"
+    table_empty: "Table {table_name} is empty (skipping)"
+    rows_inserted: "Inserted {rows} rows in table {table_name}"
+    file_sent: "Sending {file_path} as {uploaded_name}"
+  ingestion:
+    creating_table: "Create table query: {query}"
+    table_created: "Table {table} created successfully"
+    table_creation_failed: "Issue creating table {table}"
+    ingesting: "Ingesting {table}"
+    waiting_results: "Waiting for ingestion results, retry in {duration}s ({count}/{limit})"
+    max_retry: "Max number of retry, stop waiting"
+    status_report: "{table} - {status}"
+    no_wait: "No wait for ingestion result"
+  progress:
+    loading_file: "Loading {file_name} from the API"
+    file_loaded: "{file} successfully loaded from the API"
+    operation_timing: "{operation} took {time:0.3}s"
+
+  scenario:
+    starting_connector: "Starting connector"
+    loading_data: "Load scenario data"
+    downloading_datasets: "Download datasets"
+    storing_datasets: "Store datasets"
+    no_dataset_write: "No dataset write asked, skipping"
+    preparing_parameters: "Prepare parameters"
+    no_parameters_write: "No parameters write asked, skipping"
+    generating_file: "Generating {file}"
+    dataset_debug: "  - {folder} ({id})"
+
+  runner:
+    starting_download: "Starting the Run data download"
+    no_parameters: "no parameters found in the runner"
+    loaded_data: "Loaded run data"
+    found_parameter: "Found parameter '{param_id}' with value '{value}'"
+    parameter_debug: "  - {param_id:<{max_name_size}} {var_type:<{max_type_size}} \"{value}\"{inherited}"
+    not_single_dataset: "{runner_id} is not tied to a single dataset but {count}"
+    dataset_state: "Dataset {dataset_id} is in state {status}"
+
+  database:
+    creating_table: "creating table {table}"
+    updating_metadata: "adding/updating runner metadata"
+    metadata_updated: "Runner metadata table has been updated"
+    sending_data: "Sending data to table {table}"
+    no_rows: "  - No rows : skipping"
+    column_list: "  - Column list: {columns}"
+    row_count: "  - Sending {count} rows"
+    query_results: "Query returned {count} rows"
+    saved_results: "Results saved as {file}"
+    no_results: "No results returned by the query"
+    store_empty: "Data store is empty"
+    store_tables: "Data store contains the following tables"
+    table_entry: "  - {table}"
+    store_reset: "Data store in {folder} got reset"
+    rows_fetched: "Rows fetched in {table} table: {count} in {time} seconds"
+    tables_to_fetch: "Tables to fetched: {tables}"
+    full_dataset: "Full dataset fetched and wrote in {time} seconds"
+
+  storage:
+    deleting_objects: "Deleting {objects}"
+    no_objects: "No objects to delete"
+    downloading: "Downloading {path} to {output}"
+    sending_file: "Sending {file} as {name}"
+    found_file: "Found {file}, storing it"
+    clearing_content: "Clearing all dataset content"
+    sending_content: "Sending content of '{file}'"
+    row_batch: "Found row count of {count}, sending now"
+    import_errors: "Found {count} errors while importing: "
+    all_data_sent: "Sent all data found"
+    writing_lines: "Writing {count} lines in {file}"
+    all_csv_written: "All CSV are written"
+
+  orchestrator:
+    searching_template: "Searching {template} in the solution"
+    template_not_found: "Run template {template} was not found."
+    generating_json: "Found {template} in the solution generating json file"
+    no_parameters: "No parameters to write for {template}"
+    creating_folders: "Creating folders for dataset parameters"
+    folder_created: "- {folder}"
+    step_found: "- {step} step found"
+    steps_summary: "{count} step{plural} found, writing json file"
+    loading_solution: "Loading Workspace information to get Solution ID"
+    querying_handler: "Querying Handler {handler} for {template}"
+    handler_not_found: "Handler {handler} was not found for Run Template {template} in Solution {solution}"
+    extracting_handler: "Extracting handler to {path}"
+    handler_not_zip: "Handler {handler} is not a zip file"
+    run_issues: "Issues were met during run, please check the previous logs"

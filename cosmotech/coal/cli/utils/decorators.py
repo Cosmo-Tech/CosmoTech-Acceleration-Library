@@ -12,6 +12,18 @@ from functools import wraps
 from cosmotech.coal.utils import WEB_DOCUMENTATION_ROOT
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
+
+
+def translate_help(translation_key):
+    """Decorator that sets the function's __doc__ to the translated help text."""
+    def wrap_function(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
+        wrapper.__doc__ = T(translation_key)
+        return wrapper
+    return wrap_function
 
 
 def require_env(envvar, envvar_desc):
@@ -19,7 +31,7 @@ def require_env(envvar, envvar_desc):
         @wraps(func)
         def f(*args, **kwargs):
             if envvar not in os.environ:
-                raise EnvironmentError(f"Missing the following environment variable: {envvar}")
+                raise EnvironmentError(T("coal.errors.environment.missing_var").format(envvar=envvar))
             return func(*args, **kwargs)
 
         f.__doc__ = "\n".join(
@@ -35,9 +47,9 @@ def web_help(effective_target="", base_url=WEB_DOCUMENTATION_ROOT):
     def open_documentation(ctx: click.Context, param, value):
         if value:
             if not webbrowser.open(documentation_url):
-                LOGGER.warning(f"Failed to open: {documentation_url}")
+                LOGGER.warning(T("coal.web.failed_open").format(url=documentation_url))
             else:
-                LOGGER.info(f"Opened {documentation_url} in your navigator")
+                LOGGER.info(T("coal.web.opened").format(url=documentation_url))
             ctx.exit(0)
 
     def wrap_function(func):

@@ -12,61 +12,63 @@ from cosmotech_api import RunDataQuery
 from cosmotech_api.api.run_api import RunApi
 
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 @click.command()
 @click.option("--target-folder",
               envvar="CSM_DATASET_ABSOLUTE_PATH",
-              help="The folder where the csv will be written",
+              help=T("coal-help.commands.api.rds_load_csv.parameters.target_folder"),
               metavar="PATH",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--organization-id",
               envvar="CSM_ORGANIZATION_ID",
-              help="An organization id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.rds_load_csv.parameters.organization_id"),
               metavar="o-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--workspace-id",
               envvar="CSM_WORKSPACE_ID",
-              help="A workspace id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.rds_load_csv.parameters.workspace_id"),
               metavar="w-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--runner-id",
               envvar="CSM_RUNNER_ID",
-              help="A runner id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.rds_load_csv.parameters.runner_id"),
               metavar="r-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--run-id",
               envvar="CSM_RUN_ID",
-              help="A run id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.rds_load_csv.parameters.run_id"),
               metavar="run-XXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--file-name",
-              help="A file name to write the query results",
+              help=T("coal-help.commands.api.rds_load_csv.parameters.file_name"),
               metavar="NAME",
               type=str,
               default="results",
               show_default=True,
               required=True)
 @click.option("--query",
-              help="A run id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.rds_load_csv.parameters.query"),
               metavar="SQL_QUERY",
               type=str,
               default="SELECT table_name FROM information_schema.tables WHERE table_schema='public'",
               show_default=True)
 @web_help("csm-data/api/rds-load-csv")
+@translate_help("coal-help.commands.api.rds_load_csv.description")
 def rds_load_csv(
     target_folder,
     organization_id,
@@ -76,11 +78,6 @@ def rds_load_csv(
     file_name,
     query
 ):
-    """Download a CSV file from the Cosmo Tech Run API using a given SQL query
-
-Requires a valid connection to the API to send the data
-    """
-
     target_dir = pathlib.Path(target_folder)
 
     target_dir.mkdir(parents=True, exist_ok=True)

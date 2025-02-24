@@ -15,48 +15,50 @@ from cosmotech.coal.store.store import Store
 from cosmotech.coal.store.native_python import convert_table_as_pylist
 
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 @click.command()
 @click.option("--store-folder",
               envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              help="The folder containing the store files",
+              help=T("coal-help.commands.api.rds_send_store.parameters.store_folder"),
               metavar="PATH",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--organization-id",
               envvar="CSM_ORGANIZATION_ID",
-              help="An organization id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.rds_send_store.parameters.organization_id"),
               metavar="o-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--workspace-id",
               envvar="CSM_WORKSPACE_ID",
-              help="A workspace id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.rds_send_store.parameters.workspace_id"),
               metavar="w-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--runner-id",
               envvar="CSM_RUNNER_ID",
-              help="A runner id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.rds_send_store.parameters.runner_id"),
               metavar="r-XXXXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--run-id",
               envvar="CSM_RUN_ID",
-              help="A run id for the Cosmo Tech API",
+              help=T("coal-help.commands.api.rds_send_store.parameters.run_id"),
               metavar="run-XXXXXX",
               type=str,
               show_envvar=True,
               required=True)
 @web_help("csm-data/api/rds-send-store")
+@translate_help("coal-help.commands.api.rds_send_store.description")
 def rds_send_store(
     store_folder,
     organization_id,
@@ -64,11 +66,6 @@ def rds_send_store(
     runner_id,
     run_id
 ):
-    """Send all CoAL Datastore content to the results service of the Cosmo Tech API
-
-Requires a valid connection to the API to send the data
-    """
-
     source_dir = pathlib.Path(store_folder)
 
     if not source_dir.exists():

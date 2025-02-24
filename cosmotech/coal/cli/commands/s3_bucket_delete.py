@@ -10,14 +10,15 @@ from typing import Optional
 import boto3
 
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 @click.command()
 @click.option("--bucket-name",
               envvar="CSM_DATA_BUCKET_NAME",
-              help="The bucket on S3 to delete",
+              help=T("coal-help.commands.storage.s3_bucket_delete.parameters.bucket_name"),
               metavar="BUCKET",
               type=str,
               show_envvar=True,
@@ -25,18 +26,18 @@ from cosmotech.coal.utils.logger import LOGGER
 @click.option("--prefix-filter",
               "file_prefix",
               envvar="CSM_DATA_BUCKET_PREFIX",
-              help="A prefix by which all deleted files should start in the bucket",
+              help=T("coal-help.commands.storage.s3_bucket_delete.parameters.prefix_filter"),
               metavar="PREFIX",
               type=str,
               show_envvar=True)
 @click.option("--use-ssl/--no-ssl",
               default=True,
-              help="Use SSL to secure connection to S3",
+              help=T("coal-help.commands.storage.s3_bucket_delete.parameters.use_ssl"),
               type=bool,
               is_flag=True)
 @click.option("--s3-url",
               "endpoint_url",
-              help="URL to connect to the S3 system",
+              help=T("coal-help.commands.storage.s3_bucket_delete.parameters.s3_url"),
               type=str,
               required=True,
               show_envvar=True,
@@ -44,7 +45,7 @@ from cosmotech.coal.utils.logger import LOGGER
               envvar="AWS_ENDPOINT_URL")
 @click.option("--access-id",
               "access_id",
-              help="Identity used to connect to the S3 system",
+              help=T("coal-help.commands.storage.s3_bucket_delete.parameters.access_id"),
               type=str,
               required=True,
               show_envvar=True,
@@ -52,19 +53,20 @@ from cosmotech.coal.utils.logger import LOGGER
               envvar="AWS_ACCESS_KEY_ID")
 @click.option("--secret-key",
               "secret_key",
-              help="Secret tied to the ID used to connect to the S3 system",
+              help=T("coal-help.commands.storage.s3_bucket_delete.parameters.secret_key"),
               type=str,
               required=True,
               show_envvar=True,
               metavar="ID",
               envvar="AWS_SECRET_ACCESS_KEY")
 @click.option("--ssl-cert-bundle",
-              help="Path to an alternate CA Bundle to validate SSL connections",
+              help=T("coal-help.commands.storage.s3_bucket_delete.parameters.ssl_cert_bundle"),
               type=str,
               show_envvar=True,
               metavar="PATH",
               envvar="CSM_S3_CA_BUNDLE")
 @web_help("csm-data/s3-bucket-delete")
+@translate_help("coal-help.commands.storage.s3_bucket_delete.description")
 def s3_bucket_delete(
     bucket_name: str,
     file_prefix: str,
@@ -74,15 +76,6 @@ def s3_bucket_delete(
     use_ssl: bool = True,
     ssl_cert_bundle: Optional[str] = None,
 ):
-    """Delete S3 bucket content to a given folder
-
-Will delete everything in the bucket unless a prefix is set, then only file following the given prefix will be deleted
-
-Make use of the boto3 library to access the bucket
-
-More information is available on this page:
-[https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html)
-"""
     boto3_parameters = {
         "use_ssl": use_ssl,
         "endpoint_url": endpoint_url,
@@ -103,8 +96,8 @@ More information is available on this page:
 
     boto_objects = [{'Key': _file.key} for _file in bucket_files if _file.key != file_prefix]
     if boto_objects:
-        LOGGER.info(f'Deleting {boto_objects}')
+        LOGGER.info(T("coal.logs.storage.deleting_objects").format(objects=boto_objects))
         boto_delete_request = {'Objects': boto_objects}
         bucket.delete_objects(Delete=boto_delete_request)
     else:
-        LOGGER.info('No objects to delete')
+        LOGGER.info(T("coal.logs.storage.no_objects"))

@@ -8,60 +8,62 @@
 from time import perf_counter
 
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 from cosmotech.coal.utils.postgresql import send_pyarrow_table_to_postgresql
 
 
 @click.command()
 @web_help("csm-data/store/dump-to-postgres")
+@translate_help("coal-help.commands.store.dump_to_postgresql.description")
 @click.option("--store-folder",
               envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              help="The folder containing the store files",
+              help=T("coal-help.commands.store.dump_to_postgresql.parameters.store_folder"),
               metavar="PATH",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--table-prefix",
-              help="Prefix to add to the table name",
+              help=T("coal-help.commands.store.dump_to_postgresql.parameters.table_prefix"),
               metavar="PREFIX",
               type=str,
               default="Cosmotech_")
 @click.option('--postgres-host',
-              help='Postgresql host URI',
+              help=T("coal-help.commands.store.dump_to_postgresql.parameters.postgres_host"),
               envvar="POSTGRES_HOST_URI",
               show_envvar=True,
               required=True)
 @click.option('--postgres-port',
-              help='Postgresql database port',
+              help=T("coal-help.commands.store.dump_to_postgresql.parameters.postgres_port"),
               envvar="POSTGRES_HOST_PORT",
               show_envvar=True,
               required=False,
               default=5432)
 @click.option('--postgres-db',
-              help='Postgresql database name',
+              help=T("coal-help.commands.store.dump_to_postgresql.parameters.postgres_db"),
               envvar="POSTGRES_DB_NAME",
               show_envvar=True,
               required=True)
 @click.option('--postgres-schema',
-              help='Postgresql schema name',
+              help=T("coal-help.commands.store.dump_to_postgresql.parameters.postgres_schema"),
               envvar="POSTGRES_DB_SCHEMA",
               show_envvar=True,
               required=True)
 @click.option('--postgres-user',
-              help='Postgresql connection user name',
+              help=T("coal-help.commands.store.dump_to_postgresql.parameters.postgres_user"),
               envvar="POSTGRES_USER_NAME",
               show_envvar=True,
               required=True)
 @click.option('--postgres-password',
-              help='Postgresql connection password',
+              help=T("coal-help.commands.store.dump_to_postgresql.parameters.postgres_password"),
               envvar="POSTGRES_USER_PASSWORD",
               show_envvar=True,
               required=True)
 @click.option("--replace/--append",
               "replace",
-              help="Append data on existing tables",
+              help=T("coal-help.commands.store.dump_to_postgresql.parameters.replace"),
               default=True,
               is_flag=True,
               show_default=True)
@@ -76,29 +78,20 @@ def dump_to_postgresql(
     postgres_password,
     replace: bool
 ):
-    """Running this command will dump your store to a given postgresql database
-
-    Tables names from the store will be prepended with table-prefix in target database
-
-    The postgresql user must have USAGE granted on the schema for this script to work due to the use of the command `COPY FROM STDIN`
-
-    You can simply give him that grant by running the command :
-    `GRANT USAGE ON SCHEMA <schema> TO <username>`
-    """
     _s = Store(store_location=store_folder)
 
     tables = list(_s.list_tables())
     if len(tables):
-        LOGGER.info(f"Sending tables to {postgres_db}.{postgres_schema} ")
+        LOGGER.info(T("coal.logs.database.sending_data").format(table=f"{postgres_db}.{postgres_schema}"))
         total_rows = 0
         _process_start = perf_counter()
         for table_name in tables:
             _s_time = perf_counter()
             target_table_name = f"{table_prefix}{table_name}"
-            LOGGER.info(f"  - {target_table_name} :")
+            LOGGER.info(T("coal.logs.database.table_entry").format(table=target_table_name))
             data = _s.get_table(table_name)
             if not len(data):
-                LOGGER.info(f"   -> 0 rows (skipping)")
+                LOGGER.info(T("coal.logs.database.no_rows"))
                 continue
             _dl_time = perf_counter()
             rows = send_pyarrow_table_to_postgresql(data,
@@ -112,11 +105,20 @@ def dump_to_postgresql(
                                                     replace)
             total_rows += rows
             _up_time = perf_counter()
-            LOGGER.info(f"   -> {rows} rows")
-            LOGGER.debug(f"   -> Load from datastore took {_dl_time - _s_time:0.3}s ")
-            LOGGER.debug(f"   -> Send to postgresql took {_up_time - _dl_time:0.3}s ")
+            LOGGER.info(T("coal.logs.database.row_count").format(count=rows))
+            LOGGER.debug(T("coal.logs.progress.operation_timing").format(
+                operation="Load from datastore",
+                time=f"{_dl_time - _s_time:0.3}"
+            ))
+            LOGGER.debug(T("coal.logs.progress.operation_timing").format(
+                operation="Send to postgresql",
+                time=f"{_up_time - _dl_time:0.3}"
+            ))
         _process_end = perf_counter()
-        LOGGER.info(f"Sent {total_rows} rows "
-                    f"in {_process_end - _process_start:0.3}s ")
+        LOGGER.info(T("coal.logs.database.rows_fetched").format(
+            table="all tables",
+            count=total_rows,
+            time=f"{_process_end - _process_start:0.3}"
+        ))
     else:
-        LOGGER.info("Data store is empty")
+        LOGGER.info(T("coal.logs.database.store_empty"))

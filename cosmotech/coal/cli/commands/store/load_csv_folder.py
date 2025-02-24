@@ -8,30 +8,31 @@
 import pathlib
 
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.store.csv import store_csv_file
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 @click.command()
 @web_help("csm-data/store/load-csv-folder")
+@translate_help("coal-help.commands.store.load_csv_folder.description")
 @click.option("--store-folder",
               envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              help="The folder containing the store files",
+              help=T("coal-help.commands.store.load_csv_folder.parameters.store_folder"),
               metavar="PATH",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--csv-folder",
               envvar="CSM_DATASET_ABSOLUTE_PATH",
-              help="The folder containing the csv files to store",
+              help=T("coal-help.commands.store.load_csv_folder.parameters.csv_folder"),
               metavar="PATH",
               type=str,
               show_envvar=True,
               required=True)
 def load_csv_folder(store_folder, csv_folder):
-    """Running this command will find all csvs in the given folder and put them in the store"""
     for csv_path in pathlib.Path(csv_folder).glob("*.csv"):
-        LOGGER.info(f"Found {csv_path.name}, storing it")
+        LOGGER.info(T("coal.logs.storage.found_file").format(file=csv_path.name))
         store_csv_file(csv_path.name[:-4], csv_path, store=Store(False, store_folder))

@@ -14,10 +14,11 @@ from cosmotech_api.api.solution_api import RunTemplate
 from cosmotech_api.api.solution_api import Solution
 
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.utils.api import get_solution
 from cosmotech.coal.utils.api import read_solution_file
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 def write_parameters(parameter_folder, parameters, write_csv, write_json):
@@ -38,14 +39,8 @@ def write_parameters(parameter_folder, parameters, write_csv, write_json):
 
 @click.group()
 @web_help("csm-data/legacy/init-local-parameter-folder")
+@translate_help("coal-help.commands.legacy.init_local_parameter_folder.description")
 def init_local_parameter_folder():
-    """Base command to initialize parameter folders  
-Will create:    
-- A `parameters.json`/`parameters.csv` in the folder with all parameters  
-- A folder per `%DATASETID%` datasets with the name of the parameter  
-Check the help of the sub commands for more information:  
-- `cloud` requires access to a fully deployed solution  
-- `solution` requires a `Solution.yaml` file"""
     pass
 
 
@@ -74,6 +69,7 @@ Check the help of the sub commands for more information:
               show_default=True,
               help="Toggle writing of parameters in csv format")
 @web_help("csm-data/legacy/init-local-parameter-folder/solution")
+@translate_help("coal-help.commands.legacy.init_local_parameter_folder.solution.description")
 def solution(
     solution_file: str,
     run_template_id: str,
@@ -81,7 +77,6 @@ def solution(
     write_json: bool,
     write_csv: bool
 ):
-    """Initialize parameter folder for given run template from a Solution yaml file"""
     if sol := read_solution_file(solution_file):
         return generate_parameters(sol, run_template_id, output_folder, write_json, write_csv)
     return 1
@@ -96,19 +91,19 @@ def solution(
 @click.option("--organization-id",
               envvar="CSM_ORGANIZATION_ID",
               show_envvar=True,
-              help="The id of an organization in the cosmotech api",
+              help=T("coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.organization_id"),
               metavar="o-##########",
               required=True)
 @click.option("--workspace-id",
               envvar="CSM_WORKSPACE_ID",
               show_envvar=True,
-              help="The id of a solution in the cosmotech api",
+              help=T("coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.workspace_id"),
               metavar="w-##########",
               required=True)
 @click.option("--run-template-id",
               envvar="CSM_RUN_TEMPLATE_ID",
               show_envvar=True,
-              help="The name of the run template in the cosmotech api",
+              help=T("coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.run_template_id"),
               metavar="NAME",
               required=True)
 @click.option("--write-json/--no-write-json",
@@ -116,14 +111,15 @@ def solution(
               show_envvar=True,
               default=False,
               show_default=True,
-              help="Toggle writing of parameters in json format")
+              help=T("coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.write_json"))
 @click.option("--write-csv/--no-write-csv",
               envvar="WRITE_CSV",
               show_envvar=True,
               default=True,
               show_default=True,
-              help="Toggle writing of parameters in csv format")
+              help=T("coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.write_csv"))
 @web_help("csm-data/legacy/init-local-parameter-folder/cloud")
+@translate_help("coal-help.commands.legacy.init_local_parameter_folder.cloud.description")
 def cloud(
     workspace_id: str,
     organization_id: str,
@@ -132,7 +128,6 @@ def cloud(
     write_json: bool,
     write_csv: bool,
 ):
-    """Initialize parameter folder for given run template from CosmoTech cloud API"""
     if sol := get_solution(organization_id=organization_id,
                            workspace_id=workspace_id):
         return generate_parameters(sol, run_template_id, output_folder, write_json, write_csv)

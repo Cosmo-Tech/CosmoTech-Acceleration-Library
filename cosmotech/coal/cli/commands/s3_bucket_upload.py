@@ -11,26 +11,27 @@ from typing import Optional
 import boto3
 
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 @click.command()
 @click.option("--source-folder",
               envvar="CSM_DATASET_ABSOLUTE_PATH",
-              help="The folder/file to upload to the target bucket",
+              help=T("coal-help.commands.storage.s3_bucket_upload.parameters.source_folder"),
               metavar="PATH",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--recursive/--no-recursive",
               default=False,
-              help="Recursively send the content of every folder inside the starting folder to the bucket",
+              help=T("coal-help.commands.storage.s3_bucket_upload.parameters.recursive"),
               type=bool,
               is_flag=True)
 @click.option("--bucket-name",
               envvar="CSM_DATA_BUCKET_NAME",
-              help="The bucket on S3 to upload to",
+              help=T("coal-help.commands.storage.s3_bucket_upload.parameters.bucket_name"),
               metavar="BUCKET",
               type=str,
               show_envvar=True,
@@ -38,19 +39,19 @@ from cosmotech.coal.utils.logger import LOGGER
 @click.option("--prefix",
               "file_prefix",
               envvar="CSM_DATA_BUCKET_PREFIX",
-              help="A prefix by which all uploaded files should start with in the bucket",
+              help=T("coal-help.commands.storage.s3_bucket_upload.parameters.prefix"),
               metavar="PREFIX",
               type=str,
               show_envvar=True,
               default="")
 @click.option("--use-ssl/--no-ssl",
               default=True,
-              help="Use SSL to secure connection to S3",
+              help=T("coal-help.commands.storage.s3_bucket_upload.parameters.use_ssl"),
               type=bool,
               is_flag=True)
 @click.option("--s3-url",
               "endpoint_url",
-              help="URL to connect to the S3 system",
+              help=T("coal-help.commands.storage.s3_bucket_upload.parameters.s3_url"),
               type=str,
               required=True,
               show_envvar=True,
@@ -58,7 +59,7 @@ from cosmotech.coal.utils.logger import LOGGER
               envvar="AWS_ENDPOINT_URL")
 @click.option("--access-id",
               "access_id",
-              help="Identity used to connect to the S3 system",
+              help=T("coal-help.commands.storage.s3_bucket_upload.parameters.access_id"),
               type=str,
               required=True,
               show_envvar=True,
@@ -66,19 +67,20 @@ from cosmotech.coal.utils.logger import LOGGER
               envvar="AWS_ACCESS_KEY_ID")
 @click.option("--secret-key",
               "secret_key",
-              help="Secret tied to the ID used to connect to the S3 system",
+              help=T("coal-help.commands.storage.s3_bucket_upload.parameters.secret_key"),
               type=str,
               required=True,
               show_envvar=True,
               metavar="ID",
               envvar="AWS_SECRET_ACCESS_KEY")
 @click.option("--ssl-cert-bundle",
-              help="Path to an alternate CA Bundle to validate SSL connections",
+              help=T("coal-help.commands.storage.s3_bucket_upload.parameters.ssl_cert_bundle"),
               type=str,
               show_envvar=True,
               metavar="PATH",
               envvar="CSM_S3_CA_BUNDLE")
 @web_help("csm-data/s3-bucket-upload")
+@translate_help("coal-help.commands.storage.s3_bucket_upload.description")
 def s3_bucket_upload(
     source_folder,
     bucket_name: str,
@@ -90,21 +92,10 @@ def s3_bucket_upload(
     ssl_cert_bundle: Optional[str] = None,
     recursive: bool = False
 ):
-    """Upload a folder to a S3 Bucket
-
-Will upload everything from a given folder to a S3 bucket. If a single file is passed only it will be uploaded, and recursive will be ignored
-
-Giving a prefix will add it to every upload (finishing the prefix with a "/" will allow to upload in a folder inside the bucket)
-
-Make use of the boto3 library to access the bucket
-
-More information is available on this page:
-[https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html)
-"""
     source_path = pathlib.Path(source_folder)
     if not source_path.exists():
-        LOGGER.error(f"{source_folder} does not exists")
-        raise FileNotFoundError(f"{source_folder} does not exists")
+        LOGGER.error(T("coal.errors.file_system.file_not_found").format(source_folder=source_folder))
+        raise FileNotFoundError(T("coal.errors.file_system.file_not_found").format(source_folder=source_folder))
 
     boto3_parameters = {
         "use_ssl": use_ssl,
@@ -119,7 +110,7 @@ More information is available on this page:
 
     def file_upload(file_path: pathlib.Path, file_name: str):
         uploaded_file_name = file_prefix + file_name
-        LOGGER.info(f"Sending {file_path} as {uploaded_file_name}")
+        LOGGER.info(T("coal.logs.data_transfer.file_sent").format(file_path=file_path, uploaded_name=uploaded_file_name))
         s3_resource.Bucket(bucket_name).upload_file(file_path, uploaded_file_name)
 
     if source_path.is_dir():

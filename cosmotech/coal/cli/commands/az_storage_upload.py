@@ -10,26 +10,27 @@ import pathlib
 from azure.storage.blob import ContainerClient
 
 from cosmotech.coal.cli.utils.click import click
-from cosmotech.coal.cli.utils.decorators import web_help
+from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 @click.command()
 @click.option("--source-folder",
               envvar="CSM_DATASET_ABSOLUTE_PATH",
-              help="The folder/file to upload to the target blob storage",
+              help=T("coal-help.commands.storage.az_storage_upload.parameters.source_folder"),
               metavar="PATH",
               type=str,
               show_envvar=True,
               required=True)
 @click.option("--recursive/--no-recursive",
               default=False,
-              help="Recursively send the content of every folder inside the starting folder to the blob storage",
+              help=T("coal-help.commands.storage.az_storage_upload.parameters.recursive"),
               type=bool,
               is_flag=True)
 @click.option("--blob-name",
               envvar="AZURE_STORAGE_BLOB_NAME",
-              help="The blob name in the Azure Storage service to upload to",
+              help=T("coal-help.commands.storage.az_storage_upload.parameters.blob_name"),
               metavar="BUCKET",
               type=str,
               show_envvar=True,
@@ -37,18 +38,19 @@ from cosmotech.coal.utils.logger import LOGGER
 @click.option("--prefix",
               "file_prefix",
               envvar="CSM_DATA_BLOB_PREFIX",
-              help="A prefix by which all uploaded files should start with in the blob storage",
+              help=T("coal-help.commands.storage.az_storage_upload.parameters.prefix"),
               metavar="PREFIX",
               type=str,
               show_envvar=True,
               default="")
 @click.option("--az-storage-sas-url",
-              help="SAS url allowing access to the AZ storage container",
+              help=T("coal-help.commands.storage.az_storage_upload.parameters.az_storage_sas_url"),
               type=str,
               show_envvar=True,
               metavar="URL",
               envvar="AZURE_STORAGE_SAS_URL")
 @web_help("csm-data/az-storage-upload")
+@translate_help("coal-help.commands.storage.az_storage_upload.description")
 def az_storage_upload(
     source_folder,
     blob_name: str,
@@ -56,15 +58,14 @@ def az_storage_upload(
     file_prefix: str = "",
     recursive: bool = False
 ):
-    """Upload a folder to an Azure Storage Blob"""
     source_path = pathlib.Path(source_folder)
     if not source_path.exists():
-        LOGGER.error(f"{source_folder} does not exists")
-        raise FileNotFoundError(f"{source_folder} does not exists")
+        LOGGER.error(T("coal.errors.file_system.file_not_found").format(source_folder=source_folder))
+        raise FileNotFoundError(T("coal.errors.file_system.file_not_found").format(source_folder=source_folder))
 
     def file_upload(file_path: pathlib.Path, file_name: str):
         uploaded_file_name = blob_name + "/" + file_prefix + file_name
-        LOGGER.info(f"Sending {file_path} as {uploaded_file_name}")
+        LOGGER.info(T("coal.logs.data_transfer.file_sent").format(file_path=file_path, uploaded_name=uploaded_file_name))
         ContainerClient.from_container_url(az_storage_sas_url).upload_blob(uploaded_file_name, 
                                                                            file_path.open("rb"),
                                                                            overwrite=True)
