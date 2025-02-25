@@ -5,11 +5,13 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from adbc_driver_postgresql import dbapi
-from pyarrow import Table
-import pyarrow as pa
 from typing import Optional
 from urllib.parse import quote
+
+import pyarrow as pa
+from adbc_driver_postgresql import dbapi
+from pyarrow import Table
+
 from cosmotech.coal.utils.logger import LOGGER
 
 
@@ -39,25 +41,45 @@ def get_postgresql_table_schema(
     postgres_user: str,
     postgres_password: str,
 ) -> Optional[pa.Schema]:
-    postgresql_full_uri = generate_postgresql_full_uri(postgres_host,
-                                                     postgres_port,
-                                                     postgres_db,
-                                                     postgres_user,
-                                                     postgres_password)
+    """
+    Get the schema of an existing PostgreSQL table using SQL queries.
     
-    with dbapi.connect(postgresql_full_uri) as conn:
-        with conn.cursor() as curs:
-            # Get table metadata using ADBC's get_objects
-            table_info = curs.get_objects(
-                table_name=target_table_name,
-                schema_name=postgres_schema
-            )
-            
-            # If table exists, return its schema
-            if table_info is not None and len(table_info) > 0:
-                return table_info[0].schema
-                
-    return None
+    Args:
+        target_table_name: Name of the table
+        postgres_host: PostgreSQL host
+        postgres_port: PostgreSQL port
+        postgres_db: PostgreSQL database name
+        postgres_schema: PostgreSQL schema name
+        postgres_user: PostgreSQL username
+        postgres_password: PostgreSQL password
+        
+    Returns:
+        PyArrow Schema if table exists, None otherwise
+    """
+    LOGGER.debug(f"Getting schema for table {postgres_schema}.{target_table_name}")
+
+    postgresql_full_uri = generate_postgresql_full_uri(postgres_host,
+                                                       postgres_port,
+                                                       postgres_db,
+                                                       postgres_user,
+                                                       postgres_password)
+
+    with (dbapi.connect(postgresql_full_uri) as conn):
+        try:
+            catalog = conn.adbc_get_objects(depth="tables",
+                                            catalog_filter=postgres_db,
+                                            db_schema_filter=postgres_schema,
+                                            table_name_filter=target_table_name).read_all().to_pylist()[0]
+            schema = catalog["catalog_db_schemas"][0]
+            table = schema["db_schema_tables"][0]
+            if table["table_name"] == target_table_name:
+                return conn.adbc_get_table_schema(
+                    target_table_name,
+                    db_schema_filter=postgres_schema,
+                )
+        except IndexError:
+            LOGGER.warning(f"Table {postgres_schema}.{target_table_name} not found")
+        return None
 
 
 def adapt_table_to_schema(
@@ -70,23 +92,23 @@ def adapt_table_to_schema(
     LOGGER.debug(f"Starting schema adaptation for table with {len(data)} rows")
     LOGGER.debug(f"Original schema: {data.schema}")
     LOGGER.debug(f"Target schema: {target_schema}")
-    
+
     target_fields = {field.name: field.type for field in target_schema}
     new_columns = []
-    
+
     # Track adaptations for summary
     added_columns = []
     dropped_columns = []
     type_conversions = []
     failed_conversions = []
-    
+
     # Process each field in target schema
     for field_name, target_type in target_fields.items():
         if field_name in data.column_names:
             # Column exists - try to cast to target type
             col = data[field_name]
             original_type = col.type
-            
+
             if original_type != target_type:
                 LOGGER.debug(
                     f"Attempting to cast column '{field_name}' "
@@ -115,23 +137,23 @@ def adapt_table_to_schema(
             LOGGER.debug(f"Adding missing column '{field_name}' with null values")
             new_columns.append(pa.nulls(len(data), type=target_type))
             added_columns.append(field_name)
-    
+
     # Log columns that will be dropped
     dropped_columns = [
-        name for name in data.column_names 
+        name for name in data.column_names
         if name not in target_fields
     ]
     if dropped_columns:
         LOGGER.debug(
             f"Dropping extra columns not in target schema: {dropped_columns}"
         )
-    
+
     # Create new table
     adapted_table = pa.Table.from_arrays(
         new_columns,
         schema=target_schema
     )
-    
+
     # Log summary of adaptations
     LOGGER.debug("Schema adaptation summary:")
     if added_columns:
@@ -144,7 +166,7 @@ def adapt_table_to_schema(
         LOGGER.debug(
             f"- Failed conversions (filled with nulls): {failed_conversions}"
         )
-    
+
     LOGGER.debug(f"Final adapted table schema: {adapted_table.schema}")
     return adapted_table
 
@@ -164,7 +186,7 @@ def send_pyarrow_table_to_postgresql(
         f"Preparing to send data to PostgreSQL table '{postgres_schema}.{target_table_name}'"
     )
     LOGGER.debug(f"Input table has {len(data)} rows")
-    
+
     # Get existing schema if table exists
     existing_schema = get_postgresql_table_schema(
         target_table_name,
@@ -175,7 +197,7 @@ def send_pyarrow_table_to_postgresql(
         postgres_user,
         postgres_password
     )
-    
+
     if existing_schema is not None:
         LOGGER.debug(f"Found existing table with schema: {existing_schema}")
         if not replace:
@@ -185,7 +207,7 @@ def send_pyarrow_table_to_postgresql(
             LOGGER.debug("Replace mode enabled - skipping schema adaptation")
     else:
         LOGGER.debug("No existing table found - will create new table")
-    
+
     # Proceed with ingestion
     total = 0
     postgresql_full_uri = generate_postgresql_full_uri(
@@ -195,7 +217,7 @@ def send_pyarrow_table_to_postgresql(
         postgres_user,
         postgres_password
     )
-    
+
     LOGGER.debug("Connecting to PostgreSQL database")
     with dbapi.connect(postgresql_full_uri, autocommit=True) as conn:
         with conn.cursor() as curs:
@@ -208,6 +230,6 @@ def send_pyarrow_table_to_postgresql(
                 "replace" if replace else "create_append",
                 db_schema_name=postgres_schema
             )
-    
+
     LOGGER.debug(f"Successfully ingested {total} rows")
     return total
