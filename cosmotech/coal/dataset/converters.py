@@ -51,18 +51,24 @@ def convert_dataset_to_files(dataset_info: Dict[str, Any], target_folder: Option
         return convert_file_dataset_to_files(content, target_folder, dataset_type)
 
 
-def convert_graph_dataset_to_files(content: Dict[str, List[Dict]], target_folder: Union[str, Path]) -> Path:
+def convert_graph_dataset_to_files(content: Dict[str, List[Dict]], target_folder: Optional[Union[str, Path]] = None) -> Path:
     """
     Convert graph dataset content to CSV files.
     
     Args:
         content: Dictionary mapping entity types to lists of entities
-        target_folder: Folder to save files
+        target_folder: Folder to save files (if None, uses temp dir)
         
     Returns:
         Path to folder containing files
     """
-    target_folder = Path(target_folder)
+    if target_folder is None:
+        target_folder = tempfile.mkdtemp()
+        LOGGER.debug(T("coal.logs.dataset.created_temp_folder").format(folder=target_folder))
+    else:
+        target_folder = Path(target_folder)
+        target_folder.mkdir(parents=True, exist_ok=True)
+        LOGGER.debug(T("coal.logs.dataset.using_folder").format(folder=target_folder))
     file_count = 0
     
     LOGGER.info(T("coal.logs.dataset.converting_graph_data").format(
@@ -106,19 +112,25 @@ def convert_graph_dataset_to_files(content: Dict[str, List[Dict]], target_folder
     return target_folder
 
 
-def convert_file_dataset_to_files(content: Dict[str, Any], target_folder: Union[str, Path], file_type: str) -> Path:
+def convert_file_dataset_to_files(content: Dict[str, Any], target_folder: Optional[Union[str, Path]] = None, file_type: str = "") -> Path:
     """
     Convert file dataset content to files.
     
     Args:
         content: Dictionary mapping file names to content
-        target_folder: Folder to save files
+        target_folder: Folder to save files (if None, uses temp dir)
         file_type: Type of file (csv, json, etc.)
         
     Returns:
         Path to folder containing files
     """
-    target_folder = Path(target_folder)
+    if target_folder is None:
+        target_folder = tempfile.mkdtemp()
+        LOGGER.debug(T("coal.logs.dataset.created_temp_folder").format(folder=target_folder))
+    else:
+        target_folder = Path(target_folder)
+        target_folder.mkdir(parents=True, exist_ok=True)
+        LOGGER.debug(T("coal.logs.dataset.using_folder").format(folder=target_folder))
     file_count = 0
     
     LOGGER.info(T("coal.logs.dataset.converting_file_data").format(

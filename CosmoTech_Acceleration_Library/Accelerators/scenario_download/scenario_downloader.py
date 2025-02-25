@@ -211,7 +211,7 @@ class ScenarioDownloader:
         
         if type in ["adt", "twincache"]:
             # Use new conversion function
-            target_folder = convert_graph_dataset_to_files(content, None)
+            target_folder = convert_graph_dataset_to_files(content)
             return str(target_folder)
             
         return self.dataset_file_temp_path[dataset_id]
