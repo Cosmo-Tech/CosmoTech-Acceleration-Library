@@ -9,6 +9,7 @@ from adbc_driver_postgresql import dbapi
 from pyarrow import Table
 import pyarrow as pa
 from typing import Optional
+from urllib.parse import quote
 from cosmotech.coal.utils.logger import LOGGER
 
 
@@ -18,9 +19,12 @@ def generate_postgresql_full_uri(
     postgres_db: str,
     postgres_user: str,
     postgres_password: str, ) -> str:
+    # Check if password needs percent encoding (contains special characters)
+    # We don't log anything about the password for security
+    encoded_password = quote(postgres_password, safe='')
     return ('postgresql://' +
             f'{postgres_user}'
-            f':{postgres_password}'
+            f':{encoded_password}'
             f'@{postgres_host}'
             f':{postgres_port}'
             f'/{postgres_db}')
