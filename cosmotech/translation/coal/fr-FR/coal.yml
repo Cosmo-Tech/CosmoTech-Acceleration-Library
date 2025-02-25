@@ -188,3 +188,29 @@ logs:
       Le gestionnaire {handler} n'est pas un fichier zip
     run_issues: |
       Des problèmes ont été rencontrés pendant l'exécution, veuillez vérifier les logs précédents
+
+  postgresql:
+    getting_schema: "Récupération du schéma pour la table {postgres_schema}.{target_table_name}"
+    table_not_found: "Table {postgres_schema}.{target_table_name} non trouvée"
+    schema_adaptation_start: "Démarrage de l'adaptation du schéma pour la table avec {rows} lignes"
+    original_schema: "Schéma original : {schema}"
+    target_schema: "Schéma cible : {schema}"
+    casting_column: "Tentative de conversion de la colonne '{field_name}' de {original_type} vers {target_type}"
+    cast_failed: "Échec de la conversion de la colonne '{field_name}' de {original_type} vers {target_type}. Remplissage avec des valeurs nulles. Erreur : {error}"
+    adding_missing_column: "Ajout de la colonne manquante '{field_name}' avec des valeurs nulles"
+    dropping_columns: "Suppression des colonnes supplémentaires non présentes dans le schéma cible : {columns}"
+    adaptation_summary: "Résumé de l'adaptation du schéma :"
+    added_columns: "- Colonnes ajoutées (remplies de valeurs nulles) : {columns}"
+    dropped_columns: "- Colonnes supprimées : {columns}"
+    successful_conversions: "- Conversions de type réussies : {conversions}"
+    failed_conversions: "- Conversions échouées (remplies de valeurs nulles) : {conversions}"
+    final_schema: "Schéma final de la table adaptée : {schema}"
+    preparing_send: "Préparation de l'envoi des données vers la table PostgreSQL '{postgres_schema}.{target_table_name}'"
+    input_rows: "La table d'entrée contient {rows} lignes"
+    found_existing_table: "Table existante trouvée avec le schéma : {schema}"
+    adapting_data: "Adaptation des données entrantes pour correspondre au schéma existant"
+    replace_mode: "Mode de remplacement activé - adaptation du schéma ignorée"
+    no_existing_table: "Aucune table existante trouvée - création d'une nouvelle table"
+    connecting: "Connexion à la base de données PostgreSQL"
+    ingesting_data: "Ingestion des données avec le mode : {mode}"
+    ingestion_success: "Ingestion réussie de {rows} lignes"
