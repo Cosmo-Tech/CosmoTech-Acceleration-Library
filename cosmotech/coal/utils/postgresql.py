@@ -8,6 +8,7 @@
 from typing import Optional
 from urllib.parse import quote
 
+import adbc_driver_manager
 import pyarrow as pa
 from adbc_driver_postgresql import dbapi
 from pyarrow import Table
@@ -66,18 +67,11 @@ def get_postgresql_table_schema(
 
     with (dbapi.connect(postgresql_full_uri) as conn):
         try:
-            catalog = conn.adbc_get_objects(depth="tables",
-                                            catalog_filter=postgres_db,
-                                            db_schema_filter=postgres_schema,
-                                            table_name_filter=target_table_name).read_all().to_pylist()[0]
-            schema = catalog["catalog_db_schemas"][0]
-            table = schema["db_schema_tables"][0]
-            if table["table_name"] == target_table_name:
-                return conn.adbc_get_table_schema(
-                    target_table_name,
-                    db_schema_filter=postgres_schema,
-                )
-        except IndexError:
+            return conn.adbc_get_table_schema(
+                target_table_name,
+                db_schema_filter=postgres_schema,
+            )
+        except adbc_driver_manager.ProgrammingError:
             LOGGER.warning(f"Table {postgres_schema}.{target_table_name} not found")
         return None
 
