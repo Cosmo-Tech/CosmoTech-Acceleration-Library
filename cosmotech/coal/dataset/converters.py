@@ -38,7 +38,7 @@ def convert_dataset_to_files(dataset_info: Dict[str, Any], target_folder: Option
     ))
     
     if target_folder is None:
-        target_folder = tempfile.mkdtemp()
+        target_folder = Path(tempfile.mkdtemp())
         LOGGER.debug(T("coal.logs.dataset.created_temp_folder").format(folder=target_folder))
     else:
         target_folder = Path(target_folder)
@@ -63,7 +63,7 @@ def convert_graph_dataset_to_files(content: Dict[str, List[Dict]], target_folder
         Path to folder containing files
     """
     if target_folder is None:
-        target_folder = tempfile.mkdtemp()
+        target_folder = Path(tempfile.mkdtemp())
         LOGGER.debug(T("coal.logs.dataset.created_temp_folder").format(folder=target_folder))
     else:
         target_folder = Path(target_folder)
@@ -125,7 +125,7 @@ def convert_file_dataset_to_files(content: Dict[str, Any], target_folder: Option
         Path to folder containing files
     """
     if target_folder is None:
-        target_folder = tempfile.mkdtemp()
+        target_folder = Path(tempfile.mkdtemp())
         LOGGER.debug(T("coal.logs.dataset.created_temp_folder").format(folder=target_folder))
     else:
         target_folder = Path(target_folder)
