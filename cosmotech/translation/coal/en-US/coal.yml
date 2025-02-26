@@ -85,6 +85,9 @@ logs:
     parameter_debug: "  - {param_id:<{max_name_size}} {var_type:<{max_type_size}} \"{value}\"{inherited}"
     not_single_dataset: "{runner_id} is not tied to a single dataset but {count}"
     dataset_state: "Dataset {dataset_id} is in state {status}"
+    downloading_datasets: "Downloading {count} datasets"
+    writing_parameters: "Writing parameters to files"
+    dataset_debug: "  - {folder} ({id})"
 
   database:
     creating_table: "creating table {table}"
@@ -200,6 +203,8 @@ logs:
     dataset_downloading: "Downloading dataset (organization: {organization_id}, dataset: {dataset_id})"
     dataset_info_retrieved: "Retrieved dataset info: {dataset_name} ({dataset_id})"
     dataset_type_detected: "Detected dataset type: {type}"
+    parallel_download: "Downloading {count} datasets in parallel"
+    sequential_download: "Downloading {count} datasets sequentially"
     
     # Processing
     processing_graph_data: "Processing graph data with {nodes_count} nodes and {relationships_count} relationships (restore_names={restore_names})"

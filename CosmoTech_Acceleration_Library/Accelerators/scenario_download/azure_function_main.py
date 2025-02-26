@@ -1,7 +1,8 @@
 # Copyright (C) - 2023 - 2025 - Cosmo Tech
 # Licensed under the MIT license.
 import azure.functions as func
-from .scenario_downloader import ScenarioDownloader
+from cosmotech.coal.scenario.download import download_scenario_data
+from cosmotech_api.api.runner_api import RunnerApi
 
 import json
 import http
@@ -22,17 +23,25 @@ def generate_main(apply_update, parallel=True):
                 return func.HttpResponse(body=f'Invalid request: organization-id={organization_id}, workspace-id={workspace_id}, scenario-id={scenario_id}',
                                          status_code=http.HTTPStatus.BAD_REQUEST)
 
-            dl = ScenarioDownloader(workspace_id=workspace_id,
-                                    organization_id=organization_id,
-                                    parallel=parallel,
-                                    access_token=access_token)
-
-            content = dict()
-
-            content['datasets'] = dl.get_all_datasets(scenario_id=scenario_id)
-            content['parameters'] = dl.get_all_parameters(scenario_id=scenario_id)
-
-            scenario_data = dl.get_scenario_data(scenario_id=scenario_id)
+            # Get scenario data using the new functions
+            result = download_scenario_data(
+                organization_id=organization_id,
+                workspace_id=workspace_id,
+                scenario_id=scenario_id,
+                parameter_folder=None,  # We don't need to save to files
+                read_files=True,
+                parallel=parallel,
+                write_json=False,
+                write_csv=False,
+                fetch_dataset=True
+            )
+            
+            content = {
+                'datasets': result['datasets'],
+                'parameters': result['parameters']
+            }
+            
+            scenario_data = result['scenario_data']
 
             updated_content = apply_update(content=content, scenario_data=scenario_data)
 

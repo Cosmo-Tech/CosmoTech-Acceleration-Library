@@ -13,7 +13,7 @@ from shutil import copytree
 from cosmotech_api.api.runner_api import RunnerApi
 from cosmotech_api.api.workspace_api import WorkspaceApi
 
-from CosmoTech_Acceleration_Library.Accelerators.scenario_download.scenario_downloader import ScenarioDownloader
+from cosmotech.coal.scenario.download import download_runner_data
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import require_env
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
@@ -22,85 +22,26 @@ from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
-def download_runner_data(organization_id: str, workspace_id: str, runner_id: str, parameter_folder: str) -> None:
+def download_data(organization_id: str, workspace_id: str, runner_id: str, parameter_folder: str) -> None:
     """
-    Download the datas from a scenario from the CosmoTech API to the local file system
-    :param organization_id: The id of the Organization as defined in the CosmoTech API
-    :param workspace_id: The id of the Workspace as defined in the CosmoTech API
-    :param parameter_folder: a local folder where all parameters will be downloaded
-    :return: Nothing
+    Download the data from a runner from the CosmoTech API to the local file system
+    
+    Args:
+        organization_id: The id of the Organization as defined in the CosmoTech API
+        workspace_id: The id of the Workspace as defined in the CosmoTech API
+        runner_id: The id of the Runner as defined in the CosmoTech API
+        parameter_folder: a local folder where all parameters will be downloaded
     """
-    LOGGER.info(T("coal.logs.runner.starting_download"))
-    parameters = list()
-    _dl = ScenarioDownloader(workspace_id=workspace_id, organization_id=organization_id, read_files=False)
-    with get_api_client()[0] as api_client:
-        runner_api_instance = RunnerApi(api_client)
-        workspace_api_instance = WorkspaceApi(api_client)
-        runner_data = runner_api_instance.get_runner(organization_id=organization_id,
-                                                     workspace_id=workspace_id,
-                                                     runner_id=runner_id)
-
-        # skip if no parameters found
-        if not runner_data.parameters_values:
-            LOGGER.warning(T("coal.logs.runner.no_parameters"))
-            return
-
-        LOGGER.info(T("coal.logs.runner.loaded_data"))
-        # Pre-read of all workspace files to ensure ready to download AZ storage files
-        all_api_files = workspace_api_instance.find_all_workspace_files(
-            organization_id=organization_id,
-            workspace_id=workspace_id)
-
-        max_name_size = max(map(lambda r: len(r.parameter_id), runner_data.parameters_values))
-        max_type_size = max(map(lambda r: len(r.var_type), runner_data.parameters_values))
-        # Loop over all parameters
-        for parameter in runner_data.parameters_values:
-            value = parameter.value
-            var_type = parameter.var_type
-            param_id = parameter.parameter_id
-            is_inherited = parameter.is_inherited
-            LOGGER.info(T("coal.logs.runner.found_parameter").format(param_id=param_id, value=value))
-
-            # Download "%DATASETID%" files if AZ storage + workspace file based
-            if var_type == "%DATASETID%":
-                _v = _dl.download_dataset(value)
-
-                if isinstance(_v, tuple):
-                    dataset_data = _v[0]
-                    _dl.dataset_file_temp_path[_v[2]] = _v[1]
-                else:
-                    dataset_data = _v
-
-                param_dir = os.path.join(parameter_folder, param_id)
-                pathlib.Path(param_dir).mkdir(exist_ok=True, parents=True)
-                copytree(_dl.dataset_to_file(value, dataset_data), param_dir, dirs_exist_ok=True)
-
-                value = param_dir
-
-            parameters.append({
-                "parameterId": param_id,
-                "value": value,
-                "varType": var_type,
-                "isInherited": is_inherited
-            })
-            LOGGER.debug(T("coal.logs.runner.parameter_debug").format(
-                param_id=param_id,
-                max_name_size=max_name_size,
-                var_type=var_type,
-                max_type_size=max_type_size,
-                value=value,
-                inherited=' inherited' if is_inherited else ''
-            ))
-
-        write_parameters(parameter_folder, parameters)
-
-
-def write_parameters(parameter_folder, parameters):
-    pathlib.Path(parameter_folder).mkdir(exist_ok=True, parents=True)
-    tmp_parameter_file = os.path.join(parameter_folder, "parameters.json")
-    LOGGER.info(T("coal.logs.scenario.generating_file").format(file=tmp_parameter_file))
-    with open(tmp_parameter_file, "w") as _file:
-        json.dump(parameters, _file, indent=2)
+    download_runner_data(
+        organization_id=organization_id,
+        workspace_id=workspace_id,
+        runner_id=runner_id,
+        parameter_folder=parameter_folder,
+        read_files=False,
+        write_json=True,
+        write_csv=False,
+        fetch_dataset=True
+    )
 
 
 @click.command()
@@ -138,7 +79,7 @@ def run_load_data(
     organization_id: str,
     parameters_absolute_path: str,
 ):
-    return download_runner_data(organization_id, workspace_id, runner_id, parameters_absolute_path)
+    return download_data(organization_id, workspace_id, runner_id, parameters_absolute_path)
 
 
 if __name__ == "__main__":

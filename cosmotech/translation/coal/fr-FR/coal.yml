@@ -114,6 +114,9 @@ logs:
       {runner_id} n'est pas lié à un seul jeu de données mais à {count}
     dataset_state: |
       Le jeu de données {dataset_id} est dans l'état {status}
+    downloading_datasets: "Téléchargement de {count} jeux de données"
+    writing_parameters: "Écriture des paramètres dans les fichiers"
+    dataset_debug: "  - {folder} ({id})"
 
   database:
     creating_table: "création de la table {table}"
@@ -214,3 +217,72 @@ logs:
     connecting: "Connexion à la base de données PostgreSQL"
     ingesting_data: "Ingestion des données avec le mode : {mode}"
     ingestion_success: "Ingestion réussie de {rows} lignes"
+    
+  dataset:
+    # General
+    download_started: "Démarrage du téléchargement du jeu de données {dataset_type}"
+    download_completed: "Téléchargement réussi du jeu de données {dataset_type}"
+    operation_timing: "{operation} a pris {time} secondes"
+    dataset_downloading: "Téléchargement du jeu de données (organisation : {organization_id}, jeu de données : {dataset_id})"
+    dataset_info_retrieved: "Informations du jeu de données récupérées : {dataset_name} ({dataset_id})"
+    dataset_type_detected: "Type de jeu de données détecté : {type}"
+    parallel_download: "Téléchargement de {count} jeux de données en parallèle"
+    sequential_download: "Téléchargement séquentiel de {count} jeux de données"
+    
+    # Processing
+    processing_graph_data: "Traitement des données de graphe avec {nodes_count} nœuds et {relationships_count} relations (restore_names={restore_names})"
+    entity_count: "Trouvé {count} entités de type {entity_type}"
+    extracting_headers: "Extraction des en-têtes à partir de {rows} lignes"
+    headers_extracted: "Extraction de {count} champs : {fields}"
+    
+    # File operations
+    converting_to_files: "Conversion du jeu de données {dataset_type} '{dataset_name}' en fichiers"
+    created_temp_folder: "Dossier temporaire créé : {folder}"
+    using_folder: "Utilisation du dossier : {folder}"
+    converting_graph_data: "Conversion des données de graphe avec {entity_types} types d'entités vers le dossier : {folder}"
+    converting_file_data: "Conversion de {file_count} fichiers de type {file_type} vers le dossier : {folder}"
+    skipping_empty_entity: "Ignorer le type d'entité vide : {entity_type}"
+    writing_csv: "Écriture du fichier CSV avec {count} enregistrements : {file_name}"
+    writing_file: "Écriture du fichier : {file_name} (type : {file_type})"
+    file_written: "Fichier écrit : {file_path}"
+    files_created: "Création de {count} fichiers dans le dossier : {folder}"
+    
+    # ADT specific
+    adt_connecting: "Connexion à l'instance ADT à {url}"
+    adt_no_credentials: "Aucune information d'identification disponible pour la connexion ADT"
+    adt_querying_twins: "Interrogation des jumeaux numériques"
+    adt_twins_found: "Trouvé {count} jumeaux numériques"
+    adt_querying_relations: "Interrogation des relations"
+    adt_relations_found: "Trouvé {count} relations"
+    
+    # TwinGraph specific
+    twingraph_downloading: "Téléchargement du jeu de données TwinGraph (organisation : {organization_id}, jeu de données : {dataset_id})"
+    twingraph_querying_nodes: "Interrogation des nœuds TwinGraph pour le jeu de données {dataset_id}"
+    twingraph_nodes_found: "Trouvé {count} nœuds dans TwinGraph"
+    twingraph_querying_edges: "Interrogation des arêtes TwinGraph pour le jeu de données {dataset_id}"
+    twingraph_edges_found: "Trouvé {count} arêtes dans TwinGraph"
+    
+    # Legacy TwinGraph specific
+    legacy_twingraph_downloading: "Téléchargement du jeu de données TwinGraph hérité (organisation : {organization_id}, cache : {cache_name})"
+    legacy_twingraph_querying_nodes: "Interrogation des nœuds TwinGraph hérités pour le cache {cache_name}"
+    legacy_twingraph_nodes_found: "Trouvé {count} nœuds dans TwinGraph hérité"
+    legacy_twingraph_querying_relations: "Interrogation des relations TwinGraph héritées pour le cache {cache_name}"
+    legacy_twingraph_relations_found: "Trouvé {count} relations dans TwinGraph hérité"
+    
+    # File specific
+    file_downloading: "Téléchargement du jeu de données de fichier (organisation : {organization_id}, espace de travail : {workspace_id}, fichier : {file_name})"
+    listing_workspace_files: "Liste des fichiers de l'espace de travail"
+    workspace_files_found: "Trouvé {count} fichiers d'espace de travail"
+    no_files_found: "Aucun fichier trouvé correspondant à : {file_name}"
+    downloading_file: "Téléchargement du fichier : {file_name}"
+    file_downloaded: "Fichier téléchargé : {file_name} vers {path}"
+    
+    # File processing
+    processing_excel: "Traitement du fichier Excel : {file_name}"
+    sheet_processed: "Feuille traitée {sheet_name} avec {rows} lignes"
+    processing_csv: "Traitement du fichier CSV : {file_name}"
+    csv_processed: "Fichier CSV traité {file_name} avec {rows} lignes"
+    processing_json: "Traitement du fichier JSON : {file_name}"
+    json_processed: "Fichier JSON traité {file_name} avec {items} éléments"
+    processing_text: "Traitement du fichier texte : {file_name}"
+    text_processed: "Fichier texte traité {file_name} avec {lines} lignes"

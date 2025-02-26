@@ -3,7 +3,7 @@
 import copy
 import unittest
 
-from CosmoTech_Acceleration_Library.Accelerators.scenario_download.scenario_downloader import get_content_from_twin_graph_data
+from cosmotech.coal.dataset.utils import get_content_from_twin_graph_data
 
 
 class TestModelUtil(unittest.TestCase):
