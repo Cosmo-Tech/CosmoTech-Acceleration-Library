@@ -5,7 +5,7 @@ from griffe.dataclasses import Alias
 from griffe.dataclasses import Module
 
 pyhand = mkdocs_gen_files.config['plugins']['mkdocstrings'].get_handler('python')
-module_name = 'CosmoTech_Acceleration_Library'
+module_name = 'cosmotech.coal'
 
 griffed_module = pyhand.collect(module_name, {})
 

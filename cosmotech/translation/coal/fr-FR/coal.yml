@@ -91,23 +91,10 @@ logs:
     operation_timing: |
       {operation} a pris {time:0.3}s
 
-  scenario:
-    starting_connector: "Démarrage du connecteur"
-    loading_data: "Chargement des données du scénario"
-    downloading_datasets: "Téléchargement des jeux de données"
-    storing_datasets: "Stockage des jeux de données"
-    no_dataset_write: "Aucune écriture de jeu de données demandée, ignoré"
-    preparing_parameters: "Préparation des paramètres"
-    no_parameters_write: "Aucune écriture de paramètres demandée, ignoré"
-    generating_file: "Génération de {file}"
-    dataset_debug: "  - {folder} ({id})"
-
   runner:
     starting_download: "Démarrage du téléchargement des données d'exécution"
     no_parameters: "aucun paramètre trouvé dans le runner"
     loaded_data: "Données d'exécution chargées"
-    found_parameter: |
-      Paramètre '{param_id}' trouvé avec la valeur '{value}'
     parameter_debug: |
       - {param_id:<{max_name_size}} {var_type:<{max_type_size}} '{value}'{inherited}
     not_single_dataset: |
@@ -116,7 +103,10 @@ logs:
       Le jeu de données {dataset_id} est dans l'état {status}
     downloading_datasets: "Téléchargement de {count} jeux de données"
     writing_parameters: "Écriture des paramètres dans les fichiers"
+    generating_file: "Génération de {file}"
     dataset_debug: "  - {folder} ({id})"
+    no_dataset_write: "Aucune écriture de jeu de données demandée, ignoré"
+    no_parameters_write: "Aucune écriture de paramètres demandée, ignoré"
 
   database:
     creating_table: "création de la table {table}"

@@ -2,7 +2,7 @@ from typing import IO
 
 import mkdocs_gen_files
 
-from CosmoTech_Acceleration_Library import __version__
+from cosmotech.coal import __version__
 
 _md_file: IO
 with mkdocs_gen_files.open("index.md", "w") as _md_file, \

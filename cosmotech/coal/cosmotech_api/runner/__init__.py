@@ -6,22 +6,10 @@
 # specifically authorized by written means by Cosmo Tech.
 
 """
-Scenario and Runner data handling module.
-
-This module is deprecated and will be removed in a future version.
-Please use the cosmotech.coal.cosmotech_api.runner module instead.
+Runner and Run data handling module.
 """
 
-import warnings
-
-warnings.warn(
-    "The cosmotech.coal.scenario module is deprecated and will be removed in a future version. "
-    "Please use the cosmotech.coal.cosmotech_api.runner module instead.",
-    DeprecationWarning,
-    stacklevel=2
-)
-
-# Re-export functions from the runner module
+# Re-export functions from submodules
 from cosmotech.coal.cosmotech_api.runner.data import get_runner_data
 from cosmotech.coal.cosmotech_api.runner.parameters import (
     get_runner_parameters,
@@ -40,3 +28,4 @@ from cosmotech.coal.cosmotech_api.runner.download import (
     download_run_data,
     download_runner_data
 )
+from cosmotech.coal.cosmotech_api.runner.metadata import get_runner_metadata

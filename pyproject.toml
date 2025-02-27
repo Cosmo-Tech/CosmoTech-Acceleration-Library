@@ -2,7 +2,7 @@
 licence_files = ["LICENSE"]
 
 [project]
-name = "CosmoTech_Acceleration_Library"
+name = "cosmotech_acceleration_library"
 authors = [{ name = "Cosmo Tech", email = "platform@cosmotech.com" }]
 description = "Acceleration libraries for CosmoTech cloud based solution development"
 urls.Homepage = "https://www.cosmotech.com"
@@ -34,10 +34,10 @@ csm-data = "cosmotech.coal.cli.main:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["CosmoTech_Acceleration_Library*", "cosmotech.*"]
+include = ["cosmotech.*"]
 
 [tool.setuptools.dynamic]
-version.attr = "CosmoTech_Acceleration_Library.__version__"
+version.attr = "cosmotech.coal.__version__"
 dependencies.file = "requirements.txt"
 optional-dependencies.doc.file = "requirements.doc.txt"
 optional-dependencies.test.file = "requirements.test.txt"

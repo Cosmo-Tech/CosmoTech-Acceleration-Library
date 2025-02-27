@@ -17,8 +17,8 @@ from azure.kusto.ingest import IngestionProperties
 from azure.kusto.ingest import IngestionResult
 from azure.kusto.ingest import ReportLevel
 
-from CosmoTech_Acceleration_Library.Accelerators.adx_wrapper import ADXQueriesWrapper
-from CosmoTech_Acceleration_Library.Accelerators.adx_wrapper import IngestionStatus
+from cosmotech.coal.azure.adx.wrapper import ADXQueriesWrapper
+from cosmotech.coal.azure.adx.wrapper import IngestionStatus
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.utils.logger import LOGGER

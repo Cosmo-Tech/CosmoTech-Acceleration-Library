@@ -66,28 +66,19 @@ logs:
     file_loaded: "{file} successfully loaded from the API"
     operation_timing: "{operation} took {time:0.3}s"
 
-  scenario:
-    starting_connector: "Starting connector"
-    loading_data: "Load scenario data"
-    downloading_datasets: "Download datasets"
-    storing_datasets: "Store datasets"
-    no_dataset_write: "No dataset write asked, skipping"
-    preparing_parameters: "Prepare parameters"
-    no_parameters_write: "No parameters write asked, skipping"
-    generating_file: "Generating {file}"
-    dataset_debug: "  - {folder} ({id})"
-
   runner:
     starting_download: "Starting the Run data download"
     no_parameters: "no parameters found in the runner"
     loaded_data: "Loaded run data"
-    found_parameter: "Found parameter '{param_id}' with value '{value}'"
     parameter_debug: "  - {param_id:<{max_name_size}} {var_type:<{max_type_size}} \"{value}\"{inherited}"
     not_single_dataset: "{runner_id} is not tied to a single dataset but {count}"
     dataset_state: "Dataset {dataset_id} is in state {status}"
     downloading_datasets: "Downloading {count} datasets"
     writing_parameters: "Writing parameters to files"
+    generating_file: "Generating {file}"
     dataset_debug: "  - {folder} ({id})"
+    no_dataset_write: "No dataset write asked, skipping"
+    no_parameters_write: "No parameters write asked, skipping"
 
   database:
     creating_table: "creating table {table}"

@@ -4,23 +4,22 @@
 # Any use, reproduction, translation, broadcasting, transmission, distribution,
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
-from typing import Any
-from typing import Optional
 
-import cosmotech_api
+"""
+Runner module (compatibility layer).
 
+This module is maintained for backward compatibility.
+The functionality has been moved to the cosmotech.coal.cosmotech_api.runner package.
+"""
 
-def get_runner_metadata(
-    api_client: cosmotech_api.api_client.ApiClient,
-    organization_id: str,
-    workspace_id: str,
-    runner_id: str,
-    include: Optional[list[str]] = None,
-    exclude: Optional[list[str]] = None,
-) -> dict[str, Any]:
-    runner_api = cosmotech_api.RunnerApi(api_client)
-    runner: cosmotech_api.Runner = runner_api.get_runner(organization_id,
-                                                         workspace_id,
-                                                         runner_id)
+import warnings
 
-    return runner.model_dump(by_alias=True, exclude_none=True, include=include, exclude=exclude, mode='json')
+warnings.warn(
+    "Direct imports from cosmotech.coal.cosmotech_api.runner.py are deprecated. "
+    "Please import from cosmotech.coal.cosmotech_api.runner package instead.",
+    DeprecationWarning,
+    stacklevel=2
+)
+
+# Re-export from the runner package
+from cosmotech.coal.cosmotech_api.runner.metadata import get_runner_metadata

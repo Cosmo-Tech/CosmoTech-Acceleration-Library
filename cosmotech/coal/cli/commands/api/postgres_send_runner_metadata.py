@@ -11,7 +11,7 @@ from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.run import get_run_metadata
-from cosmotech.coal.cosmotech_api.runner import get_runner_metadata
+from cosmotech.coal.cosmotech_api.runner.metadata import get_runner_metadata
 from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.coal.utils.postgresql import generate_postgresql_full_uri
 from cosmotech.orchestrator.utils.translate import T

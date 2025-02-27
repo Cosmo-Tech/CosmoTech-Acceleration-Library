@@ -6,7 +6,7 @@
 # specifically authorized by written means by Cosmo Tech.
 import click_log
 
-from CosmoTech_Acceleration_Library import __version__
+from cosmotech.coal import __version__
 from cosmotech.coal.cli.commands.adx_send_scenariodata import adx_send_scenariodata
 from cosmotech.coal.cli.commands.api.api import api
 from cosmotech.coal.cli.commands.az_storage_upload import az_storage_upload

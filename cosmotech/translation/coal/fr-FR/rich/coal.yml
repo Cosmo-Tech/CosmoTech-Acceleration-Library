@@ -66,25 +66,19 @@ logs:
     file_loaded: "[important]{file}[/important] [green]chargé avec succès depuis l'API[/green]"
     operation_timing: "[important]{operation}[/important] [blue]a pris[/blue] [important]{time:0.3}s[/important]"
 
-  scenario:
-    starting_connector: "[blue]Démarrage du connecteur[/blue]"
-    loading_data: "[blue]Chargement des données du scénario[/blue]"
-    downloading_datasets: "[blue]Téléchargement des jeux de données[/blue]"
-    storing_datasets: "[blue]Stockage des jeux de données[/blue]"
-    no_dataset_write: "[yellow]Aucune écriture de jeu de données demandée, ignoré[/yellow]"
-    preparing_parameters: "[blue]Préparation des paramètres[/blue]"
-    no_parameters_write: "[yellow]Aucune écriture de paramètres demandée, ignoré[/yellow]"
-    generating_file: "[blue]Génération de[/blue] [important]{file}[/important]"
-    dataset_debug: "  - [important]{folder}[/important] ([important]{id}[/important])"
-
   runner:
     starting_download: "[blue]Démarrage du téléchargement des données d'exécution[/blue]"
     no_parameters: "[yellow]aucun paramètre trouvé dans le runner[/yellow]"
     loaded_data: "[green]Données d'exécution chargées[/green]"
-    found_parameter: "[green]Paramètre[/green] '[important]{param_id}[/important]' [green]trouvé avec la valeur[/green] '[important]{value}[/important]'"
     parameter_debug: "  - [important]{param_id:<{max_name_size}}[/important] [important]{var_type:<{max_type_size}}[/important] '[important]{value}[/important]'[important]{inherited}[/important]"
     not_single_dataset: "[important]{runner_id}[/important] [red]n'est pas lié à un seul jeu de données mais à[/red] [important]{count}[/important]"
     dataset_state: "[blue]Le jeu de données[/blue] [important]{dataset_id}[/important] [blue]est dans l'état[/blue] [important]{status}[/important]"
+    downloading_datasets: "[blue]Téléchargement de[/blue] [important]{count}[/important] [blue]jeux de données[/blue]"
+    writing_parameters: "[blue]Écriture des paramètres dans les fichiers[/blue]"
+    generating_file: "[blue]Génération de[/blue] [important]{file}[/important]"
+    dataset_debug: "  - [important]{folder}[/important] ([important]{id}[/important])"
+    no_dataset_write: "[yellow]Aucune écriture de jeu de données demandée, ignoré[/yellow]"
+    no_parameters_write: "[yellow]Aucune écriture de paramètres demandée, ignoré[/yellow]"
 
   database:
     creating_table: "[blue]création de la table[/blue] [important]{table}[/important]"

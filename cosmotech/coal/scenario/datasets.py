@@ -7,46 +7,45 @@
 
 """
 Dataset handling functions.
+
+This module is deprecated and will be removed in a future version.
+Please use the cosmotech.coal.cosmotech_api.runner.datasets module instead.
 """
 
-import multiprocessing
-import tempfile
+import warnings
+from typing import Dict, List, Any, Optional, Union
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Union, Tuple
 
 from azure.identity import DefaultAzureCredential
-from cosmotech_api.api.dataset_api import DatasetApi
 
-from cosmotech.coal.cosmotech_api.connection import get_api_client
-from cosmotech.coal.dataset.converters import convert_graph_dataset_to_files
-from cosmotech.coal.dataset.download.adt import download_adt_dataset
-from cosmotech.coal.dataset.download.twingraph import (
-    download_twingraph_dataset,
-    download_legacy_twingraph_dataset
+from cosmotech.coal.cosmotech_api.runner.datasets import (
+    get_dataset_ids_from_runner,
+    download_dataset as download_dataset_func,
+    download_datasets as download_datasets_func,
+    dataset_to_file as dataset_to_file_func
 )
-from cosmotech.coal.dataset.download.file import download_file_dataset
-from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
-def get_dataset_ids_from_runner(runner_data) -> List[str]:
+def get_dataset_ids_from_scenario(scenario_data) -> List[str]:
     """
-    Extract dataset IDs from runner data.
+    Extract dataset IDs from scenario data.
+    
+    This function is deprecated and will be removed in a future version.
+    Please use get_dataset_ids_from_runner from cosmotech.coal.cosmotech_api.runner.datasets instead.
     
     Args:
-        runner_data: Runner data object
+        scenario_data: Scenario data object
         
     Returns:
         List of dataset IDs
     """
-    dataset_ids = runner_data.dataset_list[:]
-    
-    for parameter in runner_data.parameters_values:
-        if parameter.var_type == '%DATASETID%' and parameter.value:
-            dataset_id = parameter.value
-            dataset_ids.append(dataset_id)
-            
-    return dataset_ids
+    warnings.warn(
+        "get_dataset_ids_from_scenario is deprecated and will be removed in a future version. "
+        "Please use get_dataset_ids_from_runner from cosmotech.coal.cosmotech_api.runner.datasets instead.",
+        DeprecationWarning,
+        stacklevel=2
+    )
+    return get_dataset_ids_from_runner(scenario_data)
 
 
 def download_dataset(
@@ -59,6 +58,9 @@ def download_dataset(
     """
     Download a single dataset by ID.
     
+    This function is deprecated and will be removed in a future version.
+    Please use download_dataset from cosmotech.coal.cosmotech_api.runner.datasets instead.
+    
     Args:
         organization_id: Organization ID
         workspace_id: Workspace ID
@@ -69,218 +71,19 @@ def download_dataset(
     Returns:
         Dataset information dictionary
     """
-    # Create credentials if needed
-    if credentials is None and get_api_client()[1] == "Azure Entra Connection":
-        credentials = DefaultAzureCredential()
-    
-    # Get dataset information
-    with get_api_client()[0] as api_client:
-        api_instance = DatasetApi(api_client)
-        dataset = api_instance.find_dataset_by_id(
-            organization_id=organization_id,
-            dataset_id=dataset_id)
-        
-        if dataset.connector is None:
-            parameters = []
-        else:
-            parameters = dataset.connector.parameters_values
-            
-        is_adt = 'AZURE_DIGITAL_TWINS_URL' in parameters
-        is_storage = 'AZURE_STORAGE_CONTAINER_BLOB_PREFIX' in parameters
-        is_legacy_twin_cache = 'TWIN_CACHE_NAME' in parameters and dataset.twingraph_id is None
-        is_in_workspace_file = False if dataset.tags is None else 'workspaceFile' in dataset.tags or 'dataset_part' in dataset.tags
-
-        # Download based on dataset type
-        if is_adt:
-            content, folder_path = download_adt_dataset(
-                adt_address=parameters['AZURE_DIGITAL_TWINS_URL'],
-                credentials=credentials
-            )
-            return {
-                "type": 'adt',
-                "content": content,
-                "name": dataset.name,
-                "folder_path": str(folder_path),
-                "dataset_id": dataset_id
-            }
-            
-        elif is_legacy_twin_cache:
-            twin_cache_name = parameters['TWIN_CACHE_NAME']
-            content, folder_path = download_legacy_twingraph_dataset(
-                organization_id=organization_id,
-                cache_name=twin_cache_name
-            )
-            return {
-                "type": "twincache",
-                "content": content,
-                "name": dataset.name,
-                "folder_path": str(folder_path),
-                "dataset_id": dataset_id
-            }
-            
-        elif is_storage:
-            _file_name = parameters['AZURE_STORAGE_CONTAINER_BLOB_PREFIX'].replace(
-                '%WORKSPACE_FILE%/', '')
-            content, folder_path = download_file_dataset(
-                organization_id=organization_id,
-                workspace_id=workspace_id,
-                file_name=_file_name,
-                read_files=read_files
-            )
-            return {
-                "type": _file_name.split('.')[-1],
-                "content": content,
-                "name": dataset.name,
-                "folder_path": str(folder_path),
-                "dataset_id": dataset_id,
-                "file_name": _file_name
-            }
-            
-        elif is_in_workspace_file:
-            _file_name = dataset.source.location
-            content, folder_path = download_file_dataset(
-                organization_id=organization_id,
-                workspace_id=workspace_id,
-                file_name=_file_name,
-                read_files=read_files
-            )
-            return {
-                "type": _file_name.split('.')[-1],
-                "content": content,
-                "name": dataset.name,
-                "folder_path": str(folder_path),
-                "dataset_id": dataset_id,
-                "file_name": _file_name
-            }
-            
-        else:
-            content, folder_path = download_twingraph_dataset(
-                organization_id=organization_id,
-                dataset_id=dataset_id
-            )
-            return {
-                "type": "twincache",
-                "content": content,
-                "name": dataset.name,
-                "folder_path": str(folder_path),
-                "dataset_id": dataset_id
-            }
-
-
-def download_datasets_parallel(
-    organization_id: str, 
-    workspace_id: str, 
-    dataset_ids: List[str], 
-    read_files: bool = True,
-    credentials: Optional[DefaultAzureCredential] = None
-) -> Dict[str, Dict[str, Any]]:
-    """
-    Download multiple datasets in parallel.
-    
-    Args:
-        organization_id: Organization ID
-        workspace_id: Workspace ID
-        dataset_ids: List of dataset IDs
-        read_files: Whether to read file contents
-        credentials: Azure credentials (if None, uses DefaultAzureCredential if needed)
-        
-    Returns:
-        Dictionary mapping dataset IDs to dataset information
-    """
-    if not dataset_ids:
-        return {}
-    
-    # Create credentials if needed
-    if credentials is None and get_api_client()[1] == "Azure Entra Connection":
-        credentials = DefaultAzureCredential()
-    
-    def download_dataset_process(_dataset_id, _return_dict, _error_dict):
-        try:
-            _c = download_dataset(
-                organization_id=organization_id,
-                workspace_id=workspace_id,
-                dataset_id=_dataset_id,
-                read_files=read_files,
-                credentials=credentials
-            )
-            _return_dict[_dataset_id] = _c
-        except Exception as e:
-            _error_dict[_dataset_id] = f'{type(e).__name__}: {str(e)}'
-            raise e
-
-    # Use multiprocessing to download datasets in parallel
-    manager = multiprocessing.Manager()
-    return_dict = manager.dict()
-    error_dict = manager.dict()
-    processes = [
-        (dataset_id, multiprocessing.Process(target=download_dataset_process,
-                                             args=(dataset_id, return_dict, error_dict)))
-        for dataset_id in dataset_ids
-    ]
-    
-    LOGGER.info(T("coal.logs.dataset.parallel_download").format(count=len(dataset_ids)))
-    
-    [p.start() for _, p in processes]
-    [p.join() for _, p in processes]
-
-    for dataset_id, p in processes:
-        # We might hit the following bug: https://bugs.python.org/issue43944
-        # As a workaround, only treat non-null exit code as a real issue if we also have stored an error
-        # message
-        if p.exitcode != 0 and dataset_id in error_dict:
-            raise ChildProcessError(
-                f"Failed to download dataset '{dataset_id}': {error_dict[dataset_id]}")
-    
-    return dict(return_dict)
-
-
-def download_datasets_sequential(
-    organization_id: str, 
-    workspace_id: str, 
-    dataset_ids: List[str], 
-    read_files: bool = True,
-    credentials: Optional[DefaultAzureCredential] = None
-) -> Dict[str, Dict[str, Any]]:
-    """
-    Download multiple datasets sequentially.
-    
-    Args:
-        organization_id: Organization ID
-        workspace_id: Workspace ID
-        dataset_ids: List of dataset IDs
-        read_files: Whether to read file contents
-        credentials: Azure credentials (if None, uses DefaultAzureCredential if needed)
-        
-    Returns:
-        Dictionary mapping dataset IDs to dataset information
-    """
-    if not dataset_ids:
-        return {}
-    
-    # Create credentials if needed
-    if credentials is None and get_api_client()[1] == "Azure Entra Connection":
-        credentials = DefaultAzureCredential()
-    
-    return_dict = {}
-    error_dict = {}
-    
-    LOGGER.info(T("coal.logs.dataset.sequential_download").format(count=len(dataset_ids)))
-    
-    for dataset_id in dataset_ids:
-        try:
-            return_dict[dataset_id] = download_dataset(
-                organization_id=organization_id,
-                workspace_id=workspace_id,
-                dataset_id=dataset_id,
-                read_files=read_files,
-                credentials=credentials
-            )
-        except Exception as e:
-            error_dict[dataset_id] = f'{type(e).__name__}: {str(e)}'
-            raise ChildProcessError(
-                f"Failed to download dataset '{dataset_id}': {error_dict.get(dataset_id, '')}")
-    
-    return return_dict
+    warnings.warn(
+        "download_dataset is deprecated and will be removed in a future version. "
+        "Please use download_dataset from cosmotech.coal.cosmotech_api.runner.datasets instead.",
+        DeprecationWarning,
+        stacklevel=2
+    )
+    return download_dataset_func(
+        organization_id=organization_id,
+        workspace_id=workspace_id,
+        dataset_id=dataset_id,
+        read_files=read_files,
+        credentials=credentials
+    )
 
 
 def download_datasets(
@@ -294,6 +97,9 @@ def download_datasets(
     """
     Download multiple datasets, either in parallel or sequentially.
     
+    This function is deprecated and will be removed in a future version.
+    Please use download_datasets from cosmotech.coal.cosmotech_api.runner.datasets instead.
+    
     Args:
         organization_id: Organization ID
         workspace_id: Workspace ID
@@ -305,55 +111,40 @@ def download_datasets(
     Returns:
         Dictionary mapping dataset IDs to dataset information
     """
-    if not dataset_ids:
-        return {}
-    
-    if parallel and len(dataset_ids) > 1:
-        return download_datasets_parallel(
-            organization_id=organization_id,
-            workspace_id=workspace_id,
-            dataset_ids=dataset_ids,
-            read_files=read_files,
-            credentials=credentials
-        )
-    else:
-        return download_datasets_sequential(
-            organization_id=organization_id,
-            workspace_id=workspace_id,
-            dataset_ids=dataset_ids,
-            read_files=read_files,
-            credentials=credentials
-        )
+    warnings.warn(
+        "download_datasets is deprecated and will be removed in a future version. "
+        "Please use download_datasets from cosmotech.coal.cosmotech_api.runner.datasets instead.",
+        DeprecationWarning,
+        stacklevel=2
+    )
+    return download_datasets_func(
+        organization_id=organization_id,
+        workspace_id=workspace_id,
+        dataset_ids=dataset_ids,
+        read_files=read_files,
+        parallel=parallel,
+        credentials=credentials
+    )
 
 
 def dataset_to_file(dataset_info: Dict[str, Any], target_folder: Optional[Union[str, Path]] = None) -> str:
     """
     Convert dataset to files.
     
+    This function is deprecated and will be removed in a future version.
+    Please use dataset_to_file from cosmotech.coal.cosmotech_api.runner.datasets instead.
+    
     Args:
         dataset_info: Dataset information dictionary
-        target_folder: Optional folder to save files (if None, uses temp dir)
+        target_folder: Optional folder to save files
         
     Returns:
         Path to folder containing files
     """
-    dataset_type = dataset_info['type']
-    content = dataset_info['content']
-    
-    if dataset_type in ["adt", "twincache"]:
-        # Use conversion function
-        if target_folder:
-            target_folder = convert_graph_dataset_to_files(content, target_folder)
-        else:
-            target_folder = convert_graph_dataset_to_files(content)
-        return str(target_folder)
-    
-    # For file datasets, return the folder path
-    if 'folder_path' in dataset_info:
-        return dataset_info['folder_path']
-    
-    # Fallback to creating a temp directory
-    if target_folder:
-        return str(target_folder)
-    else:
-        return tempfile.mkdtemp()
+    warnings.warn(
+        "dataset_to_file is deprecated and will be removed in a future version. "
+        "Please use dataset_to_file from cosmotech.coal.cosmotech_api.runner.datasets instead.",
+        DeprecationWarning,
+        stacklevel=2
+    )
+    return dataset_to_file_func(dataset_info, target_folder)

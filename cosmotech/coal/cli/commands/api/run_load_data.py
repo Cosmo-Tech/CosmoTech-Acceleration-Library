@@ -13,7 +13,7 @@ from shutil import copytree
 from cosmotech_api.api.runner_api import RunnerApi
 from cosmotech_api.api.workspace_api import WorkspaceApi
 
-from cosmotech.coal.scenario.download import download_runner_data
+from cosmotech.coal.cosmotech_api.runner.download import download_runner_data
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import require_env
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
