@@ -547,6 +547,8 @@
       
         
       
+        
+      
     
     
       
@@ -590,6 +592,27 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tutorials/cosmotech-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Working with the CosmoTech API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -3318,7 +3341,20 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 <span class="normal">84</span>
 <span class="normal">85</span>
 <span class="normal">86</span>
-<span class="normal">87</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_content_from_twin_graph_data</span><span class="p">(</span><span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">relationships</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">restore_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]:</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span>
+<span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_content_from_twin_graph_data</span><span class="p">(</span>
+    <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">relationships</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">restore_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract content from twin graph data.</span>
 
@@ -3349,47 +3385,56 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 <span class="sd">    Returns:</span>
 <span class="sd">        Dict mapping entity types to lists of entities</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.dataset.processing_graph_data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">nodes_count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">),</span>
-        <span class="n">relationships_count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">relationships</span><span class="p">),</span>
-        <span class="n">restore_names</span><span class="o">=</span><span class="n">restore_names</span>
-    <span class="p">))</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.dataset.processing_graph_data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">nodes_count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">),</span>
+            <span class="n">relationships_count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">relationships</span><span class="p">),</span>
+            <span class="n">restore_names</span><span class="o">=</span><span class="n">restore_names</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
     <span class="n">content</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="c1"># build keys</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">relationships</span><span class="p">:</span>
-        <span class="n">content</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;src&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="n">content</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;dest&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="n">content</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;rel&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">content</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">][</span><span class="s2">&quot;label&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">content</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;dest&quot;</span><span class="p">][</span><span class="s2">&quot;label&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">content</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;rel&quot;</span><span class="p">][</span><span class="s2">&quot;label&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
     <span class="c1"># Process nodes</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">][</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
-        <span class="n">props</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">][</span><span class="s1">&#39;properties&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># Create a copy to avoid modifying the original</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">][</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+        <span class="n">props</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">][</span>
+            <span class="s2">&quot;properties&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># Create a copy to avoid modifying the original</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">restore_names</span><span class="p">:</span>
-            <span class="n">props</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]})</span>
+            <span class="n">props</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">]})</span>
         <span class="n">content</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">list</span><span class="p">())</span>
         <span class="n">content</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>
 
     <span class="c1"># Process relationships</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">relationships</span><span class="p">:</span>
-        <span class="n">src</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;src&#39;</span><span class="p">]</span>
-        <span class="n">dest</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;dest&#39;</span><span class="p">]</span>
-        <span class="n">rel</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;rel&#39;</span><span class="p">]</span>
-        <span class="n">props</span> <span class="o">=</span> <span class="n">rel</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># Create a copy to avoid modifying the original</span>
-        <span class="n">content</span><span class="p">[</span><span class="n">rel</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">rel</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="n">src</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">restore_names</span> <span class="k">else</span> <span class="n">src</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="n">dest</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">restore_names</span> <span class="k">else</span> <span class="n">dest</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
-            <span class="o">**</span><span class="n">props</span>
-        <span class="p">})</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]</span>
+        <span class="n">dest</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;dest&quot;</span><span class="p">]</span>
+        <span class="n">rel</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;rel&quot;</span><span class="p">]</span>
+        <span class="n">props</span> <span class="o">=</span> <span class="n">rel</span><span class="p">[</span>
+            <span class="s2">&quot;properties&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># Create a copy to avoid modifying the original</span>
+        <span class="n">content</span><span class="p">[</span><span class="n">rel</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">rel</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">src</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">restore_names</span> <span class="k">else</span> <span class="n">src</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">dest</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">restore_names</span> <span class="k">else</span> <span class="n">dest</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+                <span class="o">**</span><span class="n">props</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
 
     <span class="c1"># Log the number of entities by type</span>
     <span class="k">for</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">entities</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.dataset.entity_count&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">entity_type</span><span class="o">=</span><span class="n">entity_type</span><span class="p">,</span>
-            <span class="n">count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">entities</span><span class="p">)</span>
-        <span class="p">))</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.dataset.entity_count&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">entity_type</span><span class="o">=</span><span class="n">entity_type</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">entities</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">content</span>
 </code></pre></div></td></tr></table></div>
@@ -3465,18 +3510,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/cosmotech_api/dataset/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">101</span>
 <span class="normal">102</span>
 <span class="normal">103</span>
 <span class="normal">104</span>
@@ -3502,7 +3536,22 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 <span class="normal">124</span>
 <span class="normal">125</span>
 <span class="normal">126</span>
-<span class="normal">127</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sheet_to_header</span><span class="p">(</span><span class="n">sheet_content</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sheet_to_header</span><span class="p">(</span><span class="n">sheet_content</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract header fields from sheet content.</span>
 
@@ -3512,7 +3561,9 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 <span class="sd">    Returns:</span>
 <span class="sd">        List of field names with id, source, and target fields first if present</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.dataset.extracting_headers&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sheet_content</span><span class="p">)))</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.dataset.extracting_headers&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sheet_content</span><span class="p">))</span>
+    <span class="p">)</span>
 
     <span class="n">fieldnames</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">has_src</span> <span class="o">=</span> <span class="kc">False</span>
@@ -3521,7 +3572,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
     <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">sheet_content</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fieldnames</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">]:</span>
                     <span class="n">has_src</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span>
                     <span class="n">has_id</span> <span class="o">=</span> <span class="kc">True</span>
@@ -3530,14 +3581,16 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 
     <span class="c1"># Ensure source/target and id fields come first</span>
     <span class="k">if</span> <span class="n">has_src</span><span class="p">:</span>
-        <span class="n">fieldnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">fieldnames</span>
+        <span class="n">fieldnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">fieldnames</span>
     <span class="k">if</span> <span class="n">has_id</span><span class="p">:</span>
-        <span class="n">fieldnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">fieldnames</span>
+        <span class="n">fieldnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">fieldnames</span>
 
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.dataset.headers_extracted&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">fieldnames</span><span class="p">),</span>
-        <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fieldnames</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;...&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fieldnames</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="p">))</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.dataset.headers_extracted&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">fieldnames</span><span class="p">),</span>
+            <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fieldnames</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;...&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fieldnames</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">fieldnames</span>
 </code></pre></div></td></tr></table></div>

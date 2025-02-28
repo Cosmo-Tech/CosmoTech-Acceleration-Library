@@ -547,6 +547,8 @@
       
         
       
+        
+      
     
     
       
@@ -590,6 +592,27 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tutorials/cosmotech-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Working with the CosmoTech API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -3295,7 +3318,13 @@
 <span class="normal">75</span>
 <span class="normal">76</span>
 <span class="normal">77</span>
-<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">format_parameters_list</span><span class="p">(</span><span class="n">runner_data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">format_parameters_list</span><span class="p">(</span><span class="n">runner_data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Format parameters from runner data as a list of dictionaries.</span>
 
@@ -3310,7 +3339,9 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">runner_data</span><span class="o">.</span><span class="n">parameters_values</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">parameters</span>
 
-    <span class="n">max_name_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">parameter_id</span><span class="p">),</span> <span class="n">runner_data</span><span class="o">.</span><span class="n">parameters_values</span><span class="p">))</span>
+    <span class="n">max_name_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">parameter_id</span><span class="p">),</span> <span class="n">runner_data</span><span class="o">.</span><span class="n">parameters_values</span><span class="p">)</span>
+    <span class="p">)</span>
     <span class="n">max_type_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">var_type</span><span class="p">),</span> <span class="n">runner_data</span><span class="o">.</span><span class="n">parameters_values</span><span class="p">))</span>
 
     <span class="k">for</span> <span class="n">parameter_data</span> <span class="ow">in</span> <span class="n">runner_data</span><span class="o">.</span><span class="n">parameters_values</span><span class="p">:</span>
@@ -3319,21 +3350,25 @@
         <span class="n">var_type</span> <span class="o">=</span> <span class="n">parameter_data</span><span class="o">.</span><span class="n">var_type</span>
         <span class="n">is_inherited</span> <span class="o">=</span> <span class="n">parameter_data</span><span class="o">.</span><span class="n">is_inherited</span>
 
-        <span class="n">parameters</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s2">&quot;parameterId&quot;</span><span class="p">:</span> <span class="n">parameter_name</span><span class="p">,</span>
-            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
-            <span class="s2">&quot;varType&quot;</span><span class="p">:</span> <span class="n">var_type</span><span class="p">,</span>
-            <span class="s2">&quot;isInherited&quot;</span><span class="p">:</span> <span class="n">is_inherited</span>
-        <span class="p">})</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;parameterId&quot;</span><span class="p">:</span> <span class="n">parameter_name</span><span class="p">,</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+                <span class="s2">&quot;varType&quot;</span><span class="p">:</span> <span class="n">var_type</span><span class="p">,</span>
+                <span class="s2">&quot;isInherited&quot;</span><span class="p">:</span> <span class="n">is_inherited</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
 
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.runner.parameter_debug&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">param_id</span><span class="o">=</span><span class="n">parameter_name</span><span class="p">,</span>
-            <span class="n">max_name_size</span><span class="o">=</span><span class="n">max_name_size</span><span class="p">,</span>
-            <span class="n">var_type</span><span class="o">=</span><span class="n">var_type</span><span class="p">,</span>
-            <span class="n">max_type_size</span><span class="o">=</span><span class="n">max_type_size</span><span class="p">,</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
-            <span class="n">inherited</span><span class="o">=</span><span class="s1">&#39; inherited&#39;</span> <span class="k">if</span> <span class="n">is_inherited</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
-        <span class="p">))</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.runner.parameter_debug&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">param_id</span><span class="o">=</span><span class="n">parameter_name</span><span class="p">,</span>
+                <span class="n">max_name_size</span><span class="o">=</span><span class="n">max_name_size</span><span class="p">,</span>
+                <span class="n">var_type</span><span class="o">=</span><span class="n">var_type</span><span class="p">,</span>
+                <span class="n">max_type_size</span><span class="o">=</span><span class="n">max_type_size</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">inherited</span><span class="o">=</span><span class="s2">&quot; inherited&quot;</span> <span class="k">if</span> <span class="n">is_inherited</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">parameters</span>
 </code></pre></div></td></tr></table></div>
@@ -3550,19 +3585,7 @@
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/cosmotech_api/runner/parameters.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
@@ -3572,8 +3595,28 @@
 <span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
-<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">write_parameters</span><span class="p">(</span><span class="n">parameter_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> 
-                    <span class="n">write_csv</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">write_json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">write_parameters</span><span class="p">(</span>
+    <span class="n">parameter_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">write_csv</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">write_json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write parameters to files based on specified formats.</span>
 
@@ -3589,10 +3632,10 @@
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">if</span> <span class="n">write_csv</span><span class="p">:</span>
-        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;csv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">write_parameters_to_csv</span><span class="p">(</span><span class="n">parameter_folder</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;csv&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">write_parameters_to_csv</span><span class="p">(</span><span class="n">parameter_folder</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">write_json</span><span class="p">:</span>
-        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">write_parameters_to_json</span><span class="p">(</span><span class="n">parameter_folder</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">write_parameters_to_json</span><span class="p">(</span><span class="n">parameter_folder</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">result</span>
 </code></pre></div></td></tr></table></div>
@@ -3682,15 +3725,7 @@
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/cosmotech_api/runner/parameters.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
@@ -3703,7 +3738,21 @@
 <span class="normal">121</span>
 <span class="normal">122</span>
 <span class="normal">123</span>
-<span class="normal">124</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">write_parameters_to_csv</span><span class="p">(</span><span class="n">parameter_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">write_parameters_to_csv</span><span class="p">(</span>
+    <span class="n">parameter_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write parameters to a CSV file.</span>
 
@@ -3720,7 +3769,9 @@
     <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.runner.generating_file&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">tmp_parameter_file</span><span class="p">))</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmp_parameter_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">_file</span><span class="p">:</span>
-        <span class="n">_w</span> <span class="o">=</span> <span class="n">DictWriter</span><span class="p">(</span><span class="n">_file</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;parameterId&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;varType&quot;</span><span class="p">,</span> <span class="s2">&quot;isInherited&quot;</span><span class="p">])</span>
+        <span class="n">_w</span> <span class="o">=</span> <span class="n">DictWriter</span><span class="p">(</span>
+            <span class="n">_file</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;parameterId&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;varType&quot;</span><span class="p">,</span> <span class="s2">&quot;isInherited&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">_w</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
         <span class="n">_w</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
 
@@ -3812,13 +3863,7 @@
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/cosmotech_api/runner/parameters.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 87</span>
 <span class="normal"> 88</span>
 <span class="normal"> 89</span>
 <span class="normal"> 90</span>
@@ -3831,7 +3876,17 @@
 <span class="normal"> 97</span>
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
-<span class="normal">100</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">write_parameters_to_json</span><span class="p">(</span><span class="n">parameter_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">write_parameters_to_json</span><span class="p">(</span>
+    <span class="n">parameter_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write parameters to a JSON file.</span>
 

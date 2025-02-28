@@ -547,6 +547,8 @@
       
         
       
+        
+      
     
     
       
@@ -590,6 +592,27 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tutorials/cosmotech-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Working with the CosmoTech API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -3229,7 +3252,8 @@
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
-<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">type_mapping</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key_example_value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">48</span>
+<span class="normal">49</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">type_mapping</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key_example_value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Map Python types to ADX types.</span>
 
@@ -3240,10 +3264,11 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        str: The name of the type used in ADX</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.mapping_type&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
-        <span class="n">value_type</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="n">key_example_value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
-    <span class="p">))</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.mapping_type&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">value_type</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="n">key_example_value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;SimulationRun&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;guid&quot;</span>

@@ -547,6 +547,8 @@
       
         
       
+        
+      
     
     
       
@@ -590,6 +592,27 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tutorials/cosmotech-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Working with the CosmoTech API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -3281,7 +3304,9 @@
 <span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
-<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_runner_metadata</span><span class="p">(</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_runner_metadata</span><span class="p">(</span>
     <span class="n">api_client</span><span class="p">:</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">api_client</span><span class="o">.</span><span class="n">ApiClient</span><span class="p">,</span>
     <span class="n">organization_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3304,11 +3329,13 @@
 <span class="sd">        Dictionary with runner metadata</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">runner_api</span> <span class="o">=</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">RunnerApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
-    <span class="n">runner</span><span class="p">:</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">Runner</span> <span class="o">=</span> <span class="n">runner_api</span><span class="o">.</span><span class="n">get_runner</span><span class="p">(</span><span class="n">organization_id</span><span class="p">,</span>
-                                                         <span class="n">workspace_id</span><span class="p">,</span>
-                                                         <span class="n">runner_id</span><span class="p">)</span>
+    <span class="n">runner</span><span class="p">:</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">Runner</span> <span class="o">=</span> <span class="n">runner_api</span><span class="o">.</span><span class="n">get_runner</span><span class="p">(</span>
+        <span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">runner_id</span>
+    <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">runner</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">runner</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span>
+        <span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;json&quot;</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

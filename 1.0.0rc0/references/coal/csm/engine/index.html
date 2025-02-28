@@ -547,6 +547,8 @@
       
         
       
+        
+      
     
     
       
@@ -590,6 +592,27 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../tutorials/cosmotech-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Working with the CosmoTech API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -3169,13 +3192,17 @@ If an entity is not found, will skip the row in the CSV
 <span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
-<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">apply_simple_csv_parameter_to_simulator</span><span class="p">(</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">apply_simple_csv_parameter_to_simulator</span><span class="p">(</span>
     <span class="n">simulator</span><span class="p">,</span>
     <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">target_attribute_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">csv_id_column</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span>
-    <span class="n">csv_value_column</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span>
-    <span class="p">):</span>
+    <span class="n">csv_value_column</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Accelerator used to apply CSV parameters directly to a simulator</span>
 <span class="sd">    Will raise a ValueError if the parameter does not exist</span>
@@ -3187,7 +3214,9 @@ If an entity is not found, will skip the row in the CSV
 <span class="sd">    :param csv_value_column: Column in the CSV file used for the attribute value to change</span>
 <span class="sd">    :return: None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parameter_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CSM_PARAMETERS_ABSOLUTE_PATH&quot;</span><span class="p">),</span> <span class="n">parameter_name</span><span class="p">)</span>
+    <span class="n">parameter_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CSM_PARAMETERS_ABSOLUTE_PATH&quot;</span><span class="p">),</span> <span class="n">parameter_name</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">parameter_path</span><span class="p">):</span>
         <span class="n">csv_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parameter_path</span><span class="p">,</span> <span class="s2">&quot;*.csv&quot;</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">csv_filename</span> <span class="ow">in</span> <span class="n">csv_files</span><span class="p">:</span>
@@ -3198,7 +3227,9 @@ If an entity is not found, will skip the row in the CSV
                     <span class="n">value</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">csv_value_column</span><span class="p">))</span>
                     <span class="n">entity</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">FindEntityByName</span><span class="p">(</span><span class="n">entity_name</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">entity</span><span class="p">:</span>
-                        <span class="n">entity</span><span class="o">.</span><span class="n">SetAttributeAsString</span><span class="p">(</span><span class="n">target_attribute_name</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                        <span class="n">entity</span><span class="o">.</span><span class="n">SetAttributeAsString</span><span class="p">(</span>
+                            <span class="n">target_attribute_name</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="n">parameter_name</span><span class="si">}</span><span class="s2"> does not exists.&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
