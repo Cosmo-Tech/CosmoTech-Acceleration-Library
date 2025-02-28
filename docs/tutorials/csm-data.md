@@ -25,9 +25,7 @@ The CLI is organized into several command groups, each focused on specific types
 !!! info "Getting Help"
     You can get detailed help for any command using the `--help` flag:
     ```bash
-    csm-data --help
-    csm-data api --help
-    csm-data api scenariorun-load-data --help
+    --8<-- 'tutorial/csm-data/getting_help.bash'
     ```
 
 ## Why use csm-data?
@@ -68,15 +66,7 @@ The `api` command group facilitates interaction with the CosmoTech API, allowing
 #### Scenario Data Management
 
 ```bash title="Download scenario data" linenums="1" hl_lines="7 8 9"
-csm-data api scenariorun-load-data \
-  --organization-id "o-organization" \
-  --workspace-id "w-workspace" \
-  --scenario-id "s-scenario" \
-  --dataset-absolute-path "/path/to/dataset/folder" \
-  --parameters-absolute-path "/path/to/parameters/folder" \
-  --write-json \
-  --write-csv \
-  --fetch-dataset
+--8<-- 'tutorial/csm-data/scenariorun_load_data.bash'
 ```
 
 This command:
@@ -90,19 +80,11 @@ This command:
 #### Twin Data Layer Operations
 
 ```bash title="Load files to Twin Data Layer" linenums="1"
-csm-data api tdl-load-files \
-  --organization-id "o-organization" \
-  --workspace-id "w-workspace" \
-  --dataset-id "d-dataset" \
-  --source-folder "/path/to/source/files"
+--8<-- 'tutorial/csm-data/tdl_load_files.bash'
 ```
 
 ```bash title="Send files to Twin Data Layer" linenums="1"
-csm-data api tdl-send-files \
-  --organization-id "o-organization" \
-  --workspace-id "w-workspace" \
-  --dataset-id "d-dataset" \
-  --source-folder "/path/to/source/files"
+--8<-- 'tutorial/csm-data/tdl_send_files.bash'
 ```
 
 These commands facilitate working with the Twin Data Layer, allowing you to:
@@ -115,43 +97,23 @@ The `s3-bucket-*` commands provide a simple interface for working with S3-compat
 
 === "Download"
     ```bash title="Download from S3 bucket" linenums="1"
-    csm-data s3-bucket-download \
-      --target-folder "/path/to/download/to" \
-      --bucket-name "my-bucket" \
-      --prefix-filter "folder/prefix/" \
-      --s3-url "https://s3.example.com" \
-      --access-id "access-key-id" \
-      --secret-key "secret-access-key"
+    --8<-- 'tutorial/csm-data/s3_bucket_download.bash'
     ```
 
 === "Upload"
     ```bash title="Upload to S3 bucket" linenums="1"
-    csm-data s3-bucket-upload \
-      --source-folder "/path/to/upload/from" \
-      --bucket-name "my-bucket" \
-      --target-prefix "folder/prefix/" \
-      --s3-url "https://s3.example.com" \
-      --access-id "access-key-id" \
-      --secret-key "secret-access-key"
+    --8<-- 'tutorial/csm-data/s3_bucket_upload.bash'
     ```
 
 === "Delete"
     ```bash title="Delete from S3 bucket" linenums="1"
-    csm-data s3-bucket-delete \
-      --bucket-name "my-bucket" \
-      --prefix-filter "folder/prefix/" \
-      --s3-url "https://s3.example.com" \
-      --access-id "access-key-id" \
-      --secret-key "secret-access-key"
+    --8<-- 'tutorial/csm-data/s3_bucket_delete.bash'
     ```
 
 !!! tip "Environment Variables"
     All these commands support environment variables for credentials and connection details, making them secure and easy to use in automated workflows:
     ```bash
-    export AWS_ENDPOINT_URL="https://s3.example.com"
-    export AWS_ACCESS_KEY_ID="access-key-id"
-    export AWS_SECRET_ACCESS_KEY="secret-access-key"
-    export CSM_DATA_BUCKET_NAME="my-bucket"
+    --8<-- 'tutorial/csm-data/s3_env_variables.bash'
     ```
 
 ### Azure Data Explorer Integration
@@ -159,15 +121,7 @@ The `s3-bucket-*` commands provide a simple interface for working with S3-compat
 The `adx-send-scenariodata` command enables sending scenario data to Azure Data Explorer for analysis and visualization:
 
 ```bash title="Send scenario data to ADX" linenums="1"
-csm-data adx-send-scenariodata \
-  --dataset-absolute-path "/path/to/dataset/folder" \
-  --parameters-absolute-path "/path/to/parameters/folder" \
-  --simulation-id "simulation-id" \
-  --adx-uri "https://adx.example.com" \
-  --adx-ingest-uri "https://ingest-adx.example.com" \
-  --database-name "my-database" \
-  --send-datasets \
-  --wait
+--8<-- 'tutorial/csm-data/adx_send_scenariodata.bash'
 ```
 
 This command:
@@ -184,18 +138,11 @@ This command:
 The `store` command group provides tools for working with the CoAL datastore:
 
 ```bash title="Load CSV folder into datastore" linenums="1"
-csm-data store load-csv-folder \
-  --folder-path "/path/to/csv/folder" \
-  --reset
+--8<-- 'tutorial/csm-data/store_load_csv_folder.bash'
 ```
 
 ```bash title="Dump datastore to S3" linenums="1"
-csm-data store dump-to-s3 \
-  --bucket-name "my-bucket" \
-  --target-prefix "store-dump/" \
-  --s3-url "https://s3.example.com" \
-  --access-id "access-key-id" \
-  --secret-key "secret-access-key"
+--8<-- 'tutorial/csm-data/store_dump_to_s3.bash'
 ```
 
 These commands allow you to:
@@ -211,34 +158,7 @@ These commands allow you to:
 A common workflow combines multiple commands to create a complete data processing pipeline:
 
 ```bash title="Complete data processing pipeline" linenums="1"
-# 1. Download scenario data from the API
-csm-data api scenariorun-load-data \
-  --organization-id "$CSM_ORGANIZATION_ID" \
-  --workspace-id "$CSM_WORKSPACE_ID" \
-  --scenario-id "$CSM_SCENARIO_ID" \
-  --dataset-absolute-path "$CSM_DATASET_ABSOLUTE_PATH" \
-  --parameters-absolute-path "$CSM_PARAMETERS_ABSOLUTE_PATH" \
-  --write-json \
-  --fetch-dataset
-
-# 2. Load data into the datastore for processing
-csm-data store load-csv-folder \
-  --folder-path "$CSM_DATASET_ABSOLUTE_PATH" \
-  --reset
-
-# 3. Run your simulation (using your own code)
-# ...
-
-# 4. Send results to Azure Data Explorer for analysis
-csm-data adx-send-scenariodata \
-  --dataset-absolute-path "$CSM_DATASET_ABSOLUTE_PATH" \
-  --parameters-absolute-path "$CSM_PARAMETERS_ABSOLUTE_PATH" \
-  --simulation-id "$CSM_SIMULATION_ID" \
-  --adx-uri "$AZURE_DATA_EXPLORER_RESOURCE_URI" \
-  --adx-ingest-uri "$AZURE_DATA_EXPLORER_RESOURCE_INGEST_URI" \
-  --database-name "$AZURE_DATA_EXPLORER_DATABASE_NAME" \
-  --send-datasets \
-  --wait
+--8<-- 'tutorial/csm-data/complete_pipeline.bash'
 ```
 
 ### Integration with csm-orc
@@ -246,37 +166,7 @@ csm-data adx-send-scenariodata \
 The `csm-data` commands integrate seamlessly with `csm-orc` for orchestration:
 
 ```json title="run.json for csm-orc" linenums="1"
-{
-  "steps": [
-    {
-      "id": "download-scenario-data",
-      "command": "csm-data",
-      "arguments": [
-        "api", "scenariorun-load-data",
-        "--write-json",
-        "--fetch-dataset"
-      ],
-      "useSystemEnvironment": true
-    },
-    {
-      "id": "run-simulation",
-      "command": "python",
-      "arguments": ["run_simulation.py"],
-      "precedents": ["download-scenario-data"]
-    },
-    {
-      "id": "send-results-to-adx",
-      "command": "csm-data",
-      "arguments": [
-        "adx-send-scenariodata",
-        "--send-datasets",
-        "--wait"
-      ],
-      "useSystemEnvironment": true,
-      "precedents": ["run-simulation"]
-    }
-  ]
-}
+--8<-- 'tutorial/csm-data/csm_orc_integration.json'
 ```
 
 ## Best Practices and Tips
@@ -284,19 +174,7 @@ The `csm-data` commands integrate seamlessly with `csm-orc` for orchestration:
 !!! tip "Environment Variables"
     Use environment variables for sensitive information and configuration that might change between environments:
     ```bash
-    # API connection
-    export CSM_ORGANIZATION_ID="o-organization"
-    export CSM_WORKSPACE_ID="w-workspace"
-    export CSM_SCENARIO_ID="s-scenario"
-    
-    # Paths
-    export CSM_DATASET_ABSOLUTE_PATH="/path/to/dataset"
-    export CSM_PARAMETERS_ABSOLUTE_PATH="/path/to/parameters"
-    
-    # ADX connection
-    export AZURE_DATA_EXPLORER_RESOURCE_URI="https://adx.example.com"
-    export AZURE_DATA_EXPLORER_RESOURCE_INGEST_URI="https://ingest-adx.example.com"
-    export AZURE_DATA_EXPLORER_DATABASE_NAME="my-database"
+    --8<-- 'tutorial/csm-data/api_env_variables.bash'
     ```
 
 !!! tip "Error Handling"
@@ -305,7 +183,7 @@ The `csm-data` commands integrate seamlessly with `csm-orc` for orchestration:
 !!! tip "Logging"
     Control the verbosity of logging with the `--log-level` option:
     ```bash
-    csm-data --log-level debug api scenariorun-load-data ...
+    --8<-- 'tutorial/csm-data/logging.bash'
     ```
 
 ## Extending csm-data
