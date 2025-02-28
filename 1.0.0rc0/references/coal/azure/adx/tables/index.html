@@ -3146,6 +3146,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -3167,105 +3172,22 @@
 
     <div class="doc doc-contents ">
 
-      <p>Create a table in the database.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>client</code></td>
-            <td>
-                  <code><span title="azure.kusto.data.KustoClient">KustoClient</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The KustoClient to use</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>database</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the database</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>table_name</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the table to create</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>schema</code></td>
-            <td>
-                  <code><span title="typing.Dict">Dict</span>[str, str]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Dictionary mapping column names to ADX types</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>bool</code></td>            <td>
-                  <code>bool</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>True if the table was created successfully, False otherwise</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Create a table in the database.</p>
+<p>Args:
+    client: The KustoClient to use
+    database: The name of the database
+    table_name: The name of the table to create
+    schema: Dictionary mapping column names to ADX types</p>
+<p>Returns:
+    bool: True if the table was created successfully, False otherwise</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/azure/adx/tables.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
 <span class="normal">47</span>
 <span class="normal">48</span>
 <span class="normal">49</span>
@@ -3291,23 +3213,7 @@
 <span class="normal">69</span>
 <span class="normal">70</span>
 <span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create_table</span><span class="p">(</span>
-    <span class="n">client</span><span class="p">:</span> <span class="n">KustoClient</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create_table</span><span class="p">(</span><span class="n">client</span><span class="p">:</span> <span class="n">KustoClient</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a table in the database.</span>
 
@@ -3320,11 +3226,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: True if the table was created successfully, False otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-        <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.creating_table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.creating_table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">))</span>
 
     <span class="n">create_query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;.create-merge table </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">(&quot;</span>
 
@@ -3340,11 +3242,7 @@
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.table_created&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">))</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.table_creation_error&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.table_creation_error&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
         <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3363,87 +3261,13 @@
 
     <div class="doc doc-contents ">
 
-      <p>Check if a table exists in the database.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>client</code></td>
-            <td>
-                  <code><span title="azure.kusto.data.KustoClient">KustoClient</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The KustoClient to use</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>database</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the database</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>table_name</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the table to check</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>bool</code></td>            <td>
-                  <code>bool</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>True if the table exists, False otherwise</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Check if a table exists in the database.</p>
+<p>Args:
+    client: The KustoClient to use
+    database: The name of the database
+    table_name: The name of the table to check</p>
+<p>Returns:
+    bool: True if the table exists, False otherwise</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/azure/adx/tables.py</code></summary>
@@ -3470,11 +3294,7 @@
 <span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">table_exists</span><span class="p">(</span><span class="n">client</span><span class="p">:</span> <span class="n">KustoClient</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">table_exists</span><span class="p">(</span><span class="n">client</span><span class="p">:</span> <span class="n">KustoClient</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if a table exists in the database.</span>
 
@@ -3486,11 +3306,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: True if the table exists, False otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-        <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.checking_table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.checking_table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">))</span>
 
     <span class="n">get_tables_query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;.show database [&#39;</span><span class="si">{</span><span class="n">database</span><span class="si">}</span><span class="s2">&#39;] schema| distinct TableName&quot;</span>
     <span class="n">tables</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">get_tables_query</span><span class="p">)</span>

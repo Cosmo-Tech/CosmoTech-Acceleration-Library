@@ -3471,30 +3471,14 @@
 <span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
+<span class="normal">19</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.native_python</span><span class="w"> </span><span class="kn">import</span> <span class="n">store_pylist</span>
 
 <span class="c1"># We initialize and reset the data store</span>
 <span class="n">my_datastore</span> <span class="o">=</span> <span class="n">Store</span><span class="p">(</span><span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># We create a simple list of dict data</span>
-<span class="n">my_data</span> <span class="o">=</span> <span class="p">[{</span>
-    <span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="s2">&quot;bar&quot;</span>
-<span class="p">},{</span>
-    <span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="s2">&quot;barbar&quot;</span>
-<span class="p">},{</span>
-    <span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="s2">&quot;world&quot;</span>
-<span class="p">},{</span>
-    <span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="s2">&quot;bar&quot;</span>
-<span class="p">}]</span>
+<span class="n">my_data</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="s2">&quot;barbar&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="s2">&quot;world&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">}]</span>
 
 <span class="c1"># We use a bundled method to send the py_list to the store</span>
 <span class="n">store_pylist</span><span class="p">(</span><span class="s2">&quot;my_data&quot;</span><span class="p">,</span> <span class="n">my_data</span><span class="p">)</span>
@@ -3530,7 +3514,9 @@
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
-<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.csv</span><span class="w"> </span><span class="kn">import</span> <span class="n">store_csv_file</span><span class="p">,</span> <span class="n">convert_store_table_to_csv</span>
 
@@ -3542,11 +3528,13 @@
 <span class="n">store_csv_file</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">,</span> <span class="n">csv_path</span><span class="p">)</span>
 
 <span class="c1"># Query the data</span>
-<span class="n">high_value_customers</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    SELECT * FROM customers </span>
-<span class="s2">    WHERE annual_spend &gt; 10000</span>
-<span class="s2">    ORDER BY annual_spend DESC</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">high_value_customers</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SELECT * FROM customers </span>
+<span class="sd">    WHERE annual_spend &gt; 10000</span>
+<span class="sd">    ORDER BY annual_spend DESC</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
 
 <span class="c1"># Export results to a new CSV file</span>
 <span class="n">output_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;path/to/output/high_value_customers.csv&quot;</span><span class="p">)</span>
@@ -3582,7 +3570,11 @@
 <span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
-<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.pandas</span><span class="w"> </span><span class="kn">import</span> <span class="n">store_dataframe</span><span class="p">,</span> <span class="n">convert_store_table_to_dataframe</span>
 
@@ -3590,22 +3582,26 @@
 <span class="n">store</span> <span class="o">=</span> <span class="n">Store</span><span class="p">(</span><span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Create a pandas DataFrame</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s1">&#39;product_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
-    <span class="s1">&#39;product_name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Widget A&#39;</span><span class="p">,</span> <span class="s1">&#39;Widget B&#39;</span><span class="p">,</span> <span class="s1">&#39;Gadget X&#39;</span><span class="p">,</span> <span class="s1">&#39;Tool Y&#39;</span><span class="p">,</span> <span class="s1">&#39;Device Z&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">19.99</span><span class="p">,</span> <span class="mf">29.99</span><span class="p">,</span> <span class="mf">99.99</span><span class="p">,</span> <span class="mf">49.99</span><span class="p">,</span> <span class="mf">199.99</span><span class="p">],</span>
-    <span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Widgets&#39;</span><span class="p">,</span> <span class="s1">&#39;Widgets&#39;</span><span class="p">,</span> <span class="s1">&#39;Gadgets&#39;</span><span class="p">,</span> <span class="s1">&#39;Tools&#39;</span><span class="p">,</span> <span class="s1">&#39;Devices&#39;</span><span class="p">]</span>
-<span class="p">})</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+        <span class="s2">&quot;product_name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Widget A&quot;</span><span class="p">,</span> <span class="s2">&quot;Widget B&quot;</span><span class="p">,</span> <span class="s2">&quot;Gadget X&quot;</span><span class="p">,</span> <span class="s2">&quot;Tool Y&quot;</span><span class="p">,</span> <span class="s2">&quot;Device Z&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">19.99</span><span class="p">,</span> <span class="mf">29.99</span><span class="p">,</span> <span class="mf">99.99</span><span class="p">,</span> <span class="mf">49.99</span><span class="p">,</span> <span class="mf">199.99</span><span class="p">],</span>
+        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Widgets&quot;</span><span class="p">,</span> <span class="s2">&quot;Widgets&quot;</span><span class="p">,</span> <span class="s2">&quot;Gadgets&quot;</span><span class="p">,</span> <span class="s2">&quot;Tools&quot;</span><span class="p">,</span> <span class="s2">&quot;Devices&quot;</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
 
 <span class="c1"># Store the DataFrame</span>
 <span class="n">store_dataframe</span><span class="p">(</span><span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># Query the data</span>
-<span class="n">expensive_products</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    SELECT * FROM products</span>
-<span class="s2">    WHERE price &gt; 50</span>
-<span class="s2">    ORDER BY price DESC</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">expensive_products</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SELECT * FROM products</span>
+<span class="sd">    WHERE price &gt; 50</span>
+<span class="sd">    ORDER BY price DESC</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
 
 <span class="c1"># Convert results back to a pandas DataFrame for further analysis</span>
 <span class="n">expensive_df</span> <span class="o">=</span> <span class="n">convert_store_table_to_dataframe</span><span class="p">(</span><span class="s2">&quot;expensive_products&quot;</span><span class="p">,</span> <span class="n">store</span><span class="p">)</span>
@@ -3639,7 +3635,9 @@
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pyarrow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pyarrow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.pyarrow</span><span class="w"> </span><span class="kn">import</span> <span class="n">store_table</span>
 
@@ -3648,9 +3646,9 @@
 
 <span class="c1"># Create a PyArrow Table</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;2023-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-01-02&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-01-03&#39;</span><span class="p">]),</span>
-    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">]),</span>
-    <span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">])</span>
+    <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;2023-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-01-02&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-01-03&quot;</span><span class="p">]),</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">]),</span>
+    <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">]),</span>
 <span class="p">}</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_pydict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
@@ -3658,11 +3656,13 @@
 <span class="n">store_table</span><span class="p">(</span><span class="s2">&quot;time_series&quot;</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
 
 <span class="c1"># Query and retrieve data</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    SELECT date, SUM(value) as total_value</span>
-<span class="s2">    FROM time_series</span>
-<span class="s2">    GROUP BY date</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SELECT date, SUM(value) as total_value</span>
+<span class="sd">    FROM time_series</span>
+<span class="sd">    GROUP BY date</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3699,7 +3699,9 @@
 <span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
-<span class="normal">32</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.native_python</span><span class="w"> </span><span class="kn">import</span> <span class="n">store_pylist</span>
 
 <span class="n">store</span> <span class="o">=</span> <span class="n">Store</span><span class="p">(</span><span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -3708,7 +3710,7 @@
 <span class="n">customers</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span><span class="s2">&quot;customer_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Acme Corp&quot;</span><span class="p">,</span> <span class="s2">&quot;segment&quot;</span><span class="p">:</span> <span class="s2">&quot;Enterprise&quot;</span><span class="p">},</span>
     <span class="p">{</span><span class="s2">&quot;customer_id&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Small Shop&quot;</span><span class="p">,</span> <span class="s2">&quot;segment&quot;</span><span class="p">:</span> <span class="s2">&quot;SMB&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;customer_id&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Tech Giant&quot;</span><span class="p">,</span> <span class="s2">&quot;segment&quot;</span><span class="p">:</span> <span class="s2">&quot;Enterprise&quot;</span><span class="p">}</span>
+    <span class="p">{</span><span class="s2">&quot;customer_id&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Tech Giant&quot;</span><span class="p">,</span> <span class="s2">&quot;segment&quot;</span><span class="p">:</span> <span class="s2">&quot;Enterprise&quot;</span><span class="p">},</span>
 <span class="p">]</span>
 <span class="n">store_pylist</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">,</span> <span class="n">customers</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">)</span>
 
@@ -3717,17 +3719,19 @@
     <span class="p">{</span><span class="s2">&quot;order_id&quot;</span><span class="p">:</span> <span class="mi">101</span><span class="p">,</span> <span class="s2">&quot;customer_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="mi">5000</span><span class="p">},</span>
     <span class="p">{</span><span class="s2">&quot;order_id&quot;</span><span class="p">:</span> <span class="mi">102</span><span class="p">,</span> <span class="s2">&quot;customer_id&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">},</span>
     <span class="p">{</span><span class="s2">&quot;order_id&quot;</span><span class="p">:</span> <span class="mi">103</span><span class="p">,</span> <span class="s2">&quot;customer_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="mi">7500</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;order_id&quot;</span><span class="p">:</span> <span class="mi">104</span><span class="p">,</span> <span class="s2">&quot;customer_id&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">}</span>
+    <span class="p">{</span><span class="s2">&quot;order_id&quot;</span><span class="p">:</span> <span class="mi">104</span><span class="p">,</span> <span class="s2">&quot;customer_id&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">},</span>
 <span class="p">]</span>
 <span class="n">store_pylist</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="n">orders</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">)</span>
 
 <span class="c1"># Join tables to analyze orders by customer segment</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    SELECT c.segment, COUNT(o.order_id) as order_count, SUM(o.amount) as total_revenue</span>
-<span class="s2">    FROM customers c</span>
-<span class="s2">    JOIN orders o ON c.customer_id = o.customer_id</span>
-<span class="s2">    GROUP BY c.segment</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_pylist</span><span class="p">()</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SELECT c.segment, COUNT(o.order_id) as order_count, SUM(o.amount) as total_revenue</span>
+<span class="sd">    FROM customers c</span>
+<span class="sd">    JOIN orders o ON c.customer_id = o.customer_id</span>
+<span class="sd">    GROUP BY c.segment</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to_pylist</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 <span class="c1"># &gt; [{&#39;segment&#39;: &#39;Enterprise&#39;, &#39;order_count&#39;: 3, &#39;total_revenue&#39;: 22500}, {&#39;segment&#39;: &#39;SMB&#39;, &#39;order_count&#39;: 1, &#39;total_revenue&#39;: 500}]</span>
@@ -3778,7 +3782,11 @@
 <span class="normal">40</span>
 <span class="normal">41</span>
 <span class="normal">42</span>
-<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.native_python</span><span class="w"> </span><span class="kn">import</span> <span class="n">store_pylist</span><span class="p">,</span> <span class="n">convert_table_as_pylist</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.csv</span><span class="w"> </span><span class="kn">import</span> <span class="n">store_csv_file</span><span class="p">,</span> <span class="n">convert_store_table_to_csv</span>
@@ -3791,28 +3799,32 @@
 <span class="n">store_csv_file</span><span class="p">(</span><span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="n">raw_data_path</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">)</span>
 
 <span class="c1"># 2. Clean and transform the data</span>
-<span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    CREATE TABLE cleaned_data AS</span>
-<span class="s2">    SELECT </span>
-<span class="s2">        id,</span>
-<span class="s2">        TRIM(name) as name,</span>
-<span class="s2">        UPPER(category) as category,</span>
-<span class="s2">        CASE WHEN value &lt; 0 THEN 0 ELSE value END as value</span>
-<span class="s2">    FROM raw_data</span>
-<span class="s2">    WHERE id IS NOT NULL</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CREATE TABLE cleaned_data AS</span>
+<span class="sd">    SELECT </span>
+<span class="sd">        id,</span>
+<span class="sd">        TRIM(name) as name,</span>
+<span class="sd">        UPPER(category) as category,</span>
+<span class="sd">        CASE WHEN value &lt; 0 THEN 0 ELSE value END as value</span>
+<span class="sd">    FROM raw_data</span>
+<span class="sd">    WHERE id IS NOT NULL</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
 
 <span class="c1"># 3. Aggregate the data</span>
-<span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    CREATE TABLE summary_data AS</span>
-<span class="s2">    SELECT</span>
-<span class="s2">        category,</span>
-<span class="s2">        COUNT(*) as count,</span>
-<span class="s2">        AVG(value) as avg_value,</span>
-<span class="s2">        SUM(value) as total_value</span>
-<span class="s2">    FROM cleaned_data</span>
-<span class="s2">    GROUP BY category</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CREATE TABLE summary_data AS</span>
+<span class="sd">    SELECT</span>
+<span class="sd">        category,</span>
+<span class="sd">        COUNT(*) as count,</span>
+<span class="sd">        AVG(value) as avg_value,</span>
+<span class="sd">        SUM(value) as total_value</span>
+<span class="sd">    FROM cleaned_data</span>
+<span class="sd">    GROUP BY category</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
 
 <span class="c1"># 4. Export the results</span>
 <span class="n">summary_data</span> <span class="o">=</span> <span class="n">convert_table_as_pylist</span><span class="p">(</span><span class="s2">&quot;summary_data&quot;</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">)</span>
@@ -3854,17 +3866,21 @@
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Clean and transform the data</span>
-<span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    CREATE TABLE cleaned_data AS</span>
-<span class="s2">    SELECT </span>
-<span class="s2">        id,</span>
-<span class="s2">        TRIM(name) as name,</span>
-<span class="s2">        UPPER(category) as category,</span>
-<span class="s2">        CASE WHEN value &lt; 0 THEN 0 ELSE value END as value</span>
-<span class="s2">    FROM raw_data</span>
-<span class="s2">    WHERE id IS NOT NULL</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Clean and transform the data</span>
+<span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CREATE TABLE cleaned_data AS</span>
+<span class="sd">    SELECT </span>
+<span class="sd">        id,</span>
+<span class="sd">        TRIM(name) as name,</span>
+<span class="sd">        UPPER(category) as category,</span>
+<span class="sd">        CASE WHEN value &lt; 0 THEN 0 ELSE value END as value</span>
+<span class="sd">    FROM raw_data</span>
+<span class="sd">    WHERE id IS NOT NULL</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Step 3: Aggregate data</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -3876,17 +3892,21 @@
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Aggregate the data</span>
-<span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    CREATE TABLE summary_data AS</span>
-<span class="s2">    SELECT</span>
-<span class="s2">        category,</span>
-<span class="s2">        COUNT(*) as count,</span>
-<span class="s2">        AVG(value) as avg_value,</span>
-<span class="s2">        SUM(value) as total_value</span>
-<span class="s2">    FROM cleaned_data</span>
-<span class="s2">    GROUP BY category</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Aggregate the data</span>
+<span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CREATE TABLE summary_data AS</span>
+<span class="sd">    SELECT</span>
+<span class="sd">        category,</span>
+<span class="sd">        COUNT(*) as count,</span>
+<span class="sd">        AVG(value) as avg_value,</span>
+<span class="sd">        SUM(value) as total_value</span>
+<span class="sd">    FROM cleaned_data</span>
+<span class="sd">    GROUP BY category</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Step 4: Export results</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -3931,7 +3951,8 @@
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
-<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Fresh store each time</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Fresh store each time</span>
 <span class="n">store</span> <span class="o">=</span> <span class="n">Store</span><span class="p">(</span><span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Persistent store at default location</span>
@@ -3939,6 +3960,7 @@
 
 <span class="c1"># Persistent store at custom location</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+
 <span class="n">custom_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/path/to/custom/location&quot;</span><span class="p">)</span>
 <span class="n">store</span> <span class="o">=</span> <span class="n">Store</span><span class="p">(</span><span class="n">store_location</span><span class="o">=</span><span class="n">custom_path</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3993,20 +4015,24 @@
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
-<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example of chunking data load</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example of chunking data load</span>
 <span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">10000</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">large_dataset</span><span class="p">),</span> <span class="n">chunk_size</span><span class="p">):</span>
-    <span class="n">chunk</span> <span class="o">=</span> <span class="n">large_dataset</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">chunk_size</span><span class="p">]</span>
+    <span class="n">chunk</span> <span class="o">=</span> <span class="n">large_dataset</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">chunk_size</span><span class="p">]</span>
     <span class="n">store_pylist</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;data_chunk_</span><span class="si">{</span><span class="n">i</span><span class="o">//</span><span class="n">chunk_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">chunk</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">)</span>
 
 <span class="c1"># Combine chunks with SQL</span>
-<span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    CREATE TABLE combined_data AS</span>
-<span class="s2">    SELECT * FROM data_chunk_0</span>
-<span class="s2">    UNION ALL</span>
-<span class="s2">    SELECT * FROM data_chunk_1</span>
-<span class="s2">    -- Add more chunks as needed</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">store</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CREATE TABLE combined_data AS</span>
+<span class="sd">    SELECT * FROM data_chunk_0</span>
+<span class="sd">    UNION ALL</span>
+<span class="sd">    SELECT * FROM data_chunk_1</span>
+<span class="sd">    -- Add more chunks as needed</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="integration-with-cosmotech-ecosystem">Integration with CosmoTech ecosystem<a class="headerlink" href="#integration-with-cosmotech-ecosystem" title="Permanent link">&para;</a></h2>
 <p>The datastore is designed to work seamlessly with other components of the CosmoTech Acceleration Library:</p>

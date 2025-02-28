@@ -1,13 +1,12 @@
 import os
 
 import mkdocs_gen_files
-from griffe.dataclasses import Alias
-from griffe.dataclasses import Module
+from griffe import Alias
+from griffe import Module
 
-pyhand = mkdocs_gen_files.config['plugins']['mkdocstrings'].get_handler('python')
+pyhand = mkdocs_gen_files.config['plugins']['mkdocstrings'].handlers.get_handler("python")
 module_name = 'cosmotech.coal'
-
-griffed_module = pyhand.collect(module_name, {})
+griffed_module = pyhand.collect(module_name, pyhand.get_options({}))
 
 
 def yield_module_member(module: Module) -> list[bool, str]:

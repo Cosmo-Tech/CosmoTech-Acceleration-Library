@@ -1038,6 +1038,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cosmotech.coal.azure.adx.wrapper.ADXQueriesWrapper._clear_ingestion_status_queues" class="md-nav__link">
+    <span class="md-ellipsis">
+      _clear_ingestion_status_queues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cosmotech.coal.azure.adx.wrapper.ADXQueriesWrapper.check_ingestion_status" class="md-nav__link">
     <span class="md-ellipsis">
       check_ingestion_status
@@ -3164,6 +3173,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cosmotech.coal.azure.adx.wrapper.ADXQueriesWrapper._clear_ingestion_status_queues" class="md-nav__link">
+    <span class="md-ellipsis">
+      _clear_ingestion_status_queues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cosmotech.coal.azure.adx.wrapper.ADXQueriesWrapper.check_ingestion_status" class="md-nav__link">
     <span class="md-ellipsis">
       check_ingestion_status
@@ -3272,8 +3290,13 @@
     <div class="doc doc-contents first">
 
 
-      <p>Wrapping class to ADX that uses modular functions from the adx package.
+        <p>Wrapping class to ADX that uses modular functions from the adx package.
 This class maintains backward compatibility with the original implementation.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>cosmotech/coal/azure/adx/wrapper.py</code></summary>
@@ -3440,11 +3463,7 @@ This class maintains backward compatibility with the original implementation.</p
 <span class="normal">186</span>
 <span class="normal">187</span>
 <span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ADXQueriesWrapper</span><span class="p">:</span>
+<span class="normal">189</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ADXQueriesWrapper</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wrapping class to ADX that uses modular functions from the adx package.</span>
 <span class="sd">    This class maintains backward compatibility with the original implementation.</span>
@@ -3476,7 +3495,7 @@ This class maintains backward compatibility with the original implementation.</p
         <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">database</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">900</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">type_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key_example_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">type_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key_example_value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Map Python types to ADX types.</span>
 
@@ -3495,7 +3514,7 @@ This class maintains backward compatibility with the original implementation.</p
         <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">ignore_table_creation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">drop_by_tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send a list of dictionaries to an ADX table.</span>
 
@@ -3518,7 +3537,7 @@ This class maintains backward compatibility with the original implementation.</p
             <span class="n">drop_by_tag</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">ingest_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">drop_by_tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ingest_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">drop_by_tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Ingest a pandas DataFrame into an ADX table.</span>
 
@@ -3530,9 +3549,7 @@ This class maintains backward compatibility with the original implementation.</p
 <span class="sd">        Returns:</span>
 <span class="sd">            The ingestion result with source_id for status tracking</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">ingest_dataframe</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ingest_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">drop_by_tag</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ingest_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ingest_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">drop_by_tag</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">check_ingestion_status</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">source_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">logs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
@@ -3548,9 +3565,7 @@ This class maintains backward compatibility with the original implementation.</p
 <span class="sd">        Returns:</span>
 <span class="sd">            Iterator of (source_id, status) tuples</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">check_ingestion_status</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ingest_client</span><span class="p">,</span> <span class="n">source_ids</span><span class="p">,</span> <span class="n">timeout</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span> <span class="n">logs</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">check_ingestion_status</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ingest_client</span><span class="p">,</span> <span class="n">source_ids</span><span class="p">,</span> <span class="n">timeout</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span> <span class="n">logs</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_clear_ingestion_status_queues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">confirmation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -3564,7 +3579,7 @@ This class maintains backward compatibility with the original implementation.</p
 
         <span class="n">clear_ingestion_status_queues</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ingest_client</span><span class="p">,</span> <span class="n">confirmation</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">run_command_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_command_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;KustoResponseDataSet&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Execute a command query on the database.</span>
 
@@ -3576,7 +3591,7 @@ This class maintains backward compatibility with the original implementation.</p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">run_command_query</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kusto_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">run_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;KustoResponseDataSet&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Execute a simple query on the database.</span>
 
@@ -3638,92 +3653,13 @@ This class maintains backward compatibility with the original implementation.</p
 
     <div class="doc doc-contents ">
 
-      <p>Initialize the ADXQueriesWrapper.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>database</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the database</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>cluster_url</code></td>
-            <td>
-                  <code><span title="typing.Union">Union</span>[str, None]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The URL of the ADX cluster</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>ingest_url</code></td>
-            <td>
-                  <code><span title="typing.Union">Union</span>[str, None]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The ingestion URL of the ADX cluster</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>cluster_name</code></td>
-            <td>
-                  <code><span title="typing.Union">Union</span>[str, None]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the ADX cluster</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>cluster_region</code></td>
-            <td>
-                  <code><span title="typing.Union">Union</span>[str, None]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The region of the ADX cluster</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Initialize the ADXQueriesWrapper.</p>
+<p>Args:
+    database: The name of the database
+    cluster_url: The URL of the ADX cluster
+    ingest_url: The ingestion URL of the ADX cluster
+    cluster_name: The name of the ADX cluster
+    cluster_region: The region of the ADX cluster</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/azure/adx/wrapper.py</code></summary>
@@ -3785,6 +3721,51 @@ This class maintains backward compatibility with the original implementation.</p
 <div class="doc doc-object doc-function">
 
 
+<h3 id="cosmotech.coal.azure.adx.wrapper.ADXQueriesWrapper._clear_ingestion_status_queues" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_clear_ingestion_status_queues</span><span class="p">(</span><span class="n">confirmation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#cosmotech.coal.azure.adx.wrapper.ADXQueriesWrapper._clear_ingestion_status_queues" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Clear all data in the ingestion status queues.
+DANGEROUS: This will clear all queues for the entire ADX cluster.</p>
+<p>Args:
+    confirmation: Must be True to proceed with clearing</p>
+
+            <details class="quote">
+              <summary>Source code in <code>cosmotech/coal/azure/adx/wrapper.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_clear_ingestion_status_queues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">confirmation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clear all data in the ingestion status queues.</span>
+<span class="sd">    DANGEROUS: This will clear all queues for the entire ADX cluster.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        confirmation: Must be True to proceed with clearing</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.azure.adx.ingestion</span><span class="w"> </span><span class="kn">import</span> <span class="n">clear_ingestion_status_queues</span>
+
+    <span class="n">clear_ingestion_status_queues</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ingest_client</span><span class="p">,</span> <span class="n">confirmation</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="cosmotech.coal.azure.adx.wrapper.ADXQueriesWrapper.check_ingestion_status" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">check_ingestion_status</span><span class="p">(</span><span class="n">source_ids</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">logs</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
@@ -3793,91 +3774,19 @@ This class maintains backward compatibility with the original implementation.</p
 
     <div class="doc doc-contents ">
 
-      <p>Check the status of ingestion operations.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>source_ids</code></td>
-            <td>
-                  <code><span title="typing.List">List</span>[str]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>List of source IDs to check</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>timeout</code></td>
-            <td>
-                  <code>int</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Timeout in seconds (default: self.timeout)</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>logs</code></td>
-            <td>
-                  <code>bool</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Whether to log detailed information</p>
-              </div>
-            </td>
-            <td>
-                  <code>False</code>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="typing.Iterator">Iterator</span>[<span title="typing.Tuple">Tuple</span>[str, <a class="autorefs autorefs-internal" title="cosmotech.coal.azure.adx.ingestion.IngestionStatus" href="../ingestion/#cosmotech.coal.azure.adx.ingestion.IngestionStatus">IngestionStatus</a>]]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Iterator of (source_id, status) tuples</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Check the status of ingestion operations.</p>
+<p>Args:
+    source_ids: List of source IDs to check
+    timeout: Timeout in seconds (default: self.timeout)
+    logs: Whether to log detailed information</p>
+<p>Returns:
+    Iterator of (source_id, status) tuples</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/azure/adx/wrapper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">116</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
 <span class="normal">117</span>
 <span class="normal">118</span>
 <span class="normal">119</span>
@@ -3889,11 +3798,7 @@ This class maintains backward compatibility with the original implementation.</p
 <span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_ingestion_status</span><span class="p">(</span>
+<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_ingestion_status</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">source_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">logs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">IngestionStatus</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -3907,9 +3812,7 @@ This class maintains backward compatibility with the original implementation.</p
 <span class="sd">    Returns:</span>
 <span class="sd">        Iterator of (source_id, status) tuples</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">check_ingestion_status</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ingest_client</span><span class="p">,</span> <span class="n">source_ids</span><span class="p">,</span> <span class="n">timeout</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span> <span class="n">logs</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">check_ingestion_status</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ingest_client</span><span class="p">,</span> <span class="n">source_ids</span><span class="p">,</span> <span class="n">timeout</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span> <span class="n">logs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3927,88 +3830,27 @@ This class maintains backward compatibility with the original implementation.</p
 
     <div class="doc doc-contents ">
 
-      <p>Create a table in the database.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>table_name</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the table to create</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>schema</code></td>
-            <td>
-                  <code>dict</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Dictionary mapping column names to ADX types</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>bool</code></td>            <td>
-                  <code>bool</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>True if the table was created successfully, False otherwise</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Create a table in the database.</p>
+<p>Args:
+    table_name: The name of the table to create
+    schema: Dictionary mapping column names to ADX types</p>
+<p>Returns:
+    bool: True if the table was created successfully, False otherwise</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/azure/adx/wrapper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">182</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
 <span class="normal">183</span>
 <span class="normal">184</span>
 <span class="normal">185</span>
 <span class="normal">186</span>
 <span class="normal">187</span>
 <span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="normal">189</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a table in the database.</span>
 
@@ -4037,85 +3879,13 @@ This class maintains backward compatibility with the original implementation.</p
 
     <div class="doc doc-contents ">
 
-      <p>Ingest a pandas DataFrame into an ADX table.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>table_name</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the table</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>dataframe</code></td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The DataFrame to ingest</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>drop_by_tag</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Tag used for the drop by capacity of the Cosmotech API</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The ingestion result with source_id for status tracking</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Ingest a pandas DataFrame into an ADX table.</p>
+<p>Args:
+    table_name: The name of the table
+    dataframe: The DataFrame to ingest
+    drop_by_tag: Tag used for the drop by capacity of the Cosmotech API</p>
+<p>Returns:
+    The ingestion result with source_id for status tracking</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/azure/adx/wrapper.py</code></summary>
@@ -4131,9 +3901,7 @@ This class maintains backward compatibility with the original implementation.</p
 <span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">ingest_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">drop_by_tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="normal">112</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">ingest_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">drop_by_tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Ingest a pandas DataFrame into an ADX table.</span>
 
@@ -4145,9 +3913,7 @@ This class maintains backward compatibility with the original implementation.</p
 <span class="sd">    Returns:</span>
 <span class="sd">        The ingestion result with source_id for status tracking</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ingest_dataframe</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ingest_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">drop_by_tag</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">ingest_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ingest_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">,</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">drop_by_tag</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4165,72 +3931,25 @@ This class maintains backward compatibility with the original implementation.</p
 
     <div class="doc doc-contents ">
 
-      <p>Execute a command query on the database.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>query</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The query to execute</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>KustoResponseDataSet</code></td>            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The results of the query</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Execute a command query on the database.</p>
+<p>Args:
+    query: The query to execute</p>
+<p>Returns:
+    KustoResponseDataSet: The results of the query</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/azure/adx/wrapper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">146</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
 <span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_command_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="normal">152</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_command_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;KustoResponseDataSet&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Execute a command query on the database.</span>
 
@@ -4258,72 +3977,25 @@ This class maintains backward compatibility with the original implementation.</p
 
     <div class="doc doc-contents ">
 
-      <p>Execute a simple query on the database.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>query</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The query to execute</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>KustoResponseDataSet</code></td>            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The results of the query</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Execute a simple query on the database.</p>
+<p>Args:
+    query: The query to execute</p>
+<p>Returns:
+    KustoResponseDataSet: The results of the query</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/azure/adx/wrapper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">158</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
 <span class="normal">159</span>
 <span class="normal">160</span>
 <span class="normal">161</span>
 <span class="normal">162</span>
 <span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="normal">164</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;KustoResponseDataSet&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Execute a simple query on the database.</span>
 
@@ -4351,100 +4023,14 @@ This class maintains backward compatibility with the original implementation.</p
 
     <div class="doc doc-contents ">
 
-      <p>Send a list of dictionaries to an ADX table.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>dict_list</code></td>
-            <td>
-                  <code>list</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The list of dictionaries to send</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>table_name</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the table</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>ignore_table_creation</code></td>
-            <td>
-                  <code>bool</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>If False, will create the table if it doesn't exist</p>
-              </div>
-            </td>
-            <td>
-                  <code>True</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>drop_by_tag</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Tag used for the drop by capacity of the Cosmotech API</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The ingestion result with source_id for status tracking</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Send a list of dictionaries to an ADX table.</p>
+<p>Args:
+    dict_list: The list of dictionaries to send
+    table_name: The name of the table
+    ignore_table_creation: If False, will create the table if it doesn't exist
+    drop_by_tag: Tag used for the drop by capacity of the Cosmotech API</p>
+<p>Returns:
+    The ingestion result with source_id for status tracking</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/azure/adx/wrapper.py</code></summary>
@@ -4481,7 +4067,7 @@ This class maintains backward compatibility with the original implementation.</p
     <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">ignore_table_creation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">drop_by_tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">):</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Send a list of dictionaries to an ADX table.</span>
 
@@ -4520,73 +4106,25 @@ This class maintains backward compatibility with the original implementation.</p
 
     <div class="doc doc-contents ">
 
-      <p>Check if a table exists in the database.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>table_name</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the table to check</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>bool</code></td>            <td>
-                  <code>bool</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>True if the table exists, False otherwise</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Check if a table exists in the database.</p>
+<p>Args:
+    table_name: The name of the table to check</p>
+<p>Returns:
+    bool: True if the table exists, False otherwise</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/azure/adx/wrapper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">170</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
 <span class="normal">171</span>
 <span class="normal">172</span>
 <span class="normal">173</span>
 <span class="normal">174</span>
 <span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">table_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="normal">176</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">table_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if a table exists in the database.</span>
 
@@ -4614,72 +4152,12 @@ This class maintains backward compatibility with the original implementation.</p
 
     <div class="doc doc-contents ">
 
-      <p>Map Python types to ADX types.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>key</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the key</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>key_example_value</code></td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>A possible value of the key</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>str</code></td>            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the type used in ADX</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Map Python types to ADX types.</p>
+<p>Args:
+    key: The name of the key
+    key_example_value: A possible value of the key</p>
+<p>Returns:
+    str: The name of the type used in ADX</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/azure/adx/wrapper.py</code></summary>
@@ -4694,7 +4172,7 @@ This class maintains backward compatibility with the original implementation.</p
 <span class="normal">66</span>
 <span class="normal">67</span>
 <span class="normal">68</span>
-<span class="normal">69</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">type_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key_example_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">69</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">type_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key_example_value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Map Python types to ADX types.</span>
 

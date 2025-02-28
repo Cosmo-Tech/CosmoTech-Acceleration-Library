@@ -3146,6 +3146,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -3167,7 +3172,7 @@
 
     <div class="doc doc-contents ">
 
-      <p>Extract content from twin graph data.</p>
+        <p>Extract content from twin graph data.</p>
 <p>When restore_names is True, the "id" value inside the "properties" field in the cypher query response is used
 instead of the numerical id found in the "id" field. When restore_names is set to False, this function
 keeps the previous behavior implemented when adding support for twingraph in v2 (default: False)</p>
@@ -3185,86 +3190,12 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
     type: "NODE"
   }
 }]</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>nodes</code></td>
-            <td>
-                  <code><span title="typing.List">List</span>[<span title="typing.Dict">Dict</span>]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>List of node data from cypher query</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>relationships</code></td>
-            <td>
-                  <code><span title="typing.List">List</span>[<span title="typing.Dict">Dict</span>]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>List of relationship data from cypher query</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>restore_names</code></td>
-            <td>
-                  <code>bool</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Whether to use property ID instead of node ID</p>
-              </div>
-            </td>
-            <td>
-                  <code>False</code>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="typing.Dict">Dict</span>[str, <span title="typing.List">List</span>[<span title="typing.Dict">Dict</span>]]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Dict mapping entity types to lists of entities</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+<p>Args:
+    nodes: List of node data from cypher query
+    relationships: List of relationship data from cypher query
+    restore_names: Whether to use property ID instead of node ID</p>
+<p>Returns:
+    Dict mapping entity types to lists of entities</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/cosmotech_api/dataset/utils.py</code></summary>
@@ -3344,15 +3275,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 <span class="normal">87</span>
 <span class="normal">88</span>
 <span class="normal">89</span>
-<span class="normal">90</span>
-<span class="normal">91</span>
-<span class="normal">92</span>
-<span class="normal">93</span>
-<span class="normal">94</span>
-<span class="normal">95</span>
-<span class="normal">96</span>
-<span class="normal">97</span>
-<span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_content_from_twin_graph_data</span><span class="p">(</span>
+<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_content_from_twin_graph_data</span><span class="p">(</span>
     <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">relationships</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">restore_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -3403,9 +3326,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
     <span class="c1"># Process nodes</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">][</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
-        <span class="n">props</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">][</span>
-            <span class="s2">&quot;properties&quot;</span>
-        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># Create a copy to avoid modifying the original</span>
+        <span class="n">props</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># Create a copy to avoid modifying the original</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">restore_names</span><span class="p">:</span>
             <span class="n">props</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">]})</span>
         <span class="n">content</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">list</span><span class="p">())</span>
@@ -3416,9 +3337,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
         <span class="n">src</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]</span>
         <span class="n">dest</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;dest&quot;</span><span class="p">]</span>
         <span class="n">rel</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;rel&quot;</span><span class="p">]</span>
-        <span class="n">props</span> <span class="o">=</span> <span class="n">rel</span><span class="p">[</span>
-            <span class="s2">&quot;properties&quot;</span>
-        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># Create a copy to avoid modifying the original</span>
+        <span class="n">props</span> <span class="o">=</span> <span class="n">rel</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># Create a copy to avoid modifying the original</span>
         <span class="n">content</span><span class="p">[</span><span class="n">rel</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">{</span>
                 <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">rel</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
@@ -3430,11 +3349,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 
     <span class="c1"># Log the number of entities by type</span>
     <span class="k">for</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">entities</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-            <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.dataset.entity_count&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">entity_type</span><span class="o">=</span><span class="n">entity_type</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">entities</span><span class="p">)</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.dataset.entity_count&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entity_type</span><span class="o">=</span><span class="n">entity_type</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">entities</span><span class="p">)))</span>
 
     <span class="k">return</span> <span class="n">content</span>
 </code></pre></div></td></tr></table></div>
@@ -3454,63 +3369,23 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 
     <div class="doc doc-contents ">
 
-      <p>Extract header fields from sheet content.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>sheet_content</code></td>
-            <td>
-                  <code><span title="typing.List">List</span>[<span title="typing.Dict">Dict</span>]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>List of dictionaries representing sheet rows</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="typing.List">List</span>[str]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>List of field names with id, source, and target fields first if present</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Extract header fields from sheet content.</p>
+<p>Args:
+    sheet_content: List of dictionaries representing sheet rows</p>
+<p>Returns:
+    List of field names with id, source, and target fields first if present</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/cosmotech_api/dataset/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">101</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
 <span class="normal">102</span>
 <span class="normal">103</span>
 <span class="normal">104</span>
@@ -3541,17 +3416,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 <span class="normal">129</span>
 <span class="normal">130</span>
 <span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sheet_to_header</span><span class="p">(</span><span class="n">sheet_content</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="normal">132</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sheet_to_header</span><span class="p">(</span><span class="n">sheet_content</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract header fields from sheet content.</span>
 
@@ -3561,9 +3426,7 @@ keeps the previous behavior implemented when adding support for twingraph in v2 
 <span class="sd">    Returns:</span>
 <span class="sd">        List of field names with id, source, and target fields first if present</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-        <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.dataset.extracting_headers&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sheet_content</span><span class="p">))</span>
-    <span class="p">)</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.dataset.extracting_headers&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sheet_content</span><span class="p">)))</span>
 
     <span class="n">fieldnames</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">has_src</span> <span class="o">=</span> <span class="kc">False</span>

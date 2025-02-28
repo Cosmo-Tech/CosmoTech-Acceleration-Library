@@ -3098,6 +3098,11 @@
     <div class="doc doc-contents first">
 
 
+
+
+
+
+
               <details class="quote">
                 <summary>Source code in <code>cosmotech/coal/store/store.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span>
@@ -3161,21 +3166,7 @@
 <span class="normal">69</span>
 <span class="normal">70</span>
 <span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Store</span><span class="p">:</span>
+<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Store</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">sanitize_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">column_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
@@ -3183,9 +3174,7 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">reset</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">store_location</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CSM_PARAMETERS_ABSOLUTE_PATH&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
-        <span class="p">),</span>
+        <span class="n">store_location</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CSM_PARAMETERS_ABSOLUTE_PATH&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)),</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">store_location</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">store_location</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;.coal/store&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">store_location</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -3201,9 +3190,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyarrow</span><span class="o">.</span><span class="n">Table</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_exists</span><span class="p">(</span><span class="n">table_name</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.data.no_table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.data.no_table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;select * from </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">table_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -3211,23 +3198,15 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_table_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyarrow</span><span class="o">.</span><span class="n">Schema</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_exists</span><span class="p">(</span><span class="n">table_name</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.data.no_table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.data.no_table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">))</span>
         <span class="k">with</span> <span class="n">dbapi</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">adbc_get_table_schema</span><span class="p">(</span><span class="n">table_name</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">add_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">pyarrow</span><span class="o">.</span><span class="n">Table</span><span class="p">,</span> <span class="n">replace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="k">with</span> <span class="n">dbapi</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">,</span> <span class="n">autocommit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">curs</span><span class="p">:</span>
-                <span class="n">rows</span> <span class="o">=</span> <span class="n">curs</span><span class="o">.</span><span class="n">adbc_ingest</span><span class="p">(</span>
-                    <span class="n">table_name</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="s2">&quot;replace&quot;</span> <span class="k">if</span> <span class="n">replace</span> <span class="k">else</span> <span class="s2">&quot;create_append&quot;</span>
-                <span class="p">)</span>
-                <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                    <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.data_transfer.rows_inserted&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span>
-                    <span class="p">)</span>
-                <span class="p">)</span>
+                <span class="n">rows</span> <span class="o">=</span> <span class="n">curs</span><span class="o">.</span><span class="n">adbc_ingest</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="s2">&quot;replace&quot;</span> <span class="k">if</span> <span class="n">replace</span> <span class="k">else</span> <span class="s2">&quot;create_append&quot;</span><span class="p">)</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.data_transfer.rows_inserted&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">execute_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql_query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyarrow</span><span class="o">.</span><span class="n">Table</span><span class="p">:</span>
         <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1024</span>
@@ -3236,9 +3215,7 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">with</span> <span class="n">dbapi</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">,</span> <span class="n">autocommit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
                     <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">curs</span><span class="p">:</span>
-                        <span class="n">curs</span><span class="o">.</span><span class="n">adbc_statement</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span>
-                            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;adbc.sqlite.query.batch_rows&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)}</span>
-                        <span class="p">)</span>
+                        <span class="n">curs</span><span class="o">.</span><span class="n">adbc_statement</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s2">&quot;adbc.sqlite.query.batch_rows&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)})</span>
                         <span class="n">curs</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_query</span><span class="p">)</span>
                         <span class="k">return</span> <span class="n">curs</span><span class="o">.</span><span class="n">fetch_arrow_table</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>

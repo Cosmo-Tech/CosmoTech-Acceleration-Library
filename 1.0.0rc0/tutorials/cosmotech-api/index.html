@@ -3654,7 +3654,8 @@
 <span class="normal">59</span>
 <span class="normal">60</span>
 <span class="normal">61</span>
-<span class="normal">62</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Setting up connections to the CosmoTech API</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Setting up connections to the CosmoTech API</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_api_client</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
@@ -3669,6 +3670,7 @@
 
 <span class="c1"># Use the client with various API instances</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech_api.api.organization_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrganizationApi</span>
+
 <span class="n">org_api</span> <span class="o">=</span> <span class="n">OrganizationApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
 
 <span class="c1"># List organizations</span>
@@ -3817,11 +3819,7 @@
 <span class="normal">64</span>
 <span class="normal">65</span>
 <span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with workspaces in the CosmoTech API</span>
+<span class="normal">67</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with workspaces in the CosmoTech API</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_api_client</span>
@@ -3862,11 +3860,7 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">downloaded_file</span> <span class="o">=</span> <span class="n">download_workspace_file</span><span class="p">(</span>
-            <span class="n">api_client</span><span class="p">,</span> 
-            <span class="n">organization_id</span><span class="p">,</span> 
-            <span class="n">workspace_id</span><span class="p">,</span> 
-            <span class="n">file_to_download</span><span class="p">,</span> 
-            <span class="n">target_directory</span>
+            <span class="n">api_client</span><span class="p">,</span> <span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">file_to_download</span><span class="p">,</span> <span class="n">target_directory</span>
         <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloaded file to: </span><span class="si">{</span><span class="n">downloaded_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -3883,7 +3877,7 @@
             <span class="n">workspace_id</span><span class="p">,</span>
             <span class="n">file_to_upload</span><span class="p">,</span>
             <span class="n">workspace_destination</span><span class="p">,</span>
-            <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span>  <span class="c1"># Set to False to prevent overwriting existing files</span>
+            <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Set to False to prevent overwriting existing files</span>
         <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Uploaded file as: </span><span class="si">{</span><span class="n">uploaded_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -4745,9 +4739,7 @@
 <span class="normal">243</span>
 <span class="normal">244</span>
 <span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Complete workflow using the CosmoTech API</span>
+<span class="normal">246</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Complete workflow using the CosmoTech API</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
@@ -4872,7 +4864,7 @@
             <span class="n">workspace_id</span><span class="p">,</span>
             <span class="nb">str</span><span class="p">(</span><span class="n">processed_file</span><span class="p">),</span>
             <span class="s2">&quot;processed_data/&quot;</span><span class="p">,</span>  <span class="c1"># Destination in the workspace</span>
-            <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Uploaded processed file as: </span><span class="si">{</span><span class="n">uploaded_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -4964,13 +4956,11 @@
             <span class="s2">&quot;total_customers&quot;</span><span class="p">:</span> <span class="n">total_customers</span><span class="p">,</span>
             <span class="s2">&quot;average_age&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">avg_age</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
             <span class="s2">&quot;average_spending&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">avg_spending</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-            <span class="s2">&quot;average_loyalty_score&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">avg_loyalty</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="s2">&quot;average_loyalty_score&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">avg_loyalty</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
         <span class="p">},</span>
-        <span class="s2">&quot;top_customers&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span>
-            <span class="n">customers</span><span class="p">,</span> 
-            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;loyalty_score&quot;</span><span class="p">]),</span> 
-            <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>
-        <span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># Top 2 customers by loyalty score</span>
+        <span class="s2">&quot;top_customers&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">customers</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;loyalty_score&quot;</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span>
+            <span class="p">:</span><span class="mi">2</span>
+        <span class="p">],</span>  <span class="c1"># Top 2 customers by loyalty score</span>
     <span class="p">}</span>
 
     <span class="c1"># Write the report to a JSON file</span>

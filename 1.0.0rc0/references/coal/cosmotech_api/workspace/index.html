@@ -3164,6 +3164,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -3185,18 +3190,134 @@
 
     <div class="doc doc-contents ">
 
-      <p>Downloads a given file from a workspace to a given directory
-If the file is inside a directory in the workspace, sub-directories will be created.
-:param api_client: An api client used to connect to the Cosmo Tech API
-:param organization_id: An ID of an Organization in the Cosmo Tech API
-:param workspace_id: An ID of a Workspace in the Cosmo Tech API
-:param file_name: The file to download to the workspace
-:param target_dir: The directory in which to write the file
-:return: The path to the created file</p>
+        <p>Downloads a given file from a workspace to a given directory
+If the file is inside a directory in the workspace, sub-directories will be created.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>api_client</code>
+            </td>
+            <td>
+                  <code><span title="cosmotech_api.api_client.ApiClient">ApiClient</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An api client used to connect to the Cosmo Tech API</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>organization_id</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An ID of an Organization in the Cosmo Tech API</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>workspace_id</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An ID of a Workspace in the Cosmo Tech API</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>file_name</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The file to download to the workspace</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>target_dir</code>
+            </td>
+            <td>
+                  <code><span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The directory in which to write the file</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The path to the created file</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/cosmotech_api/workspace.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">50</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
@@ -3225,15 +3346,7 @@ If the file is inside a directory in the workspace, sub-directories will be crea
 <span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_workspace_file</span><span class="p">(</span>
+<span class="normal">79</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_workspace_file</span><span class="p">(</span>
     <span class="n">api_client</span><span class="p">:</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">api_client</span><span class="o">.</span><span class="n">ApiClient</span><span class="p">,</span>
     <span class="n">organization_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3251,16 +3364,12 @@ If the file is inside a directory in the workspace, sub-directories will be crea
 <span class="sd">    :return: The path to the created file</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">target_dir</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.file_system.not_directory&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.file_system.not_directory&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span><span class="p">))</span>
     <span class="n">api_ws</span> <span class="o">=</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">workspace_api</span><span class="o">.</span><span class="n">WorkspaceApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
 
     <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.workspace.loading_file&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">file_name</span><span class="p">))</span>
 
-    <span class="n">_file_content</span> <span class="o">=</span> <span class="n">api_ws</span><span class="o">.</span><span class="n">download_workspace_file</span><span class="p">(</span>
-        <span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">file_name</span>
-    <span class="p">)</span>
+    <span class="n">_file_content</span> <span class="o">=</span> <span class="n">api_ws</span><span class="o">.</span><span class="n">download_workspace_file</span><span class="p">(</span><span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
 
     <span class="n">local_target_file</span> <span class="o">=</span> <span class="n">target_dir</span> <span class="o">/</span> <span class="n">file_name</span>
     <span class="n">local_target_file</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -3288,12 +3397,109 @@ If the file is inside a directory in the workspace, sub-directories will be crea
 
     <div class="doc doc-contents ">
 
-      <p>Helper function to list all workspace files using a pre-given file prefix
-:param api_client: An api client used to connect to the Cosmo Tech API
-:param organization_id: An ID of an Organization in the Cosmo Tech API
-:param workspace_id: An ID of a Workspace in the Cosmo Tech API
-:param file_prefix: The prefix of the files to find in the Workspace
-:return: A list of existing files inside the workspace</p>
+        <p>Helper function to list all workspace files using a pre-given file prefix</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>api_client</code>
+            </td>
+            <td>
+                  <code><span title="cosmotech_api.api_client.ApiClient">ApiClient</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An api client used to connect to the Cosmo Tech API</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>organization_id</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An ID of an Organization in the Cosmo Tech API</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>workspace_id</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An ID of a Workspace in the Cosmo Tech API</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>file_prefix</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The prefix of the files to find in the Workspace</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="list">list</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A list of existing files inside the workspace</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/cosmotech_api/workspace.py</code></summary>
@@ -3325,11 +3531,7 @@ If the file is inside a directory in the workspace, sub-directories will be crea
 <span class="normal">40</span>
 <span class="normal">41</span>
 <span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">list_workspace_files</span><span class="p">(</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">list_workspace_files</span><span class="p">(</span>
     <span class="n">api_client</span><span class="p">:</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">api_client</span><span class="o">.</span><span class="n">ApiClient</span><span class="p">,</span>
     <span class="n">organization_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3352,13 +3554,9 @@ If the file is inside a directory in the workspace, sub-directories will be crea
             <span class="n">target_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">workspace_file</span><span class="o">.</span><span class="n">file_name</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">target_list</span><span class="p">:</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.data.no_workspace_files&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_prefix</span><span class="o">=</span><span class="n">file_prefix</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.data.no_workspace_files&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_prefix</span><span class="o">=</span><span class="n">file_prefix</span><span class="p">))</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.data.no_workspace_files&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">file_prefix</span><span class="o">=</span><span class="n">file_prefix</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">workspace_id</span>
-            <span class="p">)</span>
+            <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.data.no_workspace_files&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_prefix</span><span class="o">=</span><span class="n">file_prefix</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">workspace_id</span><span class="p">)</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">target_list</span>
@@ -3379,20 +3577,155 @@ If the file is inside a directory in the workspace, sub-directories will be crea
 
     <div class="doc doc-contents ">
 
-      <p>Upload a local file to a given workspace</p>
+        <p>Upload a local file to a given workspace</p>
 <p>If workspace_path ends with a "/" it will be considered as a folder inside the workspace
 and the file will keep its current name</p>
-<p>:param api_client: An api client used to connect to the Cosmo Tech API
-:param organization_id: An ID of an Organization in the Cosmo Tech API
-:param workspace_id: An ID of a Workspace in the Cosmo Tech API
-:param file_path: Path to the file to upload in the workspace
-:param workspace_path: The path inside the workspace to upload the file to
-:param overwrite: Overwrite existing file in the workspace
-:return: The final name of the file uploaded to the workspace</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>api_client</code>
+            </td>
+            <td>
+                  <code><span title="cosmotech_api.api_client.ApiClient">ApiClient</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An api client used to connect to the Cosmo Tech API</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>organization_id</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An ID of an Organization in the Cosmo Tech API</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>workspace_id</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An ID of a Workspace in the Cosmo Tech API</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>file_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the file to upload in the workspace</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>workspace_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The path inside the workspace to upload the file to</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>overwrite</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Overwrite existing file in the workspace</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The final name of the file uploaded to the workspace</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/cosmotech_api/workspace.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 90</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
 <span class="normal"> 91</span>
 <span class="normal"> 92</span>
 <span class="normal"> 93</span>
@@ -3427,29 +3760,7 @@ and the file will keep its current name</p>
 <span class="normal">122</span>
 <span class="normal">123</span>
 <span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">upload_workspace_file</span><span class="p">(</span>
+<span class="normal">125</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">upload_workspace_file</span><span class="p">(</span>
     <span class="n">api_client</span><span class="p">:</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">api_client</span><span class="o">.</span><span class="n">ApiClient</span><span class="p">,</span>
     <span class="n">organization_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3473,26 +3784,14 @@ and the file will keep its current name</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">target_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">target_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.file_system.file_not_exists&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.file_system.file_not_exists&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.file_system.file_not_exists&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.file_system.file_not_exists&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">))</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">target_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.file_system.not_single_file&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.file_system.not_single_file&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.file_system.not_single_file&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.file_system.not_single_file&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">))</span>
 
     <span class="n">api_ws</span> <span class="o">=</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">workspace_api</span><span class="o">.</span><span class="n">WorkspaceApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
-    <span class="n">destination</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">workspace_path</span> <span class="o">+</span> <span class="n">target_file</span><span class="o">.</span><span class="n">name</span>
-        <span class="k">if</span> <span class="n">workspace_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
-        <span class="k">else</span> <span class="n">workspace_path</span>
-    <span class="p">)</span>
+    <span class="n">destination</span> <span class="o">=</span> <span class="n">workspace_path</span> <span class="o">+</span> <span class="n">target_file</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">workspace_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">workspace_path</span>
 
     <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.workspace.sending_to_api&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">destination</span><span class="o">=</span><span class="n">destination</span><span class="p">))</span>
     <span class="k">try</span><span class="p">:</span>
@@ -3500,9 +3799,7 @@ and the file will keep its current name</p>
             <span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">destination</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ApiException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.file_system.file_exists&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">csv_path</span><span class="o">=</span><span class="n">destination</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.errors.file_system.file_exists&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">csv_path</span><span class="o">=</span><span class="n">destination</span><span class="p">))</span>
         <span class="k">raise</span> <span class="n">e</span>
 
     <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.workspace.file_sent&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">_file</span><span class="o">.</span><span class="n">file_name</span><span class="p">))</span>

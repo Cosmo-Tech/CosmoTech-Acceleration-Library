@@ -3146,6 +3146,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -3167,91 +3172,21 @@
 
     <div class="doc doc-contents ">
 
-      <p>Execute a command query on the database.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>client</code></td>
-            <td>
-                  <code><span title="azure.kusto.data.KustoClient">KustoClient</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The KustoClient to use</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>database</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the database</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>query</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The query to execute</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>KustoResponseDataSet</code></td>            <td>
-                  <code><span title="azure.kusto.data.response.KustoResponseDataSet">KustoResponseDataSet</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The results of the query</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Execute a command query on the database.</p>
+<p>Args:
+    client: The KustoClient to use
+    database: The name of the database
+    query: The query to execute</p>
+<p>Returns:
+    KustoResponseDataSet: The results of the query</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/azure/adx/query.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">41</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span>
@@ -3264,17 +3199,7 @@
 <span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_command_query</span><span class="p">(</span>
-    <span class="n">client</span><span class="p">:</span> <span class="n">KustoClient</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KustoResponseDataSet</span><span class="p">:</span>
+<span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_command_query</span><span class="p">(</span><span class="n">client</span><span class="p">:</span> <span class="n">KustoClient</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KustoResponseDataSet</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Execute a command query on the database.</span>
 
@@ -3286,9 +3211,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        KustoResponseDataSet: The results of the query</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-        <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.running_command&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
-    <span class="p">)</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.running_command&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">))</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">execute_mgmt</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
     <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.command_complete&quot;</span><span class="p">))</span>
@@ -3311,87 +3234,13 @@
 
     <div class="doc doc-contents ">
 
-      <p>Execute a simple query on the database.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>client</code></td>
-            <td>
-                  <code><span title="azure.kusto.data.KustoClient">KustoClient</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The KustoClient to use</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>database</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The name of the database</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>query</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The query to execute</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>KustoResponseDataSet</code></td>            <td>
-                  <code><span title="azure.kusto.data.response.KustoResponseDataSet">KustoResponseDataSet</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The results of the query</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Execute a simple query on the database.</p>
+<p>Args:
+    client: The KustoClient to use
+    database: The name of the database
+    query: The query to execute</p>
+<p>Returns:
+    KustoResponseDataSet: The results of the query</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/azure/adx/query.py</code></summary>
@@ -3414,11 +3263,7 @@
 <span class="normal">31</span>
 <span class="normal">32</span>
 <span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_query</span><span class="p">(</span><span class="n">client</span><span class="p">:</span> <span class="n">KustoClient</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KustoResponseDataSet</span><span class="p">:</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_query</span><span class="p">(</span><span class="n">client</span><span class="p">:</span> <span class="n">KustoClient</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KustoResponseDataSet</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Execute a simple query on the database.</span>
 
@@ -3430,15 +3275,11 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        KustoResponseDataSet: The results of the query</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-        <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.running_query&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
-    <span class="p">)</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.running_query&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">))</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
     <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-        <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.query_complete&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">rows</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">primary_results</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">primary_results</span> <span class="k">else</span> <span class="mi">0</span>
-        <span class="p">)</span>
+        <span class="n">T</span><span class="p">(</span><span class="s2">&quot;coal.logs.adx.query_complete&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">primary_results</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">primary_results</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">result</span>

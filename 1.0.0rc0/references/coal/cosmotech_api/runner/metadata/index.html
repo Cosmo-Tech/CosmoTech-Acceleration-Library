@@ -3126,7 +3126,12 @@
 
     <div class="doc doc-contents first">
 
-      <p>Runner metadata retrieval functions.</p>
+        <p>Runner metadata retrieval functions.</p>
+
+
+
+
+
 
 
 
@@ -3151,129 +3156,16 @@
 
     <div class="doc doc-contents ">
 
-      <p>Get runner metadata from the API.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td><code>api_client</code></td>
-            <td>
-                  <code><span title="cosmotech_api.api_client.ApiClient">ApiClient</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The API client to use</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>organization_id</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The ID of the organization</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>workspace_id</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The ID of the workspace</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>runner_id</code></td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The ID of the runner</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>include</code></td>
-            <td>
-                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Optional list of fields to include</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>exclude</code></td>
-            <td>
-                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Optional list of fields to exclude</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code>dict[str, <span title="typing.Any">Any</span>]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Dictionary with runner metadata</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Get runner metadata from the API.</p>
+<p>Args:
+    api_client: The API client to use
+    organization_id: The ID of the organization
+    workspace_id: The ID of the workspace
+    runner_id: The ID of the runner
+    include: Optional list of fields to include
+    exclude: Optional list of fields to exclude</p>
+<p>Returns:
+    Dictionary with runner metadata</p>
 
             <details class="quote">
               <summary>Source code in <code>cosmotech/coal/cosmotech_api/runner/metadata.py</code></summary>
@@ -3302,11 +3194,7 @@
 <span class="normal">39</span>
 <span class="normal">40</span>
 <span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_runner_metadata</span><span class="p">(</span>
+<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_runner_metadata</span><span class="p">(</span>
     <span class="n">api_client</span><span class="p">:</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">api_client</span><span class="o">.</span><span class="n">ApiClient</span><span class="p">,</span>
     <span class="n">organization_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3329,13 +3217,9 @@
 <span class="sd">        Dictionary with runner metadata</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">runner_api</span> <span class="o">=</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">RunnerApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
-    <span class="n">runner</span><span class="p">:</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">Runner</span> <span class="o">=</span> <span class="n">runner_api</span><span class="o">.</span><span class="n">get_runner</span><span class="p">(</span>
-        <span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">runner_id</span>
-    <span class="p">)</span>
+    <span class="n">runner</span><span class="p">:</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">Runner</span> <span class="o">=</span> <span class="n">runner_api</span><span class="o">.</span><span class="n">get_runner</span><span class="p">(</span><span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">runner_id</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">runner</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span>
-        <span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;json&quot;</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">runner</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
