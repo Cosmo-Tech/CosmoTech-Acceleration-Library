@@ -8,8 +8,8 @@ Black is configured in the `pyproject.toml` file with the following settings:
 
 ```toml
 [tool.black]
-line-length = 88
-target-version = ["py38"]
+line-length = 120
+target-version = ["py311"]
 include = '\.pyi?$'
 exclude = '''
 /(
