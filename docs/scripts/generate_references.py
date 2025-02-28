@@ -6,7 +6,6 @@ from griffe import Module
 
 pyhand = mkdocs_gen_files.config['plugins']['mkdocstrings'].handlers.get_handler("python")
 module_name = 'cosmotech.coal'
-
 griffed_module = pyhand.collect(module_name, pyhand.get_options({}))
 
 

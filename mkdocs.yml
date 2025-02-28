@@ -104,7 +104,6 @@ plugins:
       default_handler: python
       handlers:
         python:
-          paths: [cosmotech]
           options:
             docstring_style: sphinx
             line_length: 120
