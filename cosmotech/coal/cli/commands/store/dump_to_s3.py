@@ -26,68 +26,85 @@ VALID_TYPES = (
 
 
 @click.command()
-@click.option("--store-folder",
-              envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              help=T("coal-help.commands.store.dump_to_s3.parameters.store_folder"),
-              metavar="PATH",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--output-type",
-              default="sqlite",
-              help=T("coal-help.commands.store.dump_to_s3.parameters.output_type"),
-              type=click.Choice(VALID_TYPES,
-                                case_sensitive=False))
-@click.option("--bucket-name",
-              envvar="CSM_DATA_BUCKET_NAME",
-              help=T("coal-help.commands.store.dump_to_s3.parameters.bucket_name"),
-              metavar="BUCKET",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--prefix",
-              "file_prefix",
-              envvar="CSM_DATA_BUCKET_PREFIX",
-              help=T("coal-help.commands.store.dump_to_s3.parameters.prefix"),
-              metavar="PREFIX",
-              type=str,
-              show_envvar=True,
-              default="")
-@click.option("--use-ssl/--no-ssl",
-              default=True,
-              help=T("coal-help.commands.store.dump_to_s3.parameters.use_ssl"),
-              type=bool,
-              is_flag=True)
-@click.option("--s3-url",
-              "endpoint_url",
-              help=T("coal-help.commands.store.dump_to_s3.parameters.s3_url"),
-              type=str,
-              required=True,
-              show_envvar=True,
-              metavar="URL",
-              envvar="AWS_ENDPOINT_URL")
-@click.option("--access-id",
-              "access_id",
-              help=T("coal-help.commands.store.dump_to_s3.parameters.access_id"),
-              type=str,
-              required=True,
-              show_envvar=True,
-              metavar="ID",
-              envvar="AWS_ACCESS_KEY_ID")
-@click.option("--secret-key",
-              "secret_key",
-              help=T("coal-help.commands.store.dump_to_s3.parameters.secret_key"),
-              type=str,
-              required=True,
-              show_envvar=True,
-              metavar="ID",
-              envvar="AWS_SECRET_ACCESS_KEY")
-@click.option("--ssl-cert-bundle",
-              help=T("coal-help.commands.store.dump_to_s3.parameters.ssl_cert_bundle"),
-              type=str,
-              show_envvar=True,
-              metavar="PATH",
-              envvar="CSM_S3_CA_BUNDLE")
+@click.option(
+    "--store-folder",
+    envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
+    help=T("coal-help.commands.store.dump_to_s3.parameters.store_folder"),
+    metavar="PATH",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--output-type",
+    default="sqlite",
+    help=T("coal-help.commands.store.dump_to_s3.parameters.output_type"),
+    type=click.Choice(VALID_TYPES, case_sensitive=False),
+)
+@click.option(
+    "--bucket-name",
+    envvar="CSM_DATA_BUCKET_NAME",
+    help=T("coal-help.commands.store.dump_to_s3.parameters.bucket_name"),
+    metavar="BUCKET",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--prefix",
+    "file_prefix",
+    envvar="CSM_DATA_BUCKET_PREFIX",
+    help=T("coal-help.commands.store.dump_to_s3.parameters.prefix"),
+    metavar="PREFIX",
+    type=str,
+    show_envvar=True,
+    default="",
+)
+@click.option(
+    "--use-ssl/--no-ssl",
+    default=True,
+    help=T("coal-help.commands.store.dump_to_s3.parameters.use_ssl"),
+    type=bool,
+    is_flag=True,
+)
+@click.option(
+    "--s3-url",
+    "endpoint_url",
+    help=T("coal-help.commands.store.dump_to_s3.parameters.s3_url"),
+    type=str,
+    required=True,
+    show_envvar=True,
+    metavar="URL",
+    envvar="AWS_ENDPOINT_URL",
+)
+@click.option(
+    "--access-id",
+    "access_id",
+    help=T("coal-help.commands.store.dump_to_s3.parameters.access_id"),
+    type=str,
+    required=True,
+    show_envvar=True,
+    metavar="ID",
+    envvar="AWS_ACCESS_KEY_ID",
+)
+@click.option(
+    "--secret-key",
+    "secret_key",
+    help=T("coal-help.commands.store.dump_to_s3.parameters.secret_key"),
+    type=str,
+    required=True,
+    show_envvar=True,
+    metavar="ID",
+    envvar="AWS_SECRET_ACCESS_KEY",
+)
+@click.option(
+    "--ssl-cert-bundle",
+    help=T("coal-help.commands.store.dump_to_s3.parameters.ssl_cert_bundle"),
+    type=str,
+    show_envvar=True,
+    metavar="PATH",
+    envvar="CSM_S3_CA_BUNDLE",
+)
 @web_help("csm-data/store/dump-to-s3")
 @translate_help("coal-help.commands.store.dump_to_s3.description")
 def dump_to_s3(
@@ -99,13 +116,17 @@ def dump_to_s3(
     output_type: str,
     file_prefix: str = "",
     use_ssl: bool = True,
-    ssl_cert_bundle: Optional[str] = None
+    ssl_cert_bundle: Optional[str] = None,
 ):
     _s = Store(store_location=store_folder)
 
     if output_type not in VALID_TYPES:
-        LOGGER.error(T("coal.errors.data.invalid_output_type").format(output_type=output_type))
-        raise ValueError(T("coal.errors.data.invalid_output_type").format(output_type=output_type))
+        LOGGER.error(
+            T("coal.errors.data.invalid_output_type").format(output_type=output_type)
+        )
+        raise ValueError(
+            T("coal.errors.data.invalid_output_type").format(output_type=output_type)
+        )
 
     boto3_parameters = {
         "use_ssl": use_ssl,
@@ -131,7 +152,11 @@ def dump_to_s3(
         _file_path = _s._database_path
         _file_name = "db.sqlite"
         _uploaded_file_name = file_prefix + _file_name
-        LOGGER.info(T("coal.logs.data_transfer.file_sent").format(file_path=_file_path, uploaded_name=_uploaded_file_name))
+        LOGGER.info(
+            T("coal.logs.data_transfer.file_sent").format(
+                file_path=_file_path, uploaded_name=_uploaded_file_name
+            )
+        )
         s3_client.upload_file(_file_path, bucket_name, _uploaded_file_name)
     else:
         tables = list(_s.list_tables())
@@ -140,7 +165,11 @@ def dump_to_s3(
             _file_name = None
             _data = _s.get_table(table_name)
             if not len(_data):
-                LOGGER.info(T("coal.logs.data_transfer.table_empty").format(table_name=table_name))
+                LOGGER.info(
+                    T("coal.logs.data_transfer.table_empty").format(
+                        table_name=table_name
+                    )
+                )
                 continue
             if output_type == "csv":
                 _file_name = table_name + ".csv"
@@ -148,5 +177,9 @@ def dump_to_s3(
             elif output_type == "parquet":
                 _file_name = table_name + ".parquet"
                 pq.write_table(_data, _data_stream)
-            LOGGER.info(T("coal.logs.data_transfer.sending_table").format(table_name=table_name, output_type=output_type))
+            LOGGER.info(
+                T("coal.logs.data_transfer.sending_table").format(
+                    table_name=table_name, output_type=output_type
+                )
+            )
             data_upload(_data_stream, _file_name)

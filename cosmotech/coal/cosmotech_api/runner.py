@@ -18,7 +18,7 @@ warnings.warn(
     "Direct imports from cosmotech.coal.cosmotech_api.runner.py are deprecated. "
     "Please import from cosmotech.coal.cosmotech_api.runner package instead.",
     DeprecationWarning,
-    stacklevel=2
+    stacklevel=2,
 )
 
 # Re-export from the runner package

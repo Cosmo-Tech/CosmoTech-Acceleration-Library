@@ -15,19 +15,20 @@ from cosmotech.orchestrator.utils.translate import T
 def type_mapping(key: str, key_example_value: Any) -> str:
     """
     Map Python types to ADX types.
-    
+
     Args:
         key: The name of the key
         key_example_value: A possible value of the key
-        
+
     Returns:
         str: The name of the type used in ADX
     """
-    LOGGER.debug(T("coal.logs.adx.mapping_type").format(
-        key=key,
-        value_type=type(key_example_value).__name__
-    ))
-    
+    LOGGER.debug(
+        T("coal.logs.adx.mapping_type").format(
+            key=key, value_type=type(key_example_value).__name__
+        )
+    )
+
     if key == "SimulationRun":
         return "guid"
 

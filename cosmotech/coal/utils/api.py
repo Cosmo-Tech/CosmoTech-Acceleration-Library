@@ -34,9 +34,11 @@ def read_solution_file(solution_file) -> Optional[Solution]:
     with solution_path.open() as _sf:
         solution_content = open_function(_sf)
     LOGGER.info(T("coal.solution.loaded").format(path=solution_path.absolute()))
-    _solution = Solution(_configuration=cosmotech_api.Configuration(),
-                         _spec_property_naming=True,
-                         **solution_content)
+    _solution = Solution(
+        _configuration=cosmotech_api.Configuration(),
+        _spec_property_naming=True,
+        **solution_content,
+    )
     LOGGER.debug(json.dumps(_solution.to_dict(), indent=2, default=str))
     return _solution
 
@@ -48,16 +50,21 @@ def get_solution(organization_id, workspace_id) -> Optional[Solution]:
 
         LOGGER.info(T("coal.solution.loading_workspace"))
         try:
-            r_data: Workspace = api_w.find_workspace_by_id(organization_id=organization_id, workspace_id=workspace_id)
+            r_data: Workspace = api_w.find_workspace_by_id(
+                organization_id=organization_id, workspace_id=workspace_id
+            )
         except ServiceException as e:
-            LOGGER.error(T("coal.errors.workspace.not_found").format(
-                workspace_id=workspace_id,
-                organization_id=organization_id
-            ))
+            LOGGER.error(
+                T("coal.errors.workspace.not_found").format(
+                    workspace_id=workspace_id, organization_id=organization_id
+                )
+            )
             LOGGER.debug(e.body)
             return None
         solution_id = r_data.solution.solution_id
 
         api_sol = SolutionApi(api_client)
-        sol: Solution = api_sol.find_solution_by_id(organization_id=organization_id, solution_id=solution_id)
+        sol: Solution = api_sol.find_solution_by_id(
+            organization_id=organization_id, solution_id=solution_id
+        )
     return sol

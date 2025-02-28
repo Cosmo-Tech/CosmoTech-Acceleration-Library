@@ -19,6 +19,26 @@ requires = ["setuptools", "wheel"]
 pythonpath = ["."]
 addopts = "--cov-report term-missing:skip-covered --cov=CosmoTech_Acceleration_Library"
 
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | generated
+  | __pycache__
+)/
+'''
+
 [tool.setuptools]
 include-package-data = true
 package-data."*" = [

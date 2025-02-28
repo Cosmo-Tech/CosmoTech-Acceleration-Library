@@ -7,6 +7,11 @@
 
 from cosmotech.coal.azure.adx.auth import create_kusto_client, create_ingest_client
 from cosmotech.coal.azure.adx.query import run_query, run_command_query
-from cosmotech.coal.azure.adx.ingestion import ingest_dataframe, send_to_adx, check_ingestion_status, IngestionStatus
+from cosmotech.coal.azure.adx.ingestion import (
+    ingest_dataframe,
+    send_to_adx,
+    check_ingestion_status,
+    IngestionStatus,
+)
 from cosmotech.coal.azure.adx.tables import table_exists, create_table
 from cosmotech.coal.azure.adx.utils import type_mapping

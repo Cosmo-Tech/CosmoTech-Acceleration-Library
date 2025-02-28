@@ -17,7 +17,7 @@ from typing import Dict, Any, Optional
 
 from cosmotech.coal.cosmotech_api.runner.download import (
     download_run_data as download_run_data_func,
-    download_runner_data as download_runner_data_func
+    download_runner_data as download_runner_data_func,
 )
 
 
@@ -31,14 +31,14 @@ def download_scenario_data(
     parallel: bool = True,
     write_json: bool = False,
     write_csv: bool = True,
-    fetch_dataset: bool = True
+    fetch_dataset: bool = True,
 ) -> Dict[str, Any]:
     """
     Download all scenario data including datasets and parameters.
-    
+
     This function is deprecated and will be removed in a future version.
     Please use download_run_data from cosmotech.coal.cosmotech_api.runner.download instead.
-    
+
     Args:
         organization_id: Organization ID
         workspace_id: Workspace ID
@@ -50,7 +50,7 @@ def download_scenario_data(
         write_json: Whether to write parameters as JSON
         write_csv: Whether to write parameters as CSV
         fetch_dataset: Whether to fetch datasets
-        
+
     Returns:
         Dictionary with scenario data, datasets, and parameters
     """
@@ -58,7 +58,7 @@ def download_scenario_data(
         "download_scenario_data is deprecated and will be removed in a future version. "
         "Please use download_run_data from cosmotech.coal.cosmotech_api.runner.download instead.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     result = download_run_data_func(
         organization_id=organization_id,
@@ -70,11 +70,11 @@ def download_scenario_data(
         parallel=parallel,
         write_json=write_json,
         write_csv=write_csv,
-        fetch_dataset=fetch_dataset
+        fetch_dataset=fetch_dataset,
     )
-    
+
     # Rename runner_data to scenario_data for backward compatibility
     if "runner_data" in result:
         result["scenario_data"] = result.pop("runner_data")
-    
+
     return result

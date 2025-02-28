@@ -18,7 +18,7 @@ warnings.warn(
     "The cosmotech.coal.dataset module is deprecated and will be removed in a future version. "
     "Please use the cosmotech.coal.cosmotech_api.dataset module instead.",
     DeprecationWarning,
-    stacklevel=2
+    stacklevel=2,
 )
 
 # Re-export all functions from the new module
@@ -32,5 +32,5 @@ from cosmotech.coal.cosmotech_api.dataset import (
     convert_graph_dataset_to_files,
     convert_file_dataset_to_files,
     get_content_from_twin_graph_data,
-    sheet_to_header
+    sheet_to_header,
 )

@@ -15,50 +15,56 @@ from cosmotech.orchestrator.utils.translate import T
 
 
 @click.command()
-@click.option("--organization-id",
-              envvar="CSM_ORGANIZATION_ID",
-              help=T("coal-help.commands.api.wsf_load_file.parameters.organization_id"),
-              metavar="o-XXXXXXXX",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--workspace-id",
-              envvar="CSM_WORKSPACE_ID",
-              help=T("coal-help.commands.api.wsf_load_file.parameters.workspace_id"),
-              metavar="w-XXXXXXXX",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--workspace-path",
-              help=T("coal-help.commands.api.wsf_load_file.parameters.workspace_path"),
-              metavar="PATH",
-              default="/",
-              type=str)
-@click.option("--target-folder",
-              help=T("coal-help.commands.api.wsf_load_file.parameters.target_folder"),
-              metavar="PATH",
-              default="./",
-              type=str,
-              envvar="CSM_DATASET_ABSOLUTE_PATH",
-              show_envvar=True,
-              required=True)
+@click.option(
+    "--organization-id",
+    envvar="CSM_ORGANIZATION_ID",
+    help=T("coal-help.commands.api.wsf_load_file.parameters.organization_id"),
+    metavar="o-XXXXXXXX",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--workspace-id",
+    envvar="CSM_WORKSPACE_ID",
+    help=T("coal-help.commands.api.wsf_load_file.parameters.workspace_id"),
+    metavar="w-XXXXXXXX",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--workspace-path",
+    help=T("coal-help.commands.api.wsf_load_file.parameters.workspace_path"),
+    metavar="PATH",
+    default="/",
+    type=str,
+)
+@click.option(
+    "--target-folder",
+    help=T("coal-help.commands.api.wsf_load_file.parameters.target_folder"),
+    metavar="PATH",
+    default="./",
+    type=str,
+    envvar="CSM_DATASET_ABSOLUTE_PATH",
+    show_envvar=True,
+    required=True,
+)
 @web_help("csm-data/api/wsf-load-file")
 @translate_help("coal-help.commands.api.wsf_load_file.description")
 def wsf_load_file(
-    organization_id,
-    workspace_id,
-    workspace_path: str,
-    target_folder: str
+    organization_id, workspace_id, workspace_path: str, target_folder: str
 ):
     with get_api_client()[0] as api_client:
-        target_list = list_workspace_files(api_client,
-                                           organization_id,
-                                           workspace_id,
-                                           workspace_path)
+        target_list = list_workspace_files(
+            api_client, organization_id, workspace_id, workspace_path
+        )
 
         for target in target_list:
-            download_workspace_file(api_client,
-                                    organization_id,
-                                    workspace_id,
-                                    target,
-                                    pathlib.Path(target_folder))
+            download_workspace_file(
+                api_client,
+                organization_id,
+                workspace_id,
+                target,
+                pathlib.Path(target_folder),
+            )

@@ -9,7 +9,7 @@
 from cosmotech.coal.dataset.download.adt import download_adt_dataset
 from cosmotech.coal.dataset.download.twingraph import (
     download_twingraph_dataset,
-    download_legacy_twingraph_dataset
+    download_legacy_twingraph_dataset,
 )
 from cosmotech.coal.dataset.download.file import download_file_dataset
 from cosmotech.coal.dataset.download.common import download_dataset_by_id

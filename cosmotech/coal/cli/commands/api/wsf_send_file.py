@@ -13,50 +13,58 @@ from cosmotech.orchestrator.utils.translate import T
 
 
 @click.command()
-@click.option("--organization-id",
-              envvar="CSM_ORGANIZATION_ID",
-              help=T("coal-help.commands.api.wsf_send_file.parameters.organization_id"),
-              metavar="o-XXXXXXXX",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--workspace-id",
-              envvar="CSM_WORKSPACE_ID",
-              help=T("coal-help.commands.api.wsf_send_file.parameters.workspace_id"),
-              metavar="w-XXXXXXXX",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--file-path",
-              help=T("coal-help.commands.api.wsf_send_file.parameters.file_path"),
-              metavar="PATH",
-              type=str,
-              required=True)
-@click.option("--workspace-path",
-              help=T("coal-help.commands.api.wsf_send_file.parameters.workspace_path"),
-              metavar="PATH",
-              default="/",
-              type=str,
-              required=True)
-@click.option("--overwrite/--keep",
-              help=T("coal-help.commands.api.wsf_send_file.parameters.overwrite"),
-              is_flag=True,
-              default=True,
-              show_default=True,
-              type=bool)
+@click.option(
+    "--organization-id",
+    envvar="CSM_ORGANIZATION_ID",
+    help=T("coal-help.commands.api.wsf_send_file.parameters.organization_id"),
+    metavar="o-XXXXXXXX",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--workspace-id",
+    envvar="CSM_WORKSPACE_ID",
+    help=T("coal-help.commands.api.wsf_send_file.parameters.workspace_id"),
+    metavar="w-XXXXXXXX",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--file-path",
+    help=T("coal-help.commands.api.wsf_send_file.parameters.file_path"),
+    metavar="PATH",
+    type=str,
+    required=True,
+)
+@click.option(
+    "--workspace-path",
+    help=T("coal-help.commands.api.wsf_send_file.parameters.workspace_path"),
+    metavar="PATH",
+    default="/",
+    type=str,
+    required=True,
+)
+@click.option(
+    "--overwrite/--keep",
+    help=T("coal-help.commands.api.wsf_send_file.parameters.overwrite"),
+    is_flag=True,
+    default=True,
+    show_default=True,
+    type=bool,
+)
 @web_help("csm-data/api/wsf-send-file")
 @translate_help("coal-help.commands.api.wsf_send_file.description")
 def wsf_send_file(
-    organization_id,
-    workspace_id,
-    file_path,
-    workspace_path: str,
-    overwrite: bool
+    organization_id, workspace_id, file_path, workspace_path: str, overwrite: bool
 ):
     with get_api_client()[0] as api_client:
-        upload_workspace_file(api_client,
-                              organization_id,
-                              workspace_id,
-                              file_path,
-                              workspace_path,
-                              overwrite)
+        upload_workspace_file(
+            api_client,
+            organization_id,
+            workspace_id,
+            file_path,
+            workspace_path,
+            overwrite,
+        )

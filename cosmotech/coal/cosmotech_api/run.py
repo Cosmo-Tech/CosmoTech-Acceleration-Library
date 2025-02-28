@@ -21,8 +21,9 @@ def get_run_metadata(
 ) -> dict[str, Any]:
     run_api = cosmotech_api.RunApi(api_client)
 
-    run: cosmotech_api.Run = run_api.get_run(organization_id,
-                                             workspace_id,
-                                             runner_id,
-                                             run_id)
-    return run.model_dump(by_alias=True, exclude_none=True, include=include, exclude=exclude, mode='json')
+    run: cosmotech_api.Run = run_api.get_run(
+        organization_id, workspace_id, runner_id, run_id
+    )
+    return run.model_dump(
+        by_alias=True, exclude_none=True, include=include, exclude=exclude, mode="json"
+    )

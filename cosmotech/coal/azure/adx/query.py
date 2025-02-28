@@ -12,57 +12,51 @@ from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
-def run_query(
-    client: KustoClient,
-    database: str,
-    query: str
-) -> KustoResponseDataSet:
+def run_query(client: KustoClient, database: str, query: str) -> KustoResponseDataSet:
     """
     Execute a simple query on the database.
-    
+
     Args:
         client: The KustoClient to use
         database: The name of the database
         query: The query to execute
-        
+
     Returns:
         KustoResponseDataSet: The results of the query
     """
-    LOGGER.debug(T("coal.logs.adx.running_query").format(
-        database=database,
-        query=query
-    ))
-    
+    LOGGER.debug(
+        T("coal.logs.adx.running_query").format(database=database, query=query)
+    )
+
     result = client.execute(database, query)
-    LOGGER.debug(T("coal.logs.adx.query_complete").format(
-        rows=len(result.primary_results[0]) if result.primary_results else 0
-    ))
-    
+    LOGGER.debug(
+        T("coal.logs.adx.query_complete").format(
+            rows=len(result.primary_results[0]) if result.primary_results else 0
+        )
+    )
+
     return result
 
 
 def run_command_query(
-    client: KustoClient,
-    database: str,
-    query: str
+    client: KustoClient, database: str, query: str
 ) -> KustoResponseDataSet:
     """
     Execute a command query on the database.
-    
+
     Args:
         client: The KustoClient to use
         database: The name of the database
         query: The query to execute
-        
+
     Returns:
         KustoResponseDataSet: The results of the query
     """
-    LOGGER.debug(T("coal.logs.adx.running_command").format(
-        database=database,
-        query=query
-    ))
-    
+    LOGGER.debug(
+        T("coal.logs.adx.running_command").format(database=database, query=query)
+    )
+
     result = client.execute_mgmt(database, query)
     LOGGER.debug(T("coal.logs.adx.command_complete"))
-    
+
     return result

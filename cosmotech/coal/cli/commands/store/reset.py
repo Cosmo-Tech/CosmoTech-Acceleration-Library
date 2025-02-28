@@ -15,13 +15,15 @@ from cosmotech.orchestrator.utils.translate import T
 @click.command()
 @web_help("csm-data/store/reset")
 @translate_help("coal-help.commands.store.reset.description")
-@click.option("--store-folder",
-              envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              help=T("coal-help.commands.store.reset.parameters.store_folder"),
-              metavar="PATH",
-              type=str,
-              show_envvar=True,
-              required=True)
+@click.option(
+    "--store-folder",
+    envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
+    help=T("coal-help.commands.store.reset.parameters.store_folder"),
+    metavar="PATH",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
 def reset(store_folder):
     Store(True, store_folder)
     LOGGER.info(T("coal.logs.database.store_reset").format(folder=store_folder))

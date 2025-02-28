@@ -22,10 +22,12 @@ from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
-def download_data(organization_id: str, workspace_id: str, runner_id: str, parameter_folder: str) -> None:
+def download_data(
+    organization_id: str, workspace_id: str, runner_id: str, parameter_folder: str
+) -> None:
     """
     Download the data from a runner from the CosmoTech API to the local file system
-    
+
     Args:
         organization_id: The id of the Organization as defined in the CosmoTech API
         workspace_id: The id of the Workspace as defined in the CosmoTech API
@@ -40,37 +42,45 @@ def download_data(organization_id: str, workspace_id: str, runner_id: str, param
         read_files=False,
         write_json=True,
         write_csv=False,
-        fetch_dataset=True
+        fetch_dataset=True,
     )
 
 
 @click.command()
-@click.option("--organization-id",
-              envvar="CSM_ORGANIZATION_ID",
-              show_envvar=True,
-              help=T("coal-help.commands.api.run_load_data.parameters.organization_id"),
-              metavar="o-##########",
-              required=True)
-@click.option("--workspace-id",
-              envvar="CSM_WORKSPACE_ID",
-              show_envvar=True,
-              help=T("coal-help.commands.api.run_load_data.parameters.workspace_id"),
-              metavar="w-##########",
-              required=True)
-@click.option("--runner-id",
-              envvar="CSM_RUNNER_ID",
-              show_envvar=True,
-              help=T("coal-help.commands.api.run_load_data.parameters.runner_id"),
-              metavar="s-##########",
-              required=True)
-@click.option("--parameters-absolute-path",
-              envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              metavar="PATH",
-              show_envvar=True,
-              help=T("coal-help.commands.api.run_load_data.parameters.parameters_absolute_path"),
-              required=True)
-@require_env('CSM_API_SCOPE', "The identification scope of a Cosmotech API")
-@require_env('CSM_API_URL', "The URL to a Cosmotech API")
+@click.option(
+    "--organization-id",
+    envvar="CSM_ORGANIZATION_ID",
+    show_envvar=True,
+    help=T("coal-help.commands.api.run_load_data.parameters.organization_id"),
+    metavar="o-##########",
+    required=True,
+)
+@click.option(
+    "--workspace-id",
+    envvar="CSM_WORKSPACE_ID",
+    show_envvar=True,
+    help=T("coal-help.commands.api.run_load_data.parameters.workspace_id"),
+    metavar="w-##########",
+    required=True,
+)
+@click.option(
+    "--runner-id",
+    envvar="CSM_RUNNER_ID",
+    show_envvar=True,
+    help=T("coal-help.commands.api.run_load_data.parameters.runner_id"),
+    metavar="s-##########",
+    required=True,
+)
+@click.option(
+    "--parameters-absolute-path",
+    envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
+    metavar="PATH",
+    show_envvar=True,
+    help=T("coal-help.commands.api.run_load_data.parameters.parameters_absolute_path"),
+    required=True,
+)
+@require_env("CSM_API_SCOPE", "The identification scope of a Cosmotech API")
+@require_env("CSM_API_URL", "The URL to a Cosmotech API")
 @web_help("csm-data/api/run-load-data")
 @translate_help("coal-help.commands.api.run_load_data.description")
 def run_load_data(
@@ -79,7 +89,9 @@ def run_load_data(
     organization_id: str,
     parameters_absolute_path: str,
 ):
-    return download_data(organization_id, workspace_id, runner_id, parameters_absolute_path)
+    return download_data(
+        organization_id, workspace_id, runner_id, parameters_absolute_path
+    )
 
 
 if __name__ == "__main__":

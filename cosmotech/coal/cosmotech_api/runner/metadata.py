@@ -24,7 +24,7 @@ def get_runner_metadata(
 ) -> dict[str, Any]:
     """
     Get runner metadata from the API.
-    
+
     Args:
         api_client: The API client to use
         organization_id: The ID of the organization
@@ -32,13 +32,15 @@ def get_runner_metadata(
         runner_id: The ID of the runner
         include: Optional list of fields to include
         exclude: Optional list of fields to exclude
-        
+
     Returns:
         Dictionary with runner metadata
     """
     runner_api = cosmotech_api.RunnerApi(api_client)
-    runner: cosmotech_api.Runner = runner_api.get_runner(organization_id,
-                                                         workspace_id,
-                                                         runner_id)
+    runner: cosmotech_api.Runner = runner_api.get_runner(
+        organization_id, workspace_id, runner_id
+    )
 
-    return runner.model_dump(by_alias=True, exclude_none=True, include=include, exclude=exclude, mode='json')
+    return runner.model_dump(
+        by_alias=True, exclude_none=True, include=include, exclude=exclude, mode="json"
+    )

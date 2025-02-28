@@ -19,15 +19,15 @@ from cosmotech.coal.cosmotech_api.runner.data import get_runner_data
 def get_scenario_data(organization_id: str, workspace_id: str, scenario_id: str):
     """
     Get scenario data from the API.
-    
+
     This function is deprecated and will be removed in a future version.
     Please use get_runner_data from cosmotech.coal.cosmotech_api.runner.data instead.
-    
+
     Args:
         organization_id: The ID of the organization
         workspace_id: The ID of the workspace
         scenario_id: The ID of the scenario
-        
+
     Returns:
         Scenario data object
     """
@@ -35,6 +35,6 @@ def get_scenario_data(organization_id: str, workspace_id: str, scenario_id: str)
         "get_scenario_data is deprecated and will be removed in a future version. "
         "Please use get_runner_data from cosmotech.coal.cosmotech_api.runner.data instead.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     return get_runner_data(organization_id, workspace_id, scenario_id)

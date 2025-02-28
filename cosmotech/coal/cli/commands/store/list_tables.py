@@ -15,18 +15,22 @@ from cosmotech.orchestrator.utils.translate import T
 @click.command()
 @web_help("csm-data/store/list-tables")
 @translate_help("coal-help.commands.store.list_tables.description")
-@click.option("--store-folder",
-              envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              help=T("coal-help.commands.store.list_tables.parameters.store_folder"),
-              metavar="PATH",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--schema/--no-schema",
-              help=T("coal-help.commands.store.list_tables.parameters.schema"),
-              is_flag=True,
-              type=bool,
-              default=False)
+@click.option(
+    "--store-folder",
+    envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
+    help=T("coal-help.commands.store.list_tables.parameters.store_folder"),
+    metavar="PATH",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--schema/--no-schema",
+    help=T("coal-help.commands.store.list_tables.parameters.schema"),
+    is_flag=True,
+    type=bool,
+    default=False,
+)
 def list_tables(store_folder, schema):
     _s = Store(store_location=store_folder)
     tables = list(_s.list_tables())

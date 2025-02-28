@@ -29,16 +29,17 @@ def print_version(ctx, param, value):
 
 
 @click.group("csm-data")
-@click_log.simple_verbosity_option(LOGGER,
-                                   "--log-level",
-                                   envvar="LOG_LEVEL",
-                                   show_envvar=True)
-@click.option('--version',
-              is_flag=True,
-              callback=print_version,
-              expose_value=False,
-              is_eager=True,
-              help="Print version number and return.")
+@click_log.simple_verbosity_option(
+    LOGGER, "--log-level", envvar="LOG_LEVEL", show_envvar=True
+)
+@click.option(
+    "--version",
+    is_flag=True,
+    callback=print_version,
+    expose_value=False,
+    is_eager=True,
+    help="Print version number and return.",
+)
 @web_help("csm-data")
 @translate_help("coal-help.commands.main.description")
 def main():

@@ -4,8 +4,12 @@
 # Any use, reproduction, translation, broadcasting, transmission, distribution,
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
-from cosmotech.coal.cli.commands.legacy.generate_orchestrator import generate_orchestrator
-from cosmotech.coal.cli.commands.legacy.init_local_parameter_folder import init_local_parameter_folder
+from cosmotech.coal.cli.commands.legacy.generate_orchestrator import (
+    generate_orchestrator,
+)
+from cosmotech.coal.cli.commands.legacy.init_local_parameter_folder import (
+    init_local_parameter_folder,
+)
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
 from cosmotech.orchestrator.utils.translate import T

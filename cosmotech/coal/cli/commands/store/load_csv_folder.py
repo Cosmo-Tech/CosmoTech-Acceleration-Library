@@ -18,20 +18,24 @@ from cosmotech.orchestrator.utils.translate import T
 @click.command()
 @web_help("csm-data/store/load-csv-folder")
 @translate_help("coal-help.commands.store.load_csv_folder.description")
-@click.option("--store-folder",
-              envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              help=T("coal-help.commands.store.load_csv_folder.parameters.store_folder"),
-              metavar="PATH",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--csv-folder",
-              envvar="CSM_DATASET_ABSOLUTE_PATH",
-              help=T("coal-help.commands.store.load_csv_folder.parameters.csv_folder"),
-              metavar="PATH",
-              type=str,
-              show_envvar=True,
-              required=True)
+@click.option(
+    "--store-folder",
+    envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
+    help=T("coal-help.commands.store.load_csv_folder.parameters.store_folder"),
+    metavar="PATH",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--csv-folder",
+    envvar="CSM_DATASET_ABSOLUTE_PATH",
+    help=T("coal-help.commands.store.load_csv_folder.parameters.csv_folder"),
+    metavar="PATH",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
 def load_csv_folder(store_folder, csv_folder):
     for csv_path in pathlib.Path(csv_folder).glob("*.csv"):
         LOGGER.info(T("coal.logs.storage.found_file").format(file=csv_path.name))

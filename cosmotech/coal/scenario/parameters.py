@@ -20,20 +20,20 @@ from cosmotech.coal.cosmotech_api.runner.parameters import (
     format_parameters_list,
     write_parameters,
     write_parameters_to_json,
-    write_parameters_to_csv
+    write_parameters_to_csv,
 )
 
 
 def get_scenario_parameters(scenario_data) -> Dict[str, Any]:
     """
     Extract parameters from scenario data.
-    
+
     This function is deprecated and will be removed in a future version.
     Please use get_runner_parameters from cosmotech.coal.cosmotech_api.runner.parameters instead.
-    
+
     Args:
         scenario_data: Scenario data object
-        
+
     Returns:
         Dictionary mapping parameter IDs to values
     """
@@ -41,6 +41,6 @@ def get_scenario_parameters(scenario_data) -> Dict[str, Any]:
         "get_scenario_parameters is deprecated and will be removed in a future version. "
         "Please use get_runner_parameters from cosmotech.coal.cosmotech_api.runner.parameters instead.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     return get_runner_parameters(scenario_data)

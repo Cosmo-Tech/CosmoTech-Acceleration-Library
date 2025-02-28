@@ -18,12 +18,12 @@ from cosmotech.orchestrator.utils.translate import T
 def get_runner_data(organization_id: str, workspace_id: str, runner_id: str):
     """
     Get runner data from the API.
-    
+
     Args:
         organization_id: The ID of the organization
         workspace_id: The ID of the workspace
         runner_id: The ID of the runner
-        
+
     Returns:
         Runner data object
     """
@@ -33,6 +33,6 @@ def get_runner_data(organization_id: str, workspace_id: str, runner_id: str):
         runner_data = api_instance.get_runner(
             organization_id=organization_id,
             workspace_id=workspace_id,
-            runner_id=runner_id
+            runner_id=runner_id,
         )
     return runner_data
