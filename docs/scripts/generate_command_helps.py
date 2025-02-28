@@ -13,18 +13,18 @@ import os
 
 import click
 
-from cosmotech.coal.cli.main import main
+from cosmotech.csm_data.main import main
 
 commands = {}
+
 
 def command_tree(obj, base_name):
     commands[base_name] = obj
     if isinstance(obj, click.Group):
-        return {name: command_tree(value, f"{base_name} {name}")
-                for name, value in obj.commands.items()}
+        return {name: command_tree(value, f"{base_name} {name}") for name, value in obj.commands.items()}
 
 
-ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
+ansi_escape = re.compile(r"(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]")
 
 command_tree(main, "csm-data")
 
@@ -56,14 +56,14 @@ for command, cmd in commands.items():
             with contextlib.redirect_stdout(f):
                 cmd.get_help(ctx)
         f.seek(0)
-        o = ansi_escape.sub('', "".join(f.readlines()))
+        o = ansi_escape.sub("", "".join(f.readlines()))
         _md_file.write(o)
     if os.environ.get("DOC_GENERATE_CLI_CONTENT") is not None:
         doc_file = doc_folder / f"{command}.md".replace(" ", "/")
         parent_folder = doc_file.parent
         parent_folder.mkdir(parents=True, exist_ok=True)
-        current_doc = doc_template.format(command=command,
-                                          command_name=command.split(" ")[-1],
-                                          command_help_path=str(target_file))
+        current_doc = doc_template.format(
+            command=command, command_name=command.split(" ")[-1], command_help_path=str(target_file)
+        )
         with open(doc_file, "w") as _doc_file:
             _doc_file.write(current_doc)

@@ -50,7 +50,7 @@ package-data."*" = [
 zip-safe = false
 
 [project.scripts]
-csm-data = "cosmotech.coal.cli.main:main"
+csm-data = "cosmotech.csm_data.main:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

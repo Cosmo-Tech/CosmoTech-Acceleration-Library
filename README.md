@@ -85,6 +85,7 @@ api_client.close()
 ### Other Components
 
 - **coal**: Core library with modules for API interaction, data management, etc.
+- **csm_data**: CLI tool for data management and integration with various systems
 - **orchestrator_plugins**: Plugins that integrate with external orchestration systems
 - **translation**: Internationalization support for multiple languages
 
