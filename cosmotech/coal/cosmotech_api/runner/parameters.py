@@ -19,7 +19,7 @@ from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
-def get_runner_parameters(runner_data) -> Dict[str, Any]:
+def get_runner_parameters(runner_data: Any) -> Dict[str, Any]:
     """
     Extract parameters from runner data.
 
@@ -35,7 +35,7 @@ def get_runner_parameters(runner_data) -> Dict[str, Any]:
     return content
 
 
-def format_parameters_list(runner_data) -> List[Dict[str, Any]]:
+def format_parameters_list(runner_data: Any) -> List[Dict[str, Any]]:
     """
     Format parameters from runner data as a list of dictionaries.
 

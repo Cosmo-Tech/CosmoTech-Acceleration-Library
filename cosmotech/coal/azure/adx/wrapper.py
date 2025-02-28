@@ -5,7 +5,7 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from typing import Union, Optional, List, Dict, Iterator, Tuple
+from typing import Union, Optional, List, Dict, Iterator, Tuple, Any
 
 from cosmotech.coal.azure.adx.auth import (
     create_kusto_client,
@@ -55,7 +55,7 @@ class ADXQueriesWrapper:
         self.database = database
         self.timeout = 900
 
-    def type_mapping(self, key: str, key_example_value) -> str:
+    def type_mapping(self, key: str, key_example_value: Any) -> str:
         """
         Map Python types to ADX types.
 
@@ -74,7 +74,7 @@ class ADXQueriesWrapper:
         table_name: str,
         ignore_table_creation: bool = True,
         drop_by_tag: str = None,
-    ):
+    ) -> Dict[str, str]:
         """
         Send a list of dictionaries to an ADX table.
 
@@ -97,7 +97,7 @@ class ADXQueriesWrapper:
             drop_by_tag,
         )
 
-    def ingest_dataframe(self, table_name: str, dataframe, drop_by_tag: str = None):
+    def ingest_dataframe(self, table_name: str, dataframe: Any, drop_by_tag: str = None) -> Dict[str, str]:
         """
         Ingest a pandas DataFrame into an ADX table.
 
@@ -143,7 +143,7 @@ class ADXQueriesWrapper:
 
         clear_ingestion_status_queues(self.ingest_client, confirmation)
 
-    def run_command_query(self, query: str):
+    def run_command_query(self, query: str) -> 'KustoResponseDataSet':
         """
         Execute a command query on the database.
 
@@ -155,7 +155,7 @@ class ADXQueriesWrapper:
         """
         return run_command_query(self.kusto_client, self.database, query)
 
-    def run_query(self, query: str):
+    def run_query(self, query: str) -> 'KustoResponseDataSet':
         """
         Execute a simple query on the database.
 
