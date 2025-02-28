@@ -35,13 +35,9 @@ def list_workspace_files(
             target_list.append(workspace_file.file_name)
 
     if not target_list:
-        LOGGER.error(
-            T("coal.errors.data.no_workspace_files").format(file_prefix=file_prefix)
-        )
+        LOGGER.error(T("coal.errors.data.no_workspace_files").format(file_prefix=file_prefix))
         raise ValueError(
-            T("coal.errors.data.no_workspace_files").format(
-                file_prefix=file_prefix, workspace_id=workspace_id
-            )
+            T("coal.errors.data.no_workspace_files").format(file_prefix=file_prefix, workspace_id=workspace_id)
         )
 
     return target_list
@@ -65,16 +61,12 @@ def download_workspace_file(
     :return: The path to the created file
     """
     if target_dir.is_file():
-        raise ValueError(
-            T("coal.errors.file_system.not_directory").format(target_dir=target_dir)
-        )
+        raise ValueError(T("coal.errors.file_system.not_directory").format(target_dir=target_dir))
     api_ws = cosmotech_api.api.workspace_api.WorkspaceApi(api_client)
 
     LOGGER.info(T("coal.logs.workspace.loading_file").format(file_name=file_name))
 
-    _file_content = api_ws.download_workspace_file(
-        organization_id, workspace_id, file_name
-    )
+    _file_content = api_ws.download_workspace_file(organization_id, workspace_id, file_name)
 
     local_target_file = target_dir / file_name
     local_target_file.parent.mkdir(parents=True, exist_ok=True)
@@ -111,26 +103,14 @@ def upload_workspace_file(
     """
     target_file = pathlib.Path(file_path)
     if not target_file.exists():
-        LOGGER.error(
-            T("coal.errors.file_system.file_not_exists").format(file_path=file_path)
-        )
-        raise ValueError(
-            T("coal.errors.file_system.file_not_exists").format(file_path=file_path)
-        )
+        LOGGER.error(T("coal.errors.file_system.file_not_exists").format(file_path=file_path))
+        raise ValueError(T("coal.errors.file_system.file_not_exists").format(file_path=file_path))
     if not target_file.is_file():
-        LOGGER.error(
-            T("coal.errors.file_system.not_single_file").format(file_path=file_path)
-        )
-        raise ValueError(
-            T("coal.errors.file_system.not_single_file").format(file_path=file_path)
-        )
+        LOGGER.error(T("coal.errors.file_system.not_single_file").format(file_path=file_path))
+        raise ValueError(T("coal.errors.file_system.not_single_file").format(file_path=file_path))
 
     api_ws = cosmotech_api.api.workspace_api.WorkspaceApi(api_client)
-    destination = (
-        workspace_path + target_file.name
-        if workspace_path.endswith("/")
-        else workspace_path
-    )
+    destination = workspace_path + target_file.name if workspace_path.endswith("/") else workspace_path
 
     LOGGER.info(T("coal.logs.workspace.sending_to_api").format(destination=destination))
     try:
@@ -138,9 +118,7 @@ def upload_workspace_file(
             organization_id, workspace_id, file_path, overwrite, destination=destination
         )
     except cosmotech_api.exceptions.ApiException as e:
-        LOGGER.error(
-            T("coal.errors.file_system.file_exists").format(csv_path=destination)
-        )
+        LOGGER.error(T("coal.errors.file_system.file_exists").format(csv_path=destination))
         raise e
 
     LOGGER.info(T("coal.logs.workspace.file_sent").format(file=_file.file_name))

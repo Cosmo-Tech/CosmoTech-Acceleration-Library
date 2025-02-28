@@ -13,6 +13,7 @@ LOGGER.info(f"Connected using: {connection_type}")
 
 # Use the client with various API instances
 from cosmotech_api.api.organization_api import OrganizationApi
+
 org_api = OrganizationApi(api_client)
 
 # List organizations

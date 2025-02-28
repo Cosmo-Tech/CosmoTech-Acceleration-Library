@@ -20,8 +20,8 @@ pythonpath = ["."]
 addopts = "--cov-report term-missing:skip-covered --cov=CosmoTech_Acceleration_Library"
 
 [tool.black]
-line-length = 88
-target-version = ["py38"]
+line-length = 120
+target-version = ["py311"]
 include = '\.pyi?$'
 exclude = '''
 /(

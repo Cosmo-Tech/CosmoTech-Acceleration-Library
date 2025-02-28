@@ -107,13 +107,9 @@ def s3_bucket_delete(
     else:
         bucket_files = bucket.objects.all()
 
-    boto_objects = [
-        {"Key": _file.key} for _file in bucket_files if _file.key != file_prefix
-    ]
+    boto_objects = [{"Key": _file.key} for _file in bucket_files if _file.key != file_prefix]
     if boto_objects:
-        LOGGER.info(
-            T("coal.logs.storage.deleting_objects").format(objects=boto_objects)
-        )
+        LOGGER.info(T("coal.logs.storage.deleting_objects").format(objects=boto_objects))
         boto_delete_request = {"Objects": boto_objects}
         bucket.delete_objects(Delete=boto_delete_request)
     else:

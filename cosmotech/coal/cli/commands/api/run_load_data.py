@@ -22,9 +22,7 @@ from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
-def download_data(
-    organization_id: str, workspace_id: str, runner_id: str, parameter_folder: str
-) -> None:
+def download_data(organization_id: str, workspace_id: str, runner_id: str, parameter_folder: str) -> None:
     """
     Download the data from a runner from the CosmoTech API to the local file system
 
@@ -89,9 +87,7 @@ def run_load_data(
     organization_id: str,
     parameters_absolute_path: str,
 ):
-    return download_data(
-        organization_id, workspace_id, runner_id, parameters_absolute_path
-    )
+    return download_data(organization_id, workspace_id, runner_id, parameters_absolute_path)
 
 
 if __name__ == "__main__":

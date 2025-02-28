@@ -69,9 +69,7 @@ from cosmotech_api import ScenarioApi
 )
 @web_help("csm-data/api/tdl-load-file")
 @translate_help("coal-help.commands.api.tdl_load_files.description")
-def tdl_load_files(
-    organization_id, workspace_id, scenario_id, runner_id, directory_path
-):
+def tdl_load_files(organization_id, workspace_id, scenario_id, runner_id, directory_path):
     api_client, connection_type = get_api_client()
     api_ds = DatasetApi(api_client)
     api_runner = RunnerApi(api_client)
@@ -99,11 +97,7 @@ def tdl_load_files(
         )
 
     if (datasets_len := len(runner_info.dataset_list)) != 1:
-        LOGGER.error(
-            T("coal.logs.runner.not_single_dataset").format(
-                runner_id=runner_info.id, count=datasets_len
-            )
-        )
+        LOGGER.error(T("coal.logs.runner.not_single_dataset").format(runner_id=runner_info.id, count=datasets_len))
         LOGGER.debug(runner_info)
         raise click.Abort()
 
@@ -113,26 +107,20 @@ def tdl_load_files(
 
     if dataset_info.ingestion_status != "SUCCESS":
         LOGGER.error(
-            T("coal.logs.runner.dataset_state").format(
-                dataset_id=dataset_id, status=dataset_info.ingestion_status
-            )
+            T("coal.logs.runner.dataset_state").format(dataset_id=dataset_id, status=dataset_info.ingestion_status)
         )
         LOGGER.debug(dataset_info)
         raise click.Abort()
 
     directory_path = pathlib.Path(directory_path)
     if directory_path.is_file():
-        LOGGER.error(
-            T("coal.errors.file_system.not_directory").format(target_dir=directory_path)
-        )
+        LOGGER.error(T("coal.errors.file_system.not_directory").format(target_dir=directory_path))
         raise click.Abort()
 
     directory_path.mkdir(parents=True, exist_ok=True)
     item_queries = dict()
 
-    get_node_properties_query = (
-        "MATCH (n) RETURN distinct labels(n)[0] as label,  keys(n) as keys"
-    )
+    get_node_properties_query = "MATCH (n) RETURN distinct labels(n)[0] as label,  keys(n) as keys"
     node_properties_results: list[dict] = api_ds.twingraph_query(
         organization_id,
         dataset_id,
@@ -151,9 +139,7 @@ def tdl_load_files(
         node_query = f"MATCH (n:{label}) RETURN {', '.join(map(lambda k: f'n.{k} as {k}', keys))}"
         item_queries[label] = node_query
 
-    get_relationship_properties_query = (
-        "MATCH ()-[r]->() RETURN distinct type(r) as label, keys(r) as keys"
-    )
+    get_relationship_properties_query = "MATCH ()-[r]->() RETURN distinct type(r) as label, keys(r) as keys"
     relationship_properties_results: list[dict] = api_ds.twingraph_query(
         organization_id,
         dataset_id,
@@ -188,11 +174,7 @@ def tdl_load_files(
 
     for file_name in files_content.keys():
         file_path = directory_path / (file_name + ".csv")
-        LOGGER.info(
-            T("coal.logs.storage.writing_lines").format(
-                count=len(files_content[file_name]), file=file_path
-            )
-        )
+        LOGGER.info(T("coal.logs.storage.writing_lines").format(count=len(files_content[file_name]), file=file_path))
         with file_path.open("w") as _f:
             headers = files_headers[file_name]
             has_id = "id" in headers
@@ -213,11 +195,7 @@ def tdl_load_files(
             for row in sorted(files_content[file_name], key=lambda r: r.get("id", "")):
                 dw.writerow(
                     {
-                        key: (
-                            json.dumps(value)
-                            if isinstance(value, (bool, dict, list))
-                            else value
-                        )
+                        key: (json.dumps(value) if isinstance(value, (bool, dict, list)) else value)
                         for key, value in row.items()
                     }
                 )

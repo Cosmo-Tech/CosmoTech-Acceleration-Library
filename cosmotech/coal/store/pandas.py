@@ -13,13 +13,9 @@ try:
     ):
         data = pyarrow.Table.from_pandas(dataframe)
 
-        store.add_table(
-            table_name=table_name, data=data, replace=replace_existsing_file
-        )
+        store.add_table(table_name=table_name, data=data, replace=replace_existsing_file)
 
-    def convert_store_table_to_dataframe(
-        table_name: str, store=Store()
-    ) -> pd.DataFrame:
+    def convert_store_table_to_dataframe(table_name: str, store=Store()) -> pd.DataFrame:
         return store.get_table(table_name).to_pandas()
 
 except ModuleNotFoundError:

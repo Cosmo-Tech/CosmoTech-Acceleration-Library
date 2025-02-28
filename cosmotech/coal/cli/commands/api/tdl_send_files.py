@@ -82,9 +82,7 @@ BATCH_SIZE_LIMIT = 10000
 )
 @web_help("csm-data/api/tdl-send-files")
 @translate_help("coal-help.commands.api.tdl_send_files.description")
-def tdl_send_files(
-    api_url, organization_id, workspace_id, runner_id, directory_path, clear: bool
-):
+def tdl_send_files(api_url, organization_id, workspace_id, runner_id, directory_path, clear: bool):
     api_client, connection_type = get_api_client()
     api_ds = DatasetApi(api_client)
     api_runner = RunnerApi(api_client)
@@ -93,9 +91,7 @@ def tdl_send_files(
 
     if len(runner_info.dataset_list) != 1:
         LOGGER.error(
-            T("coal.logs.runner.not_single_dataset").format(
-                runner_id=runner_id, count=len(runner_info.dataset_list)
-            )
+            T("coal.logs.runner.not_single_dataset").format(runner_id=runner_id, count=len(runner_info.dataset_list))
         )
         LOGGER.debug(runner_info)
         raise click.Abort()
@@ -112,9 +108,7 @@ def tdl_send_files(
 
     content_path = pathlib.Path(directory_path)
     if not content_path.is_dir():
-        LOGGER.error(
-            T("coal.errors.file_system.not_directory").format(target_dir=directory_path)
-        )
+        LOGGER.error(T("coal.errors.file_system.not_directory").format(target_dir=directory_path))
 
     for file_path in content_path.glob("*.csv"):
         _csv = CSVSourceFile(file_path)
@@ -139,9 +133,7 @@ def tdl_send_files(
         LOGGER.info(T("coal.logs.storage.clearing_content"))
 
         clear_query = "MATCH (n) DETACH DELETE n"
-        api_ds.twingraph_query(
-            organization_id, dataset_id, DatasetTwinGraphQuery(query=str(clear_query))
-        )
+        api_ds.twingraph_query(organization_id, dataset_id, DatasetTwinGraphQuery(query=str(clear_query)))
 
     for query_dict in [entities_queries, relation_queries]:
         for file_path, query in query_dict.items():
@@ -162,32 +154,22 @@ def tdl_send_files(
             batch = 1
             errors = []
             query_craft = (
-                api_url + f"/organizations/{organization_id}"
-                f"/datasets/{dataset_id}"
-                f"/batch?query={query}"
+                api_url + f"/organizations/{organization_id}" f"/datasets/{dataset_id}" f"/batch?query={query}"
             )
             LOGGER.info(T("coal.logs.storage.sending_content").format(file=file_path))
 
             with open(file_path, "r") as _f:
                 dr = DictReader(_f)
-                dw = DictWriter(
-                    content, fieldnames=sorted(dr.fieldnames, key=len, reverse=True)
-                )
+                dw = DictWriter(content, fieldnames=sorted(dr.fieldnames, key=len, reverse=True))
                 dw.writeheader()
                 for row in dr:
                     dw.writerow(row)
                     size += 1
                     if size > BATCH_SIZE_LIMIT:
-                        LOGGER.info(
-                            T("coal.logs.storage.row_batch").format(
-                                count=batch * BATCH_SIZE_LIMIT
-                            )
-                        )
+                        LOGGER.info(T("coal.logs.storage.row_batch").format(count=batch * BATCH_SIZE_LIMIT))
                         batch += 1
                         content.seek(0)
-                        post = requests.post(
-                            query_craft, data=content.read(), headers=header
-                        )
+                        post = requests.post(query_craft, data=content.read(), headers=header)
                         post.raise_for_status()
                         errors.extend(json.loads(post.content)["errors"])
                         content = StringIO()
@@ -205,9 +187,7 @@ def tdl_send_files(
                 errors.extend(json.loads(post.content)["errors"])
 
             if len(errors):
-                LOGGER.error(
-                    T("coal.logs.storage.import_errors").format(count=len(errors))
-                )
+                LOGGER.error(T("coal.logs.storage.import_errors").format(count=len(errors)))
                 for _err in errors:
                     LOGGER.error(str(_err))
                 raise click.Abort()

@@ -72,9 +72,7 @@ def from_file(solution_file, run_template_id, output, describe):
     "--organization-id",
     envvar="CSM_ORGANIZATION_ID",
     show_envvar=True,
-    help=T(
-        "coal-help.commands.legacy.generate_orchestrator.from_api.parameters.organization_id"
-    ),
+    help=T("coal-help.commands.legacy.generate_orchestrator.from_api.parameters.organization_id"),
     metavar="o-##########",
     required=True,
 )
@@ -82,9 +80,7 @@ def from_file(solution_file, run_template_id, output, describe):
     "--workspace-id",
     envvar="CSM_WORKSPACE_ID",
     show_envvar=True,
-    help=T(
-        "coal-help.commands.legacy.generate_orchestrator.from_api.parameters.workspace_id"
-    ),
+    help=T("coal-help.commands.legacy.generate_orchestrator.from_api.parameters.workspace_id"),
     metavar="w-##########",
     required=True,
 )
@@ -92,9 +88,7 @@ def from_file(solution_file, run_template_id, output, describe):
     "--run-template-id",
     envvar="CSM_RUN_TEMPLATE_ID",
     show_envvar=True,
-    help=T(
-        "coal-help.commands.legacy.generate_orchestrator.from_api.parameters.run_template_id"
-    ),
+    help=T("coal-help.commands.legacy.generate_orchestrator.from_api.parameters.run_template_id"),
     metavar="NAME",
     required=True,
 )
@@ -102,23 +96,17 @@ def from_file(solution_file, run_template_id, output, describe):
     "--describe/--no-describe",
     show_default=True,
     default=False,
-    help=T(
-        "coal-help.commands.legacy.generate_orchestrator.from_api.parameters.describe"
-    ),
+    help=T("coal-help.commands.legacy.generate_orchestrator.from_api.parameters.describe"),
 )
 @web_help("csm-data/legacy/generate-orchestrator/from-api")
 @translate_help("coal-help.commands.legacy.generate_orchestrator.from_api.description")
 def from_api(workspace_id, organization_id, run_template_id, output, describe):
     if sol := get_solution(organization_id=organization_id, workspace_id=workspace_id):
-        return generate_from_solution(
-            sol=sol, run_template_id=run_template_id, output=output, describe=describe
-        )
+        return generate_from_solution(sol=sol, run_template_id=run_template_id, output=output, describe=describe)
     return 1
 
 
-def generate_from_solution(
-    sol: Solution, run_template_id, output: str, describe: bool = False
-):
+def generate_from_solution(sol: Solution, run_template_id, output: str, describe: bool = False):
     LOGGER.info(f"Searching {run_template_id} in the solution")
     if _t := [t for t in sol.run_templates if t.id == run_template_id]:
         template: RunTemplate = _t[0]
@@ -151,9 +139,7 @@ def generate_from_template(template: RunTemplate, output: str):
 
     def run_template_phase(name, condition, source, _previous, default):
         _steps = []
-        template_is_active = (
-            template.get(condition) if template.get(condition) is not None else default
-        )
+        template_is_active = template.get(condition) if template.get(condition) is not None else default
         if template_is_active:
             if template.get(source) == "cloud":
                 LOGGER.info(f"- {name}_cloud step found")
@@ -164,12 +150,8 @@ def generate_from_template(template: RunTemplate, output: str):
                     arguments=["fetch-cloud-steps"],
                     useSystemEnvironment=True,
                     environment={
-                        "CSM_ORGANIZATION_ID": {
-                            "description": "The id of an organization in the cosmotech api"
-                        },
-                        "CSM_WORKSPACE_ID": {
-                            "description": "The id of a workspace in the cosmotech api"
-                        },
+                        "CSM_ORGANIZATION_ID": {"description": "The id of an organization in the cosmotech api"},
+                        "CSM_WORKSPACE_ID": {"description": "The id of a workspace in the cosmotech api"},
                         "CSM_RUN_TEMPLATE_ID": {
                             "description": "The name of the run template in the cosmotech api",
                             "value": template.id,
@@ -179,16 +161,10 @@ def generate_from_template(template: RunTemplate, output: str):
                             "value": name,
                         },
                         "CSM_API_URL": {"description": "The url to a Cosmotech API"},
-                        "CSM_API_SCOPE": {
-                            "description": "The identification scope of a Cosmotech API"
-                        },
+                        "CSM_API_SCOPE": {"description": "The identification scope of a Cosmotech API"},
                         "AZURE_TENANT_ID": {"description": "An Azure Tenant ID"},
-                        "AZURE_CLIENT_ID": {
-                            "description": "An Azure Client ID having access to the Cosmotech API"
-                        },
-                        "AZURE_CLIENT_SECRET": {
-                            "description": "The secret for the Azure Client"
-                        },
+                        "AZURE_CLIENT_ID": {"description": "An Azure Client ID having access to the Cosmotech API"},
+                        "AZURE_CLIENT_SECRET": {"description": "The secret for the Azure Client"},
                         "LOG_LEVEL": {
                             "description": "Either CRITICAL, ERROR, WARNING, INFO or DEBUG",
                             "defaultValue": "INFO",
@@ -217,9 +193,7 @@ def generate_from_template(template: RunTemplate, output: str):
                 stop_library_load=True,
             )
             if template.csm_simulation is not None:
-                _run_step.environment[
-                    "CSM_SIMULATION"
-                ].defaultValue = template.csm_simulation
+                _run_step.environment["CSM_SIMULATION"].defaultValue = template.csm_simulation
             if _previous:
                 _run_step.precedents = [_previous]
             _previous = name
@@ -234,14 +208,9 @@ def generate_from_template(template: RunTemplate, output: str):
         False,
     )
     steps.extend(new_steps)
-    previous, new_steps = run_template_phase(
-        "validator", "validate_data", "validator_source", previous, False
-    )
+    previous, new_steps = run_template_phase("validator", "validate_data", "validator_source", previous, False)
     steps.extend(new_steps)
-    if (
-        template.send_datasets_to_data_warehouse is True
-        or template.send_input_parameters_to_data_warehouse is True
-    ):
+    if template.send_datasets_to_data_warehouse is True or template.send_input_parameters_to_data_warehouse is True:
         LOGGER.info("- send_to_adx step found")
         _send_to_adx_step = Step(
             id="send_to_adx",
@@ -250,47 +219,29 @@ def generate_from_template(template: RunTemplate, output: str):
             useSystemEnvironment=True,
             environment={
                 "AZURE_TENANT_ID": {"description": "An Azure Tenant ID"},
-                "AZURE_CLIENT_ID": {
-                    "description": "An Azure Client ID having access to the Cosmotech API"
-                },
-                "AZURE_CLIENT_SECRET": {
-                    "description": "The secret for the Azure Client"
-                },
+                "AZURE_CLIENT_ID": {"description": "An Azure Client ID having access to the Cosmotech API"},
+                "AZURE_CLIENT_SECRET": {"description": "The secret for the Azure Client"},
                 "LOG_LEVEL": {
                     "description": "Either CRITICAL, ERROR, WARNING, INFO or DEBUG",
                     "defaultValue": "INFO",
                 },
-                "CSM_DATASET_ABSOLUTE_PATH": {
-                    "description": "A local folder to store the main dataset content"
-                },
-                "CSM_PARAMETERS_ABSOLUTE_PATH": {
-                    "description": "A local folder to store the parameters content"
-                },
+                "CSM_DATASET_ABSOLUTE_PATH": {"description": "A local folder to store the main dataset content"},
+                "CSM_PARAMETERS_ABSOLUTE_PATH": {"description": "A local folder to store the parameters content"},
                 "CSM_SIMULATION_ID": {"description": "The id of the simulation run"},
                 "AZURE_DATA_EXPLORER_RESOURCE_URI": {
-                    "description": "the ADX cluster path "
-                    "(URI info can be found into ADX cluster page)"
+                    "description": "the ADX cluster path " "(URI info can be found into ADX cluster page)"
                 },
                 "AZURE_DATA_EXPLORER_RESOURCE_INGEST_URI": {
-                    "description": "The ADX cluster ingest path "
-                    "(URI info can be found into ADX cluster page)"
+                    "description": "The ADX cluster ingest path " "(URI info can be found into ADX cluster page)"
                 },
-                "AZURE_DATA_EXPLORER_DATABASE_NAME": {
-                    "description": "The targeted database name"
-                },
+                "AZURE_DATA_EXPLORER_DATABASE_NAME": {"description": "The targeted database name"},
                 "CSM_SEND_DATAWAREHOUSE_PARAMETERS": {
-                    "description": "whether or not to send parameters "
-                    "(parameters path is mandatory then)",
-                    "defaultValue": json.dumps(
-                        template.send_input_parameters_to_data_warehouse is True
-                    ),
+                    "description": "whether or not to send parameters " "(parameters path is mandatory then)",
+                    "defaultValue": json.dumps(template.send_input_parameters_to_data_warehouse is True),
                 },
                 "CSM_SEND_DATAWAREHOUSE_DATASETS": {
-                    "description": "whether or not to send datasets "
-                    "(parameters path is mandatory then)",
-                    "defaultValue": json.dumps(
-                        template.send_datasets_to_data_warehouse is True
-                    ),
+                    "description": "whether or not to send datasets " "(parameters path is mandatory then)",
+                    "defaultValue": json.dumps(template.send_datasets_to_data_warehouse is True),
                 },
                 "WAIT_FOR_INGESTION": {
                     "description": "Toggle waiting for the ingestion results",
@@ -302,22 +253,14 @@ def generate_from_template(template: RunTemplate, output: str):
             _send_to_adx_step.precedents = [previous]
         previous = "send_to_adx"
         steps.append(_send_to_adx_step)
-    previous, new_steps = run_template_phase(
-        "prerun", "pre_run", "pre_run_source", previous, False
-    )
+    previous, new_steps = run_template_phase("prerun", "pre_run", "pre_run_source", previous, False)
     steps.extend(new_steps)
-    previous, new_steps = run_template_phase(
-        "engine", "run", "run_source", previous, True
-    )
+    previous, new_steps = run_template_phase("engine", "run", "run_source", previous, True)
     steps.extend(new_steps)
-    previous, new_steps = run_template_phase(
-        "postrun", "post_run", "post_run_source", previous, False
-    )
+    previous, new_steps = run_template_phase("postrun", "post_run", "post_run_source", previous, False)
     steps.extend(new_steps)
     LOGGER.debug(json.dumps({"steps": steps}, cls=CustomJSONEncoder, indent=2))
-    LOGGER.info(
-        f"{len(steps)} step{'s' if len(steps) > 1 else ''} found, writing json file"
-    )
+    LOGGER.info(f"{len(steps)} step{'s' if len(steps) > 1 else ''} found, writing json file")
     json.dump({"steps": steps}, open(output, "w"), cls=CustomJSONEncoder, indent=2)
 
 

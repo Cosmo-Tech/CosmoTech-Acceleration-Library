@@ -58,11 +58,7 @@ def ingest_dataframe(
     Returns:
         The ingestion result with source_id for status tracking
     """
-    LOGGER.debug(
-        T("coal.logs.adx.ingesting_dataframe").format(
-            table_name=table_name, rows=len(dataframe)
-        )
-    )
+    LOGGER.debug(T("coal.logs.adx.ingesting_dataframe").format(table_name=table_name, rows=len(dataframe)))
 
     drop_by_tags = [drop_by_tag] if (drop_by_tag is not None) else None
 
@@ -74,9 +70,7 @@ def ingest_dataframe(
         report_level=ReportLevel.FailuresAndSuccesses,
     )
 
-    ingestion_result = client.ingest_from_dataframe(
-        dataframe, ingestion_properties=properties
-    )
+    ingestion_result = client.ingest_from_dataframe(dataframe, ingestion_properties=properties)
 
     # Track the ingestion status
     source_id = str(ingestion_result.source_id)
@@ -112,11 +106,7 @@ def send_to_adx(
     Returns:
         The ingestion result with source_id for status tracking
     """
-    LOGGER.debug(
-        T("coal.logs.adx.sending_to_adx").format(
-            table_name=table_name, items=len(dict_list)
-        )
-    )
+    LOGGER.debug(T("coal.logs.adx.sending_to_adx").format(table_name=table_name, items=len(dict_list)))
 
     if not dict_list:
         LOGGER.warning(T("coal.logs.adx.empty_dict_list"))
@@ -129,9 +119,7 @@ def send_to_adx(
 
         # Then try to create the table
         if not create_table(query_client, database, table_name, types):
-            LOGGER.error(
-                T("coal.logs.adx.table_creation_failed").format(table_name=table_name)
-            )
+            LOGGER.error(T("coal.logs.adx.table_creation_failed").format(table_name=table_name))
             return False
 
     # Create a dataframe with the data to write and send them to ADX
@@ -185,25 +173,14 @@ def check_ingestion_status(
     def get_messages(queues):
         _r = []
         for q in queues:
-            _r.extend(
-                (
-                    (q, m)
-                    for m in q.receive_messages(
-                        messages_per_page=32, visibility_timeout=1
-                    )
-                )
-            )
+            _r.extend(((q, m) for m in q.receive_messages(messages_per_page=32, visibility_timeout=1)))
         return _r
 
     successes = get_messages(qs.success._get_queues())
     failures = get_messages(qs.failure._get_queues())
 
     if logs:
-        LOGGER.debug(
-            T("coal.logs.adx.status_messages").format(
-                success=len(successes), failure=len(failures)
-            )
-        )
+        LOGGER.debug(T("coal.logs.adx.status_messages").format(success=len(successes), failure=len(failures)))
 
     non_sent_ids = remaining_ids[:]
 
@@ -221,11 +198,7 @@ def check_ingestion_status(
                     _ingest_status[source_id] = status
 
                     if logs:
-                        LOGGER.debug(
-                            T("coal.logs.adx.status_found").format(
-                                source_id=source_id, status=status.value
-                            )
-                        )
+                        LOGGER.debug(T("coal.logs.adx.status_found").format(source_id=source_id, status=status.value))
 
                     _q.delete_message(_m)
                     remaining_ids.remove(source_id)
@@ -244,18 +217,14 @@ def check_ingestion_status(
     for source_id in remaining_ids:
         if time.time() - _ingest_times[source_id] > actual_timeout:
             _ingest_status[source_id] = IngestionStatus.TIMEOUT
-            LOGGER.warning(
-                T("coal.logs.adx.ingestion_timeout").format(source_id=source_id)
-            )
+            LOGGER.warning(T("coal.logs.adx.ingestion_timeout").format(source_id=source_id))
 
     # Yield results for remaining IDs
     for source_id in non_sent_ids:
         yield source_id, _ingest_status[source_id]
 
 
-def clear_ingestion_status_queues(
-    client: QueuedIngestClient, confirmation: bool = False
-):
+def clear_ingestion_status_queues(client: QueuedIngestClient, confirmation: bool = False):
     """
     Clear all data in the ingestion status queues.
     DANGEROUS: This will clear all queues for the entire ADX cluster.

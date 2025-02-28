@@ -41,13 +41,9 @@ def download_twingraph_dataset(
         Tuple of (content dict, folder path)
     """
     start_time = time.time()
-    LOGGER.info(
-        T("coal.logs.dataset.download_started").format(dataset_type="TwinGraph")
-    )
+    LOGGER.info(T("coal.logs.dataset.download_started").format(dataset_type="TwinGraph"))
     LOGGER.debug(
-        T("coal.logs.dataset.twingraph_downloading").format(
-            organization_id=organization_id, dataset_id=dataset_id
-        )
+        T("coal.logs.dataset.twingraph_downloading").format(organization_id=organization_id, dataset_id=dataset_id)
     )
 
     with get_api_client()[0] as api_client:
@@ -55,11 +51,7 @@ def download_twingraph_dataset(
 
         # Query nodes
         nodes_start = time.time()
-        LOGGER.debug(
-            T("coal.logs.dataset.twingraph_querying_nodes").format(
-                dataset_id=dataset_id
-            )
-        )
+        LOGGER.debug(T("coal.logs.dataset.twingraph_querying_nodes").format(dataset_id=dataset_id))
         nodes_query = DatasetTwinGraphQuery(query="MATCH(n) RETURN n")
 
         nodes = dataset_api.twingraph_query(
@@ -69,25 +61,13 @@ def download_twingraph_dataset(
         )
 
         nodes_time = time.time() - nodes_start
-        LOGGER.debug(
-            T("coal.logs.dataset.twingraph_nodes_found").format(count=len(nodes))
-        )
-        LOGGER.debug(
-            T("coal.logs.dataset.operation_timing").format(
-                operation="nodes query", time=nodes_time
-            )
-        )
+        LOGGER.debug(T("coal.logs.dataset.twingraph_nodes_found").format(count=len(nodes)))
+        LOGGER.debug(T("coal.logs.dataset.operation_timing").format(operation="nodes query", time=nodes_time))
 
         # Query edges
         edges_start = time.time()
-        LOGGER.debug(
-            T("coal.logs.dataset.twingraph_querying_edges").format(
-                dataset_id=dataset_id
-            )
-        )
-        edges_query = DatasetTwinGraphQuery(
-            query="MATCH(n)-[r]->(m) RETURN n as src, r as rel, m as dest"
-        )
+        LOGGER.debug(T("coal.logs.dataset.twingraph_querying_edges").format(dataset_id=dataset_id))
+        edges_query = DatasetTwinGraphQuery(query="MATCH(n)-[r]->(m) RETURN n as src, r as rel, m as dest")
 
         edges = dataset_api.twingraph_query(
             organization_id=organization_id,
@@ -96,25 +76,15 @@ def download_twingraph_dataset(
         )
 
         edges_time = time.time() - edges_start
-        LOGGER.debug(
-            T("coal.logs.dataset.twingraph_edges_found").format(count=len(edges))
-        )
-        LOGGER.debug(
-            T("coal.logs.dataset.operation_timing").format(
-                operation="edges query", time=edges_time
-            )
-        )
+        LOGGER.debug(T("coal.logs.dataset.twingraph_edges_found").format(count=len(edges)))
+        LOGGER.debug(T("coal.logs.dataset.operation_timing").format(operation="edges query", time=edges_time))
 
         # Process results
         process_start = time.time()
         content = get_content_from_twin_graph_data(nodes, edges, True)
         process_time = time.time() - process_start
 
-        LOGGER.debug(
-            T("coal.logs.dataset.operation_timing").format(
-                operation="data processing", time=process_time
-            )
-        )
+        LOGGER.debug(T("coal.logs.dataset.operation_timing").format(operation="data processing", time=process_time))
 
     # Convert to files if target_folder is provided
     if target_folder:
@@ -128,14 +98,8 @@ def download_twingraph_dataset(
         target_folder = tempfile.mkdtemp()
 
     elapsed_time = time.time() - start_time
-    LOGGER.info(
-        T("coal.logs.dataset.operation_timing").format(
-            operation="TwinGraph download", time=elapsed_time
-        )
-    )
-    LOGGER.info(
-        T("coal.logs.dataset.download_completed").format(dataset_type="TwinGraph")
-    )
+    LOGGER.info(T("coal.logs.dataset.operation_timing").format(operation="TwinGraph download", time=elapsed_time))
+    LOGGER.info(T("coal.logs.dataset.download_completed").format(dataset_type="TwinGraph"))
 
     return content, Path(target_folder)
 
@@ -157,9 +121,7 @@ def download_legacy_twingraph_dataset(
         Tuple of (content dict, folder path)
     """
     start_time = time.time()
-    LOGGER.info(
-        T("coal.logs.dataset.download_started").format(dataset_type="Legacy TwinGraph")
-    )
+    LOGGER.info(T("coal.logs.dataset.download_started").format(dataset_type="Legacy TwinGraph"))
     LOGGER.debug(
         T("coal.logs.dataset.legacy_twingraph_downloading").format(
             organization_id=organization_id, cache_name=cache_name
@@ -171,11 +133,7 @@ def download_legacy_twingraph_dataset(
 
         # Query nodes
         nodes_start = time.time()
-        LOGGER.debug(
-            T("coal.logs.dataset.legacy_twingraph_querying_nodes").format(
-                cache_name=cache_name
-            )
-        )
+        LOGGER.debug(T("coal.logs.dataset.legacy_twingraph_querying_nodes").format(cache_name=cache_name))
         _query_nodes = TwinGraphQuery(query="MATCH(n) RETURN n")
 
         nodes = api_instance.query(
@@ -185,25 +143,13 @@ def download_legacy_twingraph_dataset(
         )
 
         nodes_time = time.time() - nodes_start
-        LOGGER.debug(
-            T("coal.logs.dataset.legacy_twingraph_nodes_found").format(count=len(nodes))
-        )
-        LOGGER.debug(
-            T("coal.logs.dataset.operation_timing").format(
-                operation="nodes query", time=nodes_time
-            )
-        )
+        LOGGER.debug(T("coal.logs.dataset.legacy_twingraph_nodes_found").format(count=len(nodes)))
+        LOGGER.debug(T("coal.logs.dataset.operation_timing").format(operation="nodes query", time=nodes_time))
 
         # Query relationships
         rel_start = time.time()
-        LOGGER.debug(
-            T("coal.logs.dataset.legacy_twingraph_querying_relations").format(
-                cache_name=cache_name
-            )
-        )
-        _query_rel = TwinGraphQuery(
-            query="MATCH(n)-[r]->(m) RETURN n as src, r as rel, m as dest"
-        )
+        LOGGER.debug(T("coal.logs.dataset.legacy_twingraph_querying_relations").format(cache_name=cache_name))
+        _query_rel = TwinGraphQuery(query="MATCH(n)-[r]->(m) RETURN n as src, r as rel, m as dest")
 
         rel = api_instance.query(
             organization_id=organization_id,
@@ -212,27 +158,15 @@ def download_legacy_twingraph_dataset(
         )
 
         rel_time = time.time() - rel_start
-        LOGGER.debug(
-            T("coal.logs.dataset.legacy_twingraph_relations_found").format(
-                count=len(rel)
-            )
-        )
-        LOGGER.debug(
-            T("coal.logs.dataset.operation_timing").format(
-                operation="relations query", time=rel_time
-            )
-        )
+        LOGGER.debug(T("coal.logs.dataset.legacy_twingraph_relations_found").format(count=len(rel)))
+        LOGGER.debug(T("coal.logs.dataset.operation_timing").format(operation="relations query", time=rel_time))
 
         # Process results
         process_start = time.time()
         content = get_content_from_twin_graph_data(nodes, rel, False)
         process_time = time.time() - process_start
 
-        LOGGER.debug(
-            T("coal.logs.dataset.operation_timing").format(
-                operation="data processing", time=process_time
-            )
-        )
+        LOGGER.debug(T("coal.logs.dataset.operation_timing").format(operation="data processing", time=process_time))
 
     # Convert to files if target_folder is provided
     if target_folder:
@@ -247,14 +181,8 @@ def download_legacy_twingraph_dataset(
 
     elapsed_time = time.time() - start_time
     LOGGER.info(
-        T("coal.logs.dataset.operation_timing").format(
-            operation="Legacy TwinGraph download", time=elapsed_time
-        )
+        T("coal.logs.dataset.operation_timing").format(operation="Legacy TwinGraph download", time=elapsed_time)
     )
-    LOGGER.info(
-        T("coal.logs.dataset.download_completed").format(
-            dataset_type="Legacy TwinGraph"
-        )
-    )
+    LOGGER.info(T("coal.logs.dataset.download_completed").format(dataset_type="Legacy TwinGraph"))
 
     return content, Path(target_folder)

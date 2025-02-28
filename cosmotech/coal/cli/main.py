@@ -29,9 +29,7 @@ def print_version(ctx, param, value):
 
 
 @click.group("csm-data")
-@click_log.simple_verbosity_option(
-    LOGGER, "--log-level", envvar="LOG_LEVEL", show_envvar=True
-)
+@click_log.simple_verbosity_option(LOGGER, "--log-level", envvar="LOG_LEVEL", show_envvar=True)
 @click.option(
     "--version",
     is_flag=True,

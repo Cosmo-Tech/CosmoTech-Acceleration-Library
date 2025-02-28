@@ -50,9 +50,7 @@ def format_parameters_list(runner_data: Any) -> List[Dict[str, Any]]:
     if not runner_data.parameters_values:
         return parameters
 
-    max_name_size = max(
-        map(lambda r: len(r.parameter_id), runner_data.parameters_values)
-    )
+    max_name_size = max(map(lambda r: len(r.parameter_id), runner_data.parameters_values))
     max_type_size = max(map(lambda r: len(r.var_type), runner_data.parameters_values))
 
     for parameter_data in runner_data.parameters_values:
@@ -84,9 +82,7 @@ def format_parameters_list(runner_data: Any) -> List[Dict[str, Any]]:
     return parameters
 
 
-def write_parameters_to_json(
-    parameter_folder: str, parameters: List[Dict[str, Any]]
-) -> str:
+def write_parameters_to_json(parameter_folder: str, parameters: List[Dict[str, Any]]) -> str:
     """
     Write parameters to a JSON file.
 
@@ -108,9 +104,7 @@ def write_parameters_to_json(
     return tmp_parameter_file
 
 
-def write_parameters_to_csv(
-    parameter_folder: str, parameters: List[Dict[str, Any]]
-) -> str:
+def write_parameters_to_csv(parameter_folder: str, parameters: List[Dict[str, Any]]) -> str:
     """
     Write parameters to a CSV file.
 
@@ -127,9 +121,7 @@ def write_parameters_to_csv(
     LOGGER.info(T("coal.logs.runner.generating_file").format(file=tmp_parameter_file))
 
     with open(tmp_parameter_file, "w") as _file:
-        _w = DictWriter(
-            _file, fieldnames=["parameterId", "value", "varType", "isInherited"]
-        )
+        _w = DictWriter(_file, fieldnames=["parameterId", "value", "varType", "isInherited"])
         _w.writeheader()
         _w.writerows(parameters)
 

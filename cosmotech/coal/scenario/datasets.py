@@ -127,9 +127,7 @@ def download_datasets(
     )
 
 
-def dataset_to_file(
-    dataset_info: Dict[str, Any], target_folder: Optional[Union[str, Path]] = None
-) -> str:
+def dataset_to_file(dataset_info: Dict[str, Any], target_folder: Optional[Union[str, Path]] = None) -> str:
     """
     Convert dataset to files.
 

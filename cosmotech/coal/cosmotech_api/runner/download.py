@@ -96,20 +96,14 @@ def download_run_data(
 
     # Format parameters
     parameters = format_parameters_list(runner_data)
-    result["parameters"] = {
-        param["parameterId"]: param["value"] for param in parameters
-    }
+    result["parameters"] = {param["parameterId"]: param["value"] for param in parameters}
 
     # Download datasets if requested
     if fetch_dataset:
         dataset_ids = get_dataset_ids_from_runner(runner_data)
 
         if dataset_ids:
-            LOGGER.info(
-                T("coal.logs.runner.downloading_datasets").format(
-                    count=len(dataset_ids)
-                )
-            )
+            LOGGER.info(T("coal.logs.runner.downloading_datasets").format(count=len(dataset_ids)))
 
             datasets = download_datasets(
                 organization_id=organization_id,
@@ -135,14 +129,8 @@ def download_run_data(
                 if dataset_folder and dataset_id in runner_data.dataset_list:
                     pathlib.Path(dataset_folder).mkdir(parents=True, exist_ok=True)
                     dataset_folder_path = dataset_to_file(dataset_info)
-                    shutil.copytree(
-                        dataset_folder_path, dataset_folder, dirs_exist_ok=True
-                    )
-                    LOGGER.debug(
-                        T("coal.logs.runner.dataset_debug").format(
-                            folder=dataset_folder, id=dataset_id
-                        )
-                    )
+                    shutil.copytree(dataset_folder_path, dataset_folder, dirs_exist_ok=True)
+                    LOGGER.debug(T("coal.logs.runner.dataset_debug").format(folder=dataset_folder, id=dataset_id))
 
                 # If dataset is referenced by a parameter, save to parameter folder
                 if dataset_id in datasets_parameters_ids:
@@ -152,11 +140,7 @@ def download_run_data(
 
                     dataset_folder_path = dataset_to_file(dataset_info)
                     shutil.copytree(dataset_folder_path, param_dir, dirs_exist_ok=True)
-                    LOGGER.debug(
-                        T("coal.logs.runner.dataset_debug").format(
-                            folder=param_id, id=dataset_id
-                        )
-                    )
+                    LOGGER.debug(T("coal.logs.runner.dataset_debug").format(folder=param_id, id=dataset_id))
     else:
         LOGGER.info(T("coal.logs.runner.no_dataset_write"))
 
@@ -225,20 +209,14 @@ def download_runner_data(
 
     # Format parameters
     parameters = format_parameters_list(runner_data)
-    result["parameters"] = {
-        param["parameterId"]: param["value"] for param in parameters
-    }
+    result["parameters"] = {param["parameterId"]: param["value"] for param in parameters}
 
     # Download datasets if requested
     if fetch_dataset:
         dataset_ids = get_dataset_ids_from_runner(runner_data)
 
         if dataset_ids:
-            LOGGER.info(
-                T("coal.logs.runner.downloading_datasets").format(
-                    count=len(dataset_ids)
-                )
-            )
+            LOGGER.info(T("coal.logs.runner.downloading_datasets").format(count=len(dataset_ids)))
 
             datasets = download_datasets(
                 organization_id=organization_id,
@@ -279,14 +257,8 @@ def download_runner_data(
                 if dataset_folder and dataset_id in runner_data.dataset_list:
                     pathlib.Path(dataset_folder).mkdir(parents=True, exist_ok=True)
                     dataset_folder_path = dataset_to_file(dataset_info)
-                    shutil.copytree(
-                        dataset_folder_path, dataset_folder, dirs_exist_ok=True
-                    )
-                    LOGGER.debug(
-                        T("coal.logs.runner.dataset_debug").format(
-                            folder=dataset_folder, id=dataset_id
-                        )
-                    )
+                    shutil.copytree(dataset_folder_path, dataset_folder, dirs_exist_ok=True)
+                    LOGGER.debug(T("coal.logs.runner.dataset_debug").format(folder=dataset_folder, id=dataset_id))
 
     # Write parameters to files
     if write_json or write_csv:

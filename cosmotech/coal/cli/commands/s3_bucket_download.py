@@ -129,9 +129,5 @@ def s3_bucket_download(
                 target_file = target_file.removeprefix(file_prefix)
             output_file = f"{target_folder}/{target_file}"
             pathlib.Path(output_file).parent.mkdir(parents=True, exist_ok=True)
-            LOGGER.info(
-                T("coal.logs.storage.downloading").format(
-                    path=path_name, output=output_file
-                )
-            )
+            LOGGER.info(T("coal.logs.storage.downloading").format(path=path_name, output=output_file))
             bucket.download_file(_file.key, output_file)

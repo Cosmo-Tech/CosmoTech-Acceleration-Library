@@ -56,9 +56,7 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @web_help("csm-data/api/wsf-send-file")
 @translate_help("coal-help.commands.api.wsf_send_file.description")
-def wsf_send_file(
-    organization_id, workspace_id, file_path, workspace_path: str, overwrite: bool
-):
+def wsf_send_file(organization_id, workspace_id, file_path, workspace_path: str, overwrite: bool):
     with get_api_client()[0] as api_client:
         upload_workspace_file(
             api_client,

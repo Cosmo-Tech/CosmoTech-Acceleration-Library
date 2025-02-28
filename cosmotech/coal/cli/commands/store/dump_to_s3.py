@@ -121,12 +121,8 @@ def dump_to_s3(
     _s = Store(store_location=store_folder)
 
     if output_type not in VALID_TYPES:
-        LOGGER.error(
-            T("coal.errors.data.invalid_output_type").format(output_type=output_type)
-        )
-        raise ValueError(
-            T("coal.errors.data.invalid_output_type").format(output_type=output_type)
-        )
+        LOGGER.error(T("coal.errors.data.invalid_output_type").format(output_type=output_type))
+        raise ValueError(T("coal.errors.data.invalid_output_type").format(output_type=output_type))
 
     boto3_parameters = {
         "use_ssl": use_ssl,
@@ -153,9 +149,7 @@ def dump_to_s3(
         _file_name = "db.sqlite"
         _uploaded_file_name = file_prefix + _file_name
         LOGGER.info(
-            T("coal.logs.data_transfer.file_sent").format(
-                file_path=_file_path, uploaded_name=_uploaded_file_name
-            )
+            T("coal.logs.data_transfer.file_sent").format(file_path=_file_path, uploaded_name=_uploaded_file_name)
         )
         s3_client.upload_file(_file_path, bucket_name, _uploaded_file_name)
     else:
@@ -165,11 +159,7 @@ def dump_to_s3(
             _file_name = None
             _data = _s.get_table(table_name)
             if not len(_data):
-                LOGGER.info(
-                    T("coal.logs.data_transfer.table_empty").format(
-                        table_name=table_name
-                    )
-                )
+                LOGGER.info(T("coal.logs.data_transfer.table_empty").format(table_name=table_name))
                 continue
             if output_type == "csv":
                 _file_name = table_name + ".csv"
@@ -178,8 +168,6 @@ def dump_to_s3(
                 _file_name = table_name + ".parquet"
                 pq.write_table(_data, _data_stream)
             LOGGER.info(
-                T("coal.logs.data_transfer.sending_table").format(
-                    table_name=table_name, output_type=output_type
-                )
+                T("coal.logs.data_transfer.sending_table").format(table_name=table_name, output_type=output_type)
             )
             data_upload(_data_stream, _file_name)

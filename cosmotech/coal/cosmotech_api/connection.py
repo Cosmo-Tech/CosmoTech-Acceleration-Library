@@ -38,21 +38,9 @@ def get_api_client() -> (cosmotech_api.ApiClient, str):
     if all((missing_api_keys, missing_azure_keys, missing_keycloak_keys)):
         LOGGER.error(T("coal.errors.environment.no_env_vars"))
         LOGGER.error(T("coal.logs.connection.existing_sets"))
-        LOGGER.error(
-            T("coal.logs.connection.azure_connection").format(
-                keys=", ".join(azure_env_keys)
-            )
-        )
-        LOGGER.error(
-            T("coal.logs.connection.api_key_connection").format(
-                keys=", ".join(api_env_keys)
-            )
-        )
-        LOGGER.error(
-            T("coal.logs.connection.keycloak_connection").format(
-                keys=", ".join(keycloak_env_keys)
-            )
-        )
+        LOGGER.error(T("coal.logs.connection.azure_connection").format(keys=", ".join(azure_env_keys)))
+        LOGGER.error(T("coal.logs.connection.api_key_connection").format(keys=", ".join(api_env_keys)))
+        LOGGER.error(T("coal.logs.connection.keycloak_connection").format(keys=", ".join(keycloak_env_keys)))
         raise EnvironmentError(T("coal.errors.environment.no_env_vars"))
 
     if not missing_keycloak_keys:
@@ -68,9 +56,7 @@ def get_api_client() -> (cosmotech_api.ApiClient, str):
             realm_name=os.environ.get("IDP_TENANT_ID"),
             client_secret_key=os.environ.get("IDP_CLIENT_SECRET"),
         )
-        if (ca_cert_path := os.environ.get("IDP_CA_CERT")) and pathlib.Path(
-            ca_cert_path
-        ).exists():
+        if (ca_cert_path := os.environ.get("IDP_CA_CERT")) and pathlib.Path(ca_cert_path).exists():
             LOGGER.info(T("coal.logs.connection.found_cert_authority"))
             keycloack_parameters["verify"] = ca_cert_path
         keycloak_openid = KeycloakOpenID(**keycloack_parameters)
@@ -104,9 +90,7 @@ def get_api_client() -> (cosmotech_api.ApiClient, str):
         credentials = EnvironmentCredential()
         token = credentials.get_token(os.environ.get("CSM_API_SCOPE"))
 
-        configuration = cosmotech_api.Configuration(
-            host=os.environ.get("CSM_API_URL"), access_token=token.token
-        )
+        configuration = cosmotech_api.Configuration(host=os.environ.get("CSM_API_URL"), access_token=token.token)
         return cosmotech_api.ApiClient(configuration), "Azure Entra Connection"
 
     raise EnvironmentError(T("coal.errors.environment.no_valid_connection"))

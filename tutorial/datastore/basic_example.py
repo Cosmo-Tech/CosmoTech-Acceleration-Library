@@ -5,15 +5,7 @@ from cosmotech.coal.store.native_python import store_pylist
 my_datastore = Store(reset=True)
 
 # We create a simple list of dict data
-my_data = [{
-    "foo": "bar"
-},{
-    "foo": "barbar"
-},{
-    "foo": "world"
-},{
-    "foo": "bar"
-}]
+my_data = [{"foo": "bar"}, {"foo": "barbar"}, {"foo": "world"}, {"foo": "bar"}]
 
 # We use a bundled method to send the py_list to the store
 store_pylist("my_data", my_data)

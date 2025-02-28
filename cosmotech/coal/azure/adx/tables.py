@@ -25,11 +25,7 @@ def table_exists(client: KustoClient, database: str, table_name: str) -> bool:
     Returns:
         bool: True if the table exists, False otherwise
     """
-    LOGGER.debug(
-        T("coal.logs.adx.checking_table").format(
-            database=database, table_name=table_name
-        )
-    )
+    LOGGER.debug(T("coal.logs.adx.checking_table").format(database=database, table_name=table_name))
 
     get_tables_query = f".show database ['{database}'] schema| distinct TableName"
     tables = client.execute(database, get_tables_query)
@@ -43,9 +39,7 @@ def table_exists(client: KustoClient, database: str, table_name: str) -> bool:
     return False
 
 
-def create_table(
-    client: KustoClient, database: str, table_name: str, schema: Dict[str, str]
-) -> bool:
+def create_table(client: KustoClient, database: str, table_name: str, schema: Dict[str, str]) -> bool:
     """
     Create a table in the database.
 
@@ -58,11 +52,7 @@ def create_table(
     Returns:
         bool: True if the table was created successfully, False otherwise
     """
-    LOGGER.debug(
-        T("coal.logs.adx.creating_table").format(
-            database=database, table_name=table_name
-        )
-    )
+    LOGGER.debug(T("coal.logs.adx.creating_table").format(database=database, table_name=table_name))
 
     create_query = f".create-merge table {table_name}("
 
@@ -78,9 +68,5 @@ def create_table(
         LOGGER.info(T("coal.logs.adx.table_created").format(table_name=table_name))
         return True
     except Exception as e:
-        LOGGER.error(
-            T("coal.logs.adx.table_creation_error").format(
-                table_name=table_name, error=str(e)
-            )
-        )
+        LOGGER.error(T("coal.logs.adx.table_creation_error").format(table_name=table_name, error=str(e)))
         return False

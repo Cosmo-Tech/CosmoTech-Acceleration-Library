@@ -83,18 +83,14 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @web_help("csm-data/api/rds-load-csv")
 @translate_help("coal-help.commands.api.rds_load_csv.description")
-def rds_load_csv(
-    target_folder, organization_id, workspace_id, runner_id, run_id, file_name, query
-):
+def rds_load_csv(target_folder, organization_id, workspace_id, runner_id, run_id, file_name, query):
     target_dir = pathlib.Path(target_folder)
 
     target_dir.mkdir(parents=True, exist_ok=True)
 
     with get_api_client()[0] as api_client:
         api_run = RunApi(api_client)
-        query = api_run.query_run_data(
-            organization_id, workspace_id, runner_id, run_id, RunDataQuery(query=query)
-        )
+        query = api_run.query_run_data(organization_id, workspace_id, runner_id, run_id, RunDataQuery(query=query))
         if query.result:
             LOGGER.info(f"Query returned {len(query.result)} rows")
             with open(target_dir / (file_name + ".csv"), "w") as _f:

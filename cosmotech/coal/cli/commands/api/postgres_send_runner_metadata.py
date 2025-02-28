@@ -23,9 +23,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--organization-id",
     envvar="CSM_ORGANIZATION_ID",
-    help=T(
-        "coal-help.commands.api.postgres_send_runner_metadata.parameters.organization_id"
-    ),
+    help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.organization_id"),
     metavar="o-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -34,9 +32,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--workspace-id",
     envvar="CSM_WORKSPACE_ID",
-    help=T(
-        "coal-help.commands.api.postgres_send_runner_metadata.parameters.workspace_id"
-    ),
+    help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.workspace_id"),
     metavar="w-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -53,27 +49,21 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--table-prefix",
-    help=T(
-        "coal-help.commands.api.postgres_send_runner_metadata.parameters.table_prefix"
-    ),
+    help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.table_prefix"),
     metavar="PREFIX",
     type=str,
     default="Cosmotech_",
 )
 @click.option(
     "--postgres-host",
-    help=T(
-        "coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_host"
-    ),
+    help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_host"),
     envvar="POSTGRES_HOST_URI",
     show_envvar=True,
     required=True,
 )
 @click.option(
     "--postgres-port",
-    help=T(
-        "coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_port"
-    ),
+    help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_port"),
     envvar="POSTGRES_HOST_PORT",
     show_envvar=True,
     required=False,
@@ -81,36 +71,28 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--postgres-db",
-    help=T(
-        "coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_db"
-    ),
+    help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_db"),
     envvar="POSTGRES_DB_NAME",
     show_envvar=True,
     required=True,
 )
 @click.option(
     "--postgres-schema",
-    help=T(
-        "coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_schema"
-    ),
+    help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_schema"),
     envvar="POSTGRES_DB_SCHEMA",
     show_envvar=True,
     required=True,
 )
 @click.option(
     "--postgres-user",
-    help=T(
-        "coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_user"
-    ),
+    help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_user"),
     envvar="POSTGRES_USER_NAME",
     show_envvar=True,
     required=True,
 )
 @click.option(
     "--postgres-password",
-    help=T(
-        "coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_password"
-    ),
+    help=T("coal-help.commands.api.postgres_send_runner_metadata.parameters.postgres_password"),
     envvar="POSTGRES_USER_PASSWORD",
     show_envvar=True,
     required=True,
@@ -128,9 +110,7 @@ def postgres_send_runner_metadata(
     postgres_password,
 ):
     with get_api_client()[0] as api_client:
-        runner = get_runner_metadata(
-            api_client, organization_id, workspace_id, runner_id
-        )
+        runner = get_runner_metadata(api_client, organization_id, workspace_id, runner_id)
 
     postgresql_full_uri = generate_postgresql_full_uri(
         postgres_host, postgres_port, postgres_db, postgres_user, postgres_password

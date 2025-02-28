@@ -26,9 +26,7 @@ def write_parameters(parameter_folder, parameters, write_csv, write_json):
         tmp_parameter_file = os.path.join(parameter_folder, "parameters.csv")
         LOGGER.info(f"Generating {tmp_parameter_file}")
         with open(tmp_parameter_file, "w") as _file:
-            _w = DictWriter(
-                _file, fieldnames=["parameterId", "value", "varType", "isInherited"]
-            )
+            _w = DictWriter(_file, fieldnames=["parameterId", "value", "varType", "isInherited"])
             _w.writeheader()
             _w.writerows(parameters)
 
@@ -78,9 +76,7 @@ def init_local_parameter_folder():
     help="Toggle writing of parameters in csv format",
 )
 @web_help("csm-data/legacy/init-local-parameter-folder/solution")
-@translate_help(
-    "coal-help.commands.legacy.init_local_parameter_folder.solution.description"
-)
+@translate_help("coal-help.commands.legacy.init_local_parameter_folder.solution.description")
 def solution(
     solution_file: str,
     run_template_id: str,
@@ -89,9 +85,7 @@ def solution(
     write_csv: bool,
 ):
     if sol := read_solution_file(solution_file):
-        return generate_parameters(
-            sol, run_template_id, output_folder, write_json, write_csv
-        )
+        return generate_parameters(sol, run_template_id, output_folder, write_json, write_csv)
     return 1
 
 
@@ -107,9 +101,7 @@ def solution(
     "--organization-id",
     envvar="CSM_ORGANIZATION_ID",
     show_envvar=True,
-    help=T(
-        "coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.organization_id"
-    ),
+    help=T("coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.organization_id"),
     metavar="o-##########",
     required=True,
 )
@@ -117,9 +109,7 @@ def solution(
     "--workspace-id",
     envvar="CSM_WORKSPACE_ID",
     show_envvar=True,
-    help=T(
-        "coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.workspace_id"
-    ),
+    help=T("coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.workspace_id"),
     metavar="w-##########",
     required=True,
 )
@@ -127,9 +117,7 @@ def solution(
     "--run-template-id",
     envvar="CSM_RUN_TEMPLATE_ID",
     show_envvar=True,
-    help=T(
-        "coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.run_template_id"
-    ),
+    help=T("coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.run_template_id"),
     metavar="NAME",
     required=True,
 )
@@ -139,9 +127,7 @@ def solution(
     show_envvar=True,
     default=False,
     show_default=True,
-    help=T(
-        "coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.write_json"
-    ),
+    help=T("coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.write_json"),
 )
 @click.option(
     "--write-csv/--no-write-csv",
@@ -149,14 +135,10 @@ def solution(
     show_envvar=True,
     default=True,
     show_default=True,
-    help=T(
-        "coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.write_csv"
-    ),
+    help=T("coal-help.commands.legacy.init_local_parameter_folder.cloud.parameters.write_csv"),
 )
 @web_help("csm-data/legacy/init-local-parameter-folder/cloud")
-@translate_help(
-    "coal-help.commands.legacy.init_local_parameter_folder.cloud.description"
-)
+@translate_help("coal-help.commands.legacy.init_local_parameter_folder.cloud.description")
 def cloud(
     workspace_id: str,
     organization_id: str,
@@ -166,9 +148,7 @@ def cloud(
     write_csv: bool,
 ):
     if sol := get_solution(organization_id=organization_id, workspace_id=workspace_id):
-        return generate_parameters(
-            sol, run_template_id, output_folder, write_json, write_csv
-        )
+        return generate_parameters(sol, run_template_id, output_folder, write_json, write_csv)
     return 1
 
 

@@ -1,5 +1,6 @@
 # Aggregate the data
-store.execute_query("""
+store.execute_query(
+    """
     CREATE TABLE summary_data AS
     SELECT
         category,
@@ -8,4 +9,5 @@ store.execute_query("""
         SUM(value) as total_value
     FROM cleaned_data
     GROUP BY category
-""")
+"""
+)

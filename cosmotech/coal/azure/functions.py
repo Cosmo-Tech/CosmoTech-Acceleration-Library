@@ -12,9 +12,7 @@ import traceback
 def generate_main(apply_update, parallel=True):
     def main(req: func.HttpRequest) -> func.HttpResponse:
         try:
-            runner_id = req.params.get(
-                "scenario-id"
-            )  # Keep parameter name for backward compatibility
+            runner_id = req.params.get("scenario-id")  # Keep parameter name for backward compatibility
             organization_id = req.params.get("organization-id")
             workspace_id = req.params.get("workspace-id")
             access_token: str = req.headers.get("authorization", None)

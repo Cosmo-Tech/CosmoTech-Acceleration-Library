@@ -100,19 +100,13 @@ def dump_to_postgresql(
 
     tables = list(_s.list_tables())
     if len(tables):
-        LOGGER.info(
-            T("coal.logs.database.sending_data").format(
-                table=f"{postgres_db}.{postgres_schema}"
-            )
-        )
+        LOGGER.info(T("coal.logs.database.sending_data").format(table=f"{postgres_db}.{postgres_schema}"))
         total_rows = 0
         _process_start = perf_counter()
         for table_name in tables:
             _s_time = perf_counter()
             target_table_name = f"{table_prefix}{table_name}"
-            LOGGER.info(
-                T("coal.logs.database.table_entry").format(table=target_table_name)
-            )
+            LOGGER.info(T("coal.logs.database.table_entry").format(table=target_table_name))
             data = _s.get_table(table_name)
             if not len(data):
                 LOGGER.info(T("coal.logs.database.no_rows"))

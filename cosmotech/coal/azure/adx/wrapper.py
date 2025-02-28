@@ -109,9 +109,7 @@ class ADXQueriesWrapper:
         Returns:
             The ingestion result with source_id for status tracking
         """
-        return ingest_dataframe(
-            self.ingest_client, self.database, table_name, dataframe, drop_by_tag
-        )
+        return ingest_dataframe(self.ingest_client, self.database, table_name, dataframe, drop_by_tag)
 
     def check_ingestion_status(
         self, source_ids: List[str], timeout: int = None, logs: bool = False
@@ -127,9 +125,7 @@ class ADXQueriesWrapper:
         Returns:
             Iterator of (source_id, status) tuples
         """
-        return check_ingestion_status(
-            self.ingest_client, source_ids, timeout or self.timeout, logs
-        )
+        return check_ingestion_status(self.ingest_client, source_ids, timeout or self.timeout, logs)
 
     def _clear_ingestion_status_queues(self, confirmation: bool = False):
         """
@@ -143,7 +139,7 @@ class ADXQueriesWrapper:
 
         clear_ingestion_status_queues(self.ingest_client, confirmation)
 
-    def run_command_query(self, query: str) -> 'KustoResponseDataSet':
+    def run_command_query(self, query: str) -> "KustoResponseDataSet":
         """
         Execute a command query on the database.
 
@@ -155,7 +151,7 @@ class ADXQueriesWrapper:
         """
         return run_command_query(self.kusto_client, self.database, query)
 
-    def run_query(self, query: str) -> 'KustoResponseDataSet':
+    def run_query(self, query: str) -> "KustoResponseDataSet":
         """
         Execute a simple query on the database.
 

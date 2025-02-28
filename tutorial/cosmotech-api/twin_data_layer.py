@@ -23,13 +23,13 @@ LOGGER.info(f"Connected using: {connection_type}")
 try:
     # Create a TwinGraphApi instance
     twin_graph_api = TwinGraphApi(api_client)
-    
+
     # Example 1: Create sample CSV files for nodes and relationships
-    
+
     # Create a directory for our sample data
     data_dir = pathlib.Path("./tdl_sample_data")
     data_dir.mkdir(exist_ok=True, parents=True)
-    
+
     # Create a sample nodes CSV file (Person nodes)
     persons_file = data_dir / "Person.csv"
     with open(persons_file, "w", newline="") as f:
@@ -38,7 +38,7 @@ try:
         writer.writerow(["p1", "Alice", "30", "New York"])
         writer.writerow(["p2", "Bob", "25", "San Francisco"])
         writer.writerow(["p3", "Charlie", "35", "Chicago"])
-    
+
     # Create a sample relationships CSV file (KNOWS relationships)
     knows_file = data_dir / "KNOWS.csv"
     with open(knows_file, "w", newline="") as f:
@@ -47,23 +47,23 @@ try:
         writer.writerow(["p1", "p2", "2020"])
         writer.writerow(["p2", "p3", "2021"])
         writer.writerow(["p3", "p1", "2019"])
-    
+
     print(f"Created sample CSV files in {data_dir}")
-    
+
     # Example 2: Parse CSV files and generate Cypher queries
-    
+
     # Parse the nodes CSV file
     person_csv = CSVSourceFile(persons_file)
     print(f"Parsed {person_csv.object_type} CSV file:")
     print(f"  Is node: {person_csv.is_node}")
     print(f"  Fields: {person_csv.fields}")
     print(f"  ID column: {person_csv.id_column}")
-    
+
     # Generate a Cypher query for creating nodes
     person_query = person_csv.generate_query_insert()
     print(f"\nGenerated Cypher query for {person_csv.object_type}:")
     print(person_query)
-    
+
     # Parse the relationships CSV file
     knows_csv = CSVSourceFile(knows_file)
     print(f"\nParsed {knows_csv.object_type} CSV file:")
@@ -71,12 +71,12 @@ try:
     print(f"  Fields: {knows_csv.fields}")
     print(f"  Source column: {knows_csv.source_column}")
     print(f"  Target column: {knows_csv.target_column}")
-    
+
     # Generate a Cypher query for creating relationships
     knows_query = knows_csv.generate_query_insert()
     print(f"\nGenerated Cypher query for {knows_csv.object_type}:")
     print(knows_query)
-    
+
     # Example 3: Send data to the Twin Data Layer (commented out as it requires an actual twin graph)
     """
     # For nodes, you would typically:
@@ -115,7 +115,7 @@ try:
                 }
             )
     """
-    
+
     # Example 4: Query data from the Twin Data Layer (commented out as it requires an actual twin graph)
     """
     # Execute a Cypher query to get all Person nodes

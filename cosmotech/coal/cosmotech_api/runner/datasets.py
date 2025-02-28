@@ -76,9 +76,7 @@ def download_dataset(
     # Get dataset information
     with get_api_client()[0] as api_client:
         api_instance = DatasetApi(api_client)
-        dataset = api_instance.find_dataset_by_id(
-            organization_id=organization_id, dataset_id=dataset_id
-        )
+        dataset = api_instance.find_dataset_by_id(organization_id=organization_id, dataset_id=dataset_id)
 
         if dataset.connector is None:
             parameters = []
@@ -87,13 +85,9 @@ def download_dataset(
 
         is_adt = "AZURE_DIGITAL_TWINS_URL" in parameters
         is_storage = "AZURE_STORAGE_CONTAINER_BLOB_PREFIX" in parameters
-        is_legacy_twin_cache = (
-            "TWIN_CACHE_NAME" in parameters and dataset.twingraph_id is None
-        )
+        is_legacy_twin_cache = "TWIN_CACHE_NAME" in parameters and dataset.twingraph_id is None
         is_in_workspace_file = (
-            False
-            if dataset.tags is None
-            else "workspaceFile" in dataset.tags or "dataset_part" in dataset.tags
+            False if dataset.tags is None else "workspaceFile" in dataset.tags or "dataset_part" in dataset.tags
         )
 
         # Download based on dataset type
@@ -124,9 +118,7 @@ def download_dataset(
             }
 
         elif is_storage:
-            _file_name = parameters["AZURE_STORAGE_CONTAINER_BLOB_PREFIX"].replace(
-                "%WORKSPACE_FILE%/", ""
-            )
+            _file_name = parameters["AZURE_STORAGE_CONTAINER_BLOB_PREFIX"].replace("%WORKSPACE_FILE%/", "")
             content, folder_path = download_file_dataset(
                 organization_id=organization_id,
                 workspace_id=workspace_id,
@@ -160,9 +152,7 @@ def download_dataset(
             }
 
         else:
-            content, folder_path = download_twingraph_dataset(
-                organization_id=organization_id, dataset_id=dataset_id
-            )
+            content, folder_path = download_twingraph_dataset(organization_id=organization_id, dataset_id=dataset_id)
             return {
                 "type": "twincache",
                 "content": content,
@@ -238,9 +228,7 @@ def download_datasets_parallel(
         # As a workaround, only treat non-null exit code as a real issue if we also have stored an error
         # message
         if p.exitcode != 0 and dataset_id in error_dict:
-            raise ChildProcessError(
-                f"Failed to download dataset '{dataset_id}': {error_dict[dataset_id]}"
-            )
+            raise ChildProcessError(f"Failed to download dataset '{dataset_id}': {error_dict[dataset_id]}")
 
     return dict(return_dict)
 
@@ -275,9 +263,7 @@ def download_datasets_sequential(
     return_dict = {}
     error_dict = {}
 
-    LOGGER.info(
-        T("coal.logs.dataset.sequential_download").format(count=len(dataset_ids))
-    )
+    LOGGER.info(T("coal.logs.dataset.sequential_download").format(count=len(dataset_ids)))
 
     for dataset_id in dataset_ids:
         try:
@@ -290,9 +276,7 @@ def download_datasets_sequential(
             )
         except Exception as e:
             error_dict[dataset_id] = f"{type(e).__name__}: {str(e)}"
-            raise ChildProcessError(
-                f"Failed to download dataset '{dataset_id}': {error_dict.get(dataset_id, '')}"
-            )
+            raise ChildProcessError(f"Failed to download dataset '{dataset_id}': {error_dict.get(dataset_id, '')}")
 
     return return_dict
 
@@ -340,9 +324,7 @@ def download_datasets(
         )
 
 
-def dataset_to_file(
-    dataset_info: Dict[str, Any], target_folder: Optional[Union[str, Path]] = None
-) -> str:
+def dataset_to_file(dataset_info: Dict[str, Any], target_folder: Optional[Union[str, Path]] = None) -> str:
     """
     Convert dataset to files.
 

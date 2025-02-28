@@ -32,9 +32,7 @@ from cosmotech.orchestrator.utils.translate import T
     "--dataset-absolute-path",
     envvar="CSM_DATASET_ABSOLUTE_PATH",
     show_envvar=True,
-    help=T(
-        "coal-help.commands.storage.adx_send_scenariodata.parameters.dataset_absolute_path"
-    ),
+    help=T("coal-help.commands.storage.adx_send_scenariodata.parameters.dataset_absolute_path"),
     metavar="PATH",
     required=True,
 )
@@ -43,9 +41,7 @@ from cosmotech.orchestrator.utils.translate import T
     envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
     metavar="PATH",
     show_envvar=True,
-    help=T(
-        "coal-help.commands.storage.adx_send_scenariodata.parameters.parameters_absolute_path"
-    ),
+    help=T("coal-help.commands.storage.adx_send_scenariodata.parameters.parameters_absolute_path"),
     required=True,
 )
 @click.option(
@@ -70,9 +66,7 @@ from cosmotech.orchestrator.utils.translate import T
     show_envvar=True,
     required=True,
     metavar="URI",
-    help=T(
-        "coal-help.commands.storage.adx_send_scenariodata.parameters.adx_ingest_uri"
-    ),
+    help=T("coal-help.commands.storage.adx_send_scenariodata.parameters.adx_ingest_uri"),
 )
 @click.option(
     "--database-name",
@@ -89,9 +83,7 @@ from cosmotech.orchestrator.utils.translate import T
     show_envvar=True,
     default=False,
     show_default=True,
-    help=T(
-        "coal-help.commands.storage.adx_send_scenariodata.parameters.send_parameters"
-    ),
+    help=T("coal-help.commands.storage.adx_send_scenariodata.parameters.send_parameters"),
 )
 @click.option(
     "--send-datasets/--no-send-datasets",
@@ -127,9 +119,7 @@ def adx_send_scenariodata(
     if send_datasets:
         csv_data.update(prepare_csv_content(dataset_absolute_path))
     queries = construct_create_query(csv_data)
-    adx_client = ADXQueriesWrapper(
-        database=database_name, cluster_url=adx_uri, ingest_url=adx_ingest_uri
-    )
+    adx_client = ADXQueriesWrapper(database=database_name, cluster_url=adx_uri, ingest_url=adx_ingest_uri)
     for k, v in queries.items():
         LOGGER.info(T("coal.logs.ingestion.creating_table").format(query=v))
         r: KustoResponseDataSet = adx_client.run_query(v)
@@ -192,9 +182,7 @@ def construct_create_query(files_data):
     return queries
 
 
-def insert_csv_files(
-    files_data, adx_client: ADXQueriesWrapper, simulation_id, database, wait=False
-):
+def insert_csv_files(files_data, adx_client: ADXQueriesWrapper, simulation_id, database, wait=False):
     """insert_data(csv_infos):
     create ingestion client
     foreach csv_file:
@@ -210,9 +198,7 @@ def insert_csv_files(
         fields = file_info.get("headers")
         with open(file_path) as _f:
             file_size = sum(map(len, _f.readlines()))
-            LOGGER.debug(
-                T("coal.logs.data_transfer.sending_data").format(size=file_size)
-            )
+            LOGGER.debug(T("coal.logs.data_transfer.sending_data").format(size=file_size))
         fd = FileDescriptor(file_path, file_size)
         ord = 0
         mappings = list()
@@ -239,9 +225,7 @@ def insert_csv_files(
             additional_properties={"ignoreFirstRecord": "true"},
         )
         LOGGER.info(T("coal.logs.ingestion.ingesting").format(table=filename))
-        results: IngestionResult = adx_client.ingest_client.ingest_from_file(
-            fd, ingestion_properties
-        )
+        results: IngestionResult = adx_client.ingest_client.ingest_from_file(fd, ingestion_properties)
         ingestion_ids[str(results.source_id)] = filename
     if wait:
         count = 0
@@ -250,9 +234,7 @@ def insert_csv_files(
         while any(
             map(
                 lambda s: s[1] in (IngestionStatus.QUEUED, IngestionStatus.UNKNOWN),
-                adx_client.check_ingestion_status(
-                    source_ids=list(ingestion_ids.keys())
-                ),
+                adx_client.check_ingestion_status(source_ids=list(ingestion_ids.keys())),
             )
         ):
             count += 1
@@ -260,16 +242,12 @@ def insert_csv_files(
                 LOGGER.warning(T("coal.logs.ingestion.max_retry"))
                 break
             LOGGER.info(
-                T("coal.logs.ingestion.waiting_results").format(
-                    duration=pause_duration, count=count, limit=limit
-                )
+                T("coal.logs.ingestion.waiting_results").format(duration=pause_duration, count=count, limit=limit)
             )
             time.sleep(pause_duration)
 
         LOGGER.info(T("coal.logs.ingestion.status"))
-        for _id, status in adx_client.check_ingestion_status(
-            source_ids=list(ingestion_ids.keys())
-        ):
+        for _id, status in adx_client.check_ingestion_status(source_ids=list(ingestion_ids.keys())):
             color = (
                 "red"
                 if status == IngestionStatus.FAILURE
@@ -278,9 +256,7 @@ def insert_csv_files(
                 else "bright_black"
             )
             LOGGER.info(
-                T("coal.logs.ingestion.status_report").format(
-                    table=ingestion_ids[_id], status=status.name, color=color
-                )
+                T("coal.logs.ingestion.status_report").format(table=ingestion_ids[_id], status=status.name, color=color)
             )
     else:
         LOGGER.info(T("coal.logs.ingestion.no_wait"))

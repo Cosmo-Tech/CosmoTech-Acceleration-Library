@@ -23,11 +23,7 @@ def type_mapping(key: str, key_example_value: Any) -> str:
     Returns:
         str: The name of the type used in ADX
     """
-    LOGGER.debug(
-        T("coal.logs.adx.mapping_type").format(
-            key=key, value_type=type(key_example_value).__name__
-        )
-    )
+    LOGGER.debug(T("coal.logs.adx.mapping_type").format(key=key, value_type=type(key_example_value).__name__))
 
     if key == "SimulationRun":
         return "guid"

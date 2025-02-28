@@ -44,9 +44,7 @@ def get_data(table_name: str, output_directory: str, cursor: Cursor):
     "--singlestore-host",
     "single_store_host",
     envvar="SINGLE_STORE_HOST",
-    help=T(
-        "coal-help.commands.store.load_from_singlestore.parameters.singlestore_host"
-    ),
+    help=T("coal-help.commands.store.load_from_singlestore.parameters.singlestore_host"),
     type=str,
     show_envvar=True,
     required=True,
@@ -54,9 +52,7 @@ def get_data(table_name: str, output_directory: str, cursor: Cursor):
 @click.option(
     "--singlestore-port",
     "single_store_port",
-    help=T(
-        "coal-help.commands.store.load_from_singlestore.parameters.singlestore_port"
-    ),
+    help=T("coal-help.commands.store.load_from_singlestore.parameters.singlestore_port"),
     envvar="SINGLE_STORE_PORT",
     show_envvar=True,
     required=False,
@@ -73,9 +69,7 @@ def get_data(table_name: str, output_directory: str, cursor: Cursor):
 @click.option(
     "--singlestore-user",
     "single_store_user",
-    help=T(
-        "coal-help.commands.store.load_from_singlestore.parameters.singlestore_user"
-    ),
+    help=T("coal-help.commands.store.load_from_singlestore.parameters.singlestore_user"),
     envvar="SINGLE_STORE_USERNAME",
     show_envvar=True,
     required=True,
@@ -83,9 +77,7 @@ def get_data(table_name: str, output_directory: str, cursor: Cursor):
 @click.option(
     "--singlestore-password",
     "single_store_password",
-    help=T(
-        "coal-help.commands.store.load_from_singlestore.parameters.singlestore_password"
-    ),
+    help=T("coal-help.commands.store.load_from_singlestore.parameters.singlestore_password"),
     envvar="SINGLE_STORE_PASSWORD",
     show_envvar=True,
     required=True,
@@ -93,9 +85,7 @@ def get_data(table_name: str, output_directory: str, cursor: Cursor):
 @click.option(
     "--singlestore-tables",
     "single_store_tables",
-    help=T(
-        "coal-help.commands.store.load_from_singlestore.parameters.singlestore_tables"
-    ),
+    help=T("coal-help.commands.store.load_from_singlestore.parameters.singlestore_tables"),
     envvar="SINGLE_STORE_TABLES",
     show_envvar=True,
     required=True,
@@ -139,17 +129,11 @@ def load_from_singlestore(
             if not table_names:
                 cur.execute("SHOW TABLES")
                 table_names = cur.fetchall()
-            LOGGER.info(
-                T("coal.logs.database.tables_to_fetch").format(tables=table_names)
-            )
+            LOGGER.info(T("coal.logs.database.tables_to_fetch").format(tables=table_names))
             for name in table_names:
                 get_data(name, single_store_working_dir, cur)
     end_full = time.perf_counter()
-    LOGGER.info(
-        T("coal.logs.database.full_dataset").format(
-            time=round(end_full - start_full, 2)
-        )
-    )
+    LOGGER.info(T("coal.logs.database.full_dataset").format(time=round(end_full - start_full, 2)))
 
     for csv_path in pathlib.Path(single_store_working_dir).glob("*.csv"):
         LOGGER.info(T("coal.logs.storage.found_file").format(file=csv_path.name))

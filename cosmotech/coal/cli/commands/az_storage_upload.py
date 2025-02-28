@@ -53,9 +53,7 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--az-storage-sas-url",
-    help=T(
-        "coal-help.commands.storage.az_storage_upload.parameters.az_storage_sas_url"
-    ),
+    help=T("coal-help.commands.storage.az_storage_upload.parameters.az_storage_sas_url"),
     type=str,
     show_envvar=True,
     metavar="URL",
@@ -72,23 +70,13 @@ def az_storage_upload(
 ):
     source_path = pathlib.Path(source_folder)
     if not source_path.exists():
-        LOGGER.error(
-            T("coal.errors.file_system.file_not_found").format(
-                source_folder=source_folder
-            )
-        )
-        raise FileNotFoundError(
-            T("coal.errors.file_system.file_not_found").format(
-                source_folder=source_folder
-            )
-        )
+        LOGGER.error(T("coal.errors.file_system.file_not_found").format(source_folder=source_folder))
+        raise FileNotFoundError(T("coal.errors.file_system.file_not_found").format(source_folder=source_folder))
 
     def file_upload(file_path: pathlib.Path, file_name: str):
         uploaded_file_name = blob_name + "/" + file_prefix + file_name
         LOGGER.info(
-            T("coal.logs.data_transfer.file_sent").format(
-                file_path=file_path, uploaded_name=uploaded_file_name
-            )
+            T("coal.logs.data_transfer.file_sent").format(file_path=file_path, uploaded_name=uploaded_file_name)
         )
         ContainerClient.from_container_url(az_storage_sas_url).upload_blob(
             uploaded_file_name, file_path.open("rb"), overwrite=True
@@ -98,9 +86,7 @@ def az_storage_upload(
         _source_name = str(source_path)
         for _file_path in source_path.glob("**/*" if recursive else "*"):
             if _file_path.is_file():
-                _file_name = (
-                    str(_file_path).removeprefix(_source_name).removeprefix("/")
-                )
+                _file_name = str(_file_path).removeprefix(_source_name).removeprefix("/")
                 file_upload(_file_path, _file_name)
     else:
         file_upload(source_path, source_path.name)

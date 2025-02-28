@@ -36,14 +36,10 @@ try:
     file_to_download = "data/sample.csv"  # Replace with an actual file in your workspace
     target_directory = pathlib.Path("./downloaded_files")
     target_directory.mkdir(exist_ok=True, parents=True)
-    
+
     try:
         downloaded_file = download_workspace_file(
-            api_client, 
-            organization_id, 
-            workspace_id, 
-            file_to_download, 
-            target_directory
+            api_client, organization_id, workspace_id, file_to_download, target_directory
         )
         print(f"Downloaded file to: {downloaded_file}")
     except Exception as e:
@@ -52,7 +48,7 @@ try:
     # Example 3: Upload a file to the workspace
     file_to_upload = "./local_data/upload_sample.csv"  # Replace with a local file path
     workspace_destination = "data/uploaded/"  # Destination in the workspace (ending with / to keep filename)
-    
+
     try:
         uploaded_file = upload_workspace_file(
             api_client,
@@ -60,7 +56,7 @@ try:
             workspace_id,
             file_to_upload,
             workspace_destination,
-            overwrite=True  # Set to False to prevent overwriting existing files
+            overwrite=True,  # Set to False to prevent overwriting existing files
         )
         print(f"Uploaded file as: {uploaded_file}")
     except Exception as e:

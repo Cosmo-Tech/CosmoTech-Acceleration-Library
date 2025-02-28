@@ -34,14 +34,10 @@ def require_env(envvar, envvar_desc):
         @wraps(func)
         def f(*args, **kwargs):
             if envvar not in os.environ:
-                raise EnvironmentError(
-                    T("coal.errors.environment.missing_var").format(envvar=envvar)
-                )
+                raise EnvironmentError(T("coal.errors.environment.missing_var").format(envvar=envvar))
             return func(*args, **kwargs)
 
-        f.__doc__ = "\n".join(
-            [f.__doc__ or "", f"Requires env var `{envvar:<15}` *{envvar_desc}*  "]
-        )
+        f.__doc__ = "\n".join([f.__doc__ or "", f"Requires env var `{envvar:<15}` *{envvar_desc}*  "])
         return f
 
     return wrap_function

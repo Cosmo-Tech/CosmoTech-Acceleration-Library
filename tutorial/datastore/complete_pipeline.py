@@ -11,7 +11,8 @@ raw_data_path = pathlib.Path("path/to/raw_data.csv")
 store_csv_file("raw_data", raw_data_path, store=store)
 
 # 2. Clean and transform the data
-store.execute_query("""
+store.execute_query(
+    """
     CREATE TABLE cleaned_data AS
     SELECT 
         id,
@@ -20,10 +21,12 @@ store.execute_query("""
         CASE WHEN value < 0 THEN 0 ELSE value END as value
     FROM raw_data
     WHERE id IS NOT NULL
-""")
+"""
+)
 
 # 3. Aggregate the data
-store.execute_query("""
+store.execute_query(
+    """
     CREATE TABLE summary_data AS
     SELECT
         category,
@@ -32,7 +35,8 @@ store.execute_query("""
         SUM(value) as total_value
     FROM cleaned_data
     GROUP BY category
-""")
+"""
+)
 
 # 4. Export the results
 summary_data = convert_table_as_pylist("summary_data", store=store)

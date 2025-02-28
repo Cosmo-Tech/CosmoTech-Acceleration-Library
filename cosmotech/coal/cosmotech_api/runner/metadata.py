@@ -37,10 +37,6 @@ def get_runner_metadata(
         Dictionary with runner metadata
     """
     runner_api = cosmotech_api.RunnerApi(api_client)
-    runner: cosmotech_api.Runner = runner_api.get_runner(
-        organization_id, workspace_id, runner_id
-    )
+    runner: cosmotech_api.Runner = runner_api.get_runner(organization_id, workspace_id, runner_id)
 
-    return runner.model_dump(
-        by_alias=True, exclude_none=True, include=include, exclude=exclude, mode="json"
-    )
+    return runner.model_dump(by_alias=True, exclude_none=True, include=include, exclude=exclude, mode="json")

@@ -17,9 +17,7 @@ from cosmotech.orchestrator.utils.translate import T
 from cosmotech.coal.cosmotech_api.dataset.utils import sheet_to_header
 
 
-def convert_dataset_to_files(
-    dataset_info: Dict[str, Any], target_folder: Optional[Union[str, Path]] = None
-) -> Path:
+def convert_dataset_to_files(dataset_info: Dict[str, Any], target_folder: Optional[Union[str, Path]] = None) -> Path:
     """
     Convert dataset info to files.
 
@@ -34,17 +32,11 @@ def convert_dataset_to_files(
     content = dataset_info["content"]
     name = dataset_info["name"]
 
-    LOGGER.info(
-        T("coal.logs.dataset.converting_to_files").format(
-            dataset_type=dataset_type, dataset_name=name
-        )
-    )
+    LOGGER.info(T("coal.logs.dataset.converting_to_files").format(dataset_type=dataset_type, dataset_name=name))
 
     if target_folder is None:
         target_folder = Path(tempfile.mkdtemp())
-        LOGGER.debug(
-            T("coal.logs.dataset.created_temp_folder").format(folder=target_folder)
-        )
+        LOGGER.debug(T("coal.logs.dataset.created_temp_folder").format(folder=target_folder))
     else:
         target_folder = Path(target_folder)
         target_folder.mkdir(parents=True, exist_ok=True)
@@ -71,52 +63,33 @@ def convert_graph_dataset_to_files(
     """
     if target_folder is None:
         target_folder = Path(tempfile.mkdtemp())
-        LOGGER.debug(
-            T("coal.logs.dataset.created_temp_folder").format(folder=target_folder)
-        )
+        LOGGER.debug(T("coal.logs.dataset.created_temp_folder").format(folder=target_folder))
     else:
         target_folder = Path(target_folder)
         target_folder.mkdir(parents=True, exist_ok=True)
         LOGGER.debug(T("coal.logs.dataset.using_folder").format(folder=target_folder))
     file_count = 0
 
-    LOGGER.info(
-        T("coal.logs.dataset.converting_graph_data").format(
-            entity_types=len(content), folder=target_folder
-        )
-    )
+    LOGGER.info(T("coal.logs.dataset.converting_graph_data").format(entity_types=len(content), folder=target_folder))
 
     for entity_type, entities in content.items():
         if not entities:
-            LOGGER.debug(
-                T("coal.logs.dataset.skipping_empty_entity").format(
-                    entity_type=entity_type
-                )
-            )
+            LOGGER.debug(T("coal.logs.dataset.skipping_empty_entity").format(entity_type=entity_type))
             continue
 
         file_path = target_folder / f"{entity_type}.csv"
-        LOGGER.debug(
-            T("coal.logs.dataset.writing_csv").format(
-                file_name=file_path.name, count=len(entities)
-            )
-        )
+        LOGGER.debug(T("coal.logs.dataset.writing_csv").format(file_name=file_path.name, count=len(entities)))
 
         fieldnames = sheet_to_header(entities)
 
         with open(file_path, "w", newline="") as file:
-            writer = csv.DictWriter(
-                file, fieldnames=fieldnames, dialect="unix", quoting=csv.QUOTE_MINIMAL
-            )
+            writer = csv.DictWriter(file, fieldnames=fieldnames, dialect="unix", quoting=csv.QUOTE_MINIMAL)
             writer.writeheader()
 
             for entity in entities:
                 # Convert values to strings and handle boolean values
                 row = {
-                    k: str(v)
-                    .replace("'", '"')
-                    .replace("True", "true")
-                    .replace("False", "false")
+                    k: str(v).replace("'", '"').replace("True", "true").replace("False", "false")
                     for k, v in entity.items()
                 }
                 writer.writerow(row)
@@ -124,11 +97,7 @@ def convert_graph_dataset_to_files(
         file_count += 1
         LOGGER.debug(T("coal.logs.dataset.file_written").format(file_path=file_path))
 
-    LOGGER.info(
-        T("coal.logs.dataset.files_created").format(
-            count=file_count, folder=target_folder
-        )
-    )
+    LOGGER.info(T("coal.logs.dataset.files_created").format(count=file_count, folder=target_folder))
 
     return target_folder
 
@@ -151,9 +120,7 @@ def convert_file_dataset_to_files(
     """
     if target_folder is None:
         target_folder = Path(tempfile.mkdtemp())
-        LOGGER.debug(
-            T("coal.logs.dataset.created_temp_folder").format(folder=target_folder)
-        )
+        LOGGER.debug(T("coal.logs.dataset.created_temp_folder").format(folder=target_folder))
     else:
         target_folder = Path(target_folder)
         target_folder.mkdir(parents=True, exist_ok=True)
@@ -172,11 +139,7 @@ def convert_file_dataset_to_files(
         # Ensure parent directories exist
         file_path.parent.mkdir(parents=True, exist_ok=True)
 
-        LOGGER.debug(
-            T("coal.logs.dataset.writing_file").format(
-                file_name=file_path.name, file_type=file_type
-            )
-        )
+        LOGGER.debug(T("coal.logs.dataset.writing_file").format(file_name=file_path.name, file_type=file_type))
 
         if isinstance(file_content, str):
             # Text content
@@ -194,10 +157,6 @@ def convert_file_dataset_to_files(
         file_count += 1
         LOGGER.debug(T("coal.logs.dataset.file_written").format(file_path=file_path))
 
-    LOGGER.info(
-        T("coal.logs.dataset.files_created").format(
-            count=file_count, folder=target_folder
-        )
-    )
+    LOGGER.info(T("coal.logs.dataset.files_created").format(count=file_count, folder=target_folder))
 
     return target_folder

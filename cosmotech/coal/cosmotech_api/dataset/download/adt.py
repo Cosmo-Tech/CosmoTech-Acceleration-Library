@@ -75,11 +75,7 @@ def download_adt_dataset(
 
     query_time = time.time() - query_start
     LOGGER.debug(T("coal.logs.dataset.adt_twins_found").format(count=twin_count))
-    LOGGER.debug(
-        T("coal.logs.dataset.operation_timing").format(
-            operation="twins query", time=query_time
-        )
-    )
+    LOGGER.debug(T("coal.logs.dataset.operation_timing").format(operation="twins query", time=query_time))
 
     # Query relationships
     rel_start = time.time()
@@ -106,14 +102,8 @@ def download_adt_dataset(
         json_content[relation["$relationshipName"]].append(r_content)
 
     rel_time = time.time() - rel_start
-    LOGGER.debug(
-        T("coal.logs.dataset.adt_relations_found").format(count=relation_count)
-    )
-    LOGGER.debug(
-        T("coal.logs.dataset.operation_timing").format(
-            operation="relations query", time=rel_time
-        )
-    )
+    LOGGER.debug(T("coal.logs.dataset.adt_relations_found").format(count=relation_count))
+    LOGGER.debug(T("coal.logs.dataset.operation_timing").format(operation="relations query", time=rel_time))
 
     # Convert to files if target_folder is provided
     if target_folder:
@@ -123,11 +113,7 @@ def download_adt_dataset(
         target_folder = tempfile.mkdtemp()
 
     elapsed_time = time.time() - start_time
-    LOGGER.info(
-        T("coal.logs.dataset.operation_timing").format(
-            operation="ADT download", time=elapsed_time
-        )
-    )
+    LOGGER.info(T("coal.logs.dataset.operation_timing").format(operation="ADT download", time=elapsed_time))
     LOGGER.info(T("coal.logs.dataset.download_completed").format(dataset_type="ADT"))
 
     return json_content, Path(target_folder)

@@ -24,23 +24,17 @@ def run_query(client: KustoClient, database: str, query: str) -> KustoResponseDa
     Returns:
         KustoResponseDataSet: The results of the query
     """
-    LOGGER.debug(
-        T("coal.logs.adx.running_query").format(database=database, query=query)
-    )
+    LOGGER.debug(T("coal.logs.adx.running_query").format(database=database, query=query))
 
     result = client.execute(database, query)
     LOGGER.debug(
-        T("coal.logs.adx.query_complete").format(
-            rows=len(result.primary_results[0]) if result.primary_results else 0
-        )
+        T("coal.logs.adx.query_complete").format(rows=len(result.primary_results[0]) if result.primary_results else 0)
     )
 
     return result
 
 
-def run_command_query(
-    client: KustoClient, database: str, query: str
-) -> KustoResponseDataSet:
+def run_command_query(client: KustoClient, database: str, query: str) -> KustoResponseDataSet:
     """
     Execute a command query on the database.
 
@@ -52,9 +46,7 @@ def run_command_query(
     Returns:
         KustoResponseDataSet: The results of the query
     """
-    LOGGER.debug(
-        T("coal.logs.adx.running_command").format(database=database, query=query)
-    )
+    LOGGER.debug(T("coal.logs.adx.running_command").format(database=database, query=query))
 
     result = client.execute_mgmt(database, query)
     LOGGER.debug(T("coal.logs.adx.command_complete"))

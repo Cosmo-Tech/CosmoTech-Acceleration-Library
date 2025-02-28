@@ -16,9 +16,7 @@ class Store:
     def __init__(
         self,
         reset=False,
-        store_location: pathlib.Path = pathlib.Path(
-            os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH", ".")
-        ),
+        store_location: pathlib.Path = pathlib.Path(os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH", ".")),
     ):
         self.store_location = pathlib.Path(store_location) / ".coal/store"
         self.store_location.mkdir(parents=True, exist_ok=True)
@@ -34,9 +32,7 @@ class Store:
 
     def get_table(self, table_name: str) -> pyarrow.Table:
         if not self.table_exists(table_name):
-            raise ValueError(
-                T("coal.errors.data.no_table").format(table_name=table_name)
-            )
+            raise ValueError(T("coal.errors.data.no_table").format(table_name=table_name))
         return self.execute_query(f"select * from {table_name}")
 
     def table_exists(self, table_name) -> bool:
@@ -44,23 +40,15 @@ class Store:
 
     def get_table_schema(self, table_name: str) -> pyarrow.Schema:
         if not self.table_exists(table_name):
-            raise ValueError(
-                T("coal.errors.data.no_table").format(table_name=table_name)
-            )
+            raise ValueError(T("coal.errors.data.no_table").format(table_name=table_name))
         with dbapi.connect(self._database) as conn:
             return conn.adbc_get_table_schema(table_name)
 
     def add_table(self, table_name: str, data=pyarrow.Table, replace: bool = False):
         with dbapi.connect(self._database, autocommit=True) as conn:
             with conn.cursor() as curs:
-                rows = curs.adbc_ingest(
-                    table_name, data, "replace" if replace else "create_append"
-                )
-                LOGGER.debug(
-                    T("coal.logs.data_transfer.rows_inserted").format(
-                        rows=rows, table_name=table_name
-                    )
-                )
+                rows = curs.adbc_ingest(table_name, data, "replace" if replace else "create_append")
+                LOGGER.debug(T("coal.logs.data_transfer.rows_inserted").format(rows=rows, table_name=table_name))
 
     def execute_query(self, sql_query: str) -> pyarrow.Table:
         batch_size = 1024
@@ -69,9 +57,7 @@ class Store:
             try:
                 with dbapi.connect(self._database, autocommit=True) as conn:
                     with conn.cursor() as curs:
-                        curs.adbc_statement.set_options(
-                            **{"adbc.sqlite.query.batch_rows": str(batch_size)}
-                        )
+                        curs.adbc_statement.set_options(**{"adbc.sqlite.query.batch_rows": str(batch_size)})
                         curs.execute(sql_query)
                         return curs.fetch_arrow_table()
             except OSError:

@@ -52,13 +52,9 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @web_help("csm-data/api/wsf-load-file")
 @translate_help("coal-help.commands.api.wsf_load_file.description")
-def wsf_load_file(
-    organization_id, workspace_id, workspace_path: str, target_folder: str
-):
+def wsf_load_file(organization_id, workspace_id, workspace_path: str, target_folder: str):
     with get_api_client()[0] as api_client:
-        target_list = list_workspace_files(
-            api_client, organization_id, workspace_id, workspace_path
-        )
+        target_list = list_workspace_files(api_client, organization_id, workspace_id, workspace_path)
 
         for target in target_list:
             download_workspace_file(

@@ -88,9 +88,7 @@ def download_data(
     "--dataset-absolute-path",
     envvar="CSM_DATASET_ABSOLUTE_PATH",
     show_envvar=True,
-    help=T(
-        "coal-help.commands.api.scenariorun_load_data.parameters.dataset_absolute_path"
-    ),
+    help=T("coal-help.commands.api.scenariorun_load_data.parameters.dataset_absolute_path"),
     metavar="PATH",
     required=True,
 )
@@ -99,9 +97,7 @@ def download_data(
     envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
     metavar="PATH",
     show_envvar=True,
-    help=T(
-        "coal-help.commands.api.scenariorun_load_data.parameters.parameters_absolute_path"
-    ),
+    help=T("coal-help.commands.api.scenariorun_load_data.parameters.parameters_absolute_path"),
     required=True,
 )
 @click.option(

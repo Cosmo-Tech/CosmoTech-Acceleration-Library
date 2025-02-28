@@ -62,9 +62,7 @@ def get_content_from_twin_graph_data(
     # Process nodes
     for item in nodes:
         label = item["n"]["label"]
-        props = item["n"][
-            "properties"
-        ].copy()  # Create a copy to avoid modifying the original
+        props = item["n"]["properties"].copy()  # Create a copy to avoid modifying the original
         if not restore_names:
             props.update({"id": item["n"]["id"]})
         content.setdefault(label, list())
@@ -75,9 +73,7 @@ def get_content_from_twin_graph_data(
         src = item["src"]
         dest = item["dest"]
         rel = item["rel"]
-        props = rel[
-            "properties"
-        ].copy()  # Create a copy to avoid modifying the original
+        props = rel["properties"].copy()  # Create a copy to avoid modifying the original
         content[rel["label"]].append(
             {
                 "id": rel["id"],
@@ -89,11 +85,7 @@ def get_content_from_twin_graph_data(
 
     # Log the number of entities by type
     for entity_type, entities in content.items():
-        LOGGER.debug(
-            T("coal.logs.dataset.entity_count").format(
-                entity_type=entity_type, count=len(entities)
-            )
-        )
+        LOGGER.debug(T("coal.logs.dataset.entity_count").format(entity_type=entity_type, count=len(entities)))
 
     return content
 
@@ -108,9 +100,7 @@ def sheet_to_header(sheet_content: List[Dict]) -> List[str]:
     Returns:
         List of field names with id, source, and target fields first if present
     """
-    LOGGER.debug(
-        T("coal.logs.dataset.extracting_headers").format(rows=len(sheet_content))
-    )
+    LOGGER.debug(T("coal.logs.dataset.extracting_headers").format(rows=len(sheet_content)))
 
     fieldnames = []
     has_src = False
