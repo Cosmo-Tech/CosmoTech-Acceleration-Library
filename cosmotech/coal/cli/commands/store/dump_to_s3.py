@@ -5,17 +5,10 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from io import BytesIO
 from typing import Optional
-
-import boto3
-import pyarrow.csv as pc
-import pyarrow.parquet as pq
 
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
-from cosmotech.coal.store.store import Store
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 VALID_TYPES = (
@@ -118,31 +111,28 @@ def dump_to_s3(
     use_ssl: bool = True,
     ssl_cert_bundle: Optional[str] = None,
 ):
+    # Import the modules and functions at the start of the command
+    from io import BytesIO
+    import pyarrow.csv as pc
+    import pyarrow.parquet as pq
+    from cosmotech.coal.aws import create_s3_client, upload_data_stream
+    from cosmotech.coal.store.store import Store
+    from cosmotech.coal.utils.logger import LOGGER
+
     _s = Store(store_location=store_folder)
 
     if output_type not in VALID_TYPES:
         LOGGER.error(T("coal.errors.data.invalid_output_type").format(output_type=output_type))
         raise ValueError(T("coal.errors.data.invalid_output_type").format(output_type=output_type))
 
-    boto3_parameters = {
-        "use_ssl": use_ssl,
-        "endpoint_url": endpoint_url,
-        "aws_access_key_id": access_id,
-        "aws_secret_access_key": secret_key,
-    }
-    if ssl_cert_bundle:
-        boto3_parameters["verify"] = ssl_cert_bundle
-
-    s3_client = boto3.client("s3", **boto3_parameters)
-
-    def data_upload(data_stream: BytesIO, file_name: str):
-        uploaded_file_name = file_prefix + file_name
-        data_stream.seek(0)
-        size = len(data_stream.read())
-        data_stream.seek(0)
-
-        LOGGER.info(T("coal.logs.data_transfer.sending_data").format(size=size))
-        s3_client.upload_fileobj(data_stream, bucket_name, uploaded_file_name)
+    # Create S3 client
+    s3_client = create_s3_client(
+        endpoint_url=endpoint_url,
+        access_id=access_id,
+        secret_key=secret_key,
+        use_ssl=use_ssl,
+        ssl_cert_bundle=ssl_cert_bundle,
+    )
 
     if output_type == "sqlite":
         _file_path = _s._database_path
@@ -170,4 +160,10 @@ def dump_to_s3(
             LOGGER.info(
                 T("coal.logs.data_transfer.sending_table").format(table_name=table_name, output_type=output_type)
             )
-            data_upload(_data_stream, _file_name)
+            upload_data_stream(
+                data_stream=_data_stream,
+                bucket_name=bucket_name,
+                s3_client=s3_client,
+                file_name=_file_name,
+                file_prefix=file_prefix,
+            )

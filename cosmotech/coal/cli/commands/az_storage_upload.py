@@ -5,13 +5,8 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import pathlib
-
-from azure.storage.blob import ContainerClient
-
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
@@ -68,25 +63,14 @@ def az_storage_upload(
     file_prefix: str = "",
     recursive: bool = False,
 ):
-    source_path = pathlib.Path(source_folder)
-    if not source_path.exists():
-        LOGGER.error(T("coal.errors.file_system.file_not_found").format(source_folder=source_folder))
-        raise FileNotFoundError(T("coal.errors.file_system.file_not_found").format(source_folder=source_folder))
+    # Import the function at the start of the command
+    from cosmotech.coal.azure.storage import upload_folder
 
-    def file_upload(file_path: pathlib.Path, file_name: str):
-        uploaded_file_name = blob_name + "/" + file_prefix + file_name
-        LOGGER.info(
-            T("coal.logs.data_transfer.file_sent").format(file_path=file_path, uploaded_name=uploaded_file_name)
-        )
-        ContainerClient.from_container_url(az_storage_sas_url).upload_blob(
-            uploaded_file_name, file_path.open("rb"), overwrite=True
-        )
-
-    if source_path.is_dir():
-        _source_name = str(source_path)
-        for _file_path in source_path.glob("**/*" if recursive else "*"):
-            if _file_path.is_file():
-                _file_name = str(_file_path).removeprefix(_source_name).removeprefix("/")
-                file_upload(_file_path, _file_name)
-    else:
-        file_upload(source_path, source_path.name)
+    # Upload files to Azure Blob Storage
+    upload_folder(
+        source_folder=source_folder,
+        blob_name=blob_name,
+        az_storage_sas_url=az_storage_sas_url,
+        file_prefix=file_prefix,
+        recursive=recursive,
+    )

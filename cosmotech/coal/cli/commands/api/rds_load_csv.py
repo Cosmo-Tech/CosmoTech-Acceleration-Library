@@ -5,16 +5,8 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import pathlib
-from csv import DictWriter
-
-from cosmotech_api import RunDataQuery
-from cosmotech_api.api.run_api import RunApi
-
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
-from cosmotech.coal.cosmotech_api.connection import get_api_client
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
@@ -84,22 +76,15 @@ from cosmotech.orchestrator.utils.translate import T
 @web_help("csm-data/api/rds-load-csv")
 @translate_help("coal-help.commands.api.rds_load_csv.description")
 def rds_load_csv(target_folder, organization_id, workspace_id, runner_id, run_id, file_name, query):
-    target_dir = pathlib.Path(target_folder)
+    # Import the function at the start of the command
+    from cosmotech.coal.cosmotech_api import load_csv_from_run_data
 
-    target_dir.mkdir(parents=True, exist_ok=True)
-
-    with get_api_client()[0] as api_client:
-        api_run = RunApi(api_client)
-        query = api_run.query_run_data(organization_id, workspace_id, runner_id, run_id, RunDataQuery(query=query))
-        if query.result:
-            LOGGER.info(f"Query returned {len(query.result)} rows")
-            with open(target_dir / (file_name + ".csv"), "w") as _f:
-                headers = set()
-                for r in query.result:
-                    headers = headers | set(r.keys())
-                dw = DictWriter(_f, fieldnames=sorted(headers))
-                dw.writeheader()
-                dw.writerows(query.result)
-            LOGGER.info(f"Results saved as {target_dir / file_name}.csv")
-        else:
-            LOGGER.info("No results returned by the query")
+    load_csv_from_run_data(
+        target_folder=target_folder,
+        organization_id=organization_id,
+        workspace_id=workspace_id,
+        runner_id=runner_id,
+        run_id=run_id,
+        file_name=file_name,
+        query=query,
+    )

@@ -5,36 +5,13 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import json
-import os
-import pathlib
-from csv import DictWriter
-
-from cosmotech_api.api.solution_api import RunTemplate
-from cosmotech_api.api.solution_api import Solution
-
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
+from cosmotech.coal.cosmotech_api import generate_parameters
 from cosmotech.coal.utils.api import get_solution
 from cosmotech.coal.utils.api import read_solution_file
 from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
-
-
-def write_parameters(parameter_folder, parameters, write_csv, write_json):
-    if write_csv:
-        tmp_parameter_file = os.path.join(parameter_folder, "parameters.csv")
-        LOGGER.info(f"Generating {tmp_parameter_file}")
-        with open(tmp_parameter_file, "w") as _file:
-            _w = DictWriter(_file, fieldnames=["parameterId", "value", "varType", "isInherited"])
-            _w.writeheader()
-            _w.writerows(parameters)
-
-    if write_json:
-        tmp_parameter_file = os.path.join(parameter_folder, "parameters.json")
-        LOGGER.info(f"Generating {tmp_parameter_file}")
-        with open(tmp_parameter_file, "w") as _file:
-            json.dump(parameters, _file, indent=2)
 
 
 @click.group()
@@ -150,55 +127,6 @@ def cloud(
     if sol := get_solution(organization_id=organization_id, workspace_id=workspace_id):
         return generate_parameters(sol, run_template_id, output_folder, write_json, write_csv)
     return 1
-
-
-def generate_parameters(
-    solution: Solution,
-    run_template_id: str,
-    output_folder: str,
-    write_json: bool,
-    write_csv: bool,
-):
-    LOGGER.info(f"Searching {run_template_id} in the solution")
-    if _t := [t for t in solution.run_templates if t.id == run_template_id]:
-        template: RunTemplate = _t[0]
-    else:
-        LOGGER.error(f"Run template {run_template_id} was not found.")
-        raise click.Abort()
-    LOGGER.info(f"Found {run_template_id} in the solution generating json file")
-    parameter_groups = template.parameter_groups
-    parameter_names = []
-    for param_group in solution.parameter_groups:
-        if param_group.id in parameter_groups:
-            parameter_names.extend(param_group.parameters)
-    parameters = []
-    dataset_parameters = []
-    for param in solution.parameters:
-        if param.id in parameter_names:
-            parameter_name = param.id
-            var_type = param.var_type
-            if var_type == "%DATASETID%":
-                dataset_parameters.append(parameter_name)
-            parameters.append(
-                {
-                    "parameterId": parameter_name,
-                    "value": f"{parameter_name}_value",
-                    "varType": var_type,
-                    "isInherited": False,
-                }
-            )
-    if not (write_csv or write_json or dataset_parameters):
-        LOGGER.warning(f"No parameters to write for {run_template_id} ")
-        return 1
-    output_folder_path = pathlib.Path(output_folder)
-    output_folder_path.mkdir(parents=True, exist_ok=True)
-    if dataset_parameters:
-        LOGGER.info(f"Creating folders for dataset parameters")
-    for d_param in dataset_parameters:
-        dataset_parameters_folder = output_folder_path / d_param
-        dataset_parameters_folder.mkdir(parents=True, exist_ok=True)
-        LOGGER.info(f"- {dataset_parameters_folder}")
-    write_parameters(str(output_folder_path), parameters, write_csv, write_json)
 
 
 if __name__ == "__main__":

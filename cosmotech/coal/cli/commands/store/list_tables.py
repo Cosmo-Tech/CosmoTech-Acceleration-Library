@@ -7,8 +7,6 @@
 
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
-from cosmotech.coal.store.store import Store
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
@@ -32,6 +30,10 @@ from cosmotech.orchestrator.utils.translate import T
     default=False,
 )
 def list_tables(store_folder, schema):
+    # Import the modules and functions at the start of the command
+    from cosmotech.coal.store.store import Store
+    from cosmotech.coal.utils.logger import LOGGER
+
     _s = Store(store_location=store_folder)
     tables = list(_s.list_tables())
     if len(tables):

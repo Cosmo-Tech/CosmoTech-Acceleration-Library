@@ -7,11 +7,8 @@
 
 from typing import Optional
 
-import boto3
-
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
@@ -90,27 +87,21 @@ def s3_bucket_delete(
     use_ssl: bool = True,
     ssl_cert_bundle: Optional[str] = None,
 ):
-    boto3_parameters = {
-        "use_ssl": use_ssl,
-        "endpoint_url": endpoint_url,
-        "aws_access_key_id": access_id,
-        "aws_secret_access_key": secret_key,
-    }
-    if ssl_cert_bundle:
-        boto3_parameters["verify"] = ssl_cert_bundle
+    # Import the functions at the start of the command
+    from cosmotech.coal.aws.s3 import create_s3_resource, delete_objects
 
-    s3_resource = boto3.resource("s3", **boto3_parameters)
-    bucket = s3_resource.Bucket(bucket_name)
+    # Create S3 resource
+    s3_resource = create_s3_resource(
+        endpoint_url=endpoint_url,
+        access_id=access_id,
+        secret_key=secret_key,
+        use_ssl=use_ssl,
+        ssl_cert_bundle=ssl_cert_bundle,
+    )
 
-    if file_prefix:
-        bucket_files = bucket.objects.filter(Prefix=file_prefix)
-    else:
-        bucket_files = bucket.objects.all()
-
-    boto_objects = [{"Key": _file.key} for _file in bucket_files if _file.key != file_prefix]
-    if boto_objects:
-        LOGGER.info(T("coal.logs.storage.deleting_objects").format(objects=boto_objects))
-        boto_delete_request = {"Objects": boto_objects}
-        bucket.delete_objects(Delete=boto_delete_request)
-    else:
-        LOGGER.info(T("coal.logs.storage.no_objects"))
+    # Delete objects
+    delete_objects(
+        bucket_name=bucket_name,
+        s3_resource=s3_resource,
+        file_prefix=file_prefix,
+    )

@@ -5,14 +5,10 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import pathlib
 from typing import Optional
-
-import boto3
 
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
@@ -101,33 +97,22 @@ def s3_bucket_download(
     use_ssl: bool = True,
     ssl_cert_bundle: Optional[str] = None,
 ):
-    boto3_parameters = {
-        "use_ssl": use_ssl,
-        "endpoint_url": endpoint_url,
-        "aws_access_key_id": access_id,
-        "aws_secret_access_key": secret_key,
-    }
-    if ssl_cert_bundle:
-        boto3_parameters["verify"] = ssl_cert_bundle
+    # Import the functions at the start of the command
+    from cosmotech.coal.aws.s3 import create_s3_resource, download_files
 
-    s3_resource = boto3.resource("s3", **boto3_parameters)
+    # Create S3 resource
+    s3_resource = create_s3_resource(
+        endpoint_url=endpoint_url,
+        access_id=access_id,
+        secret_key=secret_key,
+        use_ssl=use_ssl,
+        ssl_cert_bundle=ssl_cert_bundle,
+    )
 
-    bucket = s3_resource.Bucket(bucket_name)
-
-    pathlib.Path(target_folder).mkdir(parents=True, exist_ok=True)
-    remove_prefix = False
-    if file_prefix:
-        bucket_files = bucket.objects.filter(Prefix=file_prefix)
-        if file_prefix.endswith("/"):
-            remove_prefix = True
-    else:
-        bucket_files = bucket.objects.all()
-    for _file in bucket_files:
-        if not (path_name := str(_file.key)).endswith("/"):
-            target_file = path_name
-            if remove_prefix:
-                target_file = target_file.removeprefix(file_prefix)
-            output_file = f"{target_folder}/{target_file}"
-            pathlib.Path(output_file).parent.mkdir(parents=True, exist_ok=True)
-            LOGGER.info(T("coal.logs.storage.downloading").format(path=path_name, output=output_file))
-            bucket.download_file(_file.key, output_file)
+    # Download files
+    download_files(
+        target_folder=target_folder,
+        bucket_name=bucket_name,
+        s3_resource=s3_resource,
+        file_prefix=file_prefix,
+    )

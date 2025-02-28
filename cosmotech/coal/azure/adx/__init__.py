@@ -15,3 +15,9 @@ from cosmotech.coal.azure.adx.ingestion import (
 )
 from cosmotech.coal.azure.adx.tables import table_exists, create_table
 from cosmotech.coal.azure.adx.utils import type_mapping
+from cosmotech.coal.azure.adx.scenario import (
+    prepare_csv_content,
+    construct_create_query,
+    insert_csv_files,
+    send_scenario_data,
+)

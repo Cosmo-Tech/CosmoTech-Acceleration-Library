@@ -5,19 +5,8 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import json
-import pathlib
-from csv import DictReader
-
-from cosmotech_api import SendRunDataRequest
-from cosmotech_api.api.run_api import RunApi
-from cosmotech.coal.store.store import Store
-from cosmotech.coal.store.native_python import convert_table_as_pylist
-
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
-from cosmotech.coal.cosmotech_api.connection import get_api_client
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
@@ -70,32 +59,16 @@ from cosmotech.orchestrator.utils.translate import T
 @web_help("csm-data/api/rds-send-store")
 @translate_help("coal-help.commands.api.rds_send_store.description")
 def rds_send_store(store_folder, organization_id, workspace_id, runner_id, run_id):
-    source_dir = pathlib.Path(store_folder)
+    # Import the function at the start of the command
+    from cosmotech.coal.cosmotech_api import send_store_to_run_data
 
-    if not source_dir.exists():
-        LOGGER.error(f"{source_dir} does not exists")
+    try:
+        send_store_to_run_data(
+            store_folder=store_folder,
+            organization_id=organization_id,
+            workspace_id=workspace_id,
+            runner_id=runner_id,
+            run_id=run_id,
+        )
+    except FileNotFoundError:
         return 1
-
-    with get_api_client()[0] as api_client:
-        api_run = RunApi(api_client)
-        _s = Store()
-        for table_name in _s.list_tables():
-            LOGGER.info(f"Sending data to table CD_{table_name}")
-            data = convert_table_as_pylist(table_name)
-            if not len(data):
-                LOGGER.info("  - No rows : skipping")
-                continue
-            fieldnames = _s.get_table_schema(table_name).names
-            for row in data:
-                for field in fieldnames:
-                    if row[field] is None:
-                        del row[field]
-            LOGGER.debug(f"  - Column list: {fieldnames}")
-            LOGGER.info(f"  - Sending {len(data)} rows")
-            api_run.send_run_data(
-                organization_id,
-                workspace_id,
-                runner_id,
-                run_id,
-                SendRunDataRequest(id=table_name, data=data),
-            )

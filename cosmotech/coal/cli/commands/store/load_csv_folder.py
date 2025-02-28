@@ -5,13 +5,8 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import pathlib
-
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
-from cosmotech.coal.store.csv import store_csv_file
-from cosmotech.coal.store.store import Store
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
@@ -37,6 +32,12 @@ from cosmotech.orchestrator.utils.translate import T
     required=True,
 )
 def load_csv_folder(store_folder, csv_folder):
+    # Import the modules and functions at the start of the command
+    import pathlib
+    from cosmotech.coal.store.csv import store_csv_file
+    from cosmotech.coal.store.store import Store
+    from cosmotech.coal.utils.logger import LOGGER
+
     for csv_path in pathlib.Path(csv_folder).glob("*.csv"):
         LOGGER.info(T("coal.logs.storage.found_file").format(file=csv_path.name))
         store_csv_file(csv_path.name[:-4], csv_path, store=Store(False, store_folder))

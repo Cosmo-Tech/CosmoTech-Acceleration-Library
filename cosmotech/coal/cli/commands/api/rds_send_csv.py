@@ -5,17 +5,8 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import json
-import pathlib
-from csv import DictReader
-
-from cosmotech_api import SendRunDataRequest
-from cosmotech_api.api.run_api import RunApi
-
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
-from cosmotech.coal.cosmotech_api.connection import get_api_client
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
@@ -68,39 +59,16 @@ from cosmotech.orchestrator.utils.translate import T
 @web_help("csm-data/api/rds-send-csv")
 @translate_help("coal-help.commands.api.rds_send_csv.description")
 def rds_send_csv(source_folder, organization_id, workspace_id, runner_id, run_id):
-    source_dir = pathlib.Path(source_folder)
+    # Import the function at the start of the command
+    from cosmotech.coal.cosmotech_api import send_csv_to_run_data
 
-    if not source_dir.exists():
-        LOGGER.error(f"{source_dir} does not exists")
+    try:
+        send_csv_to_run_data(
+            source_folder=source_folder,
+            organization_id=organization_id,
+            workspace_id=workspace_id,
+            runner_id=runner_id,
+            run_id=run_id,
+        )
+    except FileNotFoundError:
         return 1
-
-    with get_api_client()[0] as api_client:
-        api_run = RunApi(api_client)
-        for csv_path in source_dir.glob("*.csv"):
-            with open(csv_path) as _f:
-                dr = DictReader(_f)
-                table_name = csv_path.name.replace(".csv", "")
-                LOGGER.info(f"Sending data to table CD_{table_name}")
-                LOGGER.debug(f"  - Column list: {dr.fieldnames}")
-                data = []
-
-                for row in dr:
-                    n_row = dict()
-                    for k, v in row.items():
-                        if isinstance(v, str):
-                            try:
-                                n_row[k] = json.loads(v)
-                            except json.decoder.JSONDecodeError:
-                                n_row[k] = v
-                        else:
-                            n_row[k] = v
-                    data.append(n_row)
-
-                LOGGER.info(f"  - Sending {len(data)} rows")
-                api_run.send_run_data(
-                    organization_id,
-                    workspace_id,
-                    runner_id,
-                    run_id,
-                    SendRunDataRequest(id=table_name, data=data),
-                )

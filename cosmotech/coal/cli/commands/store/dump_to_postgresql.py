@@ -5,14 +5,9 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from time import perf_counter
-
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
-from cosmotech.coal.store.store import Store
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
-from cosmotech.coal.utils.postgresql import send_pyarrow_table_to_postgresql
 
 
 @click.command()
@@ -96,53 +91,17 @@ def dump_to_postgresql(
     postgres_password,
     replace: bool,
 ):
-    _s = Store(store_location=store_folder)
+    # Import the function at the start of the command
+    from cosmotech.coal.postgresql import dump_store_to_postgresql
 
-    tables = list(_s.list_tables())
-    if len(tables):
-        LOGGER.info(T("coal.logs.database.sending_data").format(table=f"{postgres_db}.{postgres_schema}"))
-        total_rows = 0
-        _process_start = perf_counter()
-        for table_name in tables:
-            _s_time = perf_counter()
-            target_table_name = f"{table_prefix}{table_name}"
-            LOGGER.info(T("coal.logs.database.table_entry").format(table=target_table_name))
-            data = _s.get_table(table_name)
-            if not len(data):
-                LOGGER.info(T("coal.logs.database.no_rows"))
-                continue
-            _dl_time = perf_counter()
-            rows = send_pyarrow_table_to_postgresql(
-                data,
-                target_table_name,
-                postgres_host,
-                postgres_port,
-                postgres_db,
-                postgres_schema,
-                postgres_user,
-                postgres_password,
-                replace,
-            )
-            total_rows += rows
-            _up_time = perf_counter()
-            LOGGER.info(T("coal.logs.database.row_count").format(count=rows))
-            LOGGER.debug(
-                T("coal.logs.progress.operation_timing").format(
-                    operation="Load from datastore", time=f"{_dl_time - _s_time:0.3}"
-                )
-            )
-            LOGGER.debug(
-                T("coal.logs.progress.operation_timing").format(
-                    operation="Send to postgresql", time=f"{_up_time - _dl_time:0.3}"
-                )
-            )
-        _process_end = perf_counter()
-        LOGGER.info(
-            T("coal.logs.database.rows_fetched").format(
-                table="all tables",
-                count=total_rows,
-                time=f"{_process_end - _process_start:0.3}",
-            )
-        )
-    else:
-        LOGGER.info(T("coal.logs.database.store_empty"))
+    dump_store_to_postgresql(
+        store_folder=store_folder,
+        table_prefix=table_prefix,
+        postgres_host=postgres_host,
+        postgres_port=postgres_port,
+        postgres_db=postgres_db,
+        postgres_schema=postgres_schema,
+        postgres_user=postgres_user,
+        postgres_password=postgres_password,
+        replace=replace,
+    )

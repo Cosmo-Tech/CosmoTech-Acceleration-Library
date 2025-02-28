@@ -7,8 +7,6 @@
 
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
-from cosmotech.coal.store.store import Store
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
@@ -25,5 +23,9 @@ from cosmotech.orchestrator.utils.translate import T
     required=True,
 )
 def reset(store_folder):
+    # Import the modules and functions at the start of the command
+    from cosmotech.coal.store.store import Store
+    from cosmotech.coal.utils.logger import LOGGER
+
     Store(True, store_folder)
     LOGGER.info(T("coal.logs.database.store_reset").format(folder=store_folder))

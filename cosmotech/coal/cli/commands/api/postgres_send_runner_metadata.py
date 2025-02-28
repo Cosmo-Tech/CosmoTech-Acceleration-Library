@@ -5,15 +5,8 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from adbc_driver_postgresql import dbapi
-
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help, translate_help
-from cosmotech.coal.cosmotech_api.connection import get_api_client
-from cosmotech.coal.cosmotech_api.run import get_run_metadata
-from cosmotech.coal.cosmotech_api.runner.metadata import get_runner_metadata
-from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.coal.utils.postgresql import generate_postgresql_full_uri
 from cosmotech.orchestrator.utils.translate import T
 
 
@@ -109,43 +102,18 @@ def postgres_send_runner_metadata(
     postgres_user,
     postgres_password,
 ):
-    with get_api_client()[0] as api_client:
-        runner = get_runner_metadata(api_client, organization_id, workspace_id, runner_id)
+    # Import the function at the start of the command
+    from cosmotech.coal.postgresql import send_runner_metadata_to_postgresql
 
-    postgresql_full_uri = generate_postgresql_full_uri(
-        postgres_host, postgres_port, postgres_db, postgres_user, postgres_password
+    send_runner_metadata_to_postgresql(
+        organization_id=organization_id,
+        workspace_id=workspace_id,
+        runner_id=runner_id,
+        table_prefix=table_prefix,
+        postgres_host=postgres_host,
+        postgres_port=postgres_port,
+        postgres_db=postgres_db,
+        postgres_schema=postgres_schema,
+        postgres_user=postgres_user,
+        postgres_password=postgres_password,
     )
-
-    with dbapi.connect(postgresql_full_uri, autocommit=True) as conn:
-        with conn.cursor() as curs:
-            schema_table = f"{postgres_schema}.{table_prefix}RunnerMetadata"
-            sql_create_table = f"""
-                CREATE TABLE IF NOT EXISTS {schema_table}  (
-                  id varchar(32) PRIMARY KEY,
-                  name varchar(256),
-                  last_run_id varchar(32),
-                  run_template_id varchar(32)
-                );
-            """
-            sql_upsert = f"""
-                INSERT INTO {schema_table} (id, name, last_run_id, run_template_id)
-                  VALUES(%s, %s, %s, %s)
-                  ON CONFLICT (id)
-                  DO
-                    UPDATE SET name = EXCLUDED.name, last_run_id = EXCLUDED.last_run_id;
-            """
-            LOGGER.info(f"creating table {schema_table}")
-            curs.execute(sql_create_table)
-            conn.commit()
-            LOGGER.info(f"adding/updating runner metadata")
-            curs.execute(
-                sql_upsert,
-                (
-                    runner.get("id"),
-                    runner.get("name"),
-                    runner.get("lastRunId"),
-                    runner.get("runTemplateId"),
-                ),
-            )
-            conn.commit()
-            LOGGER.info("Runner metadata table has been updated")
