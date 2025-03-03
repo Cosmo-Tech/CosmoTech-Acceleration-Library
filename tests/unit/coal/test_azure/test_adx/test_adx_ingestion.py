@@ -256,6 +256,159 @@ class TestIngestionFunctions:
         assert (source_id3, IngestionStatus.QUEUED) in result or (source_id3, IngestionStatus.UNKNOWN) in result
 
     @patch("cosmotech.coal.azure.adx.ingestion.KustoIngestStatusQueues")
+    def test_check_ingestion_status_with_success_message(
+        self, mock_status_queues_class, mock_ingest_client, mock_status_queues
+    ):
+        """Test the check_ingestion_status function with a success message."""
+        # Arrange
+        source_id = "source-id-success"
+        _ingest_status[source_id] = IngestionStatus.QUEUED
+        _ingest_times[source_id] = time.time()
+
+        # Set up mock status queues
+        mock_status_queues_class.return_value = mock_status_queues
+
+        # Create mock success queue and message
+        mock_success_queue = MagicMock()
+        mock_message = MagicMock()
+        mock_message.content = '{"IngestionSourceId": "source-id-success"}'
+
+        # Set up the success queue to return our message
+        mock_success_queue.receive_messages.return_value = [mock_message]
+        mock_status_queues.success._get_queues.return_value = [mock_success_queue]
+
+        # Set up empty failure queue
+        mock_failure_queue = MagicMock()
+        mock_failure_queue.receive_messages.return_value = []
+        mock_status_queues.failure._get_queues.return_value = [mock_failure_queue]
+
+        # Act
+        with patch(
+            "cosmotech.coal.azure.adx.ingestion.SuccessMessage", return_value=MagicMock(IngestionSourceId=source_id)
+        ):
+            result = list(check_ingestion_status(mock_ingest_client, [source_id]))
+
+        # Assert
+        assert len(result) == 1
+        assert result[0] == (source_id, IngestionStatus.SUCCESS)
+        mock_success_queue.delete_message.assert_called_once_with(mock_message)
+
+    @patch("cosmotech.coal.azure.adx.ingestion.KustoIngestStatusQueues")
+    def test_check_ingestion_status_with_failure_message(
+        self, mock_status_queues_class, mock_ingest_client, mock_status_queues
+    ):
+        """Test the check_ingestion_status function with a failure message."""
+        # Arrange
+        source_id = "source-id-failure"
+        _ingest_status[source_id] = IngestionStatus.QUEUED
+        _ingest_times[source_id] = time.time()
+
+        # Set up mock status queues
+        mock_status_queues_class.return_value = mock_status_queues
+
+        # Create empty success queue
+        mock_success_queue = MagicMock()
+        mock_success_queue.receive_messages.return_value = []
+        mock_status_queues.success._get_queues.return_value = [mock_success_queue]
+
+        # Create mock failure queue and message
+        mock_failure_queue = MagicMock()
+        mock_message = MagicMock()
+        mock_message.content = '{"IngestionSourceId": "source-id-failure"}'
+
+        # Set up the failure queue to return our message
+        mock_failure_queue.receive_messages.return_value = [mock_message]
+        mock_status_queues.failure._get_queues.return_value = [mock_failure_queue]
+
+        # Act
+        with patch(
+            "cosmotech.coal.azure.adx.ingestion.FailureMessage", return_value=MagicMock(IngestionSourceId=source_id)
+        ):
+            result = list(check_ingestion_status(mock_ingest_client, [source_id]))
+
+        # Assert
+        assert len(result) == 1
+        assert result[0] == (source_id, IngestionStatus.FAILURE)
+        mock_failure_queue.delete_message.assert_called_once_with(mock_message)
+
+    @patch("cosmotech.coal.azure.adx.ingestion.KustoIngestStatusQueues")
+    def test_check_ingestion_status_with_timeout(
+        self, mock_status_queues_class, mock_ingest_client, mock_status_queues
+    ):
+        """Test the check_ingestion_status function with a timeout."""
+        # Arrange
+        source_id = "source-id-timeout"
+        _ingest_status[source_id] = IngestionStatus.QUEUED
+        _ingest_times[source_id] = time.time() - 10  # 10 seconds ago
+
+        # Set up mock status queues with empty queues
+        mock_status_queues_class.return_value = mock_status_queues
+        mock_success_queue = MagicMock()
+        mock_success_queue.receive_messages.return_value = []
+        mock_status_queues.success._get_queues.return_value = [mock_success_queue]
+        mock_failure_queue = MagicMock()
+        mock_failure_queue.receive_messages.return_value = []
+        mock_status_queues.failure._get_queues.return_value = [mock_failure_queue]
+
+        # Act
+        result = list(check_ingestion_status(mock_ingest_client, [source_id], timeout=5))  # 5 second timeout
+
+        # Assert
+        assert len(result) == 1
+        assert result[0] == (source_id, IngestionStatus.TIMEOUT)
+
+    @patch("cosmotech.coal.azure.adx.ingestion.KustoIngestStatusQueues")
+    def test_check_ingestion_status_with_logs(self, mock_status_queues_class, mock_ingest_client, mock_status_queues):
+        """Test the check_ingestion_status function with logs enabled."""
+        # Arrange
+        source_id = "source-id-logs"
+        _ingest_status[source_id] = IngestionStatus.QUEUED
+        _ingest_times[source_id] = time.time()
+
+        # Set up mock status queues with empty queues
+        mock_status_queues_class.return_value = mock_status_queues
+        mock_success_queue = MagicMock()
+        mock_success_queue.receive_messages.return_value = []
+        mock_status_queues.success._get_queues.return_value = [mock_success_queue]
+        mock_failure_queue = MagicMock()
+        mock_failure_queue.receive_messages.return_value = []
+        mock_status_queues.failure._get_queues.return_value = [mock_failure_queue]
+
+        # Act
+        result = list(check_ingestion_status(mock_ingest_client, [source_id], logs=True))
+
+        # Assert
+        assert len(result) == 1
+        # The status should still be QUEUED since no messages were found and no timeout occurred
+        assert result[0] == (source_id, IngestionStatus.QUEUED)
+
+    @patch("cosmotech.coal.azure.adx.ingestion.KustoIngestStatusQueues")
+    def test_check_ingestion_status_unknown_id(self, mock_status_queues_class, mock_ingest_client, mock_status_queues):
+        """Test the check_ingestion_status function with an unknown source ID."""
+        # Arrange
+        source_id = "unknown-source-id"
+        # Don't initialize _ingest_status or _ingest_times for this ID
+
+        # Set up mock status queues with empty queues
+        mock_status_queues_class.return_value = mock_status_queues
+        mock_success_queue = MagicMock()
+        mock_success_queue.receive_messages.return_value = []
+        mock_status_queues.success._get_queues.return_value = [mock_success_queue]
+        mock_failure_queue = MagicMock()
+        mock_failure_queue.receive_messages.return_value = []
+        mock_status_queues.failure._get_queues.return_value = [mock_failure_queue]
+
+        # Act
+        result = list(check_ingestion_status(mock_ingest_client, [source_id]))
+
+        # Assert
+        assert len(result) == 1
+        assert result[0] == (source_id, IngestionStatus.UNKNOWN)
+        # Verify that the ID was added to the tracking dictionaries
+        assert source_id in _ingest_status
+        assert source_id in _ingest_times
+
+    @patch("cosmotech.coal.azure.adx.ingestion.KustoIngestStatusQueues")
     def test_clear_ingestion_status_queues_with_confirmation(
         self, mock_status_queues_class, mock_ingest_client, mock_status_queues
     ):

@@ -26,14 +26,14 @@ def get_functions_from_file(file_path):
     functions = []
 
     # Get top-level functions
-    for node in ast.walk(tree):
+    for node in ast.iter_child_nodes(tree):
         if isinstance(node, ast.FunctionDef):
             # Skip private functions (starting with _)
             if not node.name.startswith("_"):
                 functions.append(node.name)
         elif isinstance(node, ast.ClassDef):
             # Get class methods
-            for class_node in ast.walk(node):
+            for class_node in ast.iter_child_nodes(node):
                 if isinstance(class_node, ast.FunctionDef):
                     # Skip private methods (starting with _)
                     if not class_node.name.startswith("_"):
@@ -89,8 +89,9 @@ def map_module_to_test_file(module_path):
     for part in module_parts:
         test_dir = test_dir / f"test_{part}"
 
-    # Create a unique test file name that includes the module path
-    # e.g., test_aws_s3.py instead of just test_s3.py
+    # Create test file name with module path included
+    # For example, for cosmotech/coal/azure/adx/ingestion.py, the test file would be test_adx_ingestion.py
+    # For cosmotech/coal/azure/blob.py, the test file would be test_azure_blob.py
     if module_parts:
         test_file_name = f"test_{module_parts[-1]}_{module_name}.py"
     else:
@@ -161,9 +162,23 @@ def find_untested_functions():
             has_test = False
             for test in tests:
                 # Look for test_function_name or test_class_function_name
-                if test == f"test_{func}" or test == f"test_{func.replace('.', '_')}":
+                # Also check for test patterns like test_class_method_name_additional_info
+                # For class methods, also check for test_method_name (without the class name)
+                if (
+                    test == f"test_{func}"
+                    or test == f"test_{func.replace('.', '_')}"
+                    or test.startswith(f"test_{func}_")
+                    or test.startswith(f"test_{func.replace('.', '_')}_")
+                ):
                     has_test = True
                     break
+
+                # Special case for class methods: check if there's a test for just the method name
+                if "." in func:
+                    class_name, method_name = func.split(".")
+                    if test == f"test_{method_name}" or test.startswith(f"test_{method_name}_"):
+                        has_test = True
+                        break
 
             if not has_test:
                 untested.append(func)
