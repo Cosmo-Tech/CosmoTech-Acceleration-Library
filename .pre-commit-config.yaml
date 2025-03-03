@@ -11,3 +11,18 @@ repos:
     rev: 23.3.0
     hooks:
     -   id: black
+
+-   repo: local
+    hooks:
+    -   id: pytest-check
+        name: pytest-check
+        entry: pytest tests/unit/coal/ --cov=cosmotech.coal --cov-report=term-missing --cov-fail-under=20
+        language: system
+        pass_filenames: false
+        always_run: true
+    -   id: check-untested-functions
+        name: check-untested-functions
+        entry: python find_untested_functions.py
+        language: system
+        pass_filenames: false
+        always_run: true

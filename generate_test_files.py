@@ -1,0 +1,332 @@
+#!/usr/bin/env python3
+"""
+Script to generate test files for untested functions in cosmotech/coal/.
+
+This script identifies functions in the cosmotech/coal/ module that don't have
+corresponding tests and generates test files for them based on a template.
+"""
+
+import os
+import ast
+import re
+from pathlib import Path
+from collections import defaultdict
+import argparse
+
+
+def get_functions_from_file(file_path):
+    """Extract all function and class definitions from a Python file."""
+    with open(file_path, "r", encoding="utf-8") as f:
+        try:
+            tree = ast.parse(f.read())
+        except SyntaxError:
+            print(f"Syntax error in {file_path}")
+            return []
+
+    functions = []
+
+    # Get top-level functions
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef):
+            # Skip private functions (starting with _)
+            if not node.name.startswith("_"):
+                functions.append(node.name)
+        elif isinstance(node, ast.ClassDef):
+            # Get class methods
+            for class_node in ast.walk(node):
+                if isinstance(class_node, ast.FunctionDef):
+                    # Skip private methods (starting with _)
+                    if not class_node.name.startswith("_"):
+                        functions.append(f"{node.name}.{class_node.name}")
+
+    return functions
+
+
+def get_tests_from_file(file_path):
+    """Extract all test functions from a Python test file."""
+    with open(file_path, "r", encoding="utf-8") as f:
+        try:
+            content = f.read()
+            tree = ast.parse(content)
+        except SyntaxError:
+            print(f"Syntax error in {file_path}")
+            return []
+
+    tests = []
+
+    # Look for test functions (test_*)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef) and node.name.startswith("test_"):
+            tests.append(node.name)
+
+    # Also look for function names in the content (for parameterized tests)
+    function_pattern = r"def\s+(test_\w+)"
+    tests.extend(re.findall(function_pattern, content))
+
+    return list(set(tests))
+
+
+def map_module_to_test_file(module_path):
+    """Map a module path to its corresponding test file path."""
+    # Convert module path to test path
+    # e.g., cosmotech/coal/aws/s3.py -> tests/unit/coal/test_aws/test_aws_s3.py
+    parts = module_path.parts
+    if len(parts) < 3 or parts[0] != "cosmotech" or parts[1] != "coal":
+        return None
+
+    # Skip __init__.py files
+    if parts[-1] == "__init__.py":
+        return None
+
+    # Get the module name without extension
+    module_name = parts[-1].replace(".py", "")
+
+    # Construct the test file path
+    test_dir = Path("tests/unit/coal")
+    module_parts = parts[2:-1]  # Skip cosmotech/coal and the file name
+
+    # Create directory structure
+    for part in module_parts:
+        test_dir = test_dir / f"test_{part}"
+
+    # Create a unique test file name that includes the module path
+    # e.g., test_aws_s3.py instead of just test_s3.py
+    if module_parts:
+        test_file_name = f"test_{module_parts[-1]}_{module_name}.py"
+    else:
+        test_file_name = f"test_{module_name}.py"
+
+    test_file = test_dir / test_file_name
+    return test_file
+
+
+def find_untested_functions():
+    """Find functions in cosmotech/coal/ that don't have corresponding tests."""
+    coal_dir = Path("cosmotech/coal")
+
+    # Dictionary to store functions by module
+    module_functions = {}
+
+    # Dictionary to store tests by module
+    module_tests = defaultdict(list)
+
+    # Find all Python files in cosmotech/coal/
+    for root, _, files in os.walk(coal_dir):
+        for file in files:
+            if file.endswith(".py"):
+                file_path = Path(root) / file
+                module_path = file_path.relative_to(".")
+
+                # Skip __init__.py files
+                if file == "__init__.py":
+                    continue
+
+                # Get functions from the module
+                functions = get_functions_from_file(file_path)
+                if functions:
+                    module_functions[module_path] = functions
+
+    # Find all test files in tests/unit/coal/
+    test_dir = Path("tests/unit/coal")
+    if test_dir.exists():
+        for root, _, files in os.walk(test_dir):
+            for file in files:
+                if file.startswith("test_") and file.endswith(".py"):
+                    test_file_path = Path(root) / file
+                    tests = get_tests_from_file(test_file_path)
+                    module_tests[test_file_path] = tests
+
+    # Check which functions don't have tests
+    untested_functions = {}
+
+    for module_path, functions in module_functions.items():
+        test_file = map_module_to_test_file(module_path)
+
+        if test_file is None:
+            # Skip modules that don't map to a test file
+            continue
+
+        if not test_file.exists():
+            # If the test file doesn't exist, all functions are untested
+            untested_functions[module_path] = functions
+            continue
+
+        # Get tests for this module
+        tests = module_tests.get(test_file, [])
+
+        # Check which functions don't have corresponding tests
+        untested = []
+        for func in functions:
+            # Check if there's a test for this function
+            has_test = False
+            for test in tests:
+                # Look for test_function_name or test_class_function_name
+                if test == f"test_{func}" or test == f"test_{func.replace('.', '_')}":
+                    has_test = True
+                    break
+
+            if not has_test:
+                untested.append(func)
+
+        if untested:
+            untested_functions[module_path] = untested
+
+    return untested_functions
+
+
+def generate_test_file(module_path, functions, overwrite=False):
+    """Generate a test file for the given module and functions."""
+    # Get the test file path
+    test_file = map_module_to_test_file(module_path)
+    if test_file is None:
+        print(f"Could not map {module_path} to a test file")
+        return
+
+    # Create the test directory if it doesn't exist
+    test_file.parent.mkdir(parents=True, exist_ok=True)
+
+    # Check if the test file already exists
+    if test_file.exists() and not overwrite:
+        print(f"Test file {test_file} already exists, skipping")
+        return
+
+    # Get the module name and import path
+    module_name = module_path.stem
+    import_path = (
+        f"cosmotech.coal.{'.'.join(module_path.parts[2:-1])}.{module_name}"
+        if len(module_path.parts) > 3
+        else f"cosmotech.coal.{module_name}"
+    )
+
+    # Verify that the functions actually exist in the module
+    verified_functions = []
+    try:
+        module = __import__(import_path, fromlist=["*"])
+        for func in functions:
+            if "." in func:
+                class_name, method_name = func.split(".")
+                if hasattr(module, class_name) and hasattr(getattr(module, class_name), method_name):
+                    verified_functions.append(func)
+                else:
+                    print(f"Warning: Function {func} not found in {import_path}")
+            else:
+                if hasattr(module, func):
+                    verified_functions.append(func)
+                else:
+                    print(f"Warning: Function {func} not found in {import_path}")
+    except ImportError as e:
+        print(f"Warning: Could not import {import_path}: {e}")
+        verified_functions = functions  # Fall back to using all functions
+
+    # Generate the test file content
+    content = f"""# Copyright (C) - 2023 - 2025 - Cosmo Tech
+# This document and all information contained herein is the exclusive property -
+# including all intellectual property rights pertaining thereto - of Cosmo Tech.
+# Any use, reproduction, translation, broadcasting, transmission, distribution,
+# etc., to any person is prohibited unless it has been previously and
+# specifically authorized by written means by Cosmo Tech.
+
+import pytest
+from unittest.mock import MagicMock, patch
+
+"""
+
+    # Add imports for verified functions
+    top_level_functions = [f for f in verified_functions if "." not in f]
+    if top_level_functions:
+        content += f"from {import_path} import {', '.join(top_level_functions)}\n"
+
+    # Add class definitions for class methods
+    class_methods = defaultdict(list)
+    for func in functions:
+        if "." in func:
+            class_name, method_name = func.split(".")
+            class_methods[class_name].append(method_name)
+
+    # Generate test classes
+    if class_methods:
+        for class_name, methods in class_methods.items():
+            content += f"""
+class Test{class_name}:
+    \"\"\"Tests for the {class_name} class.\"\"\"
+"""
+            for method in methods:
+                content += f"""
+    def test_{method}(self):
+        \"\"\"Test the {method} method.\"\"\"
+        # Arrange
+        # instance = {class_name}()
+
+        # Act
+        # result = instance.{method}()
+
+        # Assert
+        # assert result == expected_result
+        pass  # TODO: Implement test
+"""
+
+    # Generate test functions for top-level functions
+    top_level_functions = [f for f in functions if "." not in f]
+    if top_level_functions:
+        content += f"""
+class Test{module_name.capitalize()}Functions:
+    \"\"\"Tests for top-level functions in the {module_name} module.\"\"\"
+"""
+        for func in top_level_functions:
+            content += f"""
+    def test_{func}(self):
+        \"\"\"Test the {func} function.\"\"\"
+        # Arrange
+
+        # Act
+        # result = {func}()
+
+        # Assert
+        # assert result == expected_result
+        pass  # TODO: Implement test
+"""
+
+    # Write the test file
+    with open(test_file, "w", encoding="utf-8") as f:
+        f.write(content)
+
+    print(f"Generated test file: {test_file}")
+
+
+def main():
+    """Main function."""
+    parser = argparse.ArgumentParser(description="Generate test files for untested functions in cosmotech/coal/")
+    parser.add_argument("--module", help="Generate tests for a specific module (e.g., cosmotech/coal/aws/s3.py)")
+    parser.add_argument("--all", action="store_true", help="Generate tests for all untested functions")
+    parser.add_argument("--overwrite", action="store_true", help="Overwrite existing test files")
+    args = parser.parse_args()
+
+    untested_functions = find_untested_functions()
+
+    if args.module:
+        module_path = Path(args.module)
+        if module_path in untested_functions:
+            generate_test_file(module_path, untested_functions[module_path], args.overwrite)
+        else:
+            print(f"No untested functions found in {module_path}")
+    elif args.all:
+        for module_path, functions in untested_functions.items():
+            generate_test_file(module_path, functions, args.overwrite)
+    else:
+        print("Functions without tests:")
+        print("=======================")
+
+        for module, functions in sorted(untested_functions.items()):
+            if functions:
+                print(f"\n{module}:")
+                for func in sorted(functions):
+                    print(f"  - {func}")
+
+        # Print summary
+        total_untested = sum(len(funcs) for funcs in untested_functions.values())
+        print(f"\nTotal untested functions: {total_untested}")
+        print("\nTo generate test files, use --module or --all")
+
+
+if __name__ == "__main__":
+    main()

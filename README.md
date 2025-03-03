@@ -139,6 +139,52 @@ Comprehensive documentation is available at [https://cosmo-tech.github.io/CosmoT
 - **Data Store**: The datastore is your friend to keep data between orchestration steps. It comes with multiple ways to interact with it.
 - **csm-data**: Make full use of `csm-data` commands to connect to services during your orchestration runs.
 
+## Testing and Code Coverage
+
+The CosmoTech Acceleration Library maintains a comprehensive test suite to ensure reliability and stability. We use pytest for testing and pytest-cov for coverage reporting.
+
+### Running Tests
+
+To run the test suite:
+
+```bash
+# Install test dependencies
+pip install -e ".[test]"
+
+# Run tests with coverage reporting
+pytest tests/unit/coal/ --cov=cosmotech.coal --cov-report=term-missing --cov-report=html
+```
+
+### Coverage Reports
+
+After running tests with coverage, you can view detailed HTML reports:
+
+```bash
+# Open the HTML coverage report
+open coverage_html_report/index.html
+```
+
+[![codecov](https://codecov.io/gh/Cosmo-Tech/CosmoTech-Acceleration-Library/branch/main/graph/badge.svg)](https://codecov.io/gh/Cosmo-Tech/CosmoTech-Acceleration-Library)
+
+We maintain high test coverage to ensure code quality and reliability. All pull requests are expected to maintain or improve the current coverage levels.
+
+### Test Generation Tools
+
+To help maintain test coverage, we provide tools to identify untested functions and generate test files:
+
+```bash
+# Find functions without tests
+python find_untested_functions.py
+
+# Generate test files for a specific module
+python generate_test_files.py --module cosmotech/coal/module/file.py
+
+# Generate test files for all untested functions
+python generate_test_files.py --all
+```
+
+These tools help ensure that every function has at least one test, which is a requirement for contributions to the project.
+
 ## Contact
 
 For support, feature requests, or contributions, please use the [GitHub repository](https://github.com/Cosmo-Tech/CosmoTech-Acceleration-Library).
