@@ -334,3 +334,15 @@ class TestParametersFunctions:
                 assert rows[1]["value"] == "value2"
                 assert rows[1]["varType"] == "number"
                 assert rows[1]["isInherited"] == "True"
+
+    # Added tests for previously untested functions
+    def test_write_parameters_to_csv(self):
+        """Test the write_parameters_to_csv function."""
+        # Arrange
+
+        # Act
+        # result = write_parameters_to_csv()
+
+        # Assert
+        # assert result == expected_result
+        pass  # TODO: Implement test

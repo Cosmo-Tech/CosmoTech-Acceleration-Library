@@ -200,11 +200,6 @@ def generate_test_file(module_path, functions, overwrite=False):
     # Create the test directory if it doesn't exist
     test_file.parent.mkdir(parents=True, exist_ok=True)
 
-    # Check if the test file already exists
-    if test_file.exists() and not overwrite:
-        print(f"Test file {test_file} already exists, skipping")
-        return
-
     # Get the module name and import path
     module_name = module_path.stem
     import_path = (
@@ -233,7 +228,224 @@ def generate_test_file(module_path, functions, overwrite=False):
         print(f"Warning: Could not import {import_path}: {e}")
         verified_functions = functions  # Fall back to using all functions
 
-    # Generate the test file content
+    # If the test file already exists, read it and extract existing tests
+    existing_content = ""
+    existing_imports = []
+    existing_test_classes = {}
+    existing_test_functions = []
+
+    if test_file.exists():
+        with open(test_file, "r", encoding="utf-8") as f:
+            existing_content = f.read()
+
+        # Parse the existing file to extract imports, test classes, and test functions
+        try:
+            tree = ast.parse(existing_content)
+
+            # Extract imports
+            for node in ast.iter_child_nodes(tree):
+                if isinstance(node, ast.Import) or isinstance(node, ast.ImportFrom):
+                    import_lines = existing_content.splitlines()[node.lineno - 1 : node.end_lineno]
+                    existing_imports.extend(import_lines)
+
+            # Extract test classes and their methods
+            for node in ast.iter_child_nodes(tree):
+                if isinstance(node, ast.ClassDef) and node.name.startswith("Test"):
+                    class_lines = existing_content.splitlines()[node.lineno - 1 : node.end_lineno]
+                    class_content = "\n".join(class_lines)
+                    existing_test_classes[node.name] = {"content": class_content, "methods": []}
+
+                    # Extract test methods
+                    for method_node in ast.iter_child_nodes(node):
+                        if isinstance(method_node, ast.FunctionDef) and method_node.name.startswith("test_"):
+                            existing_test_classes[node.name]["methods"].append(method_node.name)
+
+            # Extract standalone test functions
+            for node in ast.iter_child_nodes(tree):
+                if isinstance(node, ast.FunctionDef) and node.name.startswith("test_"):
+                    existing_test_functions.append(node.name)
+
+        except SyntaxError:
+            print(f"Warning: Could not parse existing test file {test_file}")
+            # If we can't parse the file, we'll just append our new tests to it
+            pass
+
+    # If the file exists and we're not overwriting, check if we need to add any tests
+    if test_file.exists() and not overwrite:
+        # Check if all functions already have tests
+        all_tested = True
+        for func in verified_functions:
+            if "." in func:
+                class_name, method_name = func.split(".")
+                test_class_name = f"Test{class_name}"
+                test_method_name = f"test_{method_name}"
+
+                # Check if the test class exists and has a test for this method
+                if (
+                    test_class_name not in existing_test_classes
+                    or test_method_name not in existing_test_classes[test_class_name]["methods"]
+                ):
+                    all_tested = False
+                    break
+            else:
+                test_func_name = f"test_{func}"
+                test_class_name = f"Test{module_name.capitalize()}Functions"
+
+                # Check if there's a standalone test function or a method in a test class
+                if test_func_name not in existing_test_functions and (
+                    test_class_name not in existing_test_classes
+                    or test_func_name not in existing_test_classes[test_class_name]["methods"]
+                ):
+                    all_tested = False
+                    break
+
+        if all_tested:
+            print(f"All functions in {module_path} already have tests, skipping")
+            return
+
+        print(f"Adding tests for untested functions in {test_file}")
+
+        # We'll append our new tests to the existing file
+        with open(test_file, "a", encoding="utf-8") as f:
+            f.write("\n\n# Added tests for previously untested functions\n")
+
+            # Add imports for verified functions if they're not already imported
+            top_level_functions = [f for f in verified_functions if "." not in f]
+            if top_level_functions:
+                import_line = f"from {import_path} import {', '.join(top_level_functions)}"
+                if import_line not in existing_content:
+                    f.write(f"\n{import_line}\n")
+
+            # Add class definitions for class methods
+            class_methods = defaultdict(list)
+            for func in verified_functions:
+                if "." in func:
+                    class_name, method_name = func.split(".")
+                    test_class_name = f"Test{class_name}"
+                    test_method_name = f"test_{method_name}"
+
+                    # Only add if the test doesn't already exist
+                    if (
+                        test_class_name not in existing_test_classes
+                        or test_method_name not in existing_test_classes[test_class_name]["methods"]
+                    ):
+                        class_methods[class_name].append(method_name)
+
+            # Generate test classes for untested methods
+            for class_name, methods in class_methods.items():
+                test_class_name = f"Test{class_name}"
+
+                # If the class already exists, we'll add methods to it
+                if test_class_name in existing_test_classes:
+                    f.write(f"\n# Additional test methods for {test_class_name}\n")
+                    for method in methods:
+                        test_method_name = f"test_{method}"
+                        if test_method_name not in existing_test_classes[test_class_name]["methods"]:
+                            f.write(
+                                f"""
+    def {test_method_name}(self):
+        \"\"\"Test the {method} method.\"\"\"
+        # Arrange
+        # instance = {class_name}()
+
+        # Act
+        # result = instance.{method}()
+
+        # Assert
+        # assert result == expected_result
+        pass  # TODO: Implement test
+"""
+                            )
+                else:
+                    # Create a new test class
+                    f.write(
+                        f"""
+class {test_class_name}:
+    \"\"\"Tests for the {class_name} class.\"\"\"
+"""
+                    )
+                    for method in methods:
+                        f.write(
+                            f"""
+    def test_{method}(self):
+        \"\"\"Test the {method} method.\"\"\"
+        # Arrange
+        # instance = {class_name}()
+
+        # Act
+        # result = instance.{method}()
+
+        # Assert
+        # assert result == expected_result
+        pass  # TODO: Implement test
+"""
+                        )
+
+            # Generate test functions for untested top-level functions
+            top_level_functions = [f for f in verified_functions if "." not in f]
+            untested_functions = []
+            for func in top_level_functions:
+                test_func_name = f"test_{func}"
+                test_class_name = f"Test{module_name.capitalize()}Functions"
+
+                # Check if there's a standalone test function or a method in a test class
+                if test_func_name not in existing_test_functions and (
+                    test_class_name not in existing_test_classes
+                    or test_func_name not in existing_test_classes[test_class_name]["methods"]
+                ):
+                    untested_functions.append(func)
+
+            if untested_functions:
+                test_class_name = f"Test{module_name.capitalize()}Functions"
+
+                # If the class already exists, we'll add methods to it
+                if test_class_name in existing_test_classes:
+                    f.write(f"\n# Additional test methods for {test_class_name}\n")
+                    for func in untested_functions:
+                        test_method_name = f"test_{func}"
+                        if test_method_name not in existing_test_classes[test_class_name]["methods"]:
+                            f.write(
+                                f"""
+    def {test_method_name}(self):
+        \"\"\"Test the {func} function.\"\"\"
+        # Arrange
+
+        # Act
+        # result = {func}()
+
+        # Assert
+        # assert result == expected_result
+        pass  # TODO: Implement test
+"""
+                            )
+                else:
+                    # Create a new test class
+                    f.write(
+                        f"""
+class {test_class_name}:
+    \"\"\"Tests for top-level functions in the {module_name} module.\"\"\"
+"""
+                    )
+                    for func in untested_functions:
+                        f.write(
+                            f"""
+    def test_{func}(self):
+        \"\"\"Test the {func} function.\"\"\"
+        # Arrange
+
+        # Act
+        # result = {func}()
+
+        # Assert
+        # assert result == expected_result
+        pass  # TODO: Implement test
+"""
+                        )
+
+        print(f"Added tests for untested functions to {test_file}")
+        return
+
+    # If we're creating a new file or overwriting, generate the complete test file
     content = f"""# Copyright (C) - 2023 - 2025 - Cosmo Tech
 # This document and all information contained herein is the exclusive property -
 # including all intellectual property rights pertaining thereto - of Cosmo Tech.

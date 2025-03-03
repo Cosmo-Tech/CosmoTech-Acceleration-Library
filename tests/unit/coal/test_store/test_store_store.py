@@ -244,3 +244,16 @@ class TestStore:
         mock_connect.assert_called_once()
         mock_conn.adbc_get_objects.assert_called_once_with(depth="all")
         assert result == ["table1", "table2"]
+
+    # Added tests for previously untested functions
+    def test_execute_query(self):
+        """Test the execute_query method."""
+        # Arrange
+        # instance = Store()
+
+        # Act
+        # result = instance.execute_query()
+
+        # Assert
+        # assert result == expected_result
+        pass  # TODO: Implement test
