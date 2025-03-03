@@ -10,7 +10,6 @@ from cosmotech.coal import __version__
 from cosmotech.csm_data.commands.adx_send_scenariodata import adx_send_scenariodata
 from cosmotech.csm_data.commands.api.api import api
 from cosmotech.csm_data.commands.az_storage_upload import az_storage_upload
-from cosmotech.csm_data.commands.legacy.legacy import legacy
 from cosmotech.csm_data.commands.s3_bucket_download import s3_bucket_download
 from cosmotech.csm_data.commands.s3_bucket_upload import s3_bucket_upload
 from cosmotech.csm_data.commands.s3_bucket_delete import s3_bucket_delete
@@ -45,7 +44,6 @@ def main():
 
 
 main.add_command(api, "api")
-main.add_command(legacy, "legacy")
 main.add_command(store, "store")
 main.add_command(s3_bucket_download, "s3-bucket-download")
 main.add_command(s3_bucket_upload, "s3-bucket-upload")

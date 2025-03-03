@@ -11,16 +11,9 @@ Cosmotech API integration module.
 This module provides functions for interacting with the Cosmotech API.
 """
 
-# Re-export functions from the orchestrator module
-from cosmotech.coal.cosmotech_api.orchestrator import (
-    generate_from_solution,
-    generate_from_template,
-)
-
 # Re-export functions from the parameters module
 from cosmotech.coal.cosmotech_api.parameters import (
     write_parameters,
-    generate_parameters,
 )
 
 # Re-export functions from the twin_data_layer module

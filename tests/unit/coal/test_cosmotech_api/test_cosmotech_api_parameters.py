@@ -8,7 +8,7 @@
 import pytest
 from unittest.mock import MagicMock, patch
 
-from cosmotech.coal.cosmotech_api.parameters import write_parameters, generate_parameters
+from cosmotech.coal.cosmotech_api.parameters import write_parameters
 
 
 class TestParametersFunctions:
@@ -20,17 +20,6 @@ class TestParametersFunctions:
 
         # Act
         # result = write_parameters()
-
-        # Assert
-        # assert result == expected_result
-        pass  # TODO: Implement test
-
-    def test_generate_parameters(self):
-        """Test the generate_parameters function."""
-        # Arrange
-
-        # Act
-        # result = generate_parameters()
 
         # Assert
         # assert result == expected_result
