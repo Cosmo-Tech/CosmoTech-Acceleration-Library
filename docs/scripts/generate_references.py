@@ -4,8 +4,8 @@ import mkdocs_gen_files
 from griffe import Alias
 from griffe import Module
 
-pyhand = mkdocs_gen_files.config['plugins']['mkdocstrings'].handlers.get_handler("python")
-module_name = 'cosmotech.coal'
+pyhand = mkdocs_gen_files.config["plugins"]["mkdocstrings"].handlers.get_handler("python")
+module_name = "cosmotech.coal"
 griffed_module = pyhand.collect(module_name, pyhand.get_options({}))
 
 
@@ -25,9 +25,9 @@ def yield_module_member(module: Module) -> list[bool, str]:
 depth = 0
 parents = {}
 for is_class, identifier in yield_module_member(griffed_module):
-    parent, *sub = identifier.rsplit('.', depth)
+    parent, *sub = identifier.rsplit(".", depth)
     if is_class:
-        parent, *sub = identifier.rsplit('.', depth + 1)
+        parent, *sub = identifier.rsplit(".", depth + 1)
     parents.setdefault(parent, set())
     if sub:
         parents[parent].add(sub[0])
@@ -35,26 +35,26 @@ for is_class, identifier in yield_module_member(griffed_module):
         parents[parent].add(parent)
 
 # gen md files
-with open('docs/scripts/generic_ref.md.template') as f:
+with open("docs/scripts/generic_ref.md.template") as f:
     generic_template_ref = f.read()
 
 mk_nav = mkdocs_gen_files.Nav()
 for nav, file_set in parents.items():
-    nav_root = ['References']
-    nav_root.extend(n for n in nav.split('.')[1:] if n)
-    file_name = '/'.join(nav.split('.')[1:]) + '.md'
+    nav_root = ["References"]
+    nav_root.extend(n for n in nav.split(".")[1:] if n)
+    file_name = "/".join(nav.split(".")[1:]) + ".md"
     mk_nav[nav_root] = file_name
-    with mkdocs_gen_files.open(os.path.join('references', file_name), 'w') as f:
-        f.write(f'# {nav}')
-        f.write('\n')
+    with mkdocs_gen_files.open(os.path.join("references", file_name), "w") as f:
+        f.write(f"# {nav}")
+        f.write("\n")
         for filz in sorted(file_set):
             _content = ""
             if filz != nav:
-                _content = generic_template_ref.replace('%%IDENTIFIER%%', '.'.join([nav, filz]))
+                _content = generic_template_ref.replace("%%IDENTIFIER%%", ".".join([nav, filz]))
             else:
-                _content = generic_template_ref.replace('%%IDENTIFIER%%', filz)
+                _content = generic_template_ref.replace("%%IDENTIFIER%%", filz)
             f.write(_content)
-            f.write('\n')
+            f.write("\n")
 
 with mkdocs_gen_files.open("references/SUMMARY.md", "w") as nav_file:
     nav_file.writelines(mk_nav.build_literate_nav())

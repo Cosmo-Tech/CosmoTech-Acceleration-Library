@@ -5,10 +5,11 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import pytest
+import sys
+import warnings
 from unittest.mock import MagicMock, patch
 
-from cosmotech.coal.scenario.parameters import get_scenario_parameters
+import pytest
 
 
 class TestParametersFunctions:
@@ -17,10 +18,39 @@ class TestParametersFunctions:
     def test_get_scenario_parameters(self):
         """Test the get_scenario_parameters function."""
         # Arrange
+        mock_scenario_data = MagicMock()
+        expected_parameters = {"param1": "value1", "param2": 42, "param3": True}
 
-        # Act
-        # result = get_scenario_parameters()
+        # Create patches
+        with patch(
+            "cosmotech.coal.cosmotech_api.runner.parameters.get_runner_parameters"
+        ) as mock_get_runner_parameters:
+            with patch("warnings.warn") as mock_warn:
+                # Set up the mock return value
+                mock_get_runner_parameters.return_value = expected_parameters
 
-        # Assert
-        # assert result == expected_result
-        pass  # TODO: Implement test
+                # Remove the module from sys.modules if it's already imported
+                if "cosmotech.coal.scenario.parameters" in sys.modules:
+                    del sys.modules["cosmotech.coal.scenario.parameters"]
+
+                # Import the module
+                from cosmotech.coal.scenario.parameters import get_scenario_parameters
+
+                # Act
+                result = get_scenario_parameters(mock_scenario_data)
+
+                # Assert
+                # Verify that get_runner_parameters was called with the correct parameters
+                mock_get_runner_parameters.assert_called_once_with(mock_scenario_data)
+
+                # Verify that the result is the expected parameters dictionary
+                assert result == expected_parameters
+
+                # Verify that a deprecation warning was issued
+                mock_warn.assert_called_once()
+                warning_message = mock_warn.call_args[0][0]
+                assert "deprecated" in warning_message.lower()
+                assert "get_scenario_parameters" in warning_message
+                assert "get_runner_parameters" in warning_message
+                assert mock_warn.call_args[0][1] is DeprecationWarning
+                assert mock_warn.call_args[1]["stacklevel"] == 2
