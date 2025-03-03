@@ -8,7 +8,10 @@
 import pytest
 from unittest.mock import MagicMock, patch
 
+import pyarrow as pa
+
 from cosmotech.coal.store.pyarrow import store_table, convert_store_table_to_dataframe
+from cosmotech.coal.store.store import Store
 
 
 class TestPyarrowFunctions:
@@ -17,21 +20,79 @@ class TestPyarrowFunctions:
     def test_store_table(self):
         """Test the store_table function."""
         # Arrange
+        table_name = "test_table"
+
+        # Create a test PyArrow Table
+        data = pa.Table.from_arrays([pa.array([1, 2, 3]), pa.array(["Alice", "Bob", "Charlie"])], names=["id", "name"])
+
+        # Mock store
+        mock_store = MagicMock(spec=Store)
 
         # Act
-        # result = store_table()
+        store_table(table_name, data, False, mock_store)
 
         # Assert
-        # assert result == expected_result
-        pass  # TODO: Implement test
+        mock_store.add_table.assert_called_once()
+        # Check that the table name and replace flag are passed correctly
+        args, kwargs = mock_store.add_table.call_args
+        assert kwargs["table_name"] == table_name
+        assert kwargs["data"] == data
+        assert kwargs["replace"] is False
+
+    def test_store_table_with_replace(self):
+        """Test the store_table function with replace_existing_file=True."""
+        # Arrange
+        table_name = "test_table"
+
+        # Create a test PyArrow Table
+        data = pa.Table.from_arrays([pa.array([1, 2, 3]), pa.array(["Alice", "Bob", "Charlie"])], names=["id", "name"])
+
+        # Mock store
+        mock_store = MagicMock(spec=Store)
+
+        # Act
+        store_table(table_name, data, True, mock_store)
+
+        # Assert
+        mock_store.add_table.assert_called_once()
+        # Check that the table name and replace flag are passed correctly
+        args, kwargs = mock_store.add_table.call_args
+        assert kwargs["table_name"] == table_name
+        assert kwargs["data"] == data
+        assert kwargs["replace"] is True
 
     def test_convert_store_table_to_dataframe(self):
         """Test the convert_store_table_to_dataframe function."""
         # Arrange
+        table_name = "test_table"
+        expected_table = pa.Table.from_arrays(
+            [pa.array([1, 2, 3]), pa.array(["Alice", "Bob", "Charlie"])], names=["id", "name"]
+        )
+
+        # Mock the store and its get_table method
+        mock_store = MagicMock(spec=Store)
+        mock_store.get_table.return_value = expected_table
 
         # Act
-        # result = convert_store_table_to_dataframe()
+        result = convert_store_table_to_dataframe(table_name, mock_store)
 
         # Assert
-        # assert result == expected_result
-        pass  # TODO: Implement test
+        mock_store.get_table.assert_called_once_with(table_name)
+        assert result == expected_table
+
+    def test_convert_store_table_to_dataframe_empty_table(self):
+        """Test the convert_store_table_to_dataframe function with an empty table."""
+        # Arrange
+        table_name = "empty_table"
+        expected_table = pa.Table.from_arrays([], names=[])
+
+        # Mock the store and its get_table method
+        mock_store = MagicMock(spec=Store)
+        mock_store.get_table.return_value = expected_table
+
+        # Act
+        result = convert_store_table_to_dataframe(table_name, mock_store)
+
+        # Assert
+        mock_store.get_table.assert_called_once_with(table_name)
+        assert result == expected_table
