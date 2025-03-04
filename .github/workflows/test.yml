@@ -25,11 +25,4 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        pytest tests/unit/coal/ --cov=cosmotech.coal --cov-report=xml --cov-report=term
-
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-        fail_ci_if_error: false
-        verbose: true
+        pytest tests/unit/coal/ --cov=cosmotech.coal --cov-report=term
