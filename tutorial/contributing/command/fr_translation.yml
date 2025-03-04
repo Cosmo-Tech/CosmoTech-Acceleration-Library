@@ -1,0 +1,11 @@
+commands:
+  store:
+    dump_to_mongodb:
+      description: |
+        Exporter les données du store vers MongoDB.
+      parameters:
+        store_folder: Dossier contenant le store
+        collection_prefix: Préfixe pour les collections MongoDB
+        mongodb_uri: URI de connexion MongoDB
+        mongodb_db: Nom de la base de données MongoDB
+        replace: Remplacer les collections existantes

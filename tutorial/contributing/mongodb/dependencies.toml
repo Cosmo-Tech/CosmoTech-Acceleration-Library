@@ -1,0 +1,2 @@
+[project.optional-dependencies]
+mongodb = ["pymongo>=4.3.3"]

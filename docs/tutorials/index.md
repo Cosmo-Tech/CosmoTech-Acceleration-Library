@@ -52,4 +52,18 @@ Learn how to interact with the CosmoTech API directly: authentication, workspace
 </div>
 </article>
 
+<article markdown>
+<div class="text" markdown>
+:material-git: __Contributing to CoAL__
+
+---
+Learn how to contribute to CoAL: from setting up your development environment to implementing new features and submitting pull requests.
+
+---
+<footer markdown>
+[:octicons-arrow-right-24: Contributing](./contributing.md)
+</footer>
+</div>
+</article>
+
 </main>
