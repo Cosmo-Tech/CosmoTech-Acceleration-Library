@@ -10,9 +10,11 @@ exclude_lines =
     pragma: no cover
     def __repr__
     raise NotImplementedError
-    if __name__ == .__main__.:
-    pass
     raise ImportError
+precision = 2
+skip_covered = true
 
 [html]
 directory = coverage_html_report
+skip_covered = false
+skip_empty = true
