@@ -83,6 +83,8 @@ def insert_csv_files(
     simulation_id: str,
     database: str,
     wait: bool = False,
+    wait_limit: int = 5,
+    wait_duration: int = 8,
 ) -> None:
     """
     Insert CSV files into ADX tables.
@@ -93,6 +95,8 @@ def insert_csv_files(
         simulation_id: Simulation ID to use as a tag
         database: ADX database name
         wait: Whether to wait for ingestion to complete
+        wait_limit: Number of retries while waiting
+        wait_duration: Duration between each try while waiting
     """
     ingestion_ids = dict()
     for file_path, file_info in files_data.items():
@@ -131,8 +135,6 @@ def insert_csv_files(
         ingestion_ids[str(results.source_id)] = filename
     if wait:
         count = 0
-        limit = 5
-        pause_duration = 8
         while any(
             map(
                 lambda s: s[1] in (IngestionStatus.QUEUED, IngestionStatus.UNKNOWN),
@@ -140,13 +142,13 @@ def insert_csv_files(
             )
         ):
             count += 1
-            if count > limit:
+            if count > wait_limit:
                 LOGGER.warning(T("coal.logs.ingestion.max_retry"))
                 break
             LOGGER.info(
-                T("coal.logs.ingestion.waiting_results").format(duration=pause_duration, count=count, limit=limit)
+                T("coal.logs.ingestion.waiting_results").format(duration=wait_duration, count=count, limit=wait_limit)
             )
-            time.sleep(pause_duration)
+            time.sleep(wait_duration)
 
         LOGGER.info(T("coal.logs.ingestion.status"))
         for _id, status in adx_client.check_ingestion_status(source_ids=list(ingestion_ids.keys())):

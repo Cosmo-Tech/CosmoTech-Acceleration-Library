@@ -70,7 +70,7 @@ class TestDatasetsFunctions:
         # Mock API client
         mock_api_client = MagicMock()
         mock_api_client.__enter__.return_value = mock_api_client
-        mock_get_api_client.return_value = (mock_api_client, "Azure Entra Connection")
+        mock_get_api_client.return_value = (mock_api_client, "API Key")  # Changed to not trigger credential creation
 
         # Mock dataset API
         mock_dataset_api = MagicMock(spec=DatasetApi)

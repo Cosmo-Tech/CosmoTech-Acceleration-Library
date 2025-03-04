@@ -28,19 +28,15 @@ from cosmotech.coal.store.native_python import (
 )
 
 # Re-export functions from the pandas module (if available)
-try:
-    from cosmotech.coal.store.pandas import (
-        store_dataframe,
-        convert_store_table_to_dataframe as convert_store_table_to_pandas_dataframe,
-    )
-except ImportError:
-    pass
+
+from cosmotech.coal.store.pandas import (
+    store_dataframe,
+    convert_store_table_to_dataframe as convert_store_table_to_pandas_dataframe,
+)
 
 # Re-export functions from the pyarrow module (if available)
-try:
-    from cosmotech.coal.store.pyarrow import (
-        store_table,
-        convert_store_table_to_dataframe as convert_store_table_to_pyarrow_table,
-    )
-except ImportError:
-    pass
+
+from cosmotech.coal.store.pyarrow import (
+    store_table,
+    convert_store_table_to_dataframe as convert_store_table_to_pyarrow_table,
+)

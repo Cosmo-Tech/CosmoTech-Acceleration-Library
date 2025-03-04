@@ -245,15 +245,116 @@ class TestStore:
         mock_conn.adbc_get_objects.assert_called_once_with(depth="all")
         assert result == ["table1", "table2"]
 
-    # Added tests for previously untested functions
-    def test_execute_query(self):
+    @patch("adbc_driver_sqlite.dbapi.connect")
+    def test_execute_query(self, mock_connect):
         """Test the execute_query method."""
         # Arrange
-        # instance = Store()
+        sql_query = "SELECT * FROM test_table"
+        expected_table = pa.Table.from_arrays([pa.array([1, 2, 3]), pa.array(["a", "b", "c"])], names=["id", "name"])
+
+        # Mock connection and cursor
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_connect.return_value.__enter__.return_value = mock_conn
+        mock_conn.cursor.return_value.__enter__.return_value = mock_cursor
+
+        # Mock cursor methods
+        mock_cursor.execute.return_value = None
+        mock_cursor.fetch_arrow_table.return_value = expected_table
+
+        store = Store()
 
         # Act
-        # result = instance.execute_query()
+        result = store.execute_query(sql_query)
 
         # Assert
-        # assert result == expected_result
-        pass  # TODO: Implement test
+        mock_connect.assert_called_once()
+        mock_cursor.adbc_statement.set_options.assert_called_once_with(**{"adbc.sqlite.query.batch_rows": "1024"})
+        mock_cursor.execute.assert_called_once_with(sql_query)
+        mock_cursor.fetch_arrow_table.assert_called_once()
+        assert result == expected_table
+
+    @patch("adbc_driver_sqlite.dbapi.connect")
+    def test_execute_query_with_oserror(self, mock_connect):
+        """Test the execute_query method with OSError handling."""
+        # Arrange
+        sql_query = "SELECT * FROM test_table"
+        expected_table = pa.Table.from_arrays([pa.array([1, 2, 3]), pa.array(["a", "b", "c"])], names=["id", "name"])
+
+        # Mock connection and cursor
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_connect.return_value.__enter__.return_value = mock_conn
+        mock_conn.cursor.return_value.__enter__.return_value = mock_cursor
+
+        # Set up to raise OSError on first attempt, then succeed on second attempt
+        mock_cursor.adbc_statement.set_options.side_effect = [
+            OSError("Batch size too large"),  # First call raises OSError
+            None,  # Second call succeeds
+        ]
+        mock_cursor.execute.return_value = None
+        mock_cursor.fetch_arrow_table.return_value = expected_table
+
+        store = Store()
+
+        # Act
+        result = store.execute_query(sql_query)
+
+        # Assert
+        assert mock_connect.call_count == 2
+        assert mock_cursor.adbc_statement.set_options.call_count == 2
+        # First call with batch_size = 1024, second with batch_size = 2048
+        mock_cursor.adbc_statement.set_options.assert_any_call(**{"adbc.sqlite.query.batch_rows": "1024"})
+        mock_cursor.adbc_statement.set_options.assert_any_call(**{"adbc.sqlite.query.batch_rows": "2048"})
+        mock_cursor.execute.assert_called_once_with(sql_query)
+        mock_cursor.fetch_arrow_table.assert_called_once()
+        assert result == expected_table
+
+    @patch("pathlib.Path.mkdir")
+    @patch("pathlib.Path.exists")
+    def test_init_default_parameters(self, mock_exists, mock_mkdir):
+        """Test the __init__ method with default parameters."""
+        # Arrange
+        mock_exists.return_value = False
+
+        # Act
+        store = Store()
+
+        # Assert
+        mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
+        assert store._database_path.name == "db.sqlite"
+        assert store._database == str(store._database_path)
+        assert not store._tables  # Should be an empty dict
+
+    @patch("pathlib.Path.mkdir")
+    @patch("pathlib.Path.exists")
+    @patch("pathlib.Path.unlink")
+    def test_init_with_reset(self, mock_unlink, mock_exists, mock_mkdir):
+        """Test the __init__ method with reset=True."""
+        # Arrange
+        mock_exists.return_value = True
+
+        # Act
+        store = Store(reset=True)
+
+        # Assert
+        mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
+        mock_exists.assert_called_once()
+        mock_unlink.assert_called_once()
+        assert store._database_path.name == "db.sqlite"
+        assert store._database == str(store._database_path)
+
+    @patch("pathlib.Path.mkdir")
+    def test_init_with_custom_location(self, mock_mkdir):
+        """Test the __init__ method with a custom store_location."""
+        # Arrange
+        custom_location = pathlib.Path("/custom/path")
+
+        # Act
+        store = Store(store_location=custom_location)
+
+        # Assert
+        mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
+        assert store.store_location == custom_location / ".coal/store"
+        assert store._database_path == custom_location / ".coal/store" / "db.sqlite"
+        assert store._database == str(store._database_path)

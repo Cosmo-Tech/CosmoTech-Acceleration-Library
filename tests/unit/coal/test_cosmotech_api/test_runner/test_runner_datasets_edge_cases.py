@@ -27,23 +27,18 @@ class TestDatasetsEdgeCases:
     """Tests for edge cases in the datasets module."""
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
-    @patch("cosmotech.coal.cosmotech_api.runner.datasets.DefaultAzureCredential")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_adt_dataset")
-    def test_download_dataset_azure_credentials(self, mock_download_adt, mock_default_credential, mock_get_api_client):
-        """Test the download_dataset function with Azure credentials."""
+    def test_download_dataset_adt_pass_credentials(self, mock_download_adt, mock_get_api_client):
+        """Test that download_dataset passes credentials to download_adt_dataset."""
         # Arrange
         organization_id = "org-123"
         workspace_id = "ws-123"
         dataset_id = "dataset-123"
 
-        # Mock API client with Azure Entra Connection
+        # Mock API client
         mock_api_client = MagicMock()
         mock_api_client.__enter__.return_value = mock_api_client
-        mock_get_api_client.return_value = (mock_api_client, "Azure Entra Connection")
-
-        # Mock DefaultAzureCredential
-        mock_credential = MagicMock(spec=DefaultAzureCredential)
-        mock_default_credential.return_value = mock_credential
+        mock_get_api_client.return_value = (mock_api_client, "API Key")
 
         # Mock dataset API
         mock_dataset_api = MagicMock(spec=DatasetApi)
@@ -58,17 +53,19 @@ class TestDatasetsEdgeCases:
         mock_folder_path = Path("/tmp/adt")
         mock_download_adt.return_value = (mock_content, mock_folder_path)
 
+        # Create a mock credential
+        mock_credential = MagicMock(spec=DefaultAzureCredential)
+
         with patch("cosmotech.coal.cosmotech_api.runner.datasets.DatasetApi", return_value=mock_dataset_api):
             # Act
             result = download_dataset(
                 organization_id=organization_id,
                 workspace_id=workspace_id,
                 dataset_id=dataset_id,
-                credentials=None,  # No credentials provided, should create DefaultAzureCredential
+                credentials=mock_credential,  # Provide credentials
             )
 
             # Assert
-            mock_default_credential.assert_called_once()
             mock_download_adt.assert_called_once_with(
                 adt_address="https://adt.example.com",
                 credentials=mock_credential,

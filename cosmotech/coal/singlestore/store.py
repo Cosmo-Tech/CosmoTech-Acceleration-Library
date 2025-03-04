@@ -84,10 +84,11 @@ def load_from_singlestore(
     )
     with conn:
         with conn.cursor() as cur:
-            table_names = single_store_tables.split(",")
-            if not table_names:
+            if single_store_tables == "":
                 cur.execute("SHOW TABLES")
                 table_names = cur.fetchall()
+            else:
+                table_names = single_store_tables.split(",")
             LOGGER.info(T("coal.logs.database.tables_to_fetch").format(tables=table_names))
             for name in table_names:
                 _get_data(name, single_store_working_dir, cur)

@@ -188,6 +188,39 @@ class TestScenarioFunctions:
         assert "source-id-1" in source_ids
         assert "source-id-2" in source_ids
 
+    @patch("cosmotech.coal.azure.adx.scenario.FileDescriptor")
+    def test_insert_csv_files_with_wait_max_retries(self, mock_file_descriptor_class, mock_csv_files):
+        """Test the insert_csv_files function with wait=True and retry are maxed out"""
+        # Arrange
+        files_data = prepare_csv_content(mock_csv_files)
+        mock_adx_client = MagicMock()  # Don't use spec here to allow adding ingest_client
+        mock_adx_client.ingest_client = MagicMock()
+        simulation_id = "sim-123"
+        database = "test-db"
+
+        # Mock ingestion results
+        mock_ingestion_result1 = MagicMock()
+        mock_ingestion_result1.source_id = "source-id-1"
+        mock_ingestion_result2 = MagicMock()
+        mock_ingestion_result2.source_id = "source-id-2"
+        mock_adx_client.ingest_client.ingest_from_file.side_effect = [mock_ingestion_result1, mock_ingestion_result2]
+
+        # Mock check_ingestion_status
+        mock_adx_client.check_ingestion_status.return_value = [
+            ("source-id-1", IngestionStatus.QUEUED),
+            ("source-id-2", IngestionStatus.QUEUED),
+        ]
+
+        # Act
+        insert_csv_files(files_data, mock_adx_client, simulation_id, database, wait=True, wait_limit=2, wait_duration=0)
+
+        # Assert
+        # Verify that check_ingestion_status was called
+        mock_adx_client.check_ingestion_status.assert_called()  # Use assert_called instead of assert_called_once
+        source_ids = mock_adx_client.check_ingestion_status.call_args[1]["source_ids"]
+        assert "source-id-1" in source_ids
+        assert "source-id-2" in source_ids
+
     @patch("cosmotech.coal.azure.adx.scenario.prepare_csv_content")
     @patch("cosmotech.coal.azure.adx.scenario.construct_create_query")
     @patch("cosmotech.coal.azure.adx.scenario.insert_csv_files")

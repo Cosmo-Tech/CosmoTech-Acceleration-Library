@@ -69,9 +69,6 @@ def download_dataset(
     Returns:
         Dataset information dictionary
     """
-    # Create credentials if needed
-    if credentials is None and get_api_client()[1] == "Azure Entra Connection":
-        credentials = DefaultAzureCredential()
 
     # Get dataset information
     with get_api_client()[0] as api_client:
@@ -162,6 +159,42 @@ def download_dataset(
             }
 
 
+def download_dataset_process(
+    _dataset_id, organization_id, workspace_id, read_files, credentials, _return_dict, _error_dict
+):
+    """
+    Process function for downloading a dataset in a separate process.
+
+    This function is designed to be used with multiprocessing to download datasets in parallel.
+    It downloads a single dataset and stores the result in a shared dictionary.
+    If an error occurs, it stores the error message in a shared error dictionary and re-raises the exception.
+
+    Args:
+        _dataset_id: Dataset ID to download
+        organization_id: Organization ID
+        workspace_id: Workspace ID
+        read_files: Whether to read file contents
+        credentials: Azure credentials (if None, uses DefaultAzureCredential if needed)
+        _return_dict: Shared dictionary to store successful download results
+        _error_dict: Shared dictionary to store error messages
+
+    Raises:
+        Exception: Any exception that occurs during dataset download is re-raised
+    """
+    try:
+        _c = download_dataset(
+            organization_id=organization_id,
+            workspace_id=workspace_id,
+            dataset_id=_dataset_id,
+            read_files=read_files,
+            credentials=credentials,
+        )
+        _return_dict[_dataset_id] = _c
+    except Exception as e:
+        _error_dict[_dataset_id] = f"{type(e).__name__}: {str(e)}"
+        raise e
+
+
 def download_datasets_parallel(
     organization_id: str,
     workspace_id: str,
@@ -182,26 +215,6 @@ def download_datasets_parallel(
     Returns:
         Dictionary mapping dataset IDs to dataset information
     """
-    if not dataset_ids:
-        return {}
-
-    # Create credentials if needed
-    if credentials is None and get_api_client()[1] == "Azure Entra Connection":
-        credentials = DefaultAzureCredential()
-
-    def download_dataset_process(_dataset_id, _return_dict, _error_dict):
-        try:
-            _c = download_dataset(
-                organization_id=organization_id,
-                workspace_id=workspace_id,
-                dataset_id=_dataset_id,
-                read_files=read_files,
-                credentials=credentials,
-            )
-            _return_dict[_dataset_id] = _c
-        except Exception as e:
-            _error_dict[_dataset_id] = f"{type(e).__name__}: {str(e)}"
-            raise e
 
     # Use multiprocessing to download datasets in parallel
     manager = multiprocessing.Manager()
@@ -212,7 +225,7 @@ def download_datasets_parallel(
             dataset_id,
             multiprocessing.Process(
                 target=download_dataset_process,
-                args=(dataset_id, return_dict, error_dict),
+                args=(dataset_id, organization_id, workspace_id, read_files, credentials, return_dict, error_dict),
             ),
         )
         for dataset_id in dataset_ids
@@ -253,12 +266,6 @@ def download_datasets_sequential(
     Returns:
         Dictionary mapping dataset IDs to dataset information
     """
-    if not dataset_ids:
-        return {}
-
-    # Create credentials if needed
-    if credentials is None and get_api_client()[1] == "Azure Entra Connection":
-        credentials = DefaultAzureCredential()
 
     return_dict = {}
     error_dict = {}

@@ -115,3 +115,25 @@ class TestPandasFunctions:
         mock_store.get_table.assert_called_once_with(table_name)
         mock_table.to_pandas.assert_called_once()
         pd.testing.assert_frame_equal(result, expected_df)
+
+    def test_convert_store_table_to_dataframe_with_custom_store(self):
+        """Test the convert_store_table_to_dataframe function with a custom store."""
+        # Arrange
+        table_name = "test_table"
+        expected_df = pd.DataFrame({"id": [1, 2, 3], "name": ["Alice", "Bob", "Charlie"]})
+
+        # Create a custom store with a specific location
+        custom_store = MagicMock(spec=Store)
+
+        # Mock the table returned by get_table
+        mock_table = MagicMock()
+        mock_table.to_pandas.return_value = expected_df
+        custom_store.get_table.return_value = mock_table
+
+        # Act
+        result = convert_store_table_to_dataframe(table_name, custom_store)
+
+        # Assert
+        custom_store.get_table.assert_called_once_with(table_name)
+        mock_table.to_pandas.assert_called_once()
+        pd.testing.assert_frame_equal(result, expected_df)

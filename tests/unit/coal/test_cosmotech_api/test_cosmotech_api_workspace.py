@@ -55,6 +55,34 @@ class TestWorkspaceFunctions:
         assert "other_file.csv" not in result
 
     @patch("cosmotech_api.api.workspace_api.WorkspaceApi")
+    def test_list_workspace_files_empty(self, mock_workspace_api):
+        """Test the list_workspace_files function."""
+        # Arrange
+        mock_api_client = MagicMock()
+        organization_id = "org-123"
+        workspace_id = "ws-123"
+        file_prefix = "data_"
+
+        # Set up the mock API response
+        mock_api_instance = MagicMock()
+        mock_workspace_api.return_value = mock_api_instance
+        mock_api_instance.find_all_workspace_files.return_value = []
+
+        # Act
+
+        with pytest.raises(ValueError) as excinfo:
+            list_workspace_files(
+                api_client=mock_api_client,
+                organization_id=organization_id,
+                workspace_id=workspace_id,
+                file_prefix=file_prefix,
+            )
+
+        # Assert
+        mock_workspace_api.assert_called_once_with(mock_api_client)
+        mock_api_instance.find_all_workspace_files.assert_called_once_with(organization_id, workspace_id)
+
+    @patch("cosmotech_api.api.workspace_api.WorkspaceApi")
     @patch("pathlib.Path.mkdir")
     @patch("builtins.open", new_callable=mock_open)
     def test_download_workspace_file(self, mock_file, mock_mkdir, mock_workspace_api):

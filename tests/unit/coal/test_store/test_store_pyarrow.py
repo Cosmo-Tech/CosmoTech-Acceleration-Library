@@ -96,3 +96,24 @@ class TestPyarrowFunctions:
         # Assert
         mock_store.get_table.assert_called_once_with(table_name)
         assert result == expected_table
+
+    def test_convert_store_table_to_dataframe_with_custom_store(self):
+        """Test the convert_store_table_to_dataframe function with a custom store."""
+        # Arrange
+        table_name = "test_table"
+        expected_table = pa.Table.from_arrays(
+            [pa.array([1, 2, 3]), pa.array(["Alice", "Bob", "Charlie"])], names=["id", "name"]
+        )
+
+        # Create a custom store with a specific location
+        custom_store = MagicMock(spec=Store)
+
+        # Mock the get_table method to return our expected table
+        custom_store.get_table.return_value = expected_table
+
+        # Act
+        result = convert_store_table_to_dataframe(table_name, custom_store)
+
+        # Assert
+        custom_store.get_table.assert_called_once_with(table_name)
+        assert result == expected_table
