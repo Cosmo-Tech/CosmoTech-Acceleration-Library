@@ -21,10 +21,14 @@ def generate_postgresql_full_uri(
     postgres_port: str,
     postgres_db: str,
     postgres_user: str,
-    postgres_password: str, ) -> str:
+    postgres_password: str, 
+    force_encode: bool = False) -> str:
     # Check if password needs percent encoding (contains special characters)
     # We don't log anything about the password for security
-    encoded_password = quote(postgres_password, safe='')
+    encoded_password = postgres_password
+    if force_encode:
+        encoded_password = quote(postgres_password, safe='')
+    
     return ('postgresql://' +
             f'{postgres_user}'
             f':{encoded_password}'
