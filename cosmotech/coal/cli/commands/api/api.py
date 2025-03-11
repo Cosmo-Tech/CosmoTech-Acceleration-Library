@@ -4,12 +4,16 @@
 # Any use, reproduction, translation, broadcasting, transmission, distribution,
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
-from cosmotech.coal.cli.commands.api.postgres_send_runner_metadata import postgres_send_runner_metadata
+from cosmotech.coal.cli.commands.api.postgres_send_runner_metadata import (
+    postgres_send_runner_metadata,
+)
 from cosmotech.coal.cli.commands.api.rds_load_csv import rds_load_csv
 from cosmotech.coal.cli.commands.api.rds_send_csv import rds_send_csv
 from cosmotech.coal.cli.commands.api.rds_send_store import rds_send_store
 from cosmotech.coal.cli.commands.api.run_load_data import run_load_data
-from cosmotech.coal.cli.commands.api.runtemplate_load_handler import runtemplate_load_handler
+from cosmotech.coal.cli.commands.api.runtemplate_load_handler import (
+    runtemplate_load_handler,
+)
 from cosmotech.coal.cli.commands.api.scenariorun_load_data import scenariorun_load_data
 from cosmotech.coal.cli.commands.api.tdl_load_files import tdl_load_files
 from cosmotech.coal.cli.commands.api.tdl_send_files import tdl_send_files
@@ -27,11 +31,11 @@ from cosmotech.coal.utils.logger import LOGGER
 def api(ctx: click.Context):
     """Cosmo Tech API helper command
 
-This command will inform you of which connection is available to use for the Cosmo Tech API
+    This command will inform you of which connection is available to use for the Cosmo Tech API
 
-If no connection is available, will list all possible set of parameters and return an error code,
+    If no connection is available, will list all possible set of parameters and return an error code,
 
-You can use this command in a csm-orc template to make sure that API connection is available.
+    You can use this command in a csm-orc template to make sure that API connection is available.
     """
     if ctx.invoked_subcommand is None:
         try:

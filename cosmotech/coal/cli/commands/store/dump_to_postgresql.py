@@ -16,55 +16,83 @@ from cosmotech.coal.utils.postgresql import send_pyarrow_table_to_postgresql
 
 @click.command()
 @web_help("csm-data/store/dump-to-postgres")
-@click.option("--store-folder",
-              envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              help="The folder containing the store files",
-              metavar="PATH",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--table-prefix",
-              help="Prefix to add to the table name",
-              metavar="PREFIX",
-              type=str,
-              default="Cosmotech_")
-@click.option('--postgres-host',
-              help='Postgresql host URI',
-              envvar="POSTGRES_HOST_URI",
-              show_envvar=True,
-              required=True)
-@click.option('--postgres-port',
-              help='Postgresql database port',
-              envvar="POSTGRES_HOST_PORT",
-              show_envvar=True,
-              required=False,
-              default=5432)
-@click.option('--postgres-db',
-              help='Postgresql database name',
-              envvar="POSTGRES_DB_NAME",
-              show_envvar=True,
-              required=True)
-@click.option('--postgres-schema',
-              help='Postgresql schema name',
-              envvar="POSTGRES_DB_SCHEMA",
-              show_envvar=True,
-              required=True)
-@click.option('--postgres-user',
-              help='Postgresql connection user name',
-              envvar="POSTGRES_USER_NAME",
-              show_envvar=True,
-              required=True)
-@click.option('--postgres-password',
-              help='Postgresql connection password',
-              envvar="POSTGRES_USER_PASSWORD",
-              show_envvar=True,
-              required=True)
-@click.option("--replace/--append",
-              "replace",
-              help="Append data on existing tables",
-              default=True,
-              is_flag=True,
-              show_default=True)
+@click.option(
+    "--store-folder",
+    envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
+    help="The folder containing the store files",
+    metavar="PATH",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--table-prefix",
+    help="Prefix to add to the table name",
+    metavar="PREFIX",
+    type=str,
+    default="Cosmotech_",
+)
+@click.option(
+    "--postgres-host",
+    help="Postgresql host URI",
+    envvar="POSTGRES_HOST_URI",
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--postgres-port",
+    help="Postgresql database port",
+    envvar="POSTGRES_HOST_PORT",
+    show_envvar=True,
+    required=False,
+    default=5432,
+)
+@click.option(
+    "--postgres-db",
+    help="Postgresql database name",
+    envvar="POSTGRES_DB_NAME",
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--postgres-schema",
+    help="Postgresql schema name",
+    envvar="POSTGRES_DB_SCHEMA",
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--postgres-user",
+    help="Postgresql connection user name",
+    envvar="POSTGRES_USER_NAME",
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--postgres-password",
+    help="Postgresql connection password",
+    envvar="POSTGRES_USER_PASSWORD",
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--replace/--append",
+    "replace",
+    help="Append data on existing tables",
+    default=True,
+    is_flag=True,
+    show_default=True,
+)
+@click.option(
+    "--encode-password/--no-encode-password",
+    "force_encode",
+    help="Force encoding of password to percent encoding",
+    envvar="CSM_PSQL_FORCE_PASSWORD_ENCODING",
+    show_envvar=True,
+    default=False,
+    is_flag=True,
+    show_default=True,
+)
 def dump_to_postgresql(
     store_folder,
     table_prefix: str,
@@ -74,7 +102,8 @@ def dump_to_postgresql(
     postgres_schema,
     postgres_user,
     postgres_password,
-    replace: bool
+    replace: bool,
+    force_encode: bool,
 ):
     """Running this command will dump your store to a given postgresql database
 
@@ -101,22 +130,26 @@ def dump_to_postgresql(
                 LOGGER.info(f"   -> 0 rows (skipping)")
                 continue
             _dl_time = perf_counter()
-            rows = send_pyarrow_table_to_postgresql(data,
-                                                    target_table_name,
-                                                    postgres_host,
-                                                    postgres_port,
-                                                    postgres_db,
-                                                    postgres_schema,
-                                                    postgres_user,
-                                                    postgres_password,
-                                                    replace)
+            rows = send_pyarrow_table_to_postgresql(
+                data,
+                target_table_name,
+                postgres_host,
+                postgres_port,
+                postgres_db,
+                postgres_schema,
+                postgres_user,
+                postgres_password,
+                replace,
+                force_encode,
+            )
             total_rows += rows
             _up_time = perf_counter()
             LOGGER.info(f"   -> {rows} rows")
             LOGGER.debug(f"   -> Load from datastore took {_dl_time - _s_time:0.3}s ")
             LOGGER.debug(f"   -> Send to postgresql took {_up_time - _dl_time:0.3}s ")
         _process_end = perf_counter()
-        LOGGER.info(f"Sent {total_rows} rows "
-                    f"in {_process_end - _process_start:0.3}s ")
+        LOGGER.info(
+            f"Sent {total_rows} rows " f"in {_process_end - _process_start:0.3}s "
+        )
     else:
         LOGGER.info("Data store is empty")

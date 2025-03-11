@@ -8,7 +8,6 @@ from cosmotech.coal.utils.logger import LOGGER
 
 
 class Store:
-
     @staticmethod
     def sanitize_column(column_name: str) -> str:
         return column_name.replace(" ", "_")
@@ -16,8 +15,9 @@ class Store:
     def __init__(
         self,
         reset=False,
-        store_location: pathlib.Path = pathlib.Path(os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH",
-                                                                   "."))
+        store_location: pathlib.Path = pathlib.Path(
+            os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH", ".")
+        ),
     ):
         self.store_location = pathlib.Path(store_location) / ".coal/store"
         self.store_location.mkdir(parents=True, exist_ok=True)
@@ -48,7 +48,9 @@ class Store:
     def add_table(self, table_name: str, data=pyarrow.Table, replace: bool = False):
         with dbapi.connect(self._database, autocommit=True) as conn:
             with conn.cursor() as curs:
-                rows = curs.adbc_ingest(table_name, data, "replace" if replace else "create_append")
+                rows = curs.adbc_ingest(
+                    table_name, data, "replace" if replace else "create_append"
+                )
                 LOGGER.debug(f"Inserted {rows} rows in table {table_name}")
 
     def execute_query(self, sql_query: str) -> pyarrow.Table:
@@ -58,7 +60,9 @@ class Store:
             try:
                 with dbapi.connect(self._database, autocommit=True) as conn:
                     with conn.cursor() as curs:
-                        curs.adbc_statement.set_options(**{"adbc.sqlite.query.batch_rows":str(batch_size)})
+                        curs.adbc_statement.set_options(
+                            **{"adbc.sqlite.query.batch_rows": str(batch_size)}
+                        )
                         curs.execute(sql_query)
                         return curs.fetch_arrow_table()
             except OSError:

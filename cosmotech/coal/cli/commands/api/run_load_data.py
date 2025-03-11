@@ -13,7 +13,9 @@ from shutil import copytree
 from cosmotech_api.api.runner_api import RunnerApi
 from cosmotech_api.api.workspace_api import WorkspaceApi
 
-from CosmoTech_Acceleration_Library.Accelerators.scenario_download.scenario_downloader import ScenarioDownloader
+from CosmoTech_Acceleration_Library.Accelerators.scenario_download.scenario_downloader import (
+    ScenarioDownloader,
+)
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import require_env
 from cosmotech.coal.cli.utils.decorators import web_help
@@ -21,7 +23,9 @@ from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
 
 
-def download_runner_data(organization_id: str, workspace_id: str, runner_id: str, parameter_folder: str) -> None:
+def download_runner_data(
+    organization_id: str, workspace_id: str, runner_id: str, parameter_folder: str
+) -> None:
     """
     Download the datas from a scenario from the CosmoTech API to the local file system
     :param organization_id: The id of the Organization as defined in the CosmoTech API
@@ -31,27 +35,35 @@ def download_runner_data(organization_id: str, workspace_id: str, runner_id: str
     """
     LOGGER.info("Starting the Run data download")
     parameters = list()
-    _dl = ScenarioDownloader(workspace_id=workspace_id, organization_id=organization_id, read_files=False)
+    _dl = ScenarioDownloader(
+        workspace_id=workspace_id, organization_id=organization_id, read_files=False
+    )
     with get_api_client()[0] as api_client:
         runner_api_instance = RunnerApi(api_client)
         workspace_api_instance = WorkspaceApi(api_client)
-        runner_data = runner_api_instance.get_runner(organization_id=organization_id,
-                                                     workspace_id=workspace_id,
-                                                     runner_id=runner_id)
+        runner_data = runner_api_instance.get_runner(
+            organization_id=organization_id,
+            workspace_id=workspace_id,
+            runner_id=runner_id,
+        )
 
         # skip if no parameters found
         if not runner_data.parameters_values:
-            LOGGER.warning('no parameters found in the runner')
+            LOGGER.warning("no parameters found in the runner")
             return
 
         LOGGER.info("Loaded run data")
         # Pre-read of all workspace files to ensure ready to download AZ storage files
         all_api_files = workspace_api_instance.find_all_workspace_files(
-            organization_id=organization_id,
-            workspace_id=workspace_id)
+            organization_id=organization_id, workspace_id=workspace_id
+        )
 
-        max_name_size = max(map(lambda r: len(r.parameter_id), runner_data.parameters_values))
-        max_type_size = max(map(lambda r: len(r.var_type), runner_data.parameters_values))
+        max_name_size = max(
+            map(lambda r: len(r.parameter_id), runner_data.parameters_values)
+        )
+        max_type_size = max(
+            map(lambda r: len(r.var_type), runner_data.parameters_values)
+        )
         # Loop over all parameters
         for parameter in runner_data.parameters_values:
             value = parameter.value
@@ -72,18 +84,26 @@ def download_runner_data(organization_id: str, workspace_id: str, runner_id: str
 
                 param_dir = os.path.join(parameter_folder, param_id)
                 pathlib.Path(param_dir).mkdir(exist_ok=True, parents=True)
-                copytree(_dl.dataset_to_file(value, dataset_data), param_dir, dirs_exist_ok=True)
+                copytree(
+                    _dl.dataset_to_file(value, dataset_data),
+                    param_dir,
+                    dirs_exist_ok=True,
+                )
 
                 value = param_dir
 
-            parameters.append({
-                "parameterId": param_id,
-                "value": value,
-                "varType": var_type,
-                "isInherited": is_inherited
-            })
-            LOGGER.debug(f"  - {param_id:<{max_name_size}} {var_type:<{max_type_size}} "
-                         f"\"{value}\"{' inherited' if is_inherited else ''}")
+            parameters.append(
+                {
+                    "parameterId": param_id,
+                    "value": value,
+                    "varType": var_type,
+                    "isInherited": is_inherited,
+                }
+            )
+            LOGGER.debug(
+                f"  - {param_id:<{max_name_size}} {var_type:<{max_type_size}} "
+                f"\"{value}\"{' inherited' if is_inherited else ''}"
+            )
 
         write_parameters(parameter_folder, parameters)
 
@@ -97,32 +117,40 @@ def write_parameters(parameter_folder, parameters):
 
 
 @click.command()
-@click.option("--organization-id",
-              envvar="CSM_ORGANIZATION_ID",
-              show_envvar=True,
-              help="The id of an organization in the cosmotech api",
-              metavar="o-##########",
-              required=True)
-@click.option("--workspace-id",
-              envvar="CSM_WORKSPACE_ID",
-              show_envvar=True,
-              help="The id of a workspace in the cosmotech api",
-              metavar="w-##########",
-              required=True)
-@click.option("--runner-id",
-              envvar="CSM_RUNNER_ID",
-              show_envvar=True,
-              help="The id of a runner in the cosmotech api",
-              metavar="s-##########",
-              required=True)
-@click.option("--parameters-absolute-path",
-              envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              metavar="PATH",
-              show_envvar=True,
-              help="A local folder to store the parameters content",
-              required=True)
-@require_env('CSM_API_SCOPE', "The identification scope of a Cosmotech API")
-@require_env('CSM_API_URL', "The URL to a Cosmotech API")
+@click.option(
+    "--organization-id",
+    envvar="CSM_ORGANIZATION_ID",
+    show_envvar=True,
+    help="The id of an organization in the cosmotech api",
+    metavar="o-##########",
+    required=True,
+)
+@click.option(
+    "--workspace-id",
+    envvar="CSM_WORKSPACE_ID",
+    show_envvar=True,
+    help="The id of a workspace in the cosmotech api",
+    metavar="w-##########",
+    required=True,
+)
+@click.option(
+    "--runner-id",
+    envvar="CSM_RUNNER_ID",
+    show_envvar=True,
+    help="The id of a runner in the cosmotech api",
+    metavar="s-##########",
+    required=True,
+)
+@click.option(
+    "--parameters-absolute-path",
+    envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
+    metavar="PATH",
+    show_envvar=True,
+    help="A local folder to store the parameters content",
+    required=True,
+)
+@require_env("CSM_API_SCOPE", "The identification scope of a Cosmotech API")
+@require_env("CSM_API_URL", "The URL to a Cosmotech API")
 @web_help("csm-data/api/run-load-data")
 def run_load_data(
     runner_id: str,
@@ -131,12 +159,14 @@ def run_load_data(
     parameters_absolute_path: str,
 ):
     """
-Download a runner data from the Cosmo Tech API
-Requires a valid Azure connection either with:
-- The AZ cli command: **az login**
-- A triplet of env var `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`
+    Download a runner data from the Cosmo Tech API
+    Requires a valid Azure connection either with:
+    - The AZ cli command: **az login**
+    - A triplet of env var `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`
     """
-    return download_runner_data(organization_id, workspace_id, runner_id, parameters_absolute_path)
+    return download_runner_data(
+        organization_id, workspace_id, runner_id, parameters_absolute_path
+    )
 
 
 if __name__ == "__main__":

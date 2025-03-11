@@ -15,7 +15,7 @@ def list_workspace_files(
     api_client: cosmotech_api.api_client.ApiClient,
     organization_id: str,
     workspace_id: str,
-    file_prefix: str
+    file_prefix: str,
 ) -> list[str]:
     """
     Helper function to list all workspace files using a pre-given file prefix
@@ -28,15 +28,16 @@ def list_workspace_files(
     target_list = []
     api_ws = cosmotech_api.api.workspace_api.WorkspaceApi(api_client)
     LOGGER.info(f"Target path is a folder, listing content")
-    wsf = api_ws.find_all_workspace_files(organization_id,
-                                          workspace_id)
+    wsf = api_ws.find_all_workspace_files(organization_id, workspace_id)
     for workspace_file in wsf:
         if workspace_file.file_name.startswith(file_prefix):
             target_list.append(workspace_file.file_name)
 
     if not target_list:
         LOGGER.error(f"No workspace file were found with filter {file_prefix}")
-        raise ValueError(f"No workspace file were found with filter {file_prefix} in workspace {workspace_id}")
+        raise ValueError(
+            f"No workspace file were found with filter {file_prefix} in workspace {workspace_id}"
+        )
 
     return target_list
 
@@ -46,7 +47,7 @@ def download_workspace_file(
     organization_id: str,
     workspace_id: str,
     file_name: str,
-    target_dir: pathlib.Path
+    target_dir: pathlib.Path,
 ) -> pathlib.Path:
     """
     Downloads a given file from a workspace to a given directory
@@ -64,9 +65,9 @@ def download_workspace_file(
 
     LOGGER.info(f"Loading {file_name} from the API")
 
-    _file_content = api_ws.download_workspace_file(organization_id,
-                                                   workspace_id,
-                                                   file_name)
+    _file_content = api_ws.download_workspace_file(
+        organization_id, workspace_id, file_name
+    )
 
     local_target_file = target_dir / file_name
     local_target_file.parent.mkdir(parents=True, exist_ok=True)
@@ -85,14 +86,14 @@ def upload_workspace_file(
     workspace_id: str,
     file_path: str,
     workspace_path: str,
-    overwrite: bool = True
+    overwrite: bool = True,
 ) -> str:
     """
     Upload a local file to a given workspace
-    
-    If workspace_path ends with a "/" it will be considered as a folder inside the workspace 
+
+    If workspace_path ends with a "/" it will be considered as a folder inside the workspace
     and the file will keep its current name
-    
+
     :param api_client: An api client used to connect to the Cosmo Tech API
     :param organization_id: An ID of an Organization in the Cosmo Tech API
     :param workspace_id: An ID of a Workspace in the Cosmo Tech API
@@ -110,17 +111,21 @@ def upload_workspace_file(
         raise ValueError(f'"{file_path}" is not a single file')
 
     api_ws = cosmotech_api.api.workspace_api.WorkspaceApi(api_client)
-    destination = workspace_path + target_file.name if workspace_path.endswith("/") else workspace_path
+    destination = (
+        workspace_path + target_file.name
+        if workspace_path.endswith("/")
+        else workspace_path
+    )
 
     LOGGER.info(f"Sending {destination} to the API")
     try:
-        _file = api_ws.upload_workspace_file(organization_id,
-                                             workspace_id,
-                                             file_path,
-                                             overwrite,
-                                             destination=destination)
+        _file = api_ws.upload_workspace_file(
+            organization_id, workspace_id, file_path, overwrite, destination=destination
+        )
     except cosmotech_api.exceptions.ApiException as e:
-        LOGGER.error(f"{destination}already exists, use the overwrite flag to replace it")
+        LOGGER.error(
+            f"{destination}already exists, use the overwrite flag to replace it"
+        )
         raise e
 
     LOGGER.info(f"{_file.file_name} successfuly sent to the API")

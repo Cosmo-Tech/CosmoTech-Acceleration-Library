@@ -13,13 +13,15 @@ from cosmotech.coal.utils.logger import LOGGER
 
 @click.command()
 @web_help("csm-data/store/reset")
-@click.option("--store-folder",
-              envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              help="The folder containing the store files",
-              metavar="PATH",
-              type=str,
-              show_envvar=True,
-              required=True)
+@click.option(
+    "--store-folder",
+    envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
+    help="The folder containing the store files",
+    metavar="PATH",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
 def reset(store_folder):
     """Running this command will reset the state of your store"""
     Store(True, store_folder)

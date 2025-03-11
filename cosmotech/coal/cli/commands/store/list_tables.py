@@ -13,18 +13,22 @@ from cosmotech.coal.utils.logger import LOGGER
 
 @click.command()
 @web_help("csm-data/store/list-tables")
-@click.option("--store-folder",
-              envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              help="The folder containing the store files",
-              metavar="PATH",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--schema/--no-schema",
-              help="Display the schema of the tables",
-              is_flag=True,
-              type=bool,
-              default=False)
+@click.option(
+    "--store-folder",
+    envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
+    help="The folder containing the store files",
+    metavar="PATH",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--schema/--no-schema",
+    help="Display the schema of the tables",
+    is_flag=True,
+    type=bool,
+    default=False,
+)
 def list_tables(store_folder, schema):
     """Running this command will list the existing tables in your datastore"""
     _s = Store(store_location=store_folder)

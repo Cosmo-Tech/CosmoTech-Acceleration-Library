@@ -21,20 +21,22 @@ def generate_postgresql_full_uri(
     postgres_port: str,
     postgres_db: str,
     postgres_user: str,
-    postgres_password: str, 
-    force_encode: bool = False) -> str:
+    postgres_password: str,
+    force_encode: bool = False,
+) -> str:
     # Check if password needs percent encoding (contains special characters)
     # We don't log anything about the password for security
     encoded_password = postgres_password
     if force_encode:
-        encoded_password = quote(postgres_password, safe='')
-    
-    return ('postgresql://' +
-            f'{postgres_user}'
-            f':{encoded_password}'
-            f'@{postgres_host}'
-            f':{postgres_port}'
-            f'/{postgres_db}')
+        encoded_password = quote(postgres_password, safe="")
+
+    return (
+        "postgresql://" + f"{postgres_user}"
+        f":{encoded_password}"
+        f"@{postgres_host}"
+        f":{postgres_port}"
+        f"/{postgres_db}"
+    )
 
 
 def get_postgresql_table_schema(
@@ -45,10 +47,11 @@ def get_postgresql_table_schema(
     postgres_schema: str,
     postgres_user: str,
     postgres_password: str,
+    force_encode: bool = False,
 ) -> Optional[pa.Schema]:
     """
     Get the schema of an existing PostgreSQL table using SQL queries.
-    
+
     Args:
         target_table_name: Name of the table
         postgres_host: PostgreSQL host
@@ -57,19 +60,22 @@ def get_postgresql_table_schema(
         postgres_schema: PostgreSQL schema name
         postgres_user: PostgreSQL username
         postgres_password: PostgreSQL password
-        
+
     Returns:
         PyArrow Schema if table exists, None otherwise
     """
     LOGGER.debug(f"Getting schema for table {postgres_schema}.{target_table_name}")
 
-    postgresql_full_uri = generate_postgresql_full_uri(postgres_host,
-                                                       postgres_port,
-                                                       postgres_db,
-                                                       postgres_user,
-                                                       postgres_password)
+    postgresql_full_uri = generate_postgresql_full_uri(
+        postgres_host,
+        postgres_port,
+        postgres_db,
+        postgres_user,
+        postgres_password,
+        force_encode,
+    )
 
-    with (dbapi.connect(postgresql_full_uri) as conn):
+    with dbapi.connect(postgresql_full_uri) as conn:
         try:
             return conn.adbc_get_table_schema(
                 target_table_name,
@@ -80,10 +86,7 @@ def get_postgresql_table_schema(
         return None
 
 
-def adapt_table_to_schema(
-    data: pa.Table,
-    target_schema: pa.Schema
-) -> pa.Table:
+def adapt_table_to_schema(data: pa.Table, target_schema: pa.Schema) -> pa.Table:
     """
     Adapt a PyArrow table to match a target schema with detailed logging.
     """
@@ -137,20 +140,12 @@ def adapt_table_to_schema(
             added_columns.append(field_name)
 
     # Log columns that will be dropped
-    dropped_columns = [
-        name for name in data.column_names
-        if name not in target_fields
-    ]
+    dropped_columns = [name for name in data.column_names if name not in target_fields]
     if dropped_columns:
-        LOGGER.debug(
-            f"Dropping extra columns not in target schema: {dropped_columns}"
-        )
+        LOGGER.debug(f"Dropping extra columns not in target schema: {dropped_columns}")
 
     # Create new table
-    adapted_table = pa.Table.from_arrays(
-        new_columns,
-        schema=target_schema
-    )
+    adapted_table = pa.Table.from_arrays(new_columns, schema=target_schema)
 
     # Log summary of adaptations
     LOGGER.debug("Schema adaptation summary:")
@@ -161,9 +156,7 @@ def adapt_table_to_schema(
     if type_conversions:
         LOGGER.debug(f"- Successful type conversions: {type_conversions}")
     if failed_conversions:
-        LOGGER.debug(
-            f"- Failed conversions (filled with nulls): {failed_conversions}"
-        )
+        LOGGER.debug(f"- Failed conversions (filled with nulls): {failed_conversions}")
 
     LOGGER.debug(f"Final adapted table schema: {adapted_table.schema}")
     return adapted_table
@@ -178,7 +171,8 @@ def send_pyarrow_table_to_postgresql(
     postgres_schema: str,
     postgres_user: str,
     postgres_password: str,
-    replace: bool
+    replace: bool,
+    force_encode: bool = False,
 ) -> int:
     LOGGER.debug(
         f"Preparing to send data to PostgreSQL table '{postgres_schema}.{target_table_name}'"
@@ -193,7 +187,8 @@ def send_pyarrow_table_to_postgresql(
         postgres_db,
         postgres_schema,
         postgres_user,
-        postgres_password
+        postgres_password,
+        force_encode,
     )
 
     if existing_schema is not None:
@@ -213,7 +208,8 @@ def send_pyarrow_table_to_postgresql(
         postgres_port,
         postgres_db,
         postgres_user,
-        postgres_password
+        postgres_password,
+        force_encode,
     )
 
     LOGGER.debug("Connecting to PostgreSQL database")
@@ -226,7 +222,7 @@ def send_pyarrow_table_to_postgresql(
                 target_table_name,
                 data,
                 "replace" if replace else "create_append",
-                db_schema_name=postgres_schema
+                db_schema_name=postgres_schema,
             )
 
     LOGGER.debug(f"Successfully ingested {total} rows")

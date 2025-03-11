@@ -17,7 +17,6 @@ TARGET_COLUMN = "dest"
 
 
 class CSVSourceFile:
-
     def __init__(self, file_path: pathlib.Path):
         self.file_path = file_path
         if not file_path.name.endswith(".csv"):
@@ -46,23 +45,32 @@ class CSVSourceFile:
         is_relation = all([has_source, has_target])
 
         if not has_id and not is_relation:
-            LOGGER.error(f"'{file_path}' does not contains valid nodes or relationships")
+            LOGGER.error(
+                f"'{file_path}' does not contains valid nodes or relationships"
+            )
             LOGGER.error(f"  - Valid nodes contains at least the property {ID_COLUMN} ")
-            LOGGER.error("  - Valid relationships contains at least the properties " +
-                         f"{ID_COLUMN}, {SOURCE_COLUMN}, {TARGET_COLUMN} ")
-            raise ValueError(f"'{file_path}' does not contains valid nodes or relations")
+            LOGGER.error(
+                "  - Valid relationships contains at least the properties "
+                + f"{ID_COLUMN}, {SOURCE_COLUMN}, {TARGET_COLUMN} "
+            )
+            raise ValueError(
+                f"'{file_path}' does not contains valid nodes or relations"
+            )
 
         self.is_node = has_id and not is_relation
 
-        self.content_fields = {_f: _f for _f in self.fields if
-                               _f not in [self.id_column, self.source_column, self.target_column]}
+        self.content_fields = {
+            _f: _f
+            for _f in self.fields
+            if _f not in [self.id_column, self.source_column, self.target_column]
+        }
         if has_id:
             self.content_fields[ID_COLUMN] = self.id_column
         if is_relation:
             self.content_fields[SOURCE_COLUMN] = self.source_column
             self.content_fields[TARGET_COLUMN] = self.target_column
 
-    def reload(self, inplace: bool = False) -> 'CSVSourceFile':
+    def reload(self, inplace: bool = False) -> "CSVSourceFile":
         if inplace:
             self.__init__(self.file_path)
             return self
@@ -77,20 +85,42 @@ class CSVSourceFile:
         field_names = sorted(self.content_fields.keys(), key=len, reverse=True)
 
         if self.is_node:
-            query = ("CREATE (:" + self.object_type + " {" + ", ".join(
-                f"{property_name}: ${self.content_fields[property_name]}" for property_name in field_names) + "})")
+            query = (
+                "CREATE (:"
+                + self.object_type
+                + " {"
+                + ", ".join(
+                    f"{property_name}: ${self.content_fields[property_name]}"
+                    for property_name in field_names
+                )
+                + "})"
+            )
             # query = ("UNWIND $params AS params " +
             #          f"MERGE (n:{self.object_type}) " +
             #          "SET n += params")
         else:
-            query = ("MATCH " +
-                     "(source {" + ID_COLUMN + ":$" + self.source_column + "}),\n" +
-                     "(target {" + ID_COLUMN + ":$" + self.target_column + "})\n" +
-                     "CREATE (source)-[rel:" + self.object_type +
-                     " {" + ", ".join(
-                        f"{property_name}: ${self.content_fields[property_name]}" for property_name in
-                        field_names) + "}" +
-                     "]->(target)\n")
+            query = (
+                "MATCH "
+                + "(source {"
+                + ID_COLUMN
+                + ":$"
+                + self.source_column
+                + "}),\n"
+                + "(target {"
+                + ID_COLUMN
+                + ":$"
+                + self.target_column
+                + "})\n"
+                + "CREATE (source)-[rel:"
+                + self.object_type
+                + " {"
+                + ", ".join(
+                    f"{property_name}: ${self.content_fields[property_name]}"
+                    for property_name in field_names
+                )
+                + "}"
+                + "]->(target)\n"
+            )
             # query = ("UNWIND $params AS params " +
             #          "MATCH (source {" + ID_COLUMN + ":params." + self.source_column + "})\n" +
             #          "MATCH (target {" + ID_COLUMN + ":params." + self.target_column + "})\n" +

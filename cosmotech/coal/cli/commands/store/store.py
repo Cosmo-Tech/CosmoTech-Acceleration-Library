@@ -11,7 +11,9 @@ from cosmotech.coal.cli.commands.store.dump_to_postgresql import dump_to_postgre
 from cosmotech.coal.cli.commands.store.dump_to_s3 import dump_to_s3
 from cosmotech.coal.cli.commands.store.list_tables import list_tables
 from cosmotech.coal.cli.commands.store.load_csv_folder import load_csv_folder
-from cosmotech.coal.cli.commands.store.load_from_singlestore import load_from_singlestore
+from cosmotech.coal.cli.commands.store.load_from_singlestore import (
+    load_from_singlestore,
+)
 from cosmotech.coal.cli.commands.store.reset import reset
 from cosmotech.coal.cli.utils.click import click
 from cosmotech.coal.cli.utils.decorators import web_help
@@ -22,7 +24,7 @@ from cosmotech.coal.cli.utils.decorators import web_help
 def store():
     """CoAL Data Store command group
 
-This group of commands will give you helper commands to interact with the datastore
+    This group of commands will give you helper commands to interact with the datastore
     """
     pass
 

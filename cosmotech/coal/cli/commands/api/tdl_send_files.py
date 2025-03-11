@@ -24,78 +24,83 @@ BATCH_SIZE_LIMIT = 10000
 
 
 @click.command()
-@click.option("--api-url",
-              envvar="CSM_API_URL",
-              help="The URI to a Cosmo Tech API instance",
-              metavar="URI",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--organization-id",
-              envvar="CSM_ORGANIZATION_ID",
-              help="An organization id for the Cosmo Tech API",
-              metavar="o-XXXXXXXX",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--workspace-id",
-              envvar="CSM_WORKSPACE_ID",
-              help="A workspace id for the Cosmo Tech API",
-              metavar="w-XXXXXXXX",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--runner-id",
-              envvar="CSM_RUNNER_ID",
-              help="A runner id for the Cosmo Tech API",
-              metavar="r-XXXXXXXX",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--dir",
-              "directory_path",
-              help="Path to the directory containing csvs to send",
-              metavar="PATH",
-              default="./",
-              type=str,
-              envvar="CSM_DATASET_ABSOLUTE_PATH",
-              show_envvar=True,
-              required=True)
-@click.option("--clear/--keep",
-              help="Flag to clear the target dataset first "
-                   "(if set to True will clear the dataset before sending anything, irreversibly)",
-              is_flag=True,
-              default=True,
-              show_default=True,
-              type=bool)
+@click.option(
+    "--api-url",
+    envvar="CSM_API_URL",
+    help="The URI to a Cosmo Tech API instance",
+    metavar="URI",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--organization-id",
+    envvar="CSM_ORGANIZATION_ID",
+    help="An organization id for the Cosmo Tech API",
+    metavar="o-XXXXXXXX",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--workspace-id",
+    envvar="CSM_WORKSPACE_ID",
+    help="A workspace id for the Cosmo Tech API",
+    metavar="w-XXXXXXXX",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--runner-id",
+    envvar="CSM_RUNNER_ID",
+    help="A runner id for the Cosmo Tech API",
+    metavar="r-XXXXXXXX",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--dir",
+    "directory_path",
+    help="Path to the directory containing csvs to send",
+    metavar="PATH",
+    default="./",
+    type=str,
+    envvar="CSM_DATASET_ABSOLUTE_PATH",
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--clear/--keep",
+    help="Flag to clear the target dataset first "
+    "(if set to True will clear the dataset before sending anything, irreversibly)",
+    is_flag=True,
+    default=True,
+    show_default=True,
+    type=bool,
+)
 @web_help("csm-data/api/tdl-send-files")
 def tdl_send_files(
-    api_url,
-    organization_id,
-    workspace_id,
-    runner_id,
-    directory_path,
-    clear: bool
+    api_url, organization_id, workspace_id, runner_id, directory_path, clear: bool
 ):
     """Reads a folder CSVs and send those to the Cosmo Tech API as a Dataset
 
-CSVs must follow a given format :
-  - Nodes files must have an `id` column
-  - Relationship files must have `id`, `src` and `dest` columns
+    CSVs must follow a given format :
+      - Nodes files must have an `id` column
+      - Relationship files must have `id`, `src` and `dest` columns
 
-Non-existing relationship (aka dest or src does not point to existing node) won't trigger an error, 
-the relationship will not be created instead.
+    Non-existing relationship (aka dest or src does not point to existing node) won't trigger an error,
+    the relationship will not be created instead.
 
-Requires a valid connection to the API to send the data
+    Requires a valid connection to the API to send the data
     """
 
     api_client, connection_type = get_api_client()
     api_ds = DatasetApi(api_client)
     api_runner = RunnerApi(api_client)
 
-    runner_info = api_runner.get_runner(organization_id,
-                                        workspace_id,
-                                        runner_id)
+    runner_info = api_runner.get_runner(organization_id, workspace_id, runner_id)
 
     if len(runner_info.dataset_list) != 1:
         LOGGER.error(f"Runner {runner_id} is not tied to a single dataset")
@@ -104,14 +109,11 @@ Requires a valid connection to the API to send the data
 
     dataset_id = runner_info.dataset_list[0]
 
-    dataset_info = api_ds.find_dataset_by_id(organization_id,
-                                             dataset_id)
+    dataset_info = api_ds.find_dataset_by_id(organization_id, dataset_id)
 
     dataset_info.ingestion_status = "SUCCESS"
 
-    api_ds.update_dataset(organization_id,
-                          dataset_id,
-                          dataset_info)
+    api_ds.update_dataset(organization_id, dataset_id, dataset_info)
     entities_queries = dict()
     relation_queries = dict()
 
@@ -129,9 +131,9 @@ Requires a valid connection to the API to send the data
             relation_queries[file_path] = _csv.generate_query_insert()
 
     header = {
-        'Accept': 'application/json',
-        'Content-Type': 'text/csv',
-        'User-Agent': 'OpenAPI-Generator/1.0.0/python',
+        "Accept": "application/json",
+        "Content-Type": "text/csv",
+        "User-Agent": "OpenAPI-Generator/1.0.0/python",
     }
     header.update(api_client.default_headers)
 
@@ -142,9 +144,9 @@ Requires a valid connection to the API to send the data
         LOGGER.info("Clearing all dataset content")
 
         clear_query = "MATCH (n) DETACH DELETE n"
-        api_ds.twingraph_query(organization_id,
-                               dataset_id,
-                               DatasetTwinGraphQuery(query=str(clear_query)))
+        api_ds.twingraph_query(
+            organization_id, dataset_id, DatasetTwinGraphQuery(query=str(clear_query))
+        )
 
     for query_dict in [entities_queries, relation_queries]:
         for file_path, query in query_dict.items():
@@ -164,38 +166,44 @@ Requires a valid connection to the API to send the data
             size = 0
             batch = 1
             errors = []
-            query_craft = (api_url +
-                           f"/organizations/{organization_id}"
-                           f"/datasets/{dataset_id}"
-                           f"/batch?query={query}")
+            query_craft = (
+                api_url + f"/organizations/{organization_id}"
+                f"/datasets/{dataset_id}"
+                f"/batch?query={query}"
+            )
             LOGGER.info(f"Sending content of '{file_path}")
 
             with open(file_path, "r") as _f:
                 dr = DictReader(_f)
-                dw = DictWriter(content, fieldnames=sorted(dr.fieldnames, key=len, reverse=True))
+                dw = DictWriter(
+                    content, fieldnames=sorted(dr.fieldnames, key=len, reverse=True)
+                )
                 dw.writeheader()
                 for row in dr:
                     dw.writerow(row)
                     size += 1
                     if size > BATCH_SIZE_LIMIT:
-                        LOGGER.info(f"Found row count of {batch * BATCH_SIZE_LIMIT}, sending now")
+                        LOGGER.info(
+                            f"Found row count of {batch * BATCH_SIZE_LIMIT}, sending now"
+                        )
                         batch += 1
                         content.seek(0)
-                        post = requests.post(query_craft,
-                                             data=content.read(),
-                                             headers=header)
+                        post = requests.post(
+                            query_craft, data=content.read(), headers=header
+                        )
                         post.raise_for_status()
                         errors.extend(json.loads(post.content)["errors"])
                         content = StringIO()
-                        dw = DictWriter(content, fieldnames=sorted(dr.fieldnames, key=len, reverse=True))
+                        dw = DictWriter(
+                            content,
+                            fieldnames=sorted(dr.fieldnames, key=len, reverse=True),
+                        )
                         dw.writeheader()
                         size = 0
 
             if size > 0:
                 content.seek(0)
-                post = requests.post(query_craft,
-                                     data=content.read(),
-                                     headers=header)
+                post = requests.post(query_craft, data=content.read(), headers=header)
                 post.raise_for_status()
                 errors.extend(json.loads(post.content)["errors"])
 
@@ -210,6 +218,4 @@ Requires a valid connection to the API to send the data
     dataset_info.ingestion_status = "SUCCESS"
     dataset_info.twincache_status = "FULL"
 
-    api_ds.update_dataset(organization_id,
-                          dataset_id,
-                          dataset_info)
+    api_ds.update_dataset(organization_id, dataset_id, dataset_info)

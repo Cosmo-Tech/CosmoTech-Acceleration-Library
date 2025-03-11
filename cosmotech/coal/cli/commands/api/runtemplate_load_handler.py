@@ -22,34 +22,44 @@ from cosmotech.coal.utils.logger import LOGGER
 
 
 @click.command()
-@click.option("--organization-id",
-              envvar="CSM_ORGANIZATION_ID",
-              show_envvar=True,
-              help="The id of an organization in the cosmotech api",
-              metavar="o-##########",
-              required=True)
-@click.option("--workspace-id",
-              envvar="CSM_WORKSPACE_ID",
-              show_envvar=True,
-              help="The id of a solution in the cosmotech api",
-              metavar="w-##########",
-              required=True)
-@click.option("--run-template-id",
-              envvar="CSM_RUN_TEMPLATE_ID",
-              show_envvar=True,
-              help="The name of the run template in the cosmotech api",
-              metavar="NAME",
-              required=True)
-@click.option("--handler-list",
-              envvar="CSM_CONTAINER_MODE",
-              show_envvar=True,
-              help="A list of handlers to download (comma separated)",
-              metavar="HANDLER,...,HANDLER",
-              required=True)
+@click.option(
+    "--organization-id",
+    envvar="CSM_ORGANIZATION_ID",
+    show_envvar=True,
+    help="The id of an organization in the cosmotech api",
+    metavar="o-##########",
+    required=True,
+)
+@click.option(
+    "--workspace-id",
+    envvar="CSM_WORKSPACE_ID",
+    show_envvar=True,
+    help="The id of a solution in the cosmotech api",
+    metavar="w-##########",
+    required=True,
+)
+@click.option(
+    "--run-template-id",
+    envvar="CSM_RUN_TEMPLATE_ID",
+    show_envvar=True,
+    help="The name of the run template in the cosmotech api",
+    metavar="NAME",
+    required=True,
+)
+@click.option(
+    "--handler-list",
+    envvar="CSM_CONTAINER_MODE",
+    show_envvar=True,
+    help="A list of handlers to download (comma separated)",
+    metavar="HANDLER,...,HANDLER",
+    required=True,
+)
 @web_help("csm-data/api/runtemplate-load-handler")
-def runtemplate_load_handler(workspace_id, organization_id, run_template_id, handler_list):
+def runtemplate_load_handler(
+    workspace_id, organization_id, run_template_id, handler_list
+):
     """
-Uses environment variables to download cloud based Template steps
+    Uses environment variables to download cloud based Template steps
     """
 
     has_errors = False
@@ -58,10 +68,14 @@ Uses environment variables to download cloud based Template steps
 
         LOGGER.info("Loading Workspace information to get Solution ID")
         try:
-            r_data: Workspace = api_w.find_workspace_by_id(organization_id=organization_id, workspace_id=workspace_id)
+            r_data: Workspace = api_w.find_workspace_by_id(
+                organization_id=organization_id, workspace_id=workspace_id
+            )
         except ServiceException as e:
-            LOGGER.error(f"Workspace {workspace_id} was not found "
-                         f"in Organization {organization_id}")
+            LOGGER.error(
+                f"Workspace {workspace_id} was not found "
+                f"in Organization {organization_id}"
+            )
             LOGGER.debug(e.body)
             raise click.Abort()
         solution_id = r_data.solution.solution_id
@@ -70,19 +84,22 @@ Uses environment variables to download cloud based Template steps
         handler_list = handler_list.replace("handle-parameters", "parameters_handler")
         root_path = pathlib.Path("../csm_orc_port")
         template_path = root_path / run_template_id
-        for handler_id in handler_list.split(','):
+        for handler_id in handler_list.split(","):
             handler_path: pathlib.Path = template_path / handler_id
             LOGGER.info(f"Querying Handler {handler_id} for {run_template_id} ")
             try:
-                rt_data = api_sol.download_run_template_handler(organization_id=organization_id,
-                                                                solution_id=solution_id,
-                                                                run_template_id=run_template_id,
-                                                                handler_id=handler_id)
+                rt_data = api_sol.download_run_template_handler(
+                    organization_id=organization_id,
+                    solution_id=solution_id,
+                    run_template_id=run_template_id,
+                    handler_id=handler_id,
+                )
             except ServiceException as e:
                 LOGGER.error(
                     f"Handler {handler_id} was not found "
                     f"for Run Template {run_template_id} "
-                    f"in Solution {solution_id} ")
+                    f"in Solution {solution_id} "
+                )
                 LOGGER.debug(e.body)
                 has_errors = True
                 continue

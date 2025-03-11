@@ -16,20 +16,24 @@ from cosmotech.coal.utils.logger import LOGGER
 
 @click.command()
 @web_help("csm-data/store/load-csv-folder")
-@click.option("--store-folder",
-              envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-              help="The folder containing the store files",
-              metavar="PATH",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--csv-folder",
-              envvar="CSM_DATASET_ABSOLUTE_PATH",
-              help="The folder containing the csv files to store",
-              metavar="PATH",
-              type=str,
-              show_envvar=True,
-              required=True)
+@click.option(
+    "--store-folder",
+    envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
+    help="The folder containing the store files",
+    metavar="PATH",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--csv-folder",
+    envvar="CSM_DATASET_ABSOLUTE_PATH",
+    help="The folder containing the csv files to store",
+    metavar="PATH",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
 def load_csv_folder(store_folder, csv_folder):
     """Running this command will find all csvs in the given folder and put them in the store"""
     for csv_path in pathlib.Path(csv_folder).glob("*.csv"):

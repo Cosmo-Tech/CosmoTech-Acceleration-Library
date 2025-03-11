@@ -16,63 +16,93 @@ from cosmotech.coal.utils.postgresql import generate_postgresql_full_uri
 
 
 @click.command()
-@click.option("--organization-id",
-              envvar="CSM_ORGANIZATION_ID",
-              help="An organization id for the Cosmo Tech API",
-              metavar="o-XXXXXXXX",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--workspace-id",
-              envvar="CSM_WORKSPACE_ID",
-              help="A workspace id for the Cosmo Tech API",
-              metavar="w-XXXXXXXX",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--runner-id",
-              envvar="CSM_RUNNER_ID",
-              help="A runner id for the Cosmo Tech API",
-              metavar="r-XXXXXXXX",
-              type=str,
-              show_envvar=True,
-              required=True)
-@click.option("--table-prefix",
-              help="Prefix to add to the table name",
-              metavar="PREFIX",
-              type=str,
-              default="Cosmotech_")
-@click.option('--postgres-host',
-              help='Postgresql host URI',
-              envvar="POSTGRES_HOST_URI",
-              show_envvar=True,
-              required=True)
-@click.option('--postgres-port',
-              help='Postgresql database port',
-              envvar="POSTGRES_HOST_PORT",
-              show_envvar=True,
-              required=False,
-              default=5432)
-@click.option('--postgres-db',
-              help='Postgresql database name',
-              envvar="POSTGRES_DB_NAME",
-              show_envvar=True,
-              required=True)
-@click.option('--postgres-schema',
-              help='Postgresql schema name',
-              envvar="POSTGRES_DB_SCHEMA",
-              show_envvar=True,
-              required=True)
-@click.option('--postgres-user',
-              help='Postgresql connection user name',
-              envvar="POSTGRES_USER_NAME",
-              show_envvar=True,
-              required=True)
-@click.option('--postgres-password',
-              help='Postgresql connection password',
-              envvar="POSTGRES_USER_PASSWORD",
-              show_envvar=True,
-              required=True)
+@click.option(
+    "--organization-id",
+    envvar="CSM_ORGANIZATION_ID",
+    help="An organization id for the Cosmo Tech API",
+    metavar="o-XXXXXXXX",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--workspace-id",
+    envvar="CSM_WORKSPACE_ID",
+    help="A workspace id for the Cosmo Tech API",
+    metavar="w-XXXXXXXX",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--runner-id",
+    envvar="CSM_RUNNER_ID",
+    help="A runner id for the Cosmo Tech API",
+    metavar="r-XXXXXXXX",
+    type=str,
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--table-prefix",
+    help="Prefix to add to the table name",
+    metavar="PREFIX",
+    type=str,
+    default="Cosmotech_",
+)
+@click.option(
+    "--postgres-host",
+    help="Postgresql host URI",
+    envvar="POSTGRES_HOST_URI",
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--postgres-port",
+    help="Postgresql database port",
+    envvar="POSTGRES_HOST_PORT",
+    show_envvar=True,
+    required=False,
+    default=5432,
+)
+@click.option(
+    "--postgres-db",
+    help="Postgresql database name",
+    envvar="POSTGRES_DB_NAME",
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--postgres-schema",
+    help="Postgresql schema name",
+    envvar="POSTGRES_DB_SCHEMA",
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--postgres-user",
+    help="Postgresql connection user name",
+    envvar="POSTGRES_USER_NAME",
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--postgres-password",
+    help="Postgresql connection password",
+    envvar="POSTGRES_USER_PASSWORD",
+    show_envvar=True,
+    required=True,
+)
+@click.option(
+    "--encode-password/--no-encode-password",
+    "force_encode",
+    help="Force encoding of password to percent encoding",
+    envvar="CSM_PSQL_FORCE_PASSWORD_ENCODING",
+    show_envvar=True,
+    default=False,
+    is_flag=True,
+    show_default=True,
+)
 def postgres_send_runner_metadata(
     organization_id,
     workspace_id,
@@ -83,23 +113,29 @@ def postgres_send_runner_metadata(
     postgres_db,
     postgres_schema,
     postgres_user,
-    postgres_password
+    postgres_password,
+    force_encode: bool,
 ):
     """Send a file to a workspace inside the API
 
-Requires a valid connection to the API to send the data
+    Requires a valid connection to the API to send the data
 
-This implementation make use of an API Key
+    This implementation make use of an API Key
     """
 
     with get_api_client()[0] as api_client:
-        runner = get_runner_metadata(api_client, organization_id, workspace_id, runner_id)
+        runner = get_runner_metadata(
+            api_client, organization_id, workspace_id, runner_id
+        )
 
-    postgresql_full_uri = generate_postgresql_full_uri(postgres_host,
-                                                       postgres_port,
-                                                       postgres_db,
-                                                       postgres_user,
-                                                       postgres_password)
+    postgresql_full_uri = generate_postgresql_full_uri(
+        postgres_host,
+        postgres_port,
+        postgres_db,
+        postgres_user,
+        postgres_password,
+        force_encode,
+    )
 
     with dbapi.connect(postgresql_full_uri, autocommit=True) as conn:
         with conn.cursor() as curs:
