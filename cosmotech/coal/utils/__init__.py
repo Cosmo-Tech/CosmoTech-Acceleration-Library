@@ -7,7 +7,9 @@
 
 from cosmotech.coal import __version__
 
-WEB_DOCUMENTATION_ROOT = f"https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/{__version__}/"
+WEB_DOCUMENTATION_ROOT = (
+    f"https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/{__version__}/"
+)
 
 
 def strtobool(string: str) -> bool:

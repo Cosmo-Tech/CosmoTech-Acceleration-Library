@@ -50,7 +50,9 @@ def get_solution(organization_id, workspace_id) -> Optional[Solution]:
 
         LOGGER.info(T("coal.solution.loading_workspace"))
         try:
-            r_data: Workspace = api_w.find_workspace_by_id(organization_id=organization_id, workspace_id=workspace_id)
+            r_data: Workspace = api_w.find_workspace_by_id(
+                organization_id=organization_id, workspace_id=workspace_id
+            )
         except ServiceException as e:
             LOGGER.error(
                 T("coal.errors.workspace.not_found").format(workspace_id=workspace_id, organization_id=organization_id)
@@ -60,5 +62,7 @@ def get_solution(organization_id, workspace_id) -> Optional[Solution]:
         solution_id = r_data.solution.solution_id
 
         api_sol = SolutionApi(api_client)
-        sol: Solution = api_sol.find_solution_by_id(organization_id=organization_id, solution_id=solution_id)
+        sol: Solution = api_sol.find_solution_by_id(
+            organization_id=organization_id, solution_id=solution_id
+        )
     return sol

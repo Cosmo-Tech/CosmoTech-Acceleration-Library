@@ -68,7 +68,9 @@ def download_workspace_file(
 
     LOGGER.info(T("coal.logs.workspace.loading_file").format(file_name=file_name))
 
-    _file_content = api_ws.download_workspace_file(organization_id, workspace_id, file_name)
+    _file_content = api_ws.download_workspace_file(
+        organization_id, workspace_id, file_name
+    )
 
     local_target_file = target_dir / file_name
     local_target_file.parent.mkdir(parents=True, exist_ok=True)
@@ -112,7 +114,11 @@ def upload_workspace_file(
         raise ValueError(T("coal.errors.file_system.not_single_file").format(file_path=file_path))
 
     api_ws = cosmotech_api.api.workspace_api.WorkspaceApi(api_client)
-    destination = workspace_path + target_file.name if workspace_path.endswith("/") else workspace_path
+    destination = (
+        workspace_path + target_file.name
+        if workspace_path.endswith("/")
+        else workspace_path
+    )
 
     LOGGER.info(T("coal.logs.workspace.sending_to_api").format(destination=destination))
     try:

@@ -34,7 +34,11 @@ def convert_store_table_to_csv(
     replace_existsing_file: bool = False,
     store=Store(),
 ):
-    if csv_path.name.endswith(".csv") and csv_path.exists() and not replace_existsing_file:
+    if (
+        csv_path.name.endswith(".csv")
+        and csv_path.exists()
+        and not replace_existsing_file
+    ):
         raise FileExistsError(f"File {csv_path} already exists")
     if not csv_path.name.endswith(".csv"):
         csv_path = csv_path / f"{table_name}.csv"

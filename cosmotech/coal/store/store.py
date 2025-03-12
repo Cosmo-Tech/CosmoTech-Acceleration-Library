@@ -23,7 +23,9 @@ class Store:
     def __init__(
         self,
         reset=False,
-        store_location: pathlib.Path = pathlib.Path(os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH", ".")),
+        store_location: pathlib.Path = pathlib.Path(
+            os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH", ".")
+        ),
     ):
         self.store_location = pathlib.Path(store_location) / ".coal/store"
         self.store_location.mkdir(parents=True, exist_ok=True)

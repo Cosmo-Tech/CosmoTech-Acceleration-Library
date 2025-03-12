@@ -8,12 +8,13 @@
 from typing import Optional
 from urllib.parse import quote
 
+import adbc_driver_manager
 import pyarrow as pa
 from adbc_driver_postgresql import dbapi
+from cosmotech.orchestrator.utils.translate import T
 from pyarrow import Table
 
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 def generate_postgresql_full_uri(
@@ -22,12 +23,17 @@ def generate_postgresql_full_uri(
     postgres_db: str,
     postgres_user: str,
     postgres_password: str,
+    force_encode: bool = False,
 ) -> str:
     # Check if password needs percent encoding (contains special characters)
     # We don't log anything about the password for security
-    encoded_password = quote(postgres_password, safe="")
+    encoded_password = postgres_password
+    if force_encode:
+        encoded_password = quote(postgres_password, safe="")
+
     return (
-        "postgresql://" + f"{postgres_user}"
+        "postgresql://" +
+        f"{postgres_user}"
         f":{encoded_password}"
         f"@{postgres_host}"
         f":{postgres_port}"
@@ -43,6 +49,7 @@ def get_postgresql_table_schema(
     postgres_schema: str,
     postgres_user: str,
     postgres_password: str,
+    force_encode: bool = False,
 ) -> Optional[pa.Schema]:
     """
     Get the schema of an existing PostgreSQL table using SQL queries.
@@ -66,29 +73,21 @@ def get_postgresql_table_schema(
     )
 
     postgresql_full_uri = generate_postgresql_full_uri(
-        postgres_host, postgres_port, postgres_db, postgres_user, postgres_password
+        postgres_host,
+        postgres_port,
+        postgres_db,
+        postgres_user,
+        postgres_password,
+        force_encode,
     )
 
     with dbapi.connect(postgresql_full_uri) as conn:
         try:
-            catalog = (
-                conn.adbc_get_objects(
-                    depth="tables",
-                    catalog_filter=postgres_db,
-                    db_schema_filter=postgres_schema,
-                    table_name_filter=target_table_name,
-                )
-                .read_all()
-                .to_pylist()[0]
+            return conn.adbc_get_table_schema(
+                target_table_name,
+                db_schema_filter=postgres_schema,
             )
-            schema = catalog["catalog_db_schemas"][0]
-            table = schema["db_schema_tables"][0]
-            if table["table_name"] == target_table_name:
-                return conn.adbc_get_table_schema(
-                    target_table_name,
-                    db_schema_filter=postgres_schema,
-                )
-        except IndexError:
+        except adbc_driver_manager.ProgrammingError:
             LOGGER.warning(
                 T("coal.logs.postgresql.table_not_found").format(
                     postgres_schema=postgres_schema, target_table_name=target_table_name
@@ -185,6 +184,7 @@ def send_pyarrow_table_to_postgresql(
     postgres_user: str,
     postgres_password: str,
     replace: bool,
+    force_encode: bool = False,
 ) -> int:
     LOGGER.debug(
         T("coal.logs.postgresql.preparing_send").format(
@@ -202,6 +202,7 @@ def send_pyarrow_table_to_postgresql(
         postgres_schema,
         postgres_user,
         postgres_password,
+        force_encode,
     )
 
     if existing_schema is not None:
@@ -217,7 +218,12 @@ def send_pyarrow_table_to_postgresql(
     # Proceed with ingestion
     total = 0
     postgresql_full_uri = generate_postgresql_full_uri(
-        postgres_host, postgres_port, postgres_db, postgres_user, postgres_password
+        postgres_host,
+        postgres_port,
+        postgres_db,
+        postgres_user,
+        postgres_password,
+        force_encode,
     )
 
     LOGGER.debug(T("coal.logs.postgresql.connecting"))

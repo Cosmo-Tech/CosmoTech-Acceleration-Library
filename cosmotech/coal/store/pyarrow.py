@@ -9,7 +9,6 @@ from cosmotech.coal.store.store import Store
 
 import pyarrow as pa
 
-
 def store_table(
     table_name: str,
     data: pa.Table,
