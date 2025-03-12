@@ -32,8 +32,7 @@ def generate_postgresql_full_uri(
         encoded_password = quote(postgres_password, safe="")
 
     return (
-        "postgresql://" +
-        f"{postgres_user}"
+        "postgresql://" + f"{postgres_user}"
         f":{encoded_password}"
         f"@{postgres_host}"
         f":{postgres_port}"

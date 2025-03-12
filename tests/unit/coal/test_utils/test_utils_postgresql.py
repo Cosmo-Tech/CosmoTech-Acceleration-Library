@@ -4,20 +4,16 @@
 # Any use, reproduction, translation, broadcasting, transmission, distribution,
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
+from unittest.mock import MagicMock
+from unittest.mock import patch
 
-import pytest
-from unittest.mock import MagicMock, patch, call
-
+import adbc_driver_manager
 import pyarrow as pa
-from adbc_driver_postgresql import dbapi
-from pyarrow import Table
 
-from cosmotech.coal.utils.postgresql import (
-    generate_postgresql_full_uri,
-    get_postgresql_table_schema,
-    adapt_table_to_schema,
-    send_pyarrow_table_to_postgresql,
-)
+from cosmotech.coal.utils.postgresql import adapt_table_to_schema
+from cosmotech.coal.utils.postgresql import generate_postgresql_full_uri
+from cosmotech.coal.utils.postgresql import get_postgresql_table_schema
+from cosmotech.coal.utils.postgresql import send_pyarrow_table_to_postgresql
 
 
 class TestPostgresqlFunctions:
@@ -48,14 +44,33 @@ class TestPostgresqlFunctions:
         postgres_db = "testdb"
         postgres_user = "user"
         postgres_password = "pass@word!"
+        force_encode = True
 
         # Act
         result = generate_postgresql_full_uri(
-            postgres_host, postgres_port, postgres_db, postgres_user, postgres_password
+            postgres_host, postgres_port, postgres_db, postgres_user, postgres_password, force_encode
         )
 
         # Assert
         assert result == "postgresql://user:pass%40word%21@localhost:5432/testdb"
+
+    def test_generate_postgresql_full_uri_with_special_chars_no_encode(self):
+        """Test the generate_postgresql_full_uri function with special characters in password."""
+        # Arrange
+        postgres_host = "localhost"
+        postgres_port = "5432"
+        postgres_db = "testdb"
+        postgres_user = "user"
+        postgres_password = "pass@word!"
+        force_encode = False
+
+        # Act
+        result = generate_postgresql_full_uri(
+            postgres_host, postgres_port, postgres_db, postgres_user, postgres_password, force_encode
+        )
+
+        # Assert
+        assert result == "postgresql://user:pass@word!@localhost:5432/testdb"
 
     @patch("adbc_driver_postgresql.dbapi.connect")
     def test_get_postgresql_table_schema_found(self, mock_connect):
@@ -72,18 +87,6 @@ class TestPostgresqlFunctions:
         # Mock connection and cursor
         mock_conn = MagicMock()
         mock_connect.return_value.__enter__.return_value = mock_conn
-
-        # Mock get_objects result
-        mock_get_objects = MagicMock()
-        mock_conn.adbc_get_objects.return_value = mock_get_objects
-
-        # Mock read_all result
-        mock_read_all = MagicMock()
-        mock_get_objects.read_all.return_value = mock_read_all
-
-        # Mock to_pylist result
-        mock_to_pylist = [{"catalog_db_schemas": [{"db_schema_tables": [{"table_name": target_table_name}]}]}]
-        mock_read_all.to_pylist.return_value = mock_to_pylist
 
         # Mock get_table_schema result
         expected_schema = pa.schema([pa.field("id", pa.int64()), pa.field("name", pa.string())])
@@ -102,12 +105,6 @@ class TestPostgresqlFunctions:
 
         # Assert
         assert result == expected_schema
-        mock_conn.adbc_get_objects.assert_called_once_with(
-            depth="tables",
-            catalog_filter=postgres_db,
-            db_schema_filter=postgres_schema,
-            table_name_filter=target_table_name,
-        )
         mock_conn.adbc_get_table_schema.assert_called_once_with(
             target_table_name,
             db_schema_filter=postgres_schema,
@@ -129,16 +126,9 @@ class TestPostgresqlFunctions:
         mock_conn = MagicMock()
         mock_connect.return_value.__enter__.return_value = mock_conn
 
-        # Mock get_objects result
-        mock_get_objects = MagicMock()
-        mock_conn.adbc_get_objects.return_value = mock_get_objects
-
-        # Mock read_all result
-        mock_read_all = MagicMock()
-        mock_get_objects.read_all.return_value = mock_read_all
-
-        # Mock to_pylist result to raise IndexError
-        mock_read_all.to_pylist.side_effect = IndexError("No tables found")
+        mock_conn.adbc_get_table_schema.side_effect = adbc_driver_manager.ProgrammingError(
+            status_code=adbc_driver_manager.AdbcStatusCode.UNKNOWN, message="Table not found"
+        )
 
         # Act
         result = get_postgresql_table_schema(
@@ -153,13 +143,10 @@ class TestPostgresqlFunctions:
 
         # Assert
         assert result is None
-        mock_conn.adbc_get_objects.assert_called_once_with(
-            depth="tables",
-            catalog_filter=postgres_db,
+        mock_conn.adbc_get_table_schema.assert_called_once_with(
+            target_table_name,
             db_schema_filter=postgres_schema,
-            table_name_filter=target_table_name,
         )
-        mock_conn.adbc_get_table_schema.assert_not_called()
 
     def test_adapt_table_to_schema_same_schema(self):
         """Test the adapt_table_to_schema function with same schema."""
@@ -277,6 +264,7 @@ class TestPostgresqlFunctions:
         postgres_user = "user"
         postgres_password = "password"
         replace = False
+        force_encode = True
 
         # Mock get_postgresql_table_schema to return None (table doesn't exist)
         mock_get_schema.return_value = None
@@ -301,6 +289,7 @@ class TestPostgresqlFunctions:
             postgres_user,
             postgres_password,
             replace,
+            force_encode,
         )
 
         # Assert
@@ -313,6 +302,7 @@ class TestPostgresqlFunctions:
             postgres_schema,
             postgres_user,
             postgres_password,
+            force_encode,
         )
         mock_cursor.adbc_ingest.assert_called_once_with(
             target_table_name, data, "create_append", db_schema_name=postgres_schema
@@ -337,6 +327,7 @@ class TestPostgresqlFunctions:
         postgres_user = "user"
         postgres_password = "password"
         replace = False
+        force_encode = True
 
         # Mock get_postgresql_table_schema to return a schema (table exists)
         existing_schema = pa.schema(
@@ -370,6 +361,7 @@ class TestPostgresqlFunctions:
             postgres_user,
             postgres_password,
             replace,
+            force_encode,
         )
 
         # Assert
@@ -382,6 +374,7 @@ class TestPostgresqlFunctions:
             postgres_schema,
             postgres_user,
             postgres_password,
+            force_encode,
         )
         mock_adapt_schema.assert_called_once_with(data, existing_schema)
         mock_cursor.adbc_ingest.assert_called_once_with(
@@ -404,6 +397,7 @@ class TestPostgresqlFunctions:
         postgres_user = "user"
         postgres_password = "password"
         replace = True
+        force_encode = True
 
         # Mock get_postgresql_table_schema to return a schema (table exists)
         existing_schema = pa.schema(
@@ -431,6 +425,7 @@ class TestPostgresqlFunctions:
             postgres_user,
             postgres_password,
             replace,
+            force_encode,
         )
 
         # Assert
@@ -443,6 +438,7 @@ class TestPostgresqlFunctions:
             postgres_schema,
             postgres_user,
             postgres_password,
+            force_encode,
         )
         mock_cursor.adbc_ingest.assert_called_once_with(
             target_table_name, data, "replace", db_schema_name=postgres_schema

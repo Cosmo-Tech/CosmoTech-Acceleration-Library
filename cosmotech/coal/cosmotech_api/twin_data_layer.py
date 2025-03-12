@@ -77,9 +77,7 @@ class CSVSourceFile:
         self.is_node = has_id and not is_relation
 
         self.content_fields = {
-            _f: _f
-            for _f in self.fields
-            if _f not in [self.id_column, self.source_column, self.target_column]
+            _f: _f for _f in self.fields if _f not in [self.id_column, self.source_column, self.target_column]
         }
         if has_id:
             self.content_fields[ID_COLUMN] = self.id_column
@@ -105,10 +103,7 @@ class CSVSourceFile:
             query = (
                 "CREATE (:"
                 + self.object_type
-                + ", ".join(
-                    f"{property_name}: ${self.content_fields[property_name]}"
-                    for property_name in field_names
-                )
+                + ", ".join(f"{property_name}: ${self.content_fields[property_name]}" for property_name in field_names)
                 + "})"
             )
             # query = ("UNWIND $params AS params " +
@@ -130,10 +125,7 @@ class CSVSourceFile:
                 + "CREATE (source)-[rel:"
                 + self.object_type
                 + " {"
-                + ", ".join(
-                    f"{property_name}: ${self.content_fields[property_name]}"
-                    for property_name in field_names
-                )
+                + ", ".join(f"{property_name}: ${self.content_fields[property_name]}" for property_name in field_names)
                 + "}"
                 + "]->(target)\n"
             )
