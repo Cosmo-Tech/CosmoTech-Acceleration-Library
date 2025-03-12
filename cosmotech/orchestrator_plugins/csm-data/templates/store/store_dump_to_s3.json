@@ -1,0 +1,36 @@
+{
+  "id": "csm-data store-dump-to-s3",
+  "command": "csm-data",
+  "arguments": [
+    "store",
+    "dump-to-s3"
+  ],
+  "description": "Use csm-data to dump a store to an S3 bucket",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_PARAMETERS_ABSOLUTE_PATH": {
+      "description": "Folder containing the store to dump to S3"
+    },
+    "CSM_DATA_BUCKET_NAME": {
+      "description": "Name of the bucket in the S3 instance to upload to"
+    },
+    "CSM_DATA_BUCKET_PREFIX": {
+      "description": "Prefix to add to uploaded files",
+      "optional": true,
+      "defaultValue": ""
+    },
+    "AWS_ENDPOINT_URL": {
+      "description": "URI required to connect to a given S3 instance"
+    },
+    "AWS_ACCESS_KEY_ID": {
+      "description": "User access key required to authenticate to the S3 instance"
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "description": "User secret required to authenticate to the S3 instance"
+    },
+    "CSM_S3_CA_BUNDLE": {
+      "description": "Path to SSL certificate bundle",
+      "optional": true
+    }
+  }
+}

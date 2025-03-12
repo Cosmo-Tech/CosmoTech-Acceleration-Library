@@ -1,0 +1,31 @@
+{
+  "id": "csm-data s3-bucket-delete",
+  "command": "csm-data",
+  "arguments": [
+    "s3-bucket-delete"
+  ],
+  "description": "Use csm-data to delete objects from an S3 bucket with an optional prefix filter. Requires a valid S3 configuration, here using environment variables.",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_DATA_BUCKET_NAME": {
+      "description": "Name of the bucket in the S3 instance to delete from"
+    },
+    "CSM_DATA_BUCKET_PREFIX": {
+      "description": "Prefix to filter objects to delete",
+      "optional": true
+    },
+    "AWS_ENDPOINT_URL": {
+      "description": "URI required to connect to a given S3 instance"
+    },
+    "AWS_ACCESS_KEY_ID": {
+      "description": "User access key required to authenticate to the S3 instance"
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "description": "User secret required to authenticate to the S3 instance"
+    },
+    "CSM_S3_CA_BUNDLE": {
+      "description": "Path to SSL certificate bundle",
+      "optional": true
+    }
+  }
+}

@@ -3,15 +3,7 @@
   "command": "csm-data",
   "arguments": [
     "api",
-    "wsf-load-file",
-    "--target-folder",
-    "$CSM_DATASET_ABSOLUTE_PATH",
-    "--organization-id",
-    "$CSM_ORGANIZATION_ID",
-    "--workspace-id",
-    "$CSM_WORKSPACE_ID",
-    "--workspace-path",
-    "$CSM_WORKSPACE_PATH"
+    "wsf-load-file"
   ],
   "description": "Use csm-data to load files from a workspace inside the API",
   "useSystemEnvironment": true,

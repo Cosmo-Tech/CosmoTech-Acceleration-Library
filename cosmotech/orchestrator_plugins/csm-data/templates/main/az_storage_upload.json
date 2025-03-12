@@ -1,0 +1,25 @@
+{
+  "id": "csm-data az-storage-upload",
+  "command": "csm-data",
+  "arguments": [
+    "az-storage-upload"
+  ],
+  "description": "Use csm-data to upload files from a folder to Azure Blob Storage. Requires a valid Azure Storage configuration, here using environment variables.",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_DATASET_ABSOLUTE_PATH": {
+      "description": "Source folder containing files to upload to Azure Blob Storage"
+    },
+    "AZURE_STORAGE_BLOB_NAME": {
+      "description": "Name of the blob container in Azure Storage"
+    },
+    "CSM_DATA_BLOB_PREFIX": {
+      "description": "Prefix to add to uploaded files",
+      "optional": true,
+      "defaultValue": ""
+    },
+    "AZURE_STORAGE_SAS_URL": {
+      "description": "SAS URL for Azure Storage access"
+    }
+  }
+}

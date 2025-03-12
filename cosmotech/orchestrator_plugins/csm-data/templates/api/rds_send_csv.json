@@ -3,17 +3,7 @@
   "command": "csm-data",
   "arguments": [
     "api",
-    "rds-send-csv",
-    "--source-folder",
-    "$CSM_DATASET_ABSOLUTE_PATH",
-    "--organization-id",
-    "$CSM_ORGANIZATION_ID",
-    "--workspace-id",
-    "$CSM_WORKSPACE_ID",
-    "--runner-id",
-    "$CSM_RUNNER_ID",
-    "--run-id",
-    "$CSM_RUN_ID"
+    "rds-send-csv"
   ],
   "description": "Use csm-data to send the content of all csv of a folder to the Cosmo Tech API as custom results data",
   "useSystemEnvironment": true,

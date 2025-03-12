@@ -3,15 +3,7 @@
   "command": "csm-data",
   "arguments": [
     "api",
-    "tdl-send-files",
-    "--dir",
-    "$CSM_DATASET_ABSOLUTE_PATH",
-    "--organization-id",
-    "$CSM_ORGANIZATION_ID",
-    "--workspace-id",
-    "$CSM_WORKSPACE_ID",
-    "--runner-id",
-    "$CSM_RUNNER_ID"
+    "tdl-send-files"
   ],
   "description": "Use csm-data to send a folder content to the Cosmo Tech API as a Twin Graph",
   "useSystemEnvironment": true,

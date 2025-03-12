@@ -3,17 +3,7 @@
   "command": "csm-data",
   "arguments": [
     "api",
-    "rds-load-csv",
-    "--target-folder",
-    "$CSM_DATASET_ABSOLUTE_PATH",
-    "--organization-id",
-    "$CSM_ORGANIZATION_ID",
-    "--workspace-id",
-    "$CSM_WORKSPACE_ID",
-    "--runner-id",
-    "$CSM_RUNNER_ID",
-    "--run-id",
-    "$CSM_RUN_ID"
+    "rds-load-csv"
   ],
   "description": "Use csm-data to query the results api and store it in a csv file, you need to add your arguments for filename and query while using this template",
   "useSystemEnvironment": true,

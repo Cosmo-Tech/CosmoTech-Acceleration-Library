@@ -1,0 +1,15 @@
+{
+  "id": "csm-data store-list-tables",
+  "command": "csm-data",
+  "arguments": [
+    "store",
+    "list-tables"
+  ],
+  "description": "Use csm-data to list tables in a store",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_PARAMETERS_ABSOLUTE_PATH": {
+      "description": "Folder containing the store to list tables from"
+    }
+  }
+}

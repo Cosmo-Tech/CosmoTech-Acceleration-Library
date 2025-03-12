@@ -1,0 +1,15 @@
+{
+  "id": "csm-data store-reset",
+  "command": "csm-data",
+  "arguments": [
+    "store",
+    "reset"
+  ],
+  "description": "Use csm-data to reset a store (delete all tables)",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_PARAMETERS_ABSOLUTE_PATH": {
+      "description": "Folder containing the store to reset"
+    }
+  }
+}

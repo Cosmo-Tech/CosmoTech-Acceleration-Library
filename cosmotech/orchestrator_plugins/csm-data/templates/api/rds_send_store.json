@@ -1,0 +1,27 @@
+{
+  "id": "csm-data rds-send-store",
+  "command": "csm-data",
+  "arguments": [
+    "api",
+    "rds-send-store"
+  ],
+  "description": "Use csm-data to send the content of a store to the Cosmo Tech API as custom results data",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_PARAMETERS_ABSOLUTE_PATH": {
+      "description": "Folder containing the store to send to the Cosmo Tech API"
+    },
+    "CSM_ORGANIZATION_ID": {
+      "description": "An organization id for the Cosmo Tech API"
+    },
+    "CSM_WORKSPACE_ID": {
+      "description": "A workspace id for the Cosmo Tech API"
+    },
+    "CSM_RUNNER_ID": {
+      "description": "A runner id for the Cosmo Tech API"
+    },
+    "CSM_RUN_ID": {
+      "description": "A run id for the Cosmo Tech API"
+    }
+  }
+}
