@@ -1,3 +1,10 @@
+# Copyright (C) - 2023 - 2025 - Cosmo Tech
+# This document and all information contained herein is the exclusive property -
+# including all intellectual property rights pertaining thereto - of Cosmo Tech.
+# Any use, reproduction, translation, broadcasting, transmission, distribution,
+# etc., to any person is prohibited unless it has been previously and
+# specifically authorized by written means by Cosmo Tech.
+
 import pathlib
 
 import pyarrow.csv as pc
@@ -27,11 +34,7 @@ def convert_store_table_to_csv(
     replace_existsing_file: bool = False,
     store=Store(),
 ):
-    if (
-        csv_path.name.endswith(".csv")
-        and csv_path.exists()
-        and not replace_existsing_file
-    ):
+    if csv_path.name.endswith(".csv") and csv_path.exists() and not replace_existsing_file:
         raise FileExistsError(f"File {csv_path} already exists")
     if not csv_path.name.endswith(".csv"):
         csv_path = csv_path / f"{table_name}.csv"
