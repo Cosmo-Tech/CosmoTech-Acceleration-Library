@@ -1,0 +1,18 @@
+[run]
+source = cosmotech.coal
+omit =
+    */tests/*
+    */site-packages/*
+    */__pycache__/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+precision = 2
+skip_covered = true
+
+[html]
+directory = coverage_html_report
+skip_covered = false
+skip_empty = true

@@ -2,14 +2,14 @@
 mkdocs~=1.5.3
 mkdocs-click~=0.8.1
 mkdocs-gen-files~=0.5.0
-mkdocstrings[python]~=0.24
+mkdocstrings[python]~=0.28.2
 mkdocs-awesome-pages-plugin~=2.9.3
 pymdown-extensions~=10.7
 requirements-parser~=0.11.0
 setuptools~=70.3.0
 mike~=2.0.0
-griffe~=0.47.0
+griffe~=1.5.7
 mkdocs-include-dir-to-nav~=1.2.0
-mkdocs-material[imaging]~=9.5.17
+mkdocs-material[imaging]~=9.5.18
 mkdocs-table-reader-plugin~=2.0.3
 mkdocs-literate-nav~=0.6.1
