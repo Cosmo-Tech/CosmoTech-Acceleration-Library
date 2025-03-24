@@ -137,9 +137,7 @@ class CSVSourceFile:
         return query
 
 
-def get_dataset_id_from_runner(
-    organization_id: str, workspace_id: str, runner_id: str
-) -> str:
+def get_dataset_id_from_runner(organization_id: str, workspace_id: str, runner_id: str) -> str:
     """
     Get the dataset ID from a runner.
 
@@ -153,7 +151,7 @@ def get_dataset_id_from_runner(
     """
     api_client, _ = get_api_client()
     api_runner = RunnerApi(api_client)
-    
+
     runner_info = api_runner.get_runner(
         organization_id,
         workspace_id,

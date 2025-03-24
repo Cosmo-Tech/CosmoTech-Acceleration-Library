@@ -170,7 +170,6 @@ class TestTwinDataLayerFunctions:
         mock_api = MagicMock(spec=RunnerApi)
         return mock_api
 
-
     @pytest.fixture
     def mock_dataset_api(self):
         """Create a mock DatasetApi."""
@@ -196,7 +195,6 @@ class TestTwinDataLayerFunctions:
             assert result == "dataset-123"
             mock_runner_api.get_runner.assert_called_once_with("org-123", "ws-123", "runner-123")
 
-
     @patch("cosmotech.coal.cosmotech_api.twin_data_layer.get_api_client")
     def test_get_dataset_id_from_runner_no_ids(self, mock_get_api_client, mock_runner_api):
         """Test the get_dataset_id_from_runner function with no IDs."""
@@ -211,7 +209,6 @@ class TestTwinDataLayerFunctions:
             # Act & Assert
             with pytest.raises(ValueError):
                 get_dataset_id_from_runner("org-123", "ws-123", "runner-123")
-
 
     @patch("cosmotech.coal.cosmotech_api.twin_data_layer.get_api_client")
     def test_get_dataset_id_from_runner_no_datasets(self, mock_get_api_client, mock_runner_api):

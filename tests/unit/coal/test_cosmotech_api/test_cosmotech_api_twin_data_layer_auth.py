@@ -36,7 +36,7 @@ class TestTwinDataLayerAuth:
         mock_client.default_headers = {"Default-Header": "value"}
         mock_client.configuration.auth_settings.return_value = {
             "auth1": {"type": "apiKey", "in": "header", "key": "Authorization", "value": "Bearer token"},
-            "auth2": {"type": "basic", "in": "header", "key": "Authorization", "value": "Basic credentials"}
+            "auth2": {"type": "basic", "in": "header", "key": "Authorization", "value": "Basic credentials"},
         }
         return mock_client
 
@@ -59,11 +59,11 @@ class TestTwinDataLayerAuth:
         # Arrange
         mock_api_client = MagicMock()
         mock_api_client.default_headers = {"Default-Header": "value"}
-        
+
         # Set up auth settings with multiple auth types
         auth_settings = {
             "auth1": {"type": "apiKey", "in": "header", "key": "Authorization", "value": "Bearer token"},
-            "auth2": {"type": "basic", "in": "header", "key": "Basic-Auth", "value": "Basic credentials"}
+            "auth2": {"type": "basic", "in": "header", "key": "Basic-Auth", "value": "Basic credentials"},
         }
         mock_api_client.configuration.auth_settings.return_value = auth_settings
 
@@ -96,7 +96,7 @@ class TestTwinDataLayerAuth:
             # Assert
             # Verify that _apply_auth_params was called for each auth type
             assert mock_api_client._apply_auth_params.call_count == len(auth_settings)
-            
+
             # Check that the header was passed to _process_csv_file with auth params applied
             expected_header = {
                 "Accept": "application/json",
@@ -104,11 +104,11 @@ class TestTwinDataLayerAuth:
                 "User-Agent": "OpenAPI-Generator/1.0.0/python",
                 "Default-Header": "value",
             }
-            
+
             # Verify that _process_csv_file was called with the expected header
             mock_process_csv_file.assert_called_once()
             actual_header = mock_process_csv_file.call_args[1]["header"]
-            
+
             # Check that the header contains the expected keys
             for key in expected_header:
                 assert key in actual_header

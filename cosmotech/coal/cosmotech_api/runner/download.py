@@ -33,7 +33,6 @@ from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
 
-
 def download_runner_data(
     organization_id: str,
     workspace_id: str,

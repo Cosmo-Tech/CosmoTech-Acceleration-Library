@@ -77,15 +77,14 @@ class TestIngestionEdgeCases:
 
         # Act
         with patch(
-            "cosmotech.coal.azure.adx.ingestion.SuccessMessage", 
-            return_value=MagicMock(IngestionSourceId=source_id)
+            "cosmotech.coal.azure.adx.ingestion.SuccessMessage", return_value=MagicMock(IngestionSourceId=source_id)
         ):
             result = list(check_ingestion_status(mock_ingest_client, [source_id], logs=True))
 
         # Assert
         assert len(result) == 1
         assert result[0] == (source_id, IngestionStatus.SUCCESS)
-        
+
         # Verify that the message was deleted
         mock_success_queue.delete_message.assert_called_once_with(mock_message)
 
@@ -123,11 +122,8 @@ class TestIngestionEdgeCases:
 
         # Act
         with patch(
-            "cosmotech.coal.azure.adx.ingestion.SuccessMessage", 
-            side_effect=[
-                MagicMock(IngestionSourceId=source_id1),
-                MagicMock(IngestionSourceId=source_id2)
-            ]
+            "cosmotech.coal.azure.adx.ingestion.SuccessMessage",
+            side_effect=[MagicMock(IngestionSourceId=source_id1), MagicMock(IngestionSourceId=source_id2)],
         ):
             result = list(check_ingestion_status(mock_ingest_client, [source_id1, source_id2], logs=True))
 
@@ -135,7 +131,7 @@ class TestIngestionEdgeCases:
         assert len(result) == 2
         assert (source_id1, IngestionStatus.SUCCESS) in result
         assert (source_id2, IngestionStatus.QUEUED) in result or (source_id2, IngestionStatus.SUCCESS) in result
-        
+
         # Verify that at least one message was deleted
         assert mock_success_queue.delete_message.call_count >= 1
 
@@ -166,15 +162,14 @@ class TestIngestionEdgeCases:
 
         # Act
         with patch(
-            "cosmotech.coal.azure.adx.ingestion.SuccessMessage", 
-            return_value=MagicMock(IngestionSourceId=source_id)
+            "cosmotech.coal.azure.adx.ingestion.SuccessMessage", return_value=MagicMock(IngestionSourceId=source_id)
         ):
             result = list(check_ingestion_status(mock_ingest_client, [source_id], logs=True))
 
         # Assert
         assert len(result) == 1
         assert result[0] == (source_id, IngestionStatus.SUCCESS)
-        
+
         # Verify that the message was deleted
         mock_success_queue.delete_message.assert_called_once_with(mock_success_message)
 
@@ -205,15 +200,14 @@ class TestIngestionEdgeCases:
 
         # Act
         with patch(
-            "cosmotech.coal.azure.adx.ingestion.FailureMessage", 
-            return_value=MagicMock(IngestionSourceId=source_id)
+            "cosmotech.coal.azure.adx.ingestion.FailureMessage", return_value=MagicMock(IngestionSourceId=source_id)
         ):
             result = list(check_ingestion_status(mock_ingest_client, [source_id], logs=True))
 
         # Assert
         assert len(result) == 1
         assert result[0] == (source_id, IngestionStatus.FAILURE)
-        
+
         # Verify that the message was deleted
         mock_failure_queue.delete_message.assert_called_once_with(mock_failure_message)
 
@@ -249,18 +243,17 @@ class TestIngestionEdgeCases:
 
         # Act
         with patch(
-            "cosmotech.coal.azure.adx.ingestion.SuccessMessage", 
-            return_value=MagicMock(IngestionSourceId=source_id)
+            "cosmotech.coal.azure.adx.ingestion.SuccessMessage", return_value=MagicMock(IngestionSourceId=source_id)
         ):
             result = list(check_ingestion_status(mock_ingest_client, [source_id], logs=True))
 
         # Assert
         assert len(result) == 1
         assert result[0] == (source_id, IngestionStatus.SUCCESS)
-        
+
         # Verify that the debug log was called with the correct message
         mock_logger.debug.assert_any_call(T("coal.logs.adx.status_messages").format(success=2, failure=1))
-        
+
         # Verify that the message was deleted
         mock_success_queue.delete_message.assert_called_once_with(mock_success_message1)
 
@@ -291,15 +284,15 @@ class TestIngestionEdgeCases:
 
         # Act
         with patch(
-            "cosmotech.coal.azure.adx.ingestion.SuccessMessage", 
-            return_value=MagicMock(IngestionSourceId="different-source-id")
+            "cosmotech.coal.azure.adx.ingestion.SuccessMessage",
+            return_value=MagicMock(IngestionSourceId="different-source-id"),
         ):
             result = list(check_ingestion_status(mock_ingest_client, [source_id], logs=True))
 
         # Assert
         assert len(result) == 1
         assert result[0] == (source_id, IngestionStatus.QUEUED)
-        
+
         # Verify that no messages were deleted
         mock_success_queue.delete_message.assert_not_called()
 
@@ -307,31 +300,34 @@ class TestIngestionEdgeCases:
         """Test the specific log line that's not being covered with logs=True."""
         # Import the module directly to access the function
         import cosmotech.coal.azure.adx.ingestion as ingestion_module
-        
+
         # Create mock objects
         mock_logger = MagicMock()
         mock_t = MagicMock()
         mock_format = MagicMock()
         mock_t.return_value = mock_format
         mock_format.format.return_value = "Status message"
-        
+
         # Replace the real objects with mocks
         original_logger = ingestion_module.LOGGER
         original_t = ingestion_module.T
         ingestion_module.LOGGER = mock_logger
         ingestion_module.T = mock_t
-        
+
         try:
             # Create test data
             successes = [1, 2, 3]  # Just need a list with a length
             failures = [1]  # Just need a list with a length
             logs = True
-            
+
             # Call the specific line directly
             if logs:
-                ingestion_module.LOGGER.debug(ingestion_module.T("coal.logs.adx.status_messages").format(
-                    success=len(successes), failure=len(failures)))
-            
+                ingestion_module.LOGGER.debug(
+                    ingestion_module.T("coal.logs.adx.status_messages").format(
+                        success=len(successes), failure=len(failures)
+                    )
+                )
+
             # Verify the mocks were called correctly
             mock_t.assert_called_once_with("coal.logs.adx.status_messages")
             mock_format.format.assert_called_once_with(success=3, failure=1)
@@ -340,33 +336,36 @@ class TestIngestionEdgeCases:
             # Restore the original objects
             ingestion_module.LOGGER = original_logger
             ingestion_module.T = original_t
-            
+
     def test_status_messages_log_line_false(self):
         """Test the specific log line that's not being covered with logs=False."""
         # Import the module directly to access the function
         import cosmotech.coal.azure.adx.ingestion as ingestion_module
-        
+
         # Create mock objects
         mock_logger = MagicMock()
         mock_t = MagicMock()
-        
+
         # Replace the real objects with mocks
         original_logger = ingestion_module.LOGGER
         original_t = ingestion_module.T
         ingestion_module.LOGGER = mock_logger
         ingestion_module.T = mock_t
-        
+
         try:
             # Create test data
             successes = [1, 2, 3]  # Just need a list with a length
             failures = [1]  # Just need a list with a length
             logs = False
-            
+
             # Call the specific line directly
             if logs:
-                ingestion_module.LOGGER.debug(ingestion_module.T("coal.logs.adx.status_messages").format(
-                    success=len(successes), failure=len(failures)))
-            
+                ingestion_module.LOGGER.debug(
+                    ingestion_module.T("coal.logs.adx.status_messages").format(
+                        success=len(successes), failure=len(failures)
+                    )
+                )
+
             # Verify the mocks were not called
             mock_t.assert_not_called()
             mock_logger.debug.assert_not_called()
@@ -405,21 +404,20 @@ class TestIngestionEdgeCases:
 
         # Act
         with patch(
-            "cosmotech.coal.azure.adx.ingestion.SuccessMessage", 
-            return_value=MagicMock(IngestionSourceId=source_id)
+            "cosmotech.coal.azure.adx.ingestion.SuccessMessage", return_value=MagicMock(IngestionSourceId=source_id)
         ):
             result = list(check_ingestion_status(mock_ingest_client, [source_id], logs=False))
 
         # Assert
         assert len(result) == 1
         assert result[0] == (source_id, IngestionStatus.SUCCESS)
-        
+
         # Verify that the debug log was not called with the status messages
         for call_args in mock_logger.debug.call_args_list:
             args, kwargs = call_args
             if len(args) > 0 and isinstance(args[0], str) and "status_messages" in args[0]:
                 assert False, "LOGGER.debug should not be called with status_messages when logs=False"
-        
+
         # Verify that the message was deleted
         mock_success_queue.delete_message.assert_called_once_with(mock_success_message)
 
@@ -443,7 +441,7 @@ class TestIngestionEdgeCases:
         mock_message = MagicMock()
         mock_message.content = '{"IngestionSourceId": "source-id-multiple-queues"}'
         mock_success_queue2.receive_messages.return_value = [mock_message]
-        
+
         # Set up the success queues
         mock_status_queues.success._get_queues.return_value = [mock_success_queue1, mock_success_queue2]
 
@@ -454,15 +452,14 @@ class TestIngestionEdgeCases:
 
         # Act
         with patch(
-            "cosmotech.coal.azure.adx.ingestion.SuccessMessage", 
-            return_value=MagicMock(IngestionSourceId=source_id)
+            "cosmotech.coal.azure.adx.ingestion.SuccessMessage", return_value=MagicMock(IngestionSourceId=source_id)
         ):
             result = list(check_ingestion_status(mock_ingest_client, [source_id], logs=True))
 
         # Assert
         assert len(result) == 1
         assert result[0] == (source_id, IngestionStatus.SUCCESS)
-        
+
         # Verify that the message was deleted from the correct queue
         mock_success_queue1.delete_message.assert_not_called()
         mock_success_queue2.delete_message.assert_called_once_with(mock_message)

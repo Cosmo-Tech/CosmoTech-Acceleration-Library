@@ -22,7 +22,6 @@ from cosmotech.coal.cosmotech_api.runner.download import download_runner_data
 class TestDownloadFunctions:
     """Tests for top-level functions in the download module."""
 
-
     @patch("cosmotech.coal.cosmotech_api.runner.download.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.download.get_runner_data")
     @patch("cosmotech.coal.cosmotech_api.runner.download.format_parameters_list")

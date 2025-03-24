@@ -22,7 +22,6 @@ from cosmotech.coal.cosmotech_api.runner.download import download_runner_data
 class TestDownloadEdgeCases:
     """Tests for edge cases in the download module."""
 
-
     @patch("cosmotech.coal.cosmotech_api.runner.download.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.download.DefaultAzureCredential")
     @patch("cosmotech.coal.cosmotech_api.runner.download.get_runner_data")

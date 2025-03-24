@@ -133,7 +133,7 @@ class TestTwinDataLayerEdgeCases:
                 _process_csv_file(file_path, query, api_url, organization_id, dataset_id, header)
 
             assert f"Error importing data from {file_path}" in str(excinfo.value)
-            
+
             # Verify that errors were logged
             mock_logger.error.assert_any_call(T("coal.logs.storage.import_errors").format(count=2))
             mock_logger.error.assert_any_call("Error 1")
