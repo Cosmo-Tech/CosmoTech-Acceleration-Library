@@ -1,9 +1,0 @@
-id:STRING,:START_ID,:END_ID,name:STRING
-2_arc_to_5,Customer1,Customer4,arc_to_Customer
-5_arc_to_2,Customer4,Customer1,arc_to_Customer
-4_arc_to_3,Customer3,Customer2,arc_to_Customer
-3_arc_to_4,Customer2,Customer3,arc_to_Customer
-4_arc_to_2,Customer3,Customer1,arc_to_Customer
-2_arc_to_4,Customer1,Customer3,arc_to_Customer
-2_arc_to_3,Customer1,Customer2,arc_to_Customer
-3_arc_to_2,Customer2,Customer1,arc_to_Customer
