@@ -2,12 +2,12 @@ from typing import IO
 
 import mkdocs_gen_files
 
-from CosmoTech_Acceleration_Library import __version__
+from cosmotech.coal import __version__
 
 _md_file: IO
-with mkdocs_gen_files.open("index.md", "w") as _md_file, \
-        open("docs/scripts/index.md.template") as index_template, \
-        open("README.md") as readme:
+with mkdocs_gen_files.open("index.md", "w") as _md_file, open("docs/scripts/index.md.template") as index_template, open(
+    "README.md"
+) as readme:
     _index: list[str] = index_template.readlines()
     _readme_content = readme.readlines()
     for _line in _index:
