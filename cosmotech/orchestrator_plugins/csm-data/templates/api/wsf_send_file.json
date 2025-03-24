@@ -3,15 +3,7 @@
   "command": "csm-data",
   "arguments": [
     "api",
-    "wsf-send-file",
-    "--file-path",
-    "$CSM_FILE_PATH",
-    "--organization-id",
-    "$CSM_ORGANIZATION_ID",
-    "--workspace-id",
-    "$CSM_WORKSPACE_ID",
-    "--workspace-path",
-    "$CSM_WORKSPACE_PATH"
+    "wsf-send-file"
   ],
   "description": "Use csm-data to send a file to a workspace inside the API",
   "useSystemEnvironment": true,

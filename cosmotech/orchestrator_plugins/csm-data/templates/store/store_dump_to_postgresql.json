@@ -1,0 +1,34 @@
+{
+  "id": "csm-data store-dump-to-postgresql",
+  "command": "csm-data",
+  "arguments": [
+    "store",
+    "dump-to-postgresql"
+  ],
+  "description": "Use csm-data to dump a store to a PostgreSQL database",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_PARAMETERS_ABSOLUTE_PATH": {
+      "description": "Folder containing the store to dump to PostgreSQL"
+    },
+    "POSTGRES_HOST_URI": {
+      "description": "PostgreSQL host URI"
+    },
+    "POSTGRES_HOST_PORT": {
+      "description": "PostgreSQL host port",
+      "defaultValue": "5432"
+    },
+    "POSTGRES_DB_NAME": {
+      "description": "PostgreSQL database name"
+    },
+    "POSTGRES_DB_SCHEMA": {
+      "description": "PostgreSQL database schema"
+    },
+    "POSTGRES_USER_NAME": {
+      "description": "PostgreSQL user name"
+    },
+    "POSTGRES_USER_PASSWORD": {
+      "description": "PostgreSQL user password"
+    }
+  }
+}

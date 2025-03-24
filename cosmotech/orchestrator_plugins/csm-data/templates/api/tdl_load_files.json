@@ -3,13 +3,7 @@
   "command": "csm-data",
   "arguments": [
     "api",
-    "tdl-load-files",
-    "--dir",
-    "$CSM_DATASET_ABSOLUTE_PATH",
-    "--organization-id",
-    "$CSM_ORGANIZATION_ID",
-    "--workspace-id",
-    "$CSM_WORKSPACE_ID"
+    "tdl-load-files"
   ],
   "description": "Use csm-data to query a twingraph and loads all the data from it",
   "useSystemEnvironment": true,
