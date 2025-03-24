@@ -1,0 +1,278 @@
+errors:
+  validation:
+    not_csv_file: "'{file_path}' n'est pas un fichier csv"
+    invalid_nodes_relations: "'{file_path}' ne contient pas de nœuds ou relations valides"
+    invalid_truth_value: "'{string}' n'est pas une valeur de vérité reconnue"
+  environment:
+    no_env_vars: |
+      Aucun ensemble de variables d'environnement trouvé pour une connexion API Cosmo Tech valide
+    no_valid_connection: |
+      Aucune connexion valide disponible pour l'API Cosmo Tech
+    missing_env_var: |
+      Variable d'environnement manquante : {envvar}
+  file_system:
+    file_not_found: "{source_folder} n'existe pas"
+    file_exists: "Le fichier {csv_path} existe déjà"
+    not_directory: "{target_dir} est un fichier et non un répertoire"
+    file_not_exists: "'{file_path}' n'existe pas"
+    not_single_file: "'{file_path}' n'est pas un fichier unique"
+  data:
+    no_table: |
+      Aucune table avec le nom {table_name} n'existe
+    parameter_not_exists: |
+      Le paramètre {parameter_name} n'existe pas
+    invalid_output_type: |
+      {output_type} n'est pas un type de sortie valide
+    no_workspace_files: |
+      Aucun fichier d'espace de travail n'a été trouvé avec le filtre {file_prefix} dans l'espace de travail {workspace_id}
+  workspace:
+    not_found: |
+      L'espace de travail {workspace_id} n'a pas été trouvé dans l'Organisation {organization_id}
+
+  solution:
+    loaded: "Chargé {path}"
+    api_configured: "Configuration de l'api définie"
+    loading_workspace: |
+      Chargement des informations de l'espace de travail pour obtenir l'ID de la Solution
+  errors:
+    solution:
+      invalid_file: "{file} n'est pas un fichier `.yaml` ou `.json`"
+    environment:
+      missing_var: |
+        Variable d'environnement manquante : {envvar}
+
+web:
+  failed_open: |
+    Échec de l'ouverture : {url}
+  opened: |
+    Ouvert {url} dans votre navigateur
+
+logs:
+  connection:
+    existing_sets: "Les ensembles existants sont :"
+    azure_connection: "  Connexion Azure Entra : {keys}"
+    api_key_connection: "  Clé API Cosmo Tech : {keys}"
+    keycloak_connection: "  Connexion Keycloak : {keys}"
+    found_keycloak: "Informations de connexion Keycloak trouvées"
+    found_cert_authority: |
+      Remplacement de l'autorité de certification trouvé pour la connexion IDP, utilisation en cours.
+    found_api_key: "Informations de clé Api trouvées"
+    found_azure: "Informations de connexion Azure Entra trouvées"
+    found_valid: |
+      Connexion valide trouvée de type : {type}
+  data_transfer:
+    sending_table: |
+      Envoi de la table {table_name} en tant que {output_type}
+    sending_data: "  Envoi de {size} octets de données"
+    table_empty: |
+      La table {table_name} est vide (ignorée)
+    rows_inserted: |
+      Insertion de {rows} lignes dans la table {table_name}
+    file_sent: |
+      Envoi de {file_path} en tant que {uploaded_name}
+  ingestion:
+    creating_table: |
+      Requête de création de table : {query}
+    table_created: |
+      Table {table} créée avec succès
+    table_creation_failed: |
+      Problème lors de la création de la table {table}
+    ingesting: "Ingestion de {table}"
+    waiting_results: |
+      Attente des résultats d'ingestion, nouvelle tentative dans {duration}s ({count}/{limit})
+    max_retry: "Nombre maximum de tentatives atteint, arrêt de l'attente"
+    status_report: "{table} - {status}"
+    no_wait: "Pas d'attente pour le résultat d'ingestion"
+  progress:
+    loading_file: |
+      Chargement de {file_name} depuis l'API
+    file_loaded: |
+      {file} chargé avec succès depuis l'API
+    operation_timing: |
+      {operation} a pris {time:0.3}s
+
+  runner:
+    starting_download: "Démarrage du téléchargement des données d'exécution"
+    no_parameters: "aucun paramètre trouvé dans le runner"
+    loaded_data: "Données d'exécution chargées"
+    parameter_debug: |
+      - {param_id:<{max_name_size}} {var_type:<{max_type_size}} '{value}'{inherited}
+    not_single_dataset: |
+      {runner_id} n'est pas lié à un seul jeu de données mais à {count}
+    dataset_state: |
+      Le jeu de données {dataset_id} est dans l'état {status}
+    downloading_datasets: "Téléchargement de {count} jeux de données"
+    writing_parameters: "Écriture des paramètres dans les fichiers"
+    generating_file: "Génération de {file}"
+    dataset_debug: "  - {folder} ({id})"
+    no_dataset_write: "Aucune écriture de jeu de données demandée, ignoré"
+    no_parameters_write: "Aucune écriture de paramètres demandée, ignoré"
+
+  database:
+    creating_table: "création de la table {table}"
+    updating_metadata: "ajout/mise à jour des métadonnées du runner"
+    metadata_updated: "La table des métadonnées du runner a été mise à jour"
+    sending_data: |
+      Envoi des données à la table {table}
+    no_rows: "  - Pas de lignes : ignoré"
+    column_list: "  - Liste des colonnes : {columns}"
+    row_count: "  - Envoi de {count} lignes"
+    query_results: |
+      La requête a retourné {count} lignes
+    saved_results: |
+      Résultats sauvegardés en tant que {file}
+    no_results: "Aucun résultat retourné par la requête"
+    store_empty: "Le data store est vide"
+    store_tables: "Le data store contient les tables suivantes"
+    table_entry: "  - {table}"
+    store_reset: |
+      Le data store dans {folder} a été réinitialisé
+    rows_fetched: |
+      Lignes récupérées dans la table {table} : {count} en {time} secondes
+    tables_to_fetch: |
+      Tables à récupérer : {tables}
+    full_dataset: |
+      Jeu de données complet récupéré et écrit en {time} secondes
+
+  storage:
+    deleting_objects: "Suppression de {objects}"
+    no_objects: "Aucun objet à supprimer"
+    downloading: |
+      Téléchargement de {path} vers {output}
+    sending_file: |
+      Envoi de {file} en tant que {name}
+    found_file: |
+      Trouvé {file}, stockage en cours
+    clearing_content: "Effacement de tout le contenu du jeu de données"
+    sending_content: |
+      Envoi du contenu de '{file}'
+    row_batch: |
+      Trouvé un nombre de lignes de {count}, envoi en cours
+    import_errors: |
+      Trouvé {count} erreurs lors de l'importation : 
+    all_data_sent: "Toutes les données trouvées ont été envoyées"
+    writing_lines: |
+      Écriture de {count} lignes dans {file}
+    all_csv_written: "Tous les CSV sont écrits"
+
+  orchestrator:
+    searching_template: |
+      Recherche de {template} dans la solution
+    template_not_found: |
+      Le modèle d'exécution {template} n'a pas été trouvé.
+    generating_json: |
+      Trouvé {template} dans la solution, génération du fichier json
+    no_parameters: |
+      Pas de paramètres à écrire pour {template}
+    creating_folders: "Création des dossiers pour les paramètres du jeu de données"
+    folder_created: "- {folder}"
+    step_found: "- étape {step} trouvée"
+    steps_summary: |
+      {count} étape{plural} trouvée{plural}, écriture du fichier json
+    loading_solution: |
+      Chargement des informations de l'espace de travail pour obtenir l'ID de la Solution
+    querying_handler: |
+      Interrogation du gestionnaire {handler} pour {template}
+    handler_not_found: |
+      Le gestionnaire {handler} n'a pas été trouvé pour le modèle d'exécution {template} dans la Solution {solution}
+    extracting_handler: |
+      Extraction du gestionnaire vers {path}
+    handler_not_zip: |
+      Le gestionnaire {handler} n'est pas un fichier zip
+    run_issues: |
+      Des problèmes ont été rencontrés pendant l'exécution, veuillez vérifier les logs précédents
+
+  postgresql:
+    getting_schema: "Récupération du schéma pour la table {postgres_schema}.{target_table_name}"
+    table_not_found: "Table {postgres_schema}.{target_table_name} non trouvée"
+    schema_adaptation_start: "Démarrage de l'adaptation du schéma pour la table avec {rows} lignes"
+    original_schema: "Schéma original : {schema}"
+    target_schema: "Schéma cible : {schema}"
+    casting_column: "Tentative de conversion de la colonne '{field_name}' de {original_type} vers {target_type}"
+    cast_failed: "Échec de la conversion de la colonne '{field_name}' de {original_type} vers {target_type}. Remplissage avec des valeurs nulles. Erreur : {error}"
+    adding_missing_column: "Ajout de la colonne manquante '{field_name}' avec des valeurs nulles"
+    dropping_columns: "Suppression des colonnes supplémentaires non présentes dans le schéma cible : {columns}"
+    adaptation_summary: "Résumé de l'adaptation du schéma :"
+    added_columns: "- Colonnes ajoutées (remplies de valeurs nulles) : {columns}"
+    dropped_columns: "- Colonnes supprimées : {columns}"
+    successful_conversions: "- Conversions de type réussies : {conversions}"
+    failed_conversions: "- Conversions échouées (remplies de valeurs nulles) : {conversions}"
+    final_schema: "Schéma final de la table adaptée : {schema}"
+    preparing_send: "Préparation de l'envoi des données vers la table PostgreSQL '{postgres_schema}.{target_table_name}'"
+    input_rows: "La table d'entrée contient {rows} lignes"
+    found_existing_table: "Table existante trouvée avec le schéma : {schema}"
+    adapting_data: "Adaptation des données entrantes pour correspondre au schéma existant"
+    replace_mode: "Mode de remplacement activé - adaptation du schéma ignorée"
+    no_existing_table: "Aucune table existante trouvée - création d'une nouvelle table"
+    connecting: "Connexion à la base de données PostgreSQL"
+    ingesting_data: "Ingestion des données avec le mode : {mode}"
+    ingestion_success: "Ingestion réussie de {rows} lignes"
+    
+  dataset:
+    # General
+    download_started: "Démarrage du téléchargement du jeu de données {dataset_type}"
+    download_completed: "Téléchargement réussi du jeu de données {dataset_type}"
+    operation_timing: "{operation} a pris {time} secondes"
+    dataset_downloading: "Téléchargement du jeu de données (organisation : {organization_id}, jeu de données : {dataset_id})"
+    dataset_info_retrieved: "Informations du jeu de données récupérées : {dataset_name} ({dataset_id})"
+    dataset_type_detected: "Type de jeu de données détecté : {type}"
+    parallel_download: "Téléchargement de {count} jeux de données en parallèle"
+    sequential_download: "Téléchargement séquentiel de {count} jeux de données"
+    
+    # Processing
+    processing_graph_data: "Traitement des données de graphe avec {nodes_count} nœuds et {relationships_count} relations (restore_names={restore_names})"
+    entity_count: "Trouvé {count} entités de type {entity_type}"
+    extracting_headers: "Extraction des en-têtes à partir de {rows} lignes"
+    headers_extracted: "Extraction de {count} champs : {fields}"
+    
+    # File operations
+    converting_to_files: "Conversion du jeu de données {dataset_type} '{dataset_name}' en fichiers"
+    created_temp_folder: "Dossier temporaire créé : {folder}"
+    using_folder: "Utilisation du dossier : {folder}"
+    converting_graph_data: "Conversion des données de graphe avec {entity_types} types d'entités vers le dossier : {folder}"
+    converting_file_data: "Conversion de {file_count} fichiers de type {file_type} vers le dossier : {folder}"
+    skipping_empty_entity: "Ignorer le type d'entité vide : {entity_type}"
+    writing_csv: "Écriture du fichier CSV avec {count} enregistrements : {file_name}"
+    writing_file: "Écriture du fichier : {file_name} (type : {file_type})"
+    file_written: "Fichier écrit : {file_path}"
+    files_created: "Création de {count} fichiers dans le dossier : {folder}"
+    
+    # ADT specific
+    adt_connecting: "Connexion à l'instance ADT à {url}"
+    adt_no_credentials: "Aucune information d'identification disponible pour la connexion ADT"
+    adt_querying_twins: "Interrogation des jumeaux numériques"
+    adt_twins_found: "Trouvé {count} jumeaux numériques"
+    adt_querying_relations: "Interrogation des relations"
+    adt_relations_found: "Trouvé {count} relations"
+    
+    # TwinGraph specific
+    twingraph_downloading: "Téléchargement du jeu de données TwinGraph (organisation : {organization_id}, jeu de données : {dataset_id})"
+    twingraph_querying_nodes: "Interrogation des nœuds TwinGraph pour le jeu de données {dataset_id}"
+    twingraph_nodes_found: "Trouvé {count} nœuds dans TwinGraph"
+    twingraph_querying_edges: "Interrogation des arêtes TwinGraph pour le jeu de données {dataset_id}"
+    twingraph_edges_found: "Trouvé {count} arêtes dans TwinGraph"
+    
+    # Legacy TwinGraph specific
+    legacy_twingraph_downloading: "Téléchargement du jeu de données TwinGraph hérité (organisation : {organization_id}, cache : {cache_name})"
+    legacy_twingraph_querying_nodes: "Interrogation des nœuds TwinGraph hérités pour le cache {cache_name}"
+    legacy_twingraph_nodes_found: "Trouvé {count} nœuds dans TwinGraph hérité"
+    legacy_twingraph_querying_relations: "Interrogation des relations TwinGraph héritées pour le cache {cache_name}"
+    legacy_twingraph_relations_found: "Trouvé {count} relations dans TwinGraph hérité"
+    
+    # File specific
+    file_downloading: "Téléchargement du jeu de données de fichier (organisation : {organization_id}, espace de travail : {workspace_id}, fichier : {file_name})"
+    listing_workspace_files: "Liste des fichiers de l'espace de travail"
+    workspace_files_found: "Trouvé {count} fichiers d'espace de travail"
+    no_files_found: "Aucun fichier trouvé correspondant à : {file_name}"
+    downloading_file: "Téléchargement du fichier : {file_name}"
+    file_downloaded: "Fichier téléchargé : {file_name} vers {path}"
+    
+    # File processing
+    processing_excel: "Traitement du fichier Excel : {file_name}"
+    sheet_processed: "Feuille traitée {sheet_name} avec {rows} lignes"
+    processing_csv: "Traitement du fichier CSV : {file_name}"
+    csv_processed: "Fichier CSV traité {file_name} avec {rows} lignes"
+    processing_json: "Traitement du fichier JSON : {file_name}"
+    json_processed: "Fichier JSON traité {file_name} avec {items} éléments"
+    processing_text: "Traitement du fichier texte : {file_name}"
+    text_processed: "Fichier texte traité {file_name} avec {lines} lignes"

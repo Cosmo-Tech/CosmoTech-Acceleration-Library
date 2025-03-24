@@ -1,0 +1,434 @@
+commands:
+  main:
+    description: |
+      Cosmo Tech Data Interface
+
+      Command toolkit providing quick implementation of data connections to use inside the Cosmo Tech Platform
+
+  api:
+    description: |
+      Cosmo Tech API helper command
+
+      This command will inform you of which connection is available to use for the Cosmo Tech API
+
+      If no connection is available, will list all possible set of parameters and return an error code,
+
+      You can use this command in a csm-orc template to make sure that API connection is available.
+
+    tdl_send_files:
+      description: |
+        Reads a folder CSVs and send those to the Cosmo Tech API as a Dataset
+
+        CSVs must follow a given format:
+          - Nodes files must have an id column
+          - Relationship files must have id, src and dest columns
+
+        Non-existing relationship (aka dest or src does not point to existing node) won't trigger an error,
+        the relationship will not be created instead.
+
+        Requires a valid connection to the API to send the data
+
+      parameters:
+        api_url: The URI to a Cosmo Tech API instance
+        organization_id: An organization id for the Cosmo Tech API
+        workspace_id: A workspace id for the Cosmo Tech API
+        runner_id: A runner id for the Cosmo Tech API
+        dir: Path to the directory containing csvs to send
+        clear: Flag to clear the target dataset first (if set to True will clear the dataset before sending anything, irreversibly)
+
+    tdl_load_files:
+      description: |
+        Query a twingraph and loads all the data from it
+
+        Will create 1 csv file per node type / relationship type
+
+        The twingraph must have been populated using the "tdl-send-files" command for this to work correctly
+
+        Requires a valid connection to the API to send the data
+
+      parameters:
+        organization_id: An organization id for the Cosmo Tech API
+        workspace_id: A workspace id for the Cosmo Tech API
+        runner_id: A runner id for the Cosmo Tech API
+        dir: Path to the directory to write the results to
+
+    runtemplate_load_handler:
+      description: |
+        Uses environment variables to download cloud based Template steps
+
+      parameters:
+        organization_id: The id of an organization in the cosmotech api
+        workspace_id: The id of a solution in the cosmotech api
+        run-template_id: The name of the run template in the cosmotech api
+        handler_list: A list of handlers to download (comma separated)
+
+    run_load_data:
+      description: |
+        Download a runner data from the Cosmo Tech API
+        Requires a valid Azure connection either with:
+        - The AZ cli command: az login
+        - A triplet of env var AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+
+      parameters:
+        organization_id: The id of an organization in the cosmotech api
+        workspace_id: The id of a workspace in the cosmotech api
+        runner_id: The id of a runner in the cosmotech api
+        parameters_absolute_path: A local folder to store the parameters content
+
+
+    rds_load_csv:
+      description: |
+        Load data from a runner's RDS database into a CSV file.
+
+        Executes a SQL query against the runner's RDS database and saves the results to a CSV file.
+        By default, it will list all tables in the public schema if no specific query is provided.
+      parameters:
+        target_folder: The folder where the csv will be written
+        organization_id: An organization id for the Cosmo Tech API
+        workspace_id: A workspace id for the Cosmo Tech API
+        runner_id: A runner id for the Cosmo Tech API
+        run_id: A run id for the Cosmo Tech API
+        file_name: A file name to write the query results
+        query: SQL query to execute (defaults to listing all tables in public schema)
+
+    rds_send_csv:
+      description: |
+        Send CSV files to a runner's RDS database.
+
+        Takes all CSV files from a source folder and sends their content to the runner's RDS database.
+        Each CSV file will be sent to a table named after the file (without the .csv extension).
+        The table name will be prefixed with "CD_" in the database.
+      parameters:
+        source_folder: The folder containing csvs to send
+        organization_id: An organization id for the Cosmo Tech API
+        workspace_id: A workspace id for the Cosmo Tech API
+        runner_id: A runner id for the Cosmo Tech API
+        run_id: A run id for the Cosmo Tech API
+
+    rds_send_store:
+      description: |
+        Send data from a store to a runner's RDS database.
+
+        Takes all tables from a store and sends their content to the runner's RDS database.
+        Each table will be sent to a table with the same name, prefixed with "CD_" in the database.
+        Null values in rows will be removed before sending.
+      parameters:
+        store_folder: The folder containing the store files
+        organization_id: An organization id for the Cosmo Tech API
+        workspace_id: A workspace id for the Cosmo Tech API
+        runner_id: A runner id for the Cosmo Tech API
+        run_id: A run id for the Cosmo Tech API
+
+    wsf_load_file:
+      description: |
+        Download files from a workspace.
+
+        Downloads files from a specified path in a workspace to a local target folder.
+        If the workspace path ends with '/', it will be treated as a folder and all files within will be downloaded.
+      parameters:
+        organization_id: An organization id for the Cosmo Tech API
+        workspace_id: A workspace id for the Cosmo Tech API
+        workspace_path: Path inside the workspace to load (end with '/' for a folder)
+        target_folder: Folder in which to send the downloaded file
+
+    wsf_send_file:
+      description: |
+        Upload a file to a workspace.
+
+        Uploads a local file to a specified path in a workspace.
+        If the workspace path ends with '/', the file will be uploaded to that folder with its original name.
+        Otherwise, the file will be uploaded with the name specified in the workspace path.
+      parameters:
+        organization_id: An organization id for the Cosmo Tech API
+        workspace_id: A workspace id for the Cosmo Tech API
+        file_path: Path to the file to send as a workspace file
+        workspace_path: Path inside the workspace to store the file (end with '/' for a folder)
+        overwrite: Flag to overwrite the target file if it exists
+
+    postgres_send_runner_metadata:
+      description: |
+        Send runner metadata to a PostgreSQL database.
+
+        Creates or updates a table in PostgreSQL with runner metadata including id, name, last run id, and run template id.
+        The table will be created if it doesn't exist, and existing records will be updated based on the runner id.
+      parameters:
+        organization_id: An organization id for the Cosmo Tech API
+        workspace_id: A workspace id for the Cosmo Tech API
+        runner_id: A runner id for the Cosmo Tech API
+        table_prefix: Prefix to add to the table name
+        postgres_host: PostgreSQL host URI
+        postgres_port: PostgreSQL database port
+        postgres_db: PostgreSQL database name
+        postgres_schema: PostgreSQL schema name
+        postgres_user: PostgreSQL connection user name
+        postgres_password: PostgreSQL connection password
+
+  store:
+    description: |
+      CoAL Data Store command group
+
+      This group of commands will give you helper commands to interact with the datastore
+
+    list_tables:
+      description: |
+        Running this command will list the existing tables in your datastore
+      parameters:
+        store_folder: The folder containing the store files
+        schema: Display the schema of the tables
+
+    reset:
+      description: |
+        Running this command will reset the state of your store
+      parameters:
+        store_folder: The folder containing the store files
+
+    load_csv_folder:
+      description: |
+        Running this command will find all csvs in the given folder and put them in the store
+      parameters:
+        store_folder: The folder containing the store files
+        csv_folder: The folder containing the csv files to store
+
+    load_from_singlestore:
+      description: |
+        Load data from SingleStore tables into the store.
+        Will download everything from a given SingleStore database following some configuration into the store.
+
+        Make use of the singlestoredb to access to SingleStore
+
+        More information is available on this page:
+        [https://docs.singlestore.com/cloud/developer-resources/connect-with-application-development-tools/connect-with-python/connect-using-the-singlestore-python-client/]
+      parameters:
+        singlestore_host: SingleStore instance URI
+        singlestore_port: SingleStore port
+        singlestore_db: SingleStore database name
+        singlestore_user: SingleStore connection user name
+        singlestore_password: SingleStore connection password
+        singlestore_tables: SingleStore table names to fetched (separated by comma)
+        store_folder: The folder containing the store files
+
+    dump_to_postgresql:
+      description: |
+        Running this command will dump your store to a given postgresql database
+
+        Tables names from the store will be prepended with table-prefix in target database
+
+        The postgresql user must have USAGE granted on the schema for this script to work due to the use of the command COPY FROM STDIN
+
+        You can simply give him that grant by running the command:
+        GRANT USAGE ON SCHEMA <schema> TO <username>
+      parameters:
+        store_folder: The folder containing the store files
+        table_prefix: Prefix to add to the table name
+        postgres_host: PostgreSQL host URI
+        postgres_port: PostgreSQL database port
+        postgres_db: PostgreSQL database name
+        postgres_schema: PostgreSQL schema name
+        postgres_user: PostgreSQL connection user name
+        postgres_password: PostgreSQL connection password
+        replace: Append data on existing tables
+
+    dump_to_azure:
+      description: |
+        Dump a datastore to a Azure storage account.
+
+        Will upload everything from a given data store to a Azure storage container.
+
+        3 modes currently exists:
+          - sqlite: will dump the data store underlying database as is
+          - csv: will convert every table of the datastore to csv and send them as separate files
+          - parquet: will convert every table of the datastore to parquet and send them as separate files
+
+        Make use of the azure.storage.blob library to access the container
+
+        More information is available on this page:
+        [https://learn.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-python?tabs=managed-identity%2Croles-azure-portal%2Csign-in-azure-cli&pivots=blob-storage-quickstart-scratch]
+      parameters:
+        store_folder: The folder containing the store files
+        output_type: Choose the type of file output to use (sqlite, csv, parquet)
+        account_name: The account name on Azure to upload to
+        container_name: The container name on Azure to upload to
+        prefix: A prefix by which all uploaded files should start with in the container
+        tenant_id: Tenant Identity used to connect to Azure storage system
+        client_id: Client Identity used to connect to Azure storage system
+        client_secret: Client Secret tied to the ID used to connect to Azure storage system
+
+    dump_to_s3:
+      description: |
+        Dump a datastore to a S3
+
+        Will upload everything from a given data store to a S3 bucket.
+
+        3 modes currently exists:
+          - sqlite: will dump the data store underlying database as is
+          - csv: will convert every table of the datastore to csv and send them as separate files
+          - parquet: will convert every table of the datastore to parquet and send them as separate files
+
+        Giving a prefix will add it to every upload (finishing the prefix with a "/" will allow to upload in a folder inside the bucket)
+
+        Make use of the boto3 library to access the bucket
+
+        More information is available on this page:
+        [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html]
+      parameters:
+        store_folder: The folder containing the store files
+        output_type: Choose the type of file output to use (sqlite, csv, parquet)
+        bucket_name: The bucket on S3 to upload to
+        prefix: A prefix by which all uploaded files should start with in the bucket
+        use_ssl: Use SSL to secure connection to S3
+        s3_url: URL to connect to the S3 system
+        access_id: Identity used to connect to the S3 system
+        secret_key: Secret tied to the ID used to connect to the S3 system
+        ssl_cert_bundle: Path to an alternate CA Bundle to validate SSL connections
+
+  storage:
+    s3_bucket_upload:
+      description: |
+        Upload a folder to a S3 Bucket
+
+        Will upload everything from a given folder to a S3 bucket. If a single file is passed only it will be uploaded, and recursive will be ignored
+
+        Giving a prefix will add it to every upload (finishing the prefix with a "/" will allow to upload in a folder inside the bucket)
+
+        Make use of the boto3 library to access the bucket
+
+        More information is available on this page:
+        [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html]
+      parameters:
+        source_folder: The folder/file to upload to the target bucket
+        recursive: Recursively send the content of every folder inside the starting folder to the bucket
+        bucket_name: The bucket on S3 to upload to
+        prefix: A prefix by which all uploaded files should start with in the bucket
+        use_ssl: Use SSL to secure connection to S3
+        s3_url: URL to connect to the S3 system
+        access_id: Identity used to connect to the S3 system
+        secret_key: Secret tied to the ID used to connect to the S3 system
+        ssl_cert_bundle: Path to an alternate CA Bundle to validate SSL connections
+
+    s3_bucket_download:
+      description: |
+        Download S3 bucket content to a given folder
+
+        Will download everything in the bucket unless a prefix is set, then only file following the given prefix will be downloaded
+
+        Make use of the boto3 library to access the bucket
+
+        More information is available on this page:
+        [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html]
+      parameters:
+        target_folder: The folder in which to download the bucket content
+        bucket_name: The bucket on S3 to download
+        prefix_filter: A prefix by which all downloaded files should start in the bucket
+        use_ssl: Use SSL to secure connection to S3
+        s3_url: URL to connect to the S3 system
+        access_id: Identity used to connect to the S3 system
+        secret_key: Secret tied to the ID used to connect to the S3 system
+        ssl_cert_bundle: Path to an alternate CA Bundle to validate SSL connections
+
+    s3_bucket_delete:
+      description: |
+        Delete S3 bucket content to a given folder
+
+        Will delete everything in the bucket unless a prefix is set, then only file following the given prefix will be deleted
+
+        Make use of the boto3 library to access the bucket
+
+        More information is available on this page:
+        [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html]
+      parameters:
+        bucket_name: The bucket on S3 to delete
+        prefix_filter: A prefix by which all deleted files should start in the bucket
+        use_ssl: Use SSL to secure connection to S3
+        s3_url: URL to connect to the S3 system
+        access_id: Identity used to connect to the S3 system
+        secret_key: Secret tied to the ID used to connect to the S3 system
+        ssl_cert_bundle: Path to an alternate CA Bundle to validate SSL connections
+
+    az_storage_upload:
+      description: |
+        Upload a folder to an Azure Storage Blob
+      parameters:
+        source_folder: The folder/file to upload to the target blob storage
+        recursive: Recursively send the content of every folder inside the starting folder to the blob storage
+        blob_name: The blob name in the Azure Storage service to upload to
+        prefix: A prefix by which all uploaded files should start with in the blob storage
+        az_storage_sas_url: SAS url allowing access to the AZ storage container
+
+    adx_send_runnerdata:
+      description: |
+        Uses environment variables to send content of CSV files to ADX
+        Requires a valid Azure connection either with:
+        - The AZ cli command: az login
+        - A triplet of env var AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+      parameters:
+        dataset_absolute_path: A local folder to store the main dataset content
+        parameters_absolute_path: A local folder to store the parameters content
+        runner_id: the Runner Id to add to records
+        adx_uri: the ADX cluster path (URI info can be found into ADX cluster page)
+        adx_ingest_uri: The ADX cluster ingest path (URI info can be found into ADX cluster page)
+        database_name: The targeted database name
+        send_parameters: whether or not to send parameters (parameters path is mandatory then)
+        send_datasets: whether or not to send datasets (parameters path is mandatory then)
+        wait: Toggle waiting for the ingestion results
+
+  legacy:
+    description: |
+      Cosmo Tech legacy API group
+
+      This group will allow you to connect to the CosmoTech API and migrate solutions from pre-3.0 version to 3.X compatible solutions
+
+    generate_orchestrator:
+      description: |
+        Generate an orchestrator configuration file from a solution's run template.
+
+        This command group provides tools to generate orchestrator configuration files either from a local solution file
+        or directly from the Cosmo Tech API.
+
+      from_file:
+        description: |
+          Generate an orchestrator configuration from a local solution file.
+
+        parameters:
+          solution_file: Path to the solution file to read
+          output: Path where to write the generated configuration
+          run_template_id: The ID of the run template to use
+          describe: Show a description of the generated template after generation
+
+      from_api:
+        description: |
+          Generate an orchestrator configuration by fetching the solution from the API.
+        parameters:
+          output: Path where to write the generated configuration
+          organization_id: The id of an organization in the cosmotech api
+          workspace_id: The id of a solution in the cosmotech api
+          run_template_id: The name of the run template in the cosmotech api
+          describe: Show a description of the generated template after generation
+
+    init_local_parameter_folder:
+      description: |
+        Initialize a local parameter folder structure from a solution's run template.
+
+        This command group provides tools to create a local parameter folder structure either from a local solution file
+        or directly from the Cosmo Tech API. The folder will contain parameter files in CSV and/or JSON format.
+
+      solution:
+        description: |
+          Initialize parameter folder from a local solution file.
+
+        Parameters:
+          solution_file: Path to the solution file to read
+          output_folder: Path where to create the parameter folder structure
+          run_template_id: The ID of the run template to use
+          write_json: Toggle writing of parameters in json format
+          write_csv: Toggle writing of parameters in csv format
+
+      cloud:
+        description: |
+          Initialize parameter folder by fetching the solution from the API.
+        parameters:
+          output_folder: Path where to create the parameter folder structure
+          organization_id: The id of an organization in the cosmotech api
+          workspace_id: The id of a solution in the cosmotech api
+          run_template_id: The name of the run template in the cosmotech api
+          write_json: Toggle writing of parameters in json format
+          write_csv: Toggle writing of parameters in csv format
