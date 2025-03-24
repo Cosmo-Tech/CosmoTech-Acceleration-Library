@@ -1,3 +1,4 @@
 include README.md
 include LICENSE
 graft cosmotech/orchestrator_plugins
+graft cosmotech/translation
