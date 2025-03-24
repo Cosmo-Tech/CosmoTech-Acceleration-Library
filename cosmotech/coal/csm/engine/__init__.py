@@ -1,5 +1,9 @@
 # Copyright (C) - 2023 - 2025 - Cosmo Tech
-# Licensed under the MIT license.
+# This document and all information contained herein is the exclusive property -
+# including all intellectual property rights pertaining thereto - of Cosmo Tech.
+# Any use, reproduction, translation, broadcasting, transmission, distribution,
+# etc., to any person is prohibited unless it has been previously and
+# specifically authorized by written means by Cosmo Tech.
 import csv
 import glob
 import json
@@ -24,9 +28,7 @@ def apply_simple_csv_parameter_to_simulator(
     :param csv_value_column: Column in the CSV file used for the attribute value to change
     :return: None
     """
-    parameter_path = os.path.join(
-        os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH"), parameter_name
-    )
+    parameter_path = os.path.join(os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH"), parameter_name)
     if os.path.exists(parameter_path):
         csv_files = glob.glob(os.path.join(parameter_path, "*.csv"))
         for csv_filename in csv_files:
@@ -37,9 +39,7 @@ def apply_simple_csv_parameter_to_simulator(
                     value = json.loads(row.get(csv_value_column))
                     entity = model.FindEntityByName(entity_name)
                     if entity:
-                        entity.SetAttributeAsString(
-                            target_attribute_name, json.dumps(value)
-                        )
+                        entity.SetAttributeAsString(target_attribute_name, json.dumps(value))
     else:
         raise ValueError(f"Parameter {parameter_name} does not exists.")
 
