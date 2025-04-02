@@ -55,7 +55,7 @@ def get_solution(organization_id, workspace_id) -> Optional[Solution]:
             LOGGER.error(
                 T("coal.errors.workspace.not_found").format(workspace_id=workspace_id, organization_id=organization_id)
             )
-            LOGGER.debug(e.body)
+            LOGGER.debug(e)
             return None
         solution_id = r_data.solution.solution_id
 
