@@ -58,18 +58,17 @@ class TestRunTemplateFunctions:
         mock_path = MagicMock(spec=pathlib.Path)
         mock_path.absolute.return_value = "/path/to/handler"
 
-        with patch(
-            "cosmotech.coal.cosmotech_api.run_template.get_api_client",
-            return_value=(mock_api_client_context, "API Key"),
-        ), patch("cosmotech.coal.cosmotech_api.run_template.WorkspaceApi", return_value=mock_workspace_api), patch(
-            "cosmotech.coal.cosmotech_api.run_template.SolutionApi", return_value=mock_solution_api
-        ), patch(
-            "cosmotech.coal.cosmotech_api.run_template.ZipFile", return_value=mock_zipfile_context
-        ), patch(
-            "cosmotech.coal.cosmotech_api.run_template.BytesIO"
-        ) as mock_bytesio, patch(
-            "cosmotech.coal.cosmotech_api.run_template.pathlib.Path"
-        ) as mock_path_class:
+        with (
+            patch(
+                "cosmotech.coal.cosmotech_api.run_template.get_api_client",
+                return_value=(mock_api_client_context, "API Key"),
+            ),
+            patch("cosmotech.coal.cosmotech_api.run_template.WorkspaceApi", return_value=mock_workspace_api),
+            patch("cosmotech.coal.cosmotech_api.run_template.SolutionApi", return_value=mock_solution_api),
+            patch("cosmotech.coal.cosmotech_api.run_template.ZipFile", return_value=mock_zipfile_context),
+            patch("cosmotech.coal.cosmotech_api.run_template.BytesIO") as mock_bytesio,
+            patch("cosmotech.coal.cosmotech_api.run_template.pathlib.Path") as mock_path_class,
+        ):
             mock_path_class.return_value = mock_path
             mock_path.mkdir.return_value = None
             mock_path.__truediv__.return_value = mock_path
@@ -121,10 +120,13 @@ class TestRunTemplateFunctions:
         mock_exception = ServiceException(http_resp=MagicMock(status=404, data=b'{"message": "Workspace not found"}'))
         mock_workspace_api.find_workspace_by_id.side_effect = mock_exception
 
-        with patch(
-            "cosmotech.coal.cosmotech_api.run_template.get_api_client",
-            return_value=(mock_api_client_context, "API Key"),
-        ), patch("cosmotech.coal.cosmotech_api.run_template.WorkspaceApi", return_value=mock_workspace_api):
+        with (
+            patch(
+                "cosmotech.coal.cosmotech_api.run_template.get_api_client",
+                return_value=(mock_api_client_context, "API Key"),
+            ),
+            patch("cosmotech.coal.cosmotech_api.run_template.WorkspaceApi", return_value=mock_workspace_api),
+        ):
             # Act & Assert
             with pytest.raises(
                 ValueError, match=f"Workspace {workspace_id} not found in organization {organization_id}"
@@ -171,14 +173,15 @@ class TestRunTemplateFunctions:
         mock_path = MagicMock(spec=pathlib.Path)
         mock_path.absolute.return_value = "/path/to/handler"
 
-        with patch(
-            "cosmotech.coal.cosmotech_api.run_template.get_api_client",
-            return_value=(mock_api_client_context, "API Key"),
-        ), patch("cosmotech.coal.cosmotech_api.run_template.WorkspaceApi", return_value=mock_workspace_api), patch(
-            "cosmotech.coal.cosmotech_api.run_template.SolutionApi", return_value=mock_solution_api
-        ), patch(
-            "cosmotech.coal.cosmotech_api.run_template.pathlib.Path"
-        ) as mock_path_class:
+        with (
+            patch(
+                "cosmotech.coal.cosmotech_api.run_template.get_api_client",
+                return_value=(mock_api_client_context, "API Key"),
+            ),
+            patch("cosmotech.coal.cosmotech_api.run_template.WorkspaceApi", return_value=mock_workspace_api),
+            patch("cosmotech.coal.cosmotech_api.run_template.SolutionApi", return_value=mock_solution_api),
+            patch("cosmotech.coal.cosmotech_api.run_template.pathlib.Path") as mock_path_class,
+        ):
             mock_path_class.return_value = mock_path
             mock_path.mkdir.return_value = None
             mock_path.__truediv__.return_value = mock_path
@@ -233,18 +236,17 @@ class TestRunTemplateFunctions:
         mock_path = MagicMock(spec=pathlib.Path)
         mock_path.absolute.return_value = "/path/to/handler"
 
-        with patch(
-            "cosmotech.coal.cosmotech_api.run_template.get_api_client",
-            return_value=(mock_api_client_context, "API Key"),
-        ), patch("cosmotech.coal.cosmotech_api.run_template.WorkspaceApi", return_value=mock_workspace_api), patch(
-            "cosmotech.coal.cosmotech_api.run_template.SolutionApi", return_value=mock_solution_api
-        ), patch(
-            "cosmotech.coal.cosmotech_api.run_template.ZipFile"
-        ) as mock_zipfile, patch(
-            "cosmotech.coal.cosmotech_api.run_template.BytesIO"
-        ), patch(
-            "cosmotech.coal.cosmotech_api.run_template.pathlib.Path"
-        ) as mock_path_class:
+        with (
+            patch(
+                "cosmotech.coal.cosmotech_api.run_template.get_api_client",
+                return_value=(mock_api_client_context, "API Key"),
+            ),
+            patch("cosmotech.coal.cosmotech_api.run_template.WorkspaceApi", return_value=mock_workspace_api),
+            patch("cosmotech.coal.cosmotech_api.run_template.SolutionApi", return_value=mock_solution_api),
+            patch("cosmotech.coal.cosmotech_api.run_template.ZipFile") as mock_zipfile,
+            patch("cosmotech.coal.cosmotech_api.run_template.BytesIO"),
+            patch("cosmotech.coal.cosmotech_api.run_template.pathlib.Path") as mock_path_class,
+        ):
             mock_path_class.return_value = mock_path
             mock_path.mkdir.return_value = None
             mock_path.__truediv__.return_value = mock_path
@@ -306,18 +308,17 @@ class TestRunTemplateFunctions:
         mock_path = MagicMock(spec=pathlib.Path)
         mock_path.absolute.return_value = "/path/to/handler"
 
-        with patch(
-            "cosmotech.coal.cosmotech_api.run_template.get_api_client",
-            return_value=(mock_api_client_context, "API Key"),
-        ), patch("cosmotech.coal.cosmotech_api.run_template.WorkspaceApi", return_value=mock_workspace_api), patch(
-            "cosmotech.coal.cosmotech_api.run_template.SolutionApi", return_value=mock_solution_api
-        ), patch(
-            "cosmotech.coal.cosmotech_api.run_template.ZipFile", return_value=mock_zipfile_context
-        ), patch(
-            "cosmotech.coal.cosmotech_api.run_template.BytesIO"
-        ), patch(
-            "cosmotech.coal.cosmotech_api.run_template.pathlib.Path"
-        ) as mock_path_class:
+        with (
+            patch(
+                "cosmotech.coal.cosmotech_api.run_template.get_api_client",
+                return_value=(mock_api_client_context, "API Key"),
+            ),
+            patch("cosmotech.coal.cosmotech_api.run_template.WorkspaceApi", return_value=mock_workspace_api),
+            patch("cosmotech.coal.cosmotech_api.run_template.SolutionApi", return_value=mock_solution_api),
+            patch("cosmotech.coal.cosmotech_api.run_template.ZipFile", return_value=mock_zipfile_context),
+            patch("cosmotech.coal.cosmotech_api.run_template.BytesIO"),
+            patch("cosmotech.coal.cosmotech_api.run_template.pathlib.Path") as mock_path_class,
+        ):
             mock_path_class.return_value = mock_path
             mock_path.mkdir.return_value = None
             mock_path.__truediv__.return_value = mock_path
@@ -381,18 +382,17 @@ class TestRunTemplateFunctions:
         mock_path = MagicMock(spec=pathlib.Path)
         mock_path.absolute.return_value = "/path/to/handler"
 
-        with patch(
-            "cosmotech.coal.cosmotech_api.run_template.get_api_client",
-            return_value=(mock_api_client_context, "API Key"),
-        ), patch("cosmotech.coal.cosmotech_api.run_template.WorkspaceApi", return_value=mock_workspace_api), patch(
-            "cosmotech.coal.cosmotech_api.run_template.SolutionApi", return_value=mock_solution_api
-        ), patch(
-            "cosmotech.coal.cosmotech_api.run_template.ZipFile", return_value=mock_zipfile_context
-        ), patch(
-            "cosmotech.coal.cosmotech_api.run_template.BytesIO"
-        ), patch(
-            "cosmotech.coal.cosmotech_api.run_template.pathlib.Path"
-        ) as mock_path_class:
+        with (
+            patch(
+                "cosmotech.coal.cosmotech_api.run_template.get_api_client",
+                return_value=(mock_api_client_context, "API Key"),
+            ),
+            patch("cosmotech.coal.cosmotech_api.run_template.WorkspaceApi", return_value=mock_workspace_api),
+            patch("cosmotech.coal.cosmotech_api.run_template.SolutionApi", return_value=mock_solution_api),
+            patch("cosmotech.coal.cosmotech_api.run_template.ZipFile", return_value=mock_zipfile_context),
+            patch("cosmotech.coal.cosmotech_api.run_template.BytesIO"),
+            patch("cosmotech.coal.cosmotech_api.run_template.pathlib.Path") as mock_path_class,
+        ):
             mock_path_class.return_value = mock_path
             mock_path.mkdir.return_value = None
             mock_path.__truediv__.return_value = mock_path

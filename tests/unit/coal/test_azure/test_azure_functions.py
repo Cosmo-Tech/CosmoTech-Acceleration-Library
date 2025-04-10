@@ -42,9 +42,10 @@ class TestFunctionsFunctions:
             "runner_data": {"runner_info": "test"},
         }
 
-        with patch("cosmotech.coal.azure.functions.download_runner_data", return_value=mock_download_result), patch(
-            "cosmotech.coal.azure.functions.func.HttpResponse"
-        ) as mock_http_response:
+        with (
+            patch("cosmotech.coal.azure.functions.download_runner_data", return_value=mock_download_result),
+            patch("cosmotech.coal.azure.functions.func.HttpResponse") as mock_http_response,
+        ):
             # Create a mock HttpResponse
             mock_response = MagicMock()
             mock_http_response.return_value = mock_response
@@ -145,10 +146,10 @@ class TestFunctionsFunctions:
             "runner_data": {"runner_info": "test"},
         }
 
-        with patch("cosmotech.coal.azure.functions.download_runner_data", return_value=mock_download_result), patch(
-            "cosmotech.coal.azure.functions.func.HttpResponse"
-        ) as mock_http_response, patch(
-            "cosmotech.coal.azure.functions.traceback.format_exc", return_value="test traceback"
+        with (
+            patch("cosmotech.coal.azure.functions.download_runner_data", return_value=mock_download_result),
+            patch("cosmotech.coal.azure.functions.func.HttpResponse") as mock_http_response,
+            patch("cosmotech.coal.azure.functions.traceback.format_exc", return_value="test traceback"),
         ):
             # Create a mock HttpResponse
             mock_response = MagicMock()
@@ -197,9 +198,10 @@ class TestFunctionsFunctions:
             "runner_data": {"runner_info": "test"},
         }
 
-        with patch("cosmotech.coal.azure.functions.download_runner_data", return_value=mock_download_result), patch(
-            "cosmotech.coal.azure.functions.func.HttpResponse"
-        ) as mock_http_response:
+        with (
+            patch("cosmotech.coal.azure.functions.download_runner_data", return_value=mock_download_result),
+            patch("cosmotech.coal.azure.functions.func.HttpResponse") as mock_http_response,
+        ):
             # Create a mock HttpResponse
             mock_response = MagicMock()
             mock_http_response.return_value = mock_response
@@ -250,9 +252,12 @@ class TestFunctionsFunctions:
             "runner_data": {"runner_info": "test"},
         }
 
-        with patch(
-            "cosmotech.coal.azure.functions.download_runner_data", return_value=mock_download_result
-        ) as mock_download, patch("cosmotech.coal.azure.functions.func.HttpResponse") as mock_http_response:
+        with (
+            patch(
+                "cosmotech.coal.azure.functions.download_runner_data", return_value=mock_download_result
+            ) as mock_download,
+            patch("cosmotech.coal.azure.functions.func.HttpResponse") as mock_http_response,
+        ):
             # Create a mock HttpResponse
             mock_response = MagicMock()
             mock_http_response.return_value = mock_response

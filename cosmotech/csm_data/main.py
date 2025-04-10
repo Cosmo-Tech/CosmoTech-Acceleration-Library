@@ -13,6 +13,7 @@ from cosmotech.csm_data.commands.az_storage_upload import az_storage_upload
 from cosmotech.csm_data.commands.s3_bucket_download import s3_bucket_download
 from cosmotech.csm_data.commands.s3_bucket_upload import s3_bucket_upload
 from cosmotech.csm_data.commands.s3_bucket_delete import s3_bucket_delete
+from cosmotech.csm_data.commands.adx_send_data import adx_send_data
 from cosmotech.csm_data.commands.store.store import store
 from cosmotech.csm_data.utils.click import click
 from cosmotech.csm_data.utils.decorators import translate_help, web_help
@@ -50,6 +51,7 @@ main.add_command(s3_bucket_upload, "s3-bucket-upload")
 main.add_command(s3_bucket_delete, "s3-bucket-delete")
 main.add_command(adx_send_runnerdata, "adx-send-runnerdata")
 main.add_command(az_storage_upload, "az-storage-upload")
+main.add_command(adx_send_data, "adx-send-data")
 
 if __name__ == "__main__":
     main()

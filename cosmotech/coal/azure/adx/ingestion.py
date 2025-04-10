@@ -5,24 +5,28 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import time
 from enum import Enum
-from typing import Iterator, List, Dict, Tuple, Optional, Union
+from typing import Dict
+from typing import Iterator
+from typing import List
+from typing import Optional
+from typing import Tuple
 
 import pandas as pd
+import time
 from azure.kusto.data import KustoClient
 from azure.kusto.data.data_format import DataFormat
-from azure.kusto.ingest import QueuedIngestClient, IngestionProperties, ReportLevel
-from azure.kusto.ingest.status import (
-    KustoIngestStatusQueues,
-    SuccessMessage,
-    FailureMessage,
-)
-
-from cosmotech.coal.utils.logger import LOGGER
+from azure.kusto.ingest import IngestionProperties
+from azure.kusto.ingest import QueuedIngestClient
+from azure.kusto.ingest import ReportLevel
+from azure.kusto.ingest.status import FailureMessage
+from azure.kusto.ingest.status import KustoIngestStatusQueues
+from azure.kusto.ingest.status import SuccessMessage
 from cosmotech.orchestrator.utils.translate import T
-from cosmotech.coal.azure.adx.tables import table_exists, create_table
+
+from cosmotech.coal.azure.adx.tables import create_table
 from cosmotech.coal.azure.adx.utils import type_mapping
+from cosmotech.coal.utils.logger import LOGGER
 
 
 class IngestionStatus(Enum):
@@ -179,15 +183,13 @@ def check_ingestion_status(
     successes = get_messages(qs.success._get_queues())
     failures = get_messages(qs.failure._get_queues())
 
-    if logs:
-        LOGGER.debug(T("coal.logs.adx.status_messages").format(success=len(successes), failure=len(failures)))
+    LOGGER.debug(T("coal.logs.adx.status_messages").format(success=len(successes), failure=len(failures)))
 
     non_sent_ids = remaining_ids[:]
-
     # Process success and failure messages
-    for messages, cast_func, status in [
-        (successes, SuccessMessage, IngestionStatus.SUCCESS),
-        (failures, FailureMessage, IngestionStatus.FAILURE),
+    for messages, cast_func, status, log_function in [
+        (successes, SuccessMessage, IngestionStatus.SUCCESS, LOGGER.debug),
+        (failures, FailureMessage, IngestionStatus.FAILURE, LOGGER.error),
     ]:
         for _q, _m in messages:
             dm = cast_func(_m.content)
@@ -197,8 +199,7 @@ def check_ingestion_status(
                 if dm.IngestionSourceId == str(source_id):
                     _ingest_status[source_id] = status
 
-                    if logs:
-                        LOGGER.debug(T("coal.logs.adx.status_found").format(source_id=source_id, status=status.value))
+                    log_function(T("coal.logs.adx.status_found").format(source_id=source_id, status=status.value))
 
                     _q.delete_message(_m)
                     remaining_ids.remove(source_id)

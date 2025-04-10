@@ -76,10 +76,11 @@ class TestBlobFunctions:
         # Mock file open
         mock_file_data = b"sqlite file content"
 
-        with patch("cosmotech.coal.azure.blob.Store", return_value=mock_store), patch(
-            "cosmotech.coal.azure.blob.BlobServiceClient", return_value=mock_blob_service_client
-        ), patch("cosmotech.coal.azure.blob.ClientSecretCredential", return_value=mock_credential), patch(
-            "builtins.open", mock_open(read_data=mock_file_data)
+        with (
+            patch("cosmotech.coal.azure.blob.Store", return_value=mock_store),
+            patch("cosmotech.coal.azure.blob.BlobServiceClient", return_value=mock_blob_service_client),
+            patch("cosmotech.coal.azure.blob.ClientSecretCredential", return_value=mock_credential),
+            patch("builtins.open", mock_open(read_data=mock_file_data)),
         ):
             # Act
             dump_store_to_azure(
@@ -146,13 +147,13 @@ class TestBlobFunctions:
         mock_bytesio = MagicMock(spec=io.BytesIO)
         mock_bytesio.read.return_value = b"csv data"
 
-        with patch("cosmotech.coal.azure.blob.Store", return_value=mock_store), patch(
-            "cosmotech.coal.azure.blob.BlobServiceClient", return_value=mock_blob_service_client
-        ), patch("cosmotech.coal.azure.blob.ClientSecretCredential", return_value=mock_credential), patch(
-            "cosmotech.coal.azure.blob.BytesIO", return_value=mock_bytesio
-        ), patch(
-            "pyarrow.csv.write_csv"
-        ) as mock_write_csv:
+        with (
+            patch("cosmotech.coal.azure.blob.Store", return_value=mock_store),
+            patch("cosmotech.coal.azure.blob.BlobServiceClient", return_value=mock_blob_service_client),
+            patch("cosmotech.coal.azure.blob.ClientSecretCredential", return_value=mock_credential),
+            patch("cosmotech.coal.azure.blob.BytesIO", return_value=mock_bytesio),
+            patch("pyarrow.csv.write_csv") as mock_write_csv,
+        ):
             # Act
             dump_store_to_azure(
                 store_folder=store_folder,
@@ -221,13 +222,13 @@ class TestBlobFunctions:
         mock_bytesio = MagicMock(spec=io.BytesIO)
         mock_bytesio.read.return_value = b"parquet data"
 
-        with patch("cosmotech.coal.azure.blob.Store", return_value=mock_store), patch(
-            "cosmotech.coal.azure.blob.BlobServiceClient", return_value=mock_blob_service_client
-        ), patch("cosmotech.coal.azure.blob.ClientSecretCredential", return_value=mock_credential), patch(
-            "cosmotech.coal.azure.blob.BytesIO", return_value=mock_bytesio
-        ), patch(
-            "pyarrow.parquet.write_table"
-        ) as mock_write_table:
+        with (
+            patch("cosmotech.coal.azure.blob.Store", return_value=mock_store),
+            patch("cosmotech.coal.azure.blob.BlobServiceClient", return_value=mock_blob_service_client),
+            patch("cosmotech.coal.azure.blob.ClientSecretCredential", return_value=mock_credential),
+            patch("cosmotech.coal.azure.blob.BytesIO", return_value=mock_bytesio),
+            patch("pyarrow.parquet.write_table") as mock_write_table,
+        ):
             # Act
             dump_store_to_azure(
                 store_folder=store_folder,
@@ -280,13 +281,13 @@ class TestBlobFunctions:
         # Mock ClientSecretCredential
         mock_credential = MagicMock(spec=ClientSecretCredential)
 
-        with patch("cosmotech.coal.azure.blob.Store", return_value=mock_store), patch(
-            "cosmotech.coal.azure.blob.BlobServiceClient", return_value=mock_blob_service_client
-        ), patch("cosmotech.coal.azure.blob.ClientSecretCredential", return_value=mock_credential), patch(
-            "cosmotech.coal.azure.blob.BytesIO"
-        ) as mock_bytesio, patch(
-            "pyarrow.csv.write_csv"
-        ) as mock_write_csv:
+        with (
+            patch("cosmotech.coal.azure.blob.Store", return_value=mock_store),
+            patch("cosmotech.coal.azure.blob.BlobServiceClient", return_value=mock_blob_service_client),
+            patch("cosmotech.coal.azure.blob.ClientSecretCredential", return_value=mock_credential),
+            patch("cosmotech.coal.azure.blob.BytesIO") as mock_bytesio,
+            patch("pyarrow.csv.write_csv") as mock_write_csv,
+        ):
             # Act
             dump_store_to_azure(
                 store_folder=store_folder,
