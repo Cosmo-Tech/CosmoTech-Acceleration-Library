@@ -135,7 +135,6 @@ def check_ingestion_status(
     client: QueuedIngestClient,
     source_ids: List[str],
     timeout: Optional[int] = None,
-    logs: bool = False,
 ) -> Iterator[Tuple[str, IngestionStatus]]:
     """
     Check the status of ingestion operations.
@@ -144,7 +143,6 @@ def check_ingestion_status(
         client: The QueuedIngestClient to use
         source_ids: List of source IDs to check
         timeout: Timeout in seconds (default: 900)
-        logs: Whether to log detailed information
 
     Returns:
         Iterator of (source_id, status) tuples
@@ -185,7 +183,7 @@ def check_ingestion_status(
 
     LOGGER.debug(T("coal.logs.adx.status_messages").format(success=len(successes), failure=len(failures)))
 
-    non_sent_ids = remaining_ids[:]
+    queued_ids = list(remaining_ids)
     # Process success and failure messages
     for messages, cast_func, status, log_function in [
         (successes, SuccessMessage, IngestionStatus.SUCCESS, LOGGER.debug),
@@ -207,11 +205,9 @@ def check_ingestion_status(
             else:
                 # The message did not correspond to a known ID
                 continue
-            break
         else:
             # No message was found on the current list of messages for the given IDs
             continue
-        break
 
     # Check for timeouts
     actual_timeout = timeout if timeout is not None else default_timeout
@@ -221,7 +217,7 @@ def check_ingestion_status(
             LOGGER.warning(T("coal.logs.adx.ingestion_timeout").format(source_id=source_id))
 
     # Yield results for remaining IDs
-    for source_id in non_sent_ids:
+    for source_id in queued_ids:
         yield source_id, _ingest_status[source_id]
 
 

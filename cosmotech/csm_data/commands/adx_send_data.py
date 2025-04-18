@@ -45,11 +45,19 @@ from cosmotech.csm_data.utils.click import click
     show_default=True,
     help="Wait for ingestion to complete",
 )
+@click.option(
+    "--tag",
+    envvar="CSM_DATA_ADX_TAG",
+    show_envvar=True,
+    default=None,
+    help="Optional tag to use for tracking and potential rollback of this ingestion operation",
+)
 def adx_send_data(
     adx_uri: str,
     adx_ingest_uri: str,
     database_name: str,
     wait: bool,
+    tag: str = None,
 ):
     # Import the function at the start of the command
     from cosmotech.coal.azure.adx.auth import create_ingest_client, create_kusto_client
@@ -61,7 +69,12 @@ def adx_send_data(
     from cosmotech.coal.azure.adx import type_mapping
 
     import time
+    import uuid
     from cosmotech.coal.azure.adx import IngestionStatus
+
+    # Generate operation tag if not provided
+    operation_tag = tag or f"op-{str(uuid.uuid4())}"
+    LOGGER.debug(f"Starting ingestion operation with tag: {operation_tag}")
 
     LOGGER.debug("Initializing clients")
     kusto_client = create_kusto_client(adx_uri)
@@ -72,14 +85,14 @@ def adx_send_data(
     s = Store()
     source_ids = []
     LOGGER.debug("Listing tables")
-    table_list = list(s.list_tables())[:3]
+    table_list = list(s.list_tables())
     table_ingestion_id_mapping = dict()
     for target_table_name in table_list:
         LOGGER.info(f"Working on table: {target_table_name}")
         data = s.get_table(target_table_name)
 
         if data.num_rows < 1:
-            LOGGER.warn(f"Table {target_table_name} has no rows - skipping it")
+            LOGGER.warning(f"Table {target_table_name} has no rows - skipping it")
             continue
 
         LOGGER.debug("  - Checking if table exists")
@@ -99,38 +112,90 @@ def adx_send_data(
             create_table(kusto_client, database, target_table_name, mapping)
 
         LOGGER.debug(f"Sending data to the table {target_table_name}")
-        result = send_pyarrow_table_to_adx(ingest_client, database, target_table_name, data, None)
+        # Use the operation_tag as the drop_by_tag parameter
+        result = send_pyarrow_table_to_adx(ingest_client, database, target_table_name, data, operation_tag)
         source_ids.append(result.source_id)
         table_ingestion_id_mapping[result.source_id] = target_table_name
 
+    # Track if any failures occur
+    has_failures = False
+
     LOGGER.info("Store data was sent for ADX ingestion")
-    if wait:
-        LOGGER.info("Waiting for ingestion of data to finish")
-        import tqdm
+    try:
+        if wait:
+            LOGGER.info("Waiting for ingestion of data to finish")
+            import tqdm
 
-        with tqdm.tqdm(desc="Ingestion status", total=len(source_ids)) as pbar:
-            while any(
-                map(
-                    lambda _status: _status[1] in (IngestionStatus.QUEUED, IngestionStatus.UNKNOWN),
-                    results := list(check_ingestion_status(ingest_client, source_ids)),
-                )
-            ):
-                cleared_ids = list(
-                    result for result in results if result[1] not in (IngestionStatus.QUEUED, IngestionStatus.UNKNOWN)
-                )
+            with tqdm.tqdm(desc="Ingestion status", total=len(source_ids)) as pbar:
+                while any(
+                    list(
+                        map(
+                            lambda _status: _status[1] in (IngestionStatus.QUEUED, IngestionStatus.UNKNOWN),
+                            results := list(check_ingestion_status(ingest_client, source_ids)),
+                        )
+                    )
+                ):
+                    # Check for failures
+                    for ingestion_id, ingestion_status in results:
+                        if ingestion_status == IngestionStatus.FAILURE:
+                            LOGGER.error(
+                                f"Ingestion {ingestion_id} failed for table {table_ingestion_id_mapping.get(ingestion_id)}"
+                            )
+                            has_failures = True
 
-                for ingestion_id, ingestion_status in cleared_ids:
-                    pbar.update(1)
-                    source_ids.remove(ingestion_id)
+                    cleared_ids = list(
+                        result
+                        for result in results
+                        if result[1] not in (IngestionStatus.QUEUED, IngestionStatus.UNKNOWN)
+                    )
 
-                if os.environ.get("CSM_USE_RICH", "False").lower() in ("true", "1", "yes", "t", "y"):
-                    for _ in range(10):
-                        time.sleep(1)
-                        pbar.update(0)
+                    for ingestion_id, ingestion_status in cleared_ids:
+                        pbar.update(1)
+                        source_ids.remove(ingestion_id)
+
+                    time.sleep(1)
+                    if os.environ.get("CSM_USE_RICH", "False").lower() in ("true", "1", "yes", "t", "y"):
+                        pbar.refresh()
                 else:
-                    time.sleep(10)
-            pbar.update(len(source_ids))
-        LOGGER.info("All data got ingested")
+                    for ingestion_id, ingestion_status in results:
+                        if ingestion_status == IngestionStatus.FAILURE:
+                            LOGGER.error(
+                                f"Ingestion {ingestion_id} failed for table {table_ingestion_id_mapping.get(ingestion_id)}"
+                            )
+                            has_failures = True
+                pbar.update(len(source_ids))
+            LOGGER.info("All data ingestion attempts completed")
+
+        # If any ingestion failed, perform rollback
+        if has_failures:
+            LOGGER.warning(f"Failures detected during ingestion - dropping data with tag: {operation_tag}")
+            _drop_by_tag(kusto_client, database, operation_tag)
+
+    except Exception as e:
+        LOGGER.exception("Error during ingestion process")
+        # Perform rollback using the tag
+        LOGGER.warning(f"Dropping data with tag: {operation_tag}")
+        _drop_by_tag(kusto_client, database, operation_tag)
+        raise e
+
+    if has_failures:
+        click.Abort()
+
+
+def _drop_by_tag(kusto_client, database, tag):
+    """
+    Drop all data with the specified tag
+    """
+    LOGGER.info(f"Dropping data with tag: {tag}")
+
+    try:
+        # Execute the drop by tag command
+        drop_command = f'.drop extents <| .show database extents where tags has "drop-by:{tag}"'
+        kusto_client.execute_mgmt(database, drop_command)
+        LOGGER.info("Drop by tag operation completed")
+    except Exception as e:
+        LOGGER.error(f"Error during drop by tag operation: {str(e)}")
+        LOGGER.exception("Drop by tag details")
 
 
 if __name__ == "__main__":

@@ -112,7 +112,7 @@ class ADXQueriesWrapper:
         return ingest_dataframe(self.ingest_client, self.database, table_name, dataframe, drop_by_tag)
 
     def check_ingestion_status(
-        self, source_ids: List[str], timeout: int = None, logs: bool = False
+        self, source_ids: List[str], timeout: int = None
     ) -> Iterator[Tuple[str, IngestionStatus]]:
         """
         Check the status of ingestion operations.
@@ -120,12 +120,11 @@ class ADXQueriesWrapper:
         Args:
             source_ids: List of source IDs to check
             timeout: Timeout in seconds (default: self.timeout)
-            logs: Whether to log detailed information
 
         Returns:
             Iterator of (source_id, status) tuples
         """
-        return check_ingestion_status(self.ingest_client, source_ids, timeout or self.timeout, logs)
+        return check_ingestion_status(self.ingest_client, source_ids, timeout or self.timeout)
 
     def _clear_ingestion_status_queues(self, confirmation: bool = False):
         """

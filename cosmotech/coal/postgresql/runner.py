@@ -54,7 +54,7 @@ def send_runner_metadata_to_postgresql(
 
     # Generate PostgreSQL URI
     postgresql_full_uri = generate_postgresql_full_uri(
-        postgres_host, postgres_port, postgres_db, postgres_user, postgres_password
+        postgres_host, str(postgres_port), postgres_db, postgres_user, postgres_password
     )
 
     # Connect to PostgreSQL and update runner metadata
@@ -76,10 +76,10 @@ def send_runner_metadata_to_postgresql(
                   DO
                     UPDATE SET name = EXCLUDED.name, last_run_id = EXCLUDED.last_run_id;
             """
-            LOGGER.info(f"creating table {schema_table}")
+            LOGGER.info(T("coal.logs.postgreql.runner.creating_table").format(schema_table=schema_table))
             curs.execute(sql_create_table)
             conn.commit()
-            LOGGER.info(f"adding/updating runner metadata")
+            LOGGER.info(T("coal.logs.postgreql.runner.metadata"))
             curs.execute(
                 sql_upsert,
                 (
@@ -90,4 +90,4 @@ def send_runner_metadata_to_postgresql(
                 ),
             )
             conn.commit()
-            LOGGER.info("Runner metadata table has been updated")
+            LOGGER.info(T("coal.logs.postgreql.runner.metadata_updated"))

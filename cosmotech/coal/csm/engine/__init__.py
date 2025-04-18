@@ -44,4 +44,4 @@ def apply_simple_csv_parameter_to_simulator(
         raise ValueError(f"Parameter {parameter_name} does not exists.")
 
 
-__all__ = [apply_simple_csv_parameter_to_simulator]
+__all__ = ["apply_simple_csv_parameter_to_simulator"]

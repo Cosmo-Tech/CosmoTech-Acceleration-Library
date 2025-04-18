@@ -40,6 +40,7 @@ def send_pyarrow_table_to_adx(
         data_format=DataFormat.CSV,
         drop_by_tags=drop_by_tags,
         report_level=ReportLevel.FailuresAndSuccesses,
+        flush_immediately=True,
     )
 
     file_name = f"adx_{database}_{table_name}_{int(time.time())}_{uuid.uuid4()}.csv"

@@ -83,7 +83,7 @@ class TestRunnerFunctions:
 
         # Check that PostgreSQL URI was generated correctly
         mock_generate_uri.assert_called_once_with(
-            postgres_host, postgres_port, postgres_db, postgres_user, postgres_password
+            postgres_host, str(postgres_port), postgres_db, postgres_user, postgres_password
         )
 
         # Check that PostgreSQL connection was established

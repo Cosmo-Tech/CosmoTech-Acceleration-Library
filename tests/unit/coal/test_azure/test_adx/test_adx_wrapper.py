@@ -179,7 +179,6 @@ class TestADXQueriesWrapper:
         # Arrange
         source_ids = ["source-id-1", "source-id-2"]
         timeout = 600
-        logs = True
 
         expected_result = [("source-id-1", IngestionStatus.SUCCESS), ("source-id-2", IngestionStatus.FAILURE)]
         mock_check_ingestion_status.return_value = expected_result
@@ -189,10 +188,10 @@ class TestADXQueriesWrapper:
         wrapper.timeout = 900
 
         # Act
-        result = list(wrapper.check_ingestion_status(source_ids, timeout, logs))
+        result = list(wrapper.check_ingestion_status(source_ids, timeout))
 
         # Assert
-        mock_check_ingestion_status.assert_called_once_with(mock_ingest_client, source_ids, timeout, logs)
+        mock_check_ingestion_status.assert_called_once_with(mock_ingest_client, source_ids, timeout)
         assert result == expected_result
 
     @patch("cosmotech.coal.azure.adx.wrapper.run_command_query")
