@@ -18,7 +18,9 @@ from cosmotech.coal.azure.adx.runner import (
     insert_csv_files,
     send_runner_data,
 )
-from cosmotech.coal.azure.adx.wrapper import ADXQueriesWrapper, IngestionStatus
+from azure.kusto.data import KustoClient
+from azure.kusto.ingest import QueuedIngestClient
+from cosmotech.coal.azure.adx.ingestion import IngestionStatus
 
 
 class TestRunnerFunctions:
@@ -129,8 +131,8 @@ class TestRunnerFunctions:
         """Test the insert_csv_files function."""
         # Arrange
         files_data = prepare_csv_content(mock_csv_files)
-        mock_adx_client = MagicMock()  # Don't use spec here to allow adding ingest_client
-        mock_adx_client.ingest_client = MagicMock()
+        mock_kusto_client = MagicMock(spec=KustoClient)
+        mock_ingest_client = MagicMock(spec=QueuedIngestClient)
         runner_id = "r-123"
         database = "test-db"
 
@@ -139,29 +141,30 @@ class TestRunnerFunctions:
         mock_ingestion_result1.source_id = "source-id-1"
         mock_ingestion_result2 = MagicMock()
         mock_ingestion_result2.source_id = "source-id-2"
-        mock_adx_client.ingest_client.ingest_from_file.side_effect = [mock_ingestion_result1, mock_ingestion_result2]
+        mock_ingest_client.ingest_from_file.side_effect = [mock_ingestion_result1, mock_ingestion_result2]
 
         # Act
-        insert_csv_files(files_data, mock_adx_client, runner_id, database, wait=False)
+        insert_csv_files(files_data, mock_kusto_client, mock_ingest_client, runner_id, database, wait=False)
 
         # Assert
         # Verify that ingest_from_file was called for each CSV file
-        assert mock_adx_client.ingest_client.ingest_from_file.call_count == len(files_data)
+        assert mock_ingest_client.ingest_from_file.call_count == len(files_data)
 
         # Verify the ingestion properties
-        for call_args in mock_adx_client.ingest_client.ingest_from_file.call_args_list:
+        for call_args in mock_ingest_client.ingest_from_file.call_args_list:
             ingestion_props = call_args[0][1]
             assert ingestion_props.database == database
             assert ingestion_props.drop_by_tags == [runner_id]
             assert ingestion_props.additional_properties == {"ignoreFirstRecord": "true"}
 
+    @patch("cosmotech.coal.azure.adx.runner.check_ingestion_status")
     @patch("cosmotech.coal.azure.adx.runner.FileDescriptor")
-    def test_insert_csv_files_with_wait(self, mock_file_descriptor_class, mock_csv_files):
+    def test_insert_csv_files_with_wait(self, mock_file_descriptor_class, mock_check_ingestion_status, mock_csv_files):
         """Test the insert_csv_files function with wait=True."""
         # Arrange
         files_data = prepare_csv_content(mock_csv_files)
-        mock_adx_client = MagicMock()  # Don't use spec here to allow adding ingest_client
-        mock_adx_client.ingest_client = MagicMock()
+        mock_kusto_client = MagicMock(spec=KustoClient)
+        mock_ingest_client = MagicMock(spec=QueuedIngestClient)
         runner_id = "r-123"
         database = "test-db"
 
@@ -170,31 +173,39 @@ class TestRunnerFunctions:
         mock_ingestion_result1.source_id = "source-id-1"
         mock_ingestion_result2 = MagicMock()
         mock_ingestion_result2.source_id = "source-id-2"
-        mock_adx_client.ingest_client.ingest_from_file.side_effect = [mock_ingestion_result1, mock_ingestion_result2]
+        mock_ingest_client.ingest_from_file.side_effect = [mock_ingestion_result1, mock_ingestion_result2]
 
         # Mock check_ingestion_status
-        mock_adx_client.check_ingestion_status.return_value = [
+        mock_check_ingestion_status.return_value = [
             ("source-id-1", IngestionStatus.SUCCESS),
             ("source-id-2", IngestionStatus.SUCCESS),
         ]
 
         # Act
-        insert_csv_files(files_data, mock_adx_client, runner_id, database, wait=True)
+        insert_csv_files(files_data, mock_kusto_client, mock_ingest_client, runner_id, database, wait=True)
 
         # Assert
         # Verify that check_ingestion_status was called
-        mock_adx_client.check_ingestion_status.assert_called()  # Use assert_called instead of assert_called_once
-        source_ids = mock_adx_client.check_ingestion_status.call_args[1]["source_ids"]
+        mock_check_ingestion_status.assert_called()  # Use assert_called instead of assert_called_once
+        # Check that the first argument is the ingest client
+        assert mock_check_ingestion_status.call_args[0][0] == mock_ingest_client
+        # Check that the source_ids parameter contains the expected IDs
+        source_ids = mock_check_ingestion_status.call_args[1]["source_ids"]
+        assert isinstance(source_ids, list)
+        assert len(source_ids) == 2
         assert "source-id-1" in source_ids
         assert "source-id-2" in source_ids
 
+    @patch("cosmotech.coal.azure.adx.runner.check_ingestion_status")
     @patch("cosmotech.coal.azure.adx.runner.FileDescriptor")
-    def test_insert_csv_files_with_wait_max_retries(self, mock_file_descriptor_class, mock_csv_files):
+    def test_insert_csv_files_with_wait_max_retries(
+        self, mock_file_descriptor_class, mock_check_ingestion_status, mock_csv_files
+    ):
         """Test the insert_csv_files function with wait=True and retry are maxed out"""
         # Arrange
         files_data = prepare_csv_content(mock_csv_files)
-        mock_adx_client = MagicMock()  # Don't use spec here to allow adding ingest_client
-        mock_adx_client.ingest_client = MagicMock()
+        mock_kusto_client = MagicMock(spec=KustoClient)
+        mock_ingest_client = MagicMock(spec=QueuedIngestClient)
         runner_id = "r-123"
         database = "test-db"
 
@@ -203,30 +214,50 @@ class TestRunnerFunctions:
         mock_ingestion_result1.source_id = "source-id-1"
         mock_ingestion_result2 = MagicMock()
         mock_ingestion_result2.source_id = "source-id-2"
-        mock_adx_client.ingest_client.ingest_from_file.side_effect = [mock_ingestion_result1, mock_ingestion_result2]
+        mock_ingest_client.ingest_from_file.side_effect = [mock_ingestion_result1, mock_ingestion_result2]
 
         # Mock check_ingestion_status
-        mock_adx_client.check_ingestion_status.return_value = [
+        mock_check_ingestion_status.return_value = [
             ("source-id-1", IngestionStatus.QUEUED),
             ("source-id-2", IngestionStatus.QUEUED),
         ]
 
         # Act
-        insert_csv_files(files_data, mock_adx_client, runner_id, database, wait=True, wait_limit=2, wait_duration=0)
+        insert_csv_files(
+            files_data,
+            mock_kusto_client,
+            mock_ingest_client,
+            runner_id,
+            database,
+            wait=True,
+            wait_limit=2,
+            wait_duration=0,
+        )
 
         # Assert
         # Verify that check_ingestion_status was called
-        mock_adx_client.check_ingestion_status.assert_called()  # Use assert_called instead of assert_called_once
-        source_ids = mock_adx_client.check_ingestion_status.call_args[1]["source_ids"]
+        mock_check_ingestion_status.assert_called()  # Use assert_called instead of assert_called_once
+        # Check that the first argument is the ingest client
+        assert mock_check_ingestion_status.call_args[0][0] == mock_ingest_client
+        # Check that the source_ids parameter contains the expected IDs
+        source_ids = mock_check_ingestion_status.call_args[1]["source_ids"]
+        assert isinstance(source_ids, list)
+        assert len(source_ids) == 2
         assert "source-id-1" in source_ids
         assert "source-id-2" in source_ids
 
     @patch("cosmotech.coal.azure.adx.runner.prepare_csv_content")
     @patch("cosmotech.coal.azure.adx.runner.construct_create_query")
     @patch("cosmotech.coal.azure.adx.runner.insert_csv_files")
-    @patch("cosmotech.coal.azure.adx.runner.ADXQueriesWrapper")
+    @patch("cosmotech.coal.azure.adx.runner.initialize_clients")
+    @patch("cosmotech.coal.azure.adx.runner.run_query")
     def test_send_runner_data(
-        self, mock_adx_wrapper_class, mock_insert_csv_files, mock_construct_create_query, mock_prepare_csv_content
+        self,
+        mock_run_query,
+        mock_initialize_clients,
+        mock_insert_csv_files,
+        mock_construct_create_query,
+        mock_prepare_csv_content,
     ):
         """Test the send_runner_data function."""
         # Arrange
@@ -247,14 +278,15 @@ class TestRunnerFunctions:
         mock_queries = {"entities": ".create-merge table entities (id:string,name:string)"}
         mock_construct_create_query.return_value = mock_queries
 
-        # Mock ADXQueriesWrapper
-        mock_adx_client = MagicMock(spec=ADXQueriesWrapper)
-        mock_adx_wrapper_class.return_value = mock_adx_client
+        # Mock initialize_clients
+        mock_kusto_client = MagicMock(spec=KustoClient)
+        mock_ingest_client = MagicMock(spec=QueuedIngestClient)
+        mock_initialize_clients.return_value = (mock_kusto_client, mock_ingest_client)
 
         # Mock run_query response
         mock_response = MagicMock(spec=KustoResponseDataSet)
         mock_response.errors_count = 0
-        mock_adx_client.run_query.return_value = mock_response
+        mock_run_query.return_value = mock_response
 
         # Act
         send_runner_data(
@@ -270,10 +302,8 @@ class TestRunnerFunctions:
         )
 
         # Assert
-        # Verify that ADXQueriesWrapper was created with the correct parameters
-        mock_adx_wrapper_class.assert_called_once_with(
-            database=database_name, cluster_url=adx_uri, ingest_url=adx_ingest_uri
-        )
+        # Verify that initialize_clients was called with the correct parameters
+        mock_initialize_clients.assert_called_once_with(adx_uri, adx_ingest_uri)
 
         # Verify that prepare_csv_content was called for both paths
         mock_prepare_csv_content.assert_has_calls([call(parameters_path), call(dataset_path)])
@@ -282,12 +312,15 @@ class TestRunnerFunctions:
         mock_construct_create_query.assert_called_once()
 
         # Verify that run_query was called for each query
-        assert mock_adx_client.run_query.call_count == len(mock_queries)
+        assert mock_run_query.call_count == len(mock_queries)
+        for k, v in mock_queries.items():
+            mock_run_query.assert_any_call(mock_kusto_client, database_name, v)
 
         # Verify that insert_csv_files was called
         mock_insert_csv_files.assert_called_once_with(
             files_data=mock_csv_content,
-            adx_client=mock_adx_client,
+            kusto_client=mock_kusto_client,
+            ingest_client=mock_ingest_client,
             runner_id=runner_id,
             database=database_name,
             wait=True,
@@ -296,9 +329,15 @@ class TestRunnerFunctions:
     @patch("cosmotech.coal.azure.adx.runner.prepare_csv_content")
     @patch("cosmotech.coal.azure.adx.runner.construct_create_query")
     @patch("cosmotech.coal.azure.adx.runner.insert_csv_files")
-    @patch("cosmotech.coal.azure.adx.runner.ADXQueriesWrapper")
+    @patch("cosmotech.coal.azure.adx.runner.initialize_clients")
+    @patch("cosmotech.coal.azure.adx.runner.run_query")
     def test_send_runner_data_table_creation_error(
-        self, mock_adx_wrapper_class, mock_insert_csv_files, mock_construct_create_query, mock_prepare_csv_content
+        self,
+        mock_run_query,
+        mock_initialize_clients,
+        mock_insert_csv_files,
+        mock_construct_create_query,
+        mock_prepare_csv_content,
     ):
         """Test the send_runner_data function with a table creation error."""
         # Arrange
@@ -319,15 +358,16 @@ class TestRunnerFunctions:
         mock_queries = {"entities": ".create-merge table entities (id:string,name:string)"}
         mock_construct_create_query.return_value = mock_queries
 
-        # Mock ADXQueriesWrapper
-        mock_adx_client = MagicMock(spec=ADXQueriesWrapper)
-        mock_adx_wrapper_class.return_value = mock_adx_client
+        # Mock initialize_clients
+        mock_kusto_client = MagicMock(spec=KustoClient)
+        mock_ingest_client = MagicMock(spec=QueuedIngestClient)
+        mock_initialize_clients.return_value = (mock_kusto_client, mock_ingest_client)
 
         # Mock run_query response with errors
         mock_response = MagicMock(spec=KustoResponseDataSet)
         mock_response.errors_count = 1
         mock_response.get_exceptions.return_value = ["Test error"]
-        mock_adx_client.run_query.return_value = mock_response
+        mock_run_query.return_value = mock_response
 
         # Act & Assert
         with pytest.raises(RuntimeError, match="Failed to create table entities"):

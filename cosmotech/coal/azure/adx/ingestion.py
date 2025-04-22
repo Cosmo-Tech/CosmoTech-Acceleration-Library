@@ -207,9 +207,6 @@ def check_ingestion_status(
             else:
                 # The message did not correspond to a known ID
                 continue
-        else:
-            # No message was found on the current list of messages for the given IDs
-            continue
 
     # Check for timeouts
     actual_timeout = timeout if timeout is not None else default_timeout

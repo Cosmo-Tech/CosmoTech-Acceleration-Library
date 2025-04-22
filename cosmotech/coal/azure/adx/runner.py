@@ -24,8 +24,12 @@ from azure.kusto.ingest import IngestionProperties
 from azure.kusto.ingest import IngestionResult
 from azure.kusto.ingest import ReportLevel
 
-from cosmotech.coal.azure.adx.wrapper import ADXQueriesWrapper
-from cosmotech.coal.azure.adx.wrapper import IngestionStatus
+from azure.kusto.data import KustoClient
+from azure.kusto.ingest import QueuedIngestClient
+
+from cosmotech.coal.azure.adx.auth import initialize_clients
+from cosmotech.coal.azure.adx.query import run_query, run_command_query
+from cosmotech.coal.azure.adx.ingestion import check_ingestion_status, IngestionStatus
 from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
@@ -79,7 +83,8 @@ def construct_create_query(files_data: Dict[str, Dict[str, Any]]) -> Dict[str, s
 
 def insert_csv_files(
     files_data: Dict[str, Dict[str, Any]],
-    adx_client: ADXQueriesWrapper,
+    kusto_client: KustoClient,
+    ingest_client: QueuedIngestClient,
     runner_id: str,
     database: str,
     wait: bool = False,
@@ -91,7 +96,8 @@ def insert_csv_files(
 
     Args:
         files_data: Map of filename to file_infos as returned by prepare_csv_content
-        adx_client: ADX client wrapper
+        kusto_client: The KustoClient for querying
+        ingest_client: The QueuedIngestClient for ingestion
         runner_id: Runner ID to use as a tag
         database: ADX database name
         wait: Whether to wait for ingestion to complete
@@ -131,14 +137,14 @@ def insert_csv_files(
             additional_properties={"ignoreFirstRecord": "true"},
         )
         LOGGER.info(T("coal.logs.ingestion.ingesting").format(table=filename))
-        results: IngestionResult = adx_client.ingest_client.ingest_from_file(fd, ingestion_properties)
+        results: IngestionResult = ingest_client.ingest_from_file(fd, ingestion_properties)
         ingestion_ids[str(results.source_id)] = filename
     if wait:
         count = 0
         while any(
             map(
                 lambda s: s[1] in (IngestionStatus.QUEUED, IngestionStatus.UNKNOWN),
-                adx_client.check_ingestion_status(source_ids=list(ingestion_ids.keys())),
+                check_ingestion_status(ingest_client, source_ids=list(ingestion_ids.keys())),
             )
         ):
             count += 1
@@ -151,7 +157,7 @@ def insert_csv_files(
             time.sleep(wait_duration)
 
         LOGGER.info(T("coal.logs.ingestion.status"))
-        for _id, status in adx_client.check_ingestion_status(source_ids=list(ingestion_ids.keys())):
+        for _id, status in check_ingestion_status(ingest_client, source_ids=list(ingestion_ids.keys())):
             color = (
                 "red"
                 if status == IngestionStatus.FAILURE
@@ -197,10 +203,10 @@ def send_runner_data(
     if send_datasets:
         csv_data.update(prepare_csv_content(dataset_absolute_path))
     queries = construct_create_query(csv_data)
-    adx_client = ADXQueriesWrapper(database=database_name, cluster_url=adx_uri, ingest_url=adx_ingest_uri)
+    kusto_client, ingest_client = initialize_clients(adx_uri, adx_ingest_uri)
     for k, v in queries.items():
         LOGGER.info(T("coal.logs.ingestion.creating_table").format(query=v))
-        r: KustoResponseDataSet = adx_client.run_query(v)
+        r: KustoResponseDataSet = run_query(kusto_client, database_name, v)
         if r.errors_count == 0:
             LOGGER.info(T("coal.logs.ingestion.table_created").format(table=k))
         else:
@@ -209,7 +215,8 @@ def send_runner_data(
             raise RuntimeError(f"Failed to create table {k}")
     insert_csv_files(
         files_data=csv_data,
-        adx_client=adx_client,
+        kusto_client=kusto_client,
+        ingest_client=ingest_client,
         runner_id=runner_id,
         database=database_name,
         wait=wait,
