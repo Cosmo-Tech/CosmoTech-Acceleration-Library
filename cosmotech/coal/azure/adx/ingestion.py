@@ -12,8 +12,10 @@ from typing import List
 from typing import Optional
 from typing import Tuple
 
+import os
 import pandas as pd
 import time
+import tqdm
 from azure.kusto.data import KustoClient
 from azure.kusto.data.data_format import DataFormat
 from azure.kusto.ingest import IngestionProperties
@@ -24,7 +26,7 @@ from azure.kusto.ingest.status import KustoIngestStatusQueues
 from azure.kusto.ingest.status import SuccessMessage
 from cosmotech.orchestrator.utils.translate import T
 
-from cosmotech.coal.azure.adx.tables import create_table
+from cosmotech.coal.azure.adx.tables import create_table, _drop_by_tag
 from cosmotech.coal.azure.adx.utils import type_mapping
 from cosmotech.coal.utils.logger import LOGGER
 
@@ -219,6 +221,86 @@ def check_ingestion_status(
     # Yield results for remaining IDs
     for source_id in queued_ids:
         yield source_id, _ingest_status[source_id]
+
+
+def monitor_ingestion(
+    ingest_client: QueuedIngestClient, source_ids: List[str], table_ingestion_id_mapping: Dict[str, str]
+) -> bool:
+    """
+    Monitor the ingestion process with progress reporting.
+
+    Args:
+        ingest_client: The ingest client
+        source_ids: List of source IDs to monitor
+        table_ingestion_id_mapping: Mapping of source IDs to table names
+
+    Returns:
+        bool: True if any failures occurred, False otherwise
+    """
+    has_failures = False
+    source_ids_copy = source_ids.copy()
+
+    LOGGER.info("Waiting for ingestion of data to finish")
+
+    with tqdm.tqdm(desc="Ingestion status", total=len(source_ids_copy)) as pbar:
+        while any(
+            list(
+                map(
+                    lambda _status: _status[1] in (IngestionStatus.QUEUED, IngestionStatus.UNKNOWN),
+                    results := list(check_ingestion_status(ingest_client, source_ids_copy)),
+                )
+            )
+        ):
+            # Check for failures
+            for ingestion_id, ingestion_status in results:
+                if ingestion_status == IngestionStatus.FAILURE:
+                    LOGGER.error(
+                        f"Ingestion {ingestion_id} failed for table {table_ingestion_id_mapping.get(ingestion_id)}"
+                    )
+                    has_failures = True
+
+            cleared_ids = list(
+                result for result in results if result[1] not in (IngestionStatus.QUEUED, IngestionStatus.UNKNOWN)
+            )
+
+            for ingestion_id, ingestion_status in cleared_ids:
+                pbar.update(1)
+                source_ids_copy.remove(ingestion_id)
+
+            time.sleep(1)
+            if os.environ.get("CSM_USE_RICH", "False").lower() in ("true", "1", "yes", "t", "y"):
+                pbar.refresh()
+        else:
+            for ingestion_id, ingestion_status in results:
+                if ingestion_status == IngestionStatus.FAILURE:
+                    LOGGER.error(
+                        f"Ingestion {ingestion_id} failed for table {table_ingestion_id_mapping.get(ingestion_id)}"
+                    )
+                    has_failures = True
+        pbar.update(len(source_ids_copy))
+
+    LOGGER.info("All data ingestion attempts completed")
+    return has_failures
+
+
+def handle_failures(kusto_client: KustoClient, database: str, operation_tag: str, has_failures: bool) -> bool:
+    """
+    Handle any failures and perform rollbacks if needed.
+
+    Args:
+        kusto_client: The Kusto client
+        database: The database name
+        operation_tag: The operation tag for tracking
+        has_failures: Whether any failures occurred
+
+    Returns:
+        bool: True if the process should abort, False otherwise
+    """
+    if has_failures:
+        LOGGER.warning(f"Failures detected during ingestion - dropping data with tag: {operation_tag}")
+        _drop_by_tag(kusto_client, database, operation_tag)
+        return True
+    return False
 
 
 def clear_ingestion_status_queues(client: QueuedIngestClient, confirmation: bool = False):

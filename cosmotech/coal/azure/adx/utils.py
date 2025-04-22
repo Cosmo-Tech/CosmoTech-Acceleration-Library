@@ -6,10 +6,36 @@
 # specifically authorized by written means by Cosmo Tech.
 
 import dateutil.parser
-from typing import Any
+from typing import Any, Dict
+
+import pyarrow
 
 from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
+
+
+def create_column_mapping(data: pyarrow.Table) -> Dict[str, str]:
+    """
+    Create a column mapping for a PyArrow table.
+
+    Args:
+        data: The PyArrow table data
+
+    Returns:
+        dict: A mapping of column names to their ADX types
+    """
+    mapping = dict()
+    for column_name in data.column_names:
+        column = data.column(column_name)
+        try:
+            ex = next(v for v in column.to_pylist() if v is not None)
+        except StopIteration:
+            LOGGER.error(f"Column {column_name} has no content, defaulting it to string")
+            mapping[column_name] = type_mapping(column_name, "string")
+            continue
+        else:
+            mapping[column_name] = type_mapping(column_name, ex)
+    return mapping
 
 
 def type_mapping(key: str, key_example_value: Any) -> str:

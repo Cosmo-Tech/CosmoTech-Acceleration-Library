@@ -8,11 +8,12 @@
 import os
 import tempfile
 import uuid
-from typing import Optional
+from typing import Optional, List, Dict, Tuple, Union, Any
 
 import pyarrow
 import pyarrow.csv as pc
 import time
+from azure.kusto.data import KustoClient
 from azure.kusto.data.data_format import DataFormat
 from azure.kusto.ingest import IngestionProperties
 from azure.kusto.ingest import QueuedIngestClient
@@ -20,9 +21,72 @@ from azure.kusto.ingest import ReportLevel
 from cosmotech.orchestrator.utils.translate import T
 from time import perf_counter
 
+from cosmotech.coal.azure.adx.tables import check_and_create_table, _drop_by_tag
+from cosmotech.coal.azure.adx.auth import initialize_clients
+from cosmotech.coal.azure.adx.ingestion import monitor_ingestion, handle_failures
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.coal.utils.postgresql import send_pyarrow_table_to_postgresql
+
+
+def send_table_data(
+    ingest_client: QueuedIngestClient, database: str, table_name: str, data: pyarrow.Table, operation_tag: str
+) -> Tuple[str, str]:
+    """
+    Send a PyArrow table to ADX.
+
+    Args:
+        ingest_client: The ingest client
+        database: The database name
+        table_name: The table name
+        data: The PyArrow table data
+        operation_tag: The operation tag for tracking
+
+    Returns:
+        tuple: (source_id, table_name)
+    """
+    LOGGER.debug(f"Sending data to the table {table_name}")
+    result = send_pyarrow_table_to_adx(ingest_client, database, table_name, data, operation_tag)
+    return result.source_id, table_name
+
+
+def process_tables(
+    store: Store, kusto_client: KustoClient, ingest_client: QueuedIngestClient, database: str, operation_tag: str
+) -> Tuple[List[str], Dict[str, str]]:
+    """
+    Process all tables in the store.
+
+    Args:
+        store: The data store
+        kusto_client: The Kusto client
+        ingest_client: The ingest client
+        database: The database name
+        operation_tag: The operation tag for tracking
+
+    Returns:
+        tuple: (source_ids, table_ingestion_id_mapping)
+    """
+    source_ids = []
+    table_ingestion_id_mapping = dict()
+
+    LOGGER.debug("Listing tables")
+    table_list = list(store.list_tables())
+
+    for target_table_name in table_list:
+        LOGGER.info(f"Working on table: {target_table_name}")
+        data = store.get_table(target_table_name)
+
+        if data.num_rows < 1:
+            LOGGER.warning(f"Table {target_table_name} has no rows - skipping it")
+            continue
+
+        check_and_create_table(kusto_client, database, target_table_name, data)
+
+        source_id, _ = send_table_data(ingest_client, database, target_table_name, data, operation_tag)
+        source_ids.append(source_id)
+        table_ingestion_id_mapping[source_id] = target_table_name
+
+    return source_ids, table_ingestion_id_mapping
 
 
 def send_pyarrow_table_to_adx(
@@ -50,6 +114,68 @@ def send_pyarrow_table_to_adx(
         return client.ingest_from_file(temp_file_path, properties)
     finally:
         os.unlink(temp_file_path)
+
+
+def send_store_to_adx(
+    adx_uri: str,
+    adx_ingest_uri: str,
+    database_name: str,
+    wait: bool = False,
+    tag: Optional[str] = None,
+    store_location: Optional[str] = None,
+) -> Union[bool, Any]:
+    """
+    Send data from the store to Azure Data Explorer.
+
+    Args:
+        adx_uri: The Azure Data Explorer resource URI
+        adx_ingest_uri: The Azure Data Explorer resource ingest URI
+        database_name: The database name
+        wait: Whether to wait for ingestion to complete
+        tag: The operation tag for tracking (will generate a unique one if not provided)
+        store_location: Optional store location (uses default if not provided)
+
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    # Generate a unique operation tag if none provided
+    operation_tag = tag or f"op-{str(uuid.uuid4())}"
+    LOGGER.debug(f"Starting ingestion operation with tag: {operation_tag}")
+
+    # Initialize clients
+    kusto_client, ingest_client = initialize_clients(adx_uri, adx_ingest_uri)
+    database = database_name
+
+    # Load datastore
+    LOGGER.debug("Loading datastore")
+    store = Store(store_location=store_location)
+
+    try:
+        # Process tables
+        source_ids, table_ingestion_id_mapping = process_tables(
+            store, kusto_client, ingest_client, database, operation_tag
+        )
+
+        LOGGER.info("Store data was sent for ADX ingestion")
+
+        # Monitor ingestion if wait is True
+        has_failures = False
+        if wait and source_ids:
+            has_failures = monitor_ingestion(ingest_client, source_ids, table_ingestion_id_mapping)
+
+        # Handle failures
+        should_abort = handle_failures(kusto_client, database, operation_tag, has_failures)
+        if should_abort:
+            return False
+
+        return True
+
+    except Exception as e:
+        LOGGER.exception("Error during ingestion process")
+        # Perform rollback using the tag
+        LOGGER.warning(f"Dropping data with tag: {operation_tag}")
+        _drop_by_tag(kusto_client, database, operation_tag)
+        raise e
 
 
 def dump_store_to_adx(

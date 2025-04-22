@@ -6,7 +6,7 @@
 # specifically authorized by written means by Cosmo Tech.
 
 import os
-from typing import Union, Optional
+from typing import Union, Optional, Tuple
 
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.ingest import QueuedIngestClient
@@ -87,7 +87,24 @@ def create_ingest_client(
     return QueuedIngestClient(kcsb)
 
 
-def get_cluster_urls(cluster_name: str, cluster_region: str) -> tuple[str, str]:
+def initialize_clients(adx_uri: str, adx_ingest_uri: str) -> Tuple[KustoClient, QueuedIngestClient]:
+    """
+    Initialize and return the Kusto and ingest clients.
+
+    Args:
+        adx_uri: The Azure Data Explorer resource URI
+        adx_ingest_uri: The Azure Data Explorer resource ingest URI
+
+    Returns:
+        tuple: (kusto_client, ingest_client)
+    """
+    LOGGER.debug("Initializing clients")
+    kusto_client = create_kusto_client(adx_uri)
+    ingest_client = create_ingest_client(adx_ingest_uri)
+    return kusto_client, ingest_client
+
+
+def get_cluster_urls(cluster_name: str, cluster_region: str) -> Tuple[str, str]:
     """
     Generate cluster and ingest URLs from cluster name and region.
 

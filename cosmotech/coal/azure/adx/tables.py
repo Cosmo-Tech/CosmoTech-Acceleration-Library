@@ -5,8 +5,9 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from typing import Dict
+from typing import Dict, Any
 
+import pyarrow
 from azure.kusto.data import KustoClient
 
 from cosmotech.coal.utils.logger import LOGGER
@@ -37,6 +38,51 @@ def table_exists(client: KustoClient, database: str, table_name: str) -> bool:
 
     LOGGER.debug(T("coal.logs.adx.table_not_exists").format(table_name=table_name))
     return False
+
+
+def check_and_create_table(kusto_client: KustoClient, database: str, table_name: str, data: pyarrow.Table) -> bool:
+    """
+    Check if a table exists and create it if it doesn't.
+
+    Args:
+        kusto_client: The Kusto client
+        database: The database name
+        table_name: The table name
+        data: The PyArrow table data
+
+    Returns:
+        bool: True if the table was created, False if it already existed
+    """
+    LOGGER.debug("  - Checking if table exists")
+    if not table_exists(kusto_client, database, table_name):
+        from cosmotech.coal.azure.adx.utils import create_column_mapping
+
+        mapping = create_column_mapping(data)
+        LOGGER.debug("  - Does not exist, creating it")
+        create_table(kusto_client, database, table_name, mapping)
+        return True
+    return False
+
+
+def _drop_by_tag(kusto_client: KustoClient, database: str, tag: str) -> None:
+    """
+    Drop all data with the specified tag.
+
+    Args:
+        kusto_client: The Kusto client
+        database: The database name
+        tag: The tag to drop data by
+    """
+    LOGGER.info(f"Dropping data with tag: {tag}")
+
+    try:
+        # Execute the drop by tag command
+        drop_command = f'.drop extents <| .show database extents where tags has "drop-by:{tag}"'
+        kusto_client.execute_mgmt(database, drop_command)
+        LOGGER.info("Drop by tag operation completed")
+    except Exception as e:
+        LOGGER.error(f"Error during drop by tag operation: {str(e)}")
+        LOGGER.exception("Drop by tag details")
 
 
 def create_table(client: KustoClient, database: str, table_name: str, schema: Dict[str, str]) -> bool:
