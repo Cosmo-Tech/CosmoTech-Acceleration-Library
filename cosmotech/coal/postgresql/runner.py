@@ -76,10 +76,10 @@ def send_runner_metadata_to_postgresql(
                   DO
                     UPDATE SET name = EXCLUDED.name, last_run_id = EXCLUDED.last_run_id;
             """
-            LOGGER.info(T("coal.logs.postgreql.runner.creating_table").format(schema_table=schema_table))
+            LOGGER.info(T("coal.logs.postgresql.runner.creating_table").format(schema_table=schema_table))
             curs.execute(sql_create_table)
             conn.commit()
-            LOGGER.info(T("coal.logs.postgreql.runner.metadata"))
+            LOGGER.info(T("coal.logs.postgresql.runner.metadata"))
             curs.execute(
                 sql_upsert,
                 (
@@ -90,4 +90,4 @@ def send_runner_metadata_to_postgresql(
                 ),
             )
             conn.commit()
-            LOGGER.info(T("coal.logs.postgreql.runner.metadata_updated"))
+            LOGGER.info(T("coal.logs.postgresql.runner.metadata_updated"))

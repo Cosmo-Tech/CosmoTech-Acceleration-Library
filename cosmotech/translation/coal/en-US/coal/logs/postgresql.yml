@@ -23,6 +23,6 @@ connecting: "Connecting to PostgreSQL database"
 ingesting_data: "Ingesting data with mode: {mode}"
 ingestion_success: "Successfully ingested {rows} rows"
 runner:
-  creating_table: "Creating table {table_name}"
+  creating_table: "Creating table {schema_table}"
   metadata: "Metadata: {metadata}"
   metadata_updated: "Metadata updated"
