@@ -57,7 +57,7 @@ def prepare_csv_content(folder_path: str) -> Dict[str, Dict[str, Any]]:
         cols = {k.strip(): "string" for k in headers}
         csv_datas = {"filename": _file.name.removesuffix(".csv"), "headers": cols}
         content[str(_file)] = csv_datas
-    LOGGER.debug(content)
+    LOGGER.debug(T("coal.logs.adx.runner.content_debug").format(content=content))
 
     return content
 
@@ -211,7 +211,7 @@ def send_runner_data(
             LOGGER.info(T("coal.logs.ingestion.table_created").format(table=k))
         else:
             LOGGER.error(T("coal.logs.ingestion.table_creation_failed").format(table=k))
-            LOGGER.error(r.get_exceptions())
+            LOGGER.error(T("coal.logs.ingestion.exceptions").format(exceptions=r.get_exceptions()))
             raise RuntimeError(f"Failed to create table {k}")
     insert_csv_files(
         files_data=csv_data,

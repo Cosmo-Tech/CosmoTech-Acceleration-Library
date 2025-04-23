@@ -41,6 +41,6 @@ def list_tables(store_folder, schema):
         for table_name in tables:
             LOGGER.info(T("coal.logs.database.table_entry").format(table=table_name))
             if schema:
-                LOGGER.info(str(_s.get_table_schema(table_name)))
+                LOGGER.info(T("coal.logs.database.table_schema").format(schema=str(_s.get_table_schema(table_name))))
     else:
         LOGGER.info(T("coal.logs.database.store_empty"))

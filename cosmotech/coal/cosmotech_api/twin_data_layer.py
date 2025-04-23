@@ -160,7 +160,7 @@ def get_dataset_id_from_runner(organization_id: str, workspace_id: str, runner_i
 
     if (datasets_len := len(runner_info.dataset_list)) != 1:
         LOGGER.error(T("coal.logs.runner.not_single_dataset").format(runner_id=runner_info.id, count=datasets_len))
-        LOGGER.debug(runner_info)
+        LOGGER.debug(T("coal.logs.runner.runner_info").format(info=runner_info))
         raise ValueError(f"Runner {runner_info.id} does not have exactly one dataset")
 
     return runner_info.dataset_list[0]
@@ -309,7 +309,7 @@ def _process_csv_file(
     if len(errors):
         LOGGER.error(T("coal.logs.storage.import_errors").format(count=len(errors)))
         for _err in errors:
-            LOGGER.error(str(_err))
+            LOGGER.error(T("coal.logs.storage.error_detail").format(error=str(_err)))
         raise ValueError(f"Error importing data from {file_path}")
 
 
@@ -340,7 +340,7 @@ def load_files_from_tdl(
         LOGGER.error(
             T("coal.logs.runner.dataset_state").format(dataset_id=dataset_id, status=dataset_info.ingestion_status)
         )
-        LOGGER.debug(dataset_info)
+        LOGGER.debug(T("coal.logs.runner.dataset_info").format(info=dataset_info))
         raise ValueError(f"Dataset {dataset_id} is not in SUCCESS state")
 
     # Create directory

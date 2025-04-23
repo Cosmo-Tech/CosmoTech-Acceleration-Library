@@ -30,7 +30,7 @@ def create_column_mapping(data: pyarrow.Table) -> Dict[str, str]:
         try:
             ex = next(v for v in column.to_pylist() if v is not None)
         except StopIteration:
-            LOGGER.error(f"Column {column_name} has no content, defaulting it to string")
+            LOGGER.error(T("coal.logs.adx.utils.empty_column").format(column_name=column_name))
             mapping[column_name] = type_mapping(column_name, "string")
             continue
         else:

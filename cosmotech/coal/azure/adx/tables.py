@@ -53,12 +53,12 @@ def check_and_create_table(kusto_client: KustoClient, database: str, table_name:
     Returns:
         bool: True if the table was created, False if it already existed
     """
-    LOGGER.debug("  - Checking if table exists")
+    LOGGER.debug(T("coal.logs.adx.checking_table_exists"))
     if not table_exists(kusto_client, database, table_name):
         from cosmotech.coal.azure.adx.utils import create_column_mapping
 
         mapping = create_column_mapping(data)
-        LOGGER.debug("  - Does not exist, creating it")
+        LOGGER.debug(T("coal.logs.adx.creating_nonexistent_table"))
         create_table(kusto_client, database, table_name, mapping)
         return True
     return False
@@ -73,16 +73,16 @@ def _drop_by_tag(kusto_client: KustoClient, database: str, tag: str) -> None:
         database: The database name
         tag: The tag to drop data by
     """
-    LOGGER.info(f"Dropping data with tag: {tag}")
+    LOGGER.info(T("coal.logs.adx.dropping_data_by_tag").format(tag=tag))
 
     try:
         # Execute the drop by tag command
         drop_command = f'.drop extents <| .show database extents where tags has "drop-by:{tag}"'
         kusto_client.execute_mgmt(database, drop_command)
-        LOGGER.info("Drop by tag operation completed")
+        LOGGER.info(T("coal.logs.adx.drop_completed"))
     except Exception as e:
-        LOGGER.error(f"Error during drop by tag operation: {str(e)}")
-        LOGGER.exception("Drop by tag details")
+        LOGGER.error(T("coal.logs.adx.drop_error").format(error=str(e)))
+        LOGGER.exception(T("coal.logs.adx.drop_details"))
 
 
 def create_table(client: KustoClient, database: str, table_name: str, schema: Dict[str, str]) -> bool:

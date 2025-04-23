@@ -237,7 +237,7 @@ def monitor_ingestion(
     has_failures = False
     source_ids_copy = source_ids.copy()
 
-    LOGGER.info("Waiting for ingestion of data to finish")
+    LOGGER.info(T("coal.logs.adx.waiting_ingestion"))
 
     with tqdm.tqdm(desc="Ingestion status", total=len(source_ids_copy)) as pbar:
         while any(
@@ -252,7 +252,9 @@ def monitor_ingestion(
             for ingestion_id, ingestion_status in results:
                 if ingestion_status == IngestionStatus.FAILURE:
                     LOGGER.error(
-                        f"Ingestion {ingestion_id} failed for table {table_ingestion_id_mapping.get(ingestion_id)}"
+                        T("coal.logs.adx.ingestion_failed").format(
+                            ingestion_id=ingestion_id, table=table_ingestion_id_mapping.get(ingestion_id)
+                        )
                     )
                     has_failures = True
 
@@ -271,12 +273,14 @@ def monitor_ingestion(
             for ingestion_id, ingestion_status in results:
                 if ingestion_status == IngestionStatus.FAILURE:
                     LOGGER.error(
-                        f"Ingestion {ingestion_id} failed for table {table_ingestion_id_mapping.get(ingestion_id)}"
+                        T("coal.logs.adx.ingestion_failed").format(
+                            ingestion_id=ingestion_id, table=table_ingestion_id_mapping.get(ingestion_id)
+                        )
                     )
                     has_failures = True
         pbar.update(len(source_ids_copy))
 
-    LOGGER.info("All data ingestion attempts completed")
+    LOGGER.info(T("coal.logs.adx.ingestion_completed"))
     return has_failures
 
 
@@ -294,7 +298,7 @@ def handle_failures(kusto_client: KustoClient, database: str, operation_tag: str
         bool: True if the process should abort, False otherwise
     """
     if has_failures:
-        LOGGER.warning(f"Failures detected during ingestion - dropping data with tag: {operation_tag}")
+        LOGGER.warning(T("coal.logs.adx.failures_detected").format(operation_tag=operation_tag))
         _drop_by_tag(kusto_client, database, operation_tag)
         return True
     return False

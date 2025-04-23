@@ -98,7 +98,7 @@ def initialize_clients(adx_uri: str, adx_ingest_uri: str) -> Tuple[KustoClient, 
     Returns:
         tuple: (kusto_client, ingest_client)
     """
-    LOGGER.debug("Initializing clients")
+    LOGGER.debug(T("coal.logs.adx.auth.initializing_clients"))
     kusto_client = create_kusto_client(adx_uri)
     ingest_client = create_ingest_client(adx_ingest_uri)
     return kusto_client, ingest_client

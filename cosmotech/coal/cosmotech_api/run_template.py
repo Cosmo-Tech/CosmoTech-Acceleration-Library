@@ -58,7 +58,7 @@ def load_run_template_handlers(
             LOGGER.error(
                 T("coal.errors.workspace.not_found").format(workspace_id=workspace_id, organization_id=organization_id)
             )
-            LOGGER.debug(e.body)
+            LOGGER.debug(T("coal.logs.orchestrator.error_details").format(details=e.body))
             raise ValueError(f"Workspace {workspace_id} not found in organization {organization_id}")
         solution_id = r_data.solution.solution_id
 
@@ -86,7 +86,7 @@ def load_run_template_handlers(
                         solution=solution_id,
                     )
                 )
-                LOGGER.debug(e.body)
+                LOGGER.debug(T("coal.logs.orchestrator.error_details").format(details=e.body))
                 has_errors = True
                 continue
             LOGGER.info(T("coal.logs.orchestrator.extracting_handler").format(path=handler_path.absolute()))

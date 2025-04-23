@@ -136,8 +136,8 @@ class TestTwinDataLayerEdgeCases:
 
             # Verify that errors were logged
             mock_logger.error.assert_any_call(T("coal.logs.storage.import_errors").format(count=2))
-            mock_logger.error.assert_any_call("Error 1")
-            mock_logger.error.assert_any_call("Error 2")
+            mock_logger.error.assert_any_call(T("coal.logs.storage.error_detail").format(error="Error 1"))
+            mock_logger.error.assert_any_call(T("coal.logs.storage.error_detail").format(error="Error 2"))
 
     @patch("cosmotech.coal.cosmotech_api.twin_data_layer.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.twin_data_layer.get_dataset_id_from_runner")

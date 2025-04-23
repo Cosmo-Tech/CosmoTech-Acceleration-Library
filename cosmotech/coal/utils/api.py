@@ -39,7 +39,9 @@ def read_solution_file(solution_file) -> Optional[Solution]:
         _spec_property_naming=True,
         **solution_content,
     )
-    LOGGER.debug(json.dumps(_solution.to_dict(), indent=2, default=str))
+    LOGGER.debug(
+        T("coal.logs.api.solution_debug").format(solution=json.dumps(_solution.to_dict(), indent=2, default=str))
+    )
     return _solution
 
 

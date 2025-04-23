@@ -18,6 +18,7 @@ from csv import DictWriter
 from typing import List, Dict, Any
 
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 def write_parameters(
@@ -34,7 +35,7 @@ def write_parameters(
     """
     if write_csv:
         tmp_parameter_file = os.path.join(parameter_folder, "parameters.csv")
-        LOGGER.info(f"Generating {tmp_parameter_file}")
+        LOGGER.info(T("coal.logs.runner.generating_file").format(file=tmp_parameter_file))
         with open(tmp_parameter_file, "w") as _file:
             _w = DictWriter(_file, fieldnames=["parameterId", "value", "varType", "isInherited"])
             _w.writeheader()
@@ -42,6 +43,6 @@ def write_parameters(
 
     if write_json:
         tmp_parameter_file = os.path.join(parameter_folder, "parameters.json")
-        LOGGER.info(f"Generating {tmp_parameter_file}")
+        LOGGER.info(T("coal.logs.runner.generating_file").format(file=tmp_parameter_file))
         with open(tmp_parameter_file, "w") as _file:
             json.dump(parameters, _file, indent=2)

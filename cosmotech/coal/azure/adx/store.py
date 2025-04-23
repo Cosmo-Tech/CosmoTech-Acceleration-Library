@@ -45,7 +45,7 @@ def send_table_data(
     Returns:
         tuple: (source_id, table_name)
     """
-    LOGGER.debug(f"Sending data to the table {table_name}")
+    LOGGER.debug(T("coal.logs.adx.store.sending_data").format(table_name=table_name))
     result = send_pyarrow_table_to_adx(ingest_client, database, table_name, data, operation_tag)
     return result.source_id, table_name
 
@@ -69,15 +69,15 @@ def process_tables(
     source_ids = []
     table_ingestion_id_mapping = dict()
 
-    LOGGER.debug("Listing tables")
+    LOGGER.debug(T("coal.logs.adx.store.listing_tables"))
     table_list = list(store.list_tables())
 
     for target_table_name in table_list:
-        LOGGER.info(f"Working on table: {target_table_name}")
+        LOGGER.info(T("coal.logs.adx.store.working_on_table").format(table_name=target_table_name))
         data = store.get_table(target_table_name)
 
         if data.num_rows < 1:
-            LOGGER.warning(f"Table {target_table_name} has no rows - skipping it")
+            LOGGER.warning(T("coal.logs.adx.store.table_empty").format(table_name=target_table_name))
             continue
 
         check_and_create_table(kusto_client, database, target_table_name, data)
@@ -140,14 +140,14 @@ def send_store_to_adx(
     """
     # Generate a unique operation tag if none provided
     operation_tag = tag or f"op-{str(uuid.uuid4())}"
-    LOGGER.debug(f"Starting ingestion operation with tag: {operation_tag}")
+    LOGGER.debug(T("coal.logs.adx.store.starting_ingestion").format(operation_tag=operation_tag))
 
     # Initialize clients
     kusto_client, ingest_client = initialize_clients(adx_uri, adx_ingest_uri)
     database = database_name
 
     # Load datastore
-    LOGGER.debug("Loading datastore")
+    LOGGER.debug(T("coal.logs.adx.store.loading_datastore"))
     store = Store(store_location=store_location)
 
     try:
@@ -156,7 +156,7 @@ def send_store_to_adx(
             store, kusto_client, ingest_client, database, operation_tag
         )
 
-        LOGGER.info("Store data was sent for ADX ingestion")
+        LOGGER.info(T("coal.logs.adx.store.data_sent"))
 
         # Monitor ingestion if wait is True
         has_failures = False
@@ -171,9 +171,9 @@ def send_store_to_adx(
         return True
 
     except Exception as e:
-        LOGGER.exception("Error during ingestion process")
+        LOGGER.exception(T("coal.logs.adx.store.ingestion_error"))
         # Perform rollback using the tag
-        LOGGER.warning(f"Dropping data with tag: {operation_tag}")
+        LOGGER.warning(T("coal.logs.adx.store.dropping_data").format(operation_tag=operation_tag))
         _drop_by_tag(kusto_client, database, operation_tag)
         raise e
 
