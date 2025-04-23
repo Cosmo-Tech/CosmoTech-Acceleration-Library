@@ -1,0 +1,4 @@
+runner:
+  creating_table: "Creating table {schema_table}"
+  metadata: "Metadata: {metadata}"
+  metadata_updated: "Metadata updated"

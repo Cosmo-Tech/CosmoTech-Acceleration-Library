@@ -1,0 +1,6 @@
+not_found: "Workspace {workspace_id} was not found in Organization {organization_id}"
+target_is_folder: "Target {target_dir} is a folder"
+loading_file: "Loading file {file_name}"
+file_loaded: "File {file_path} loaded"
+sending_to_api: "Sending file to API"
+file_sent: "File sent to API"

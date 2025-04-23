@@ -1,0 +1,3 @@
+no_env_vars: "No set of environment variables found for a valid Cosmo Tech API connection"
+no_valid_connection: "No valid connection available to the Cosmo Tech API"
+missing_env_var: "Missing the following environment variable: {envvar}"

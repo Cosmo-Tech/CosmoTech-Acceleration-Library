@@ -1,0 +1,5 @@
+file_not_found: "{source_folder} does not exists"
+file_exists: "File {csv_path} already exists"
+not_directory: "{target_dir} is a file and not a directory"
+file_not_exists: '"{file_path}" does not exists'
+not_single_file: '"{file_path}" is not a single file'
