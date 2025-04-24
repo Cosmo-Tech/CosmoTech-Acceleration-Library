@@ -160,9 +160,7 @@ def insert_csv_files(
             color = (
                 "red"
                 if status == IngestionStatus.FAILURE
-                else "green"
-                if status == IngestionStatus.SUCCESS
-                else "bright_black"
+                else "green" if status == IngestionStatus.SUCCESS else "bright_black"
             )
             LOGGER.info(
                 T("coal.services.adx.status_report").format(table=ingestion_ids[_id], status=status.name, color=color)
