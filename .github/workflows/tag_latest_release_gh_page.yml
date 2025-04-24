@@ -15,7 +15,7 @@ jobs:
       - run: pip install -e .[doc]
       - name: Extract version
         shell: bash
-        run: echo "##[set-output name=version;]$(python -c 'from CosmoTech_Acceleration_Library import __version__; print(__version__)')"
+        run: echo "##[set-output name=version;]$(python -c 'from cosmotech.coal import __version__; print(__version__)')"
         id: version
       - name: Configure Git user
         run: |
