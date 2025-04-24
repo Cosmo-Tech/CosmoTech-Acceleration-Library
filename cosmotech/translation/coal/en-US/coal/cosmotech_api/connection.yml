@@ -1,3 +1,4 @@
+# Connection-specific messages
 existing_sets: "Existing sets are:"
 azure_connection: "  Azure Entra Connection : {keys}"
 api_key_connection: "  Cosmo Tech API Key : {keys}"

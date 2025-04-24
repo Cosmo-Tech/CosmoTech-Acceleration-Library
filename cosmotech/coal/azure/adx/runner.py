@@ -57,7 +57,7 @@ def prepare_csv_content(folder_path: str) -> Dict[str, Dict[str, Any]]:
         cols = {k.strip(): "string" for k in headers}
         csv_datas = {"filename": _file.name.removesuffix(".csv"), "headers": cols}
         content[str(_file)] = csv_datas
-    LOGGER.debug(T("coal.logs.adx.runner.content_debug").format(content=content))
+    LOGGER.debug(T("coal.services.adx.content_debug").format(content=content))
 
     return content
 
@@ -110,7 +110,7 @@ def insert_csv_files(
         fields = file_info.get("headers")
         with open(file_path) as _f:
             file_size = sum(map(len, _f.readlines()))
-            LOGGER.debug(T("coal.logs.data_transfer.sending_data").format(size=file_size))
+            LOGGER.debug(T("coal.common.data_transfer.sending_data").format(size=file_size))
         fd = FileDescriptor(file_path, file_size)
         ord = 0
         mappings = list()

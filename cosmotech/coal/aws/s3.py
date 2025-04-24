@@ -102,7 +102,7 @@ def upload_file(
         file_prefix: Prefix to add to the file name in the bucket
     """
     uploaded_file_name = file_prefix + file_path.name
-    LOGGER.info(T("coal.logs.data_transfer.file_sent").format(file_path=file_path, uploaded_name=uploaded_file_name))
+    LOGGER.info(T("coal.common.data_transfer.file_sent").format(file_path=file_path, uploaded_name=uploaded_file_name))
     s3_resource.Bucket(bucket_name).upload_file(str(file_path), uploaded_file_name)
 
 
@@ -125,8 +125,8 @@ def upload_folder(
     """
     source_path = pathlib.Path(source_folder)
     if not source_path.exists():
-        LOGGER.error(T("coal.errors.file_system.file_not_found").format(source_folder=source_folder))
-        raise FileNotFoundError(T("coal.errors.file_system.file_not_found").format(source_folder=source_folder))
+        LOGGER.error(T("coal.common.file_operations.not_found").format(source_folder=source_folder))
+        raise FileNotFoundError(T("coal.common.file_operations.not_found").format(source_folder=source_folder))
 
     if source_path.is_dir():
         _source_name = str(source_path)
@@ -135,7 +135,7 @@ def upload_folder(
                 _file_name = str(_file_path).removeprefix(_source_name).removeprefix("/")
                 uploaded_file_name = file_prefix + _file_name
                 LOGGER.info(
-                    T("coal.logs.data_transfer.file_sent").format(
+                    T("coal.common.data_transfer.file_sent").format(
                         file_path=_file_path, uploaded_name=uploaded_file_name
                     )
                 )
@@ -176,7 +176,7 @@ def download_files(
                 target_file = target_file.removeprefix(file_prefix)
             output_file = f"{target_folder}/{target_file}"
             pathlib.Path(output_file).parent.mkdir(parents=True, exist_ok=True)
-            LOGGER.info(T("coal.logs.storage.downloading").format(path=path_name, output=output_file))
+            LOGGER.info(T("coal.services.azure_storage.downloading").format(path=path_name, output=output_file))
             bucket.download_file(_file.key, output_file)
 
 
@@ -202,7 +202,7 @@ def upload_data_stream(
     size = len(data_stream.read())
     data_stream.seek(0)
 
-    LOGGER.info(T("coal.logs.data_transfer.sending_data").format(size=size))
+    LOGGER.info(T("coal.common.data_transfer.sending_data").format(size=size))
     s3_client.upload_fileobj(data_stream, bucket_name, uploaded_file_name)
 
 
@@ -228,8 +228,8 @@ def delete_objects(
 
     boto_objects = [{"Key": _file.key} for _file in bucket_files if _file.key != file_prefix]
     if boto_objects:
-        LOGGER.info(T("coal.logs.storage.deleting_objects").format(objects=boto_objects))
+        LOGGER.info(T("coal.services.azure_storage.deleting_objects").format(objects=boto_objects))
         boto_delete_request = {"Objects": boto_objects}
         bucket.delete_objects(Delete=boto_delete_request)
     else:
-        LOGGER.info(T("coal.logs.storage.no_objects"))
+        LOGGER.info(T("coal.services.azure_storage.no_objects"))

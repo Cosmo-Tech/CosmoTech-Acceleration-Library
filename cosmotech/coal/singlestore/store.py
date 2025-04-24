@@ -37,7 +37,7 @@ def _get_data(table_name: str, output_directory: str, cursor) -> None:
     rows = cursor.fetchall()
     end_time = time.perf_counter()
     LOGGER.info(
-        T("coal.logs.database.rows_fetched").format(
+        T("coal.services.database.rows_fetched").format(
             table=table_name, count=len(rows), time=round(end_time - start_time, 2)
         )
     )
@@ -89,12 +89,12 @@ def load_from_singlestore(
                 table_names = cur.fetchall()
             else:
                 table_names = single_store_tables.split(",")
-            LOGGER.info(T("coal.logs.database.tables_to_fetch").format(tables=table_names))
+            LOGGER.info(T("coal.services.database.tables_to_fetch").format(tables=table_names))
             for name in table_names:
                 _get_data(name, single_store_working_dir, cur)
     end_full = time.perf_counter()
-    LOGGER.info(T("coal.logs.database.full_dataset").format(time=round(end_full - start_full, 2)))
+    LOGGER.info(T("coal.services.database.full_dataset").format(time=round(end_full - start_full, 2)))
 
     for csv_path in pathlib.Path(single_store_working_dir).glob("*.csv"):
-        LOGGER.info(T("coal.logs.storage.found_file").format(file=csv_path.name))
+        LOGGER.info(T("coal.services.azure_storage.found_file").format(file=csv_path.name))
         store_csv_file(csv_path.name[:-4], csv_path, store=Store(False, store_folder))

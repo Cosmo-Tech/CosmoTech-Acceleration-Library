@@ -231,7 +231,7 @@ def download_datasets_parallel(
         for dataset_id in dataset_ids
     ]
 
-    LOGGER.info(T("coal.logs.dataset.parallel_download").format(count=len(dataset_ids)))
+    LOGGER.info(T("coal.services.dataset.parallel_download").format(count=len(dataset_ids)))
 
     [p.start() for _, p in processes]
     [p.join() for _, p in processes]
@@ -270,7 +270,7 @@ def download_datasets_sequential(
     return_dict = {}
     error_dict = {}
 
-    LOGGER.info(T("coal.logs.dataset.sequential_download").format(count=len(dataset_ids)))
+    LOGGER.info(T("coal.services.dataset.sequential_download").format(count=len(dataset_ids)))
 
     for dataset_id in dataset_ids:
         try:

@@ -36,7 +36,7 @@ def upload_file(
         file_prefix: Prefix to add to the file name in the blob
     """
     uploaded_file_name = blob_name + "/" + file_prefix + file_path.name
-    LOGGER.info(T("coal.logs.data_transfer.file_sent").format(file_path=file_path, uploaded_name=uploaded_file_name))
+    LOGGER.info(T("coal.common.data_transfer.file_sent").format(file_path=file_path, uploaded_name=uploaded_file_name))
     ContainerClient.from_container_url(az_storage_sas_url).upload_blob(
         uploaded_file_name, file_path.open("rb"), overwrite=True
     )
@@ -61,8 +61,8 @@ def upload_folder(
     """
     source_path = pathlib.Path(source_folder)
     if not source_path.exists():
-        LOGGER.error(T("coal.errors.file_system.file_not_found").format(source_folder=source_folder))
-        raise FileNotFoundError(T("coal.errors.file_system.file_not_found").format(source_folder=source_folder))
+        LOGGER.error(T("coal.common.file_operations.not_found").format(source_folder=source_folder))
+        raise FileNotFoundError(T("coal.common.file_operations.not_found").format(source_folder=source_folder))
 
     if source_path.is_dir():
         _source_name = str(source_path)

@@ -1,4 +1,0 @@
-no_table: "No table with name {table_name} exists"
-parameter_not_exists: "Parameter {parameter_name} does not exists"
-invalid_output_type: "{output_type} is not a valid type of output"
-no_workspace_files: "No workspace file were found with filter {file_prefix} in workspace {workspace_id}"

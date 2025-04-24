@@ -1,0 +1,5 @@
+# Timing-related messages
+operation_completed: "Operation '{operation}' completed in {time} seconds"
+full_process: "Full process completed in {time} seconds"
+download_completed: "{type} download completed in {time} seconds"
+processing_time: "Processing took {time} seconds"

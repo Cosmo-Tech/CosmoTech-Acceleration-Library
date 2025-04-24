@@ -69,7 +69,7 @@ def format_parameters_list(runner_data: Any) -> List[Dict[str, Any]]:
         )
 
         LOGGER.debug(
-            T("coal.logs.runner.parameter_debug").format(
+            T("coal.cosmotech_api.runner.parameter_debug").format(
                 param_id=parameter_name,
                 max_name_size=max_name_size,
                 var_type=var_type,
@@ -96,7 +96,7 @@ def write_parameters_to_json(parameter_folder: str, parameters: List[Dict[str, A
     pathlib.Path(parameter_folder).mkdir(exist_ok=True, parents=True)
     tmp_parameter_file = os.path.join(parameter_folder, "parameters.json")
 
-    LOGGER.info(T("coal.logs.runner.generating_file").format(file=tmp_parameter_file))
+    LOGGER.info(T("coal.cosmotech_api.runner.generating_file").format(file=tmp_parameter_file))
 
     with open(tmp_parameter_file, "w") as _file:
         json.dump(parameters, _file, indent=2)
@@ -118,7 +118,7 @@ def write_parameters_to_csv(parameter_folder: str, parameters: List[Dict[str, An
     pathlib.Path(parameter_folder).mkdir(exist_ok=True, parents=True)
     tmp_parameter_file = os.path.join(parameter_folder, "parameters.csv")
 
-    LOGGER.info(T("coal.logs.runner.generating_file").format(file=tmp_parameter_file))
+    LOGGER.info(T("coal.cosmotech_api.runner.generating_file").format(file=tmp_parameter_file))
 
     with open(tmp_parameter_file, "w") as _file:
         _w = DictWriter(_file, fieldnames=["parameterId", "value", "varType", "isInherited"])

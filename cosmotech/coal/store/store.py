@@ -55,7 +55,7 @@ class Store:
         with dbapi.connect(self._database, autocommit=True) as conn:
             with conn.cursor() as curs:
                 rows = curs.adbc_ingest(table_name, data, "replace" if replace else "create_append")
-                LOGGER.debug(T("coal.logs.data_transfer.rows_inserted").format(rows=rows, table_name=table_name))
+                LOGGER.debug(T("coal.common.data_transfer.rows_inserted").format(rows=rows, table_name=table_name))
 
     def execute_query(self, sql_query: str) -> pyarrow.Table:
         batch_size = 1024

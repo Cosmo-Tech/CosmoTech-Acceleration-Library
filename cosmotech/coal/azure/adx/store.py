@@ -45,7 +45,7 @@ def send_table_data(
     Returns:
         tuple: (source_id, table_name)
     """
-    LOGGER.debug(T("coal.logs.adx.store.sending_data").format(table_name=table_name))
+    LOGGER.debug(T("coal.services.adx.sending_data").format(table_name=table_name))
     result = send_pyarrow_table_to_adx(ingest_client, database, table_name, data, operation_tag)
     return result.source_id, table_name
 
@@ -69,15 +69,15 @@ def process_tables(
     source_ids = []
     table_ingestion_id_mapping = dict()
 
-    LOGGER.debug(T("coal.logs.adx.store.listing_tables"))
+    LOGGER.debug(T("coal.services.adx.listing_tables"))
     table_list = list(store.list_tables())
 
     for target_table_name in table_list:
-        LOGGER.info(T("coal.logs.adx.store.working_on_table").format(table_name=target_table_name))
+        LOGGER.info(T("coal.services.adx.working_on_table").format(table_name=target_table_name))
         data = store.get_table(target_table_name)
 
         if data.num_rows < 1:
-            LOGGER.warning(T("coal.logs.adx.store.table_empty").format(table_name=target_table_name))
+            LOGGER.warning(T("coal.services.adx.table_empty").format(table_name=target_table_name))
             continue
 
         check_and_create_table(kusto_client, database, target_table_name, data)
@@ -140,14 +140,14 @@ def send_store_to_adx(
     """
     # Generate a unique operation tag if none provided
     operation_tag = tag or f"op-{str(uuid.uuid4())}"
-    LOGGER.debug(T("coal.logs.adx.store.starting_ingestion").format(operation_tag=operation_tag))
+    LOGGER.debug(T("coal.services.adx.starting_ingestion").format(operation_tag=operation_tag))
 
     # Initialize clients
     kusto_client, ingest_client = initialize_clients(adx_uri, adx_ingest_uri)
     database = database_name
 
     # Load datastore
-    LOGGER.debug(T("coal.logs.adx.store.loading_datastore"))
+    LOGGER.debug(T("coal.services.adx.loading_datastore"))
     store = Store(store_location=store_location)
 
     try:
@@ -156,7 +156,7 @@ def send_store_to_adx(
             store, kusto_client, ingest_client, database, operation_tag
         )
 
-        LOGGER.info(T("coal.logs.adx.store.data_sent"))
+        LOGGER.info(T("coal.services.adx.data_sent"))
 
         # Monitor ingestion if wait is True
         has_failures = False
@@ -171,9 +171,9 @@ def send_store_to_adx(
         return True
 
     except Exception as e:
-        LOGGER.exception(T("coal.logs.adx.store.ingestion_error"))
+        LOGGER.exception(T("coal.services.adx.ingestion_error"))
         # Perform rollback using the tag
-        LOGGER.warning(T("coal.logs.adx.store.dropping_data").format(operation_tag=operation_tag))
+        LOGGER.warning(T("coal.services.adx.dropping_data").format(operation_tag=operation_tag))
         _drop_by_tag(kusto_client, database, operation_tag)
         raise e
 
@@ -207,16 +207,16 @@ def dump_store_to_adx(
 
     tables = list(_s.list_tables())
     if len(tables):
-        LOGGER.info(T("coal.logs.database.sending_data").format(table=f"{postgres_db}.{postgres_schema}"))
+        LOGGER.info(T("coal.services.database.sending_data").format(table=f"{postgres_db}.{postgres_schema}"))
         total_rows = 0
         _process_start = perf_counter()
         for table_name in tables:
             _s_time = perf_counter()
             target_table_name = f"{table_prefix}{table_name}"
-            LOGGER.info(T("coal.logs.database.table_entry").format(table=target_table_name))
+            LOGGER.info(T("coal.services.database.table_entry").format(table=target_table_name))
             data = _s.get_table(table_name)
             if not len(data):
-                LOGGER.info(T("coal.logs.database.no_rows"))
+                LOGGER.info(T("coal.services.database.no_rows"))
                 continue
             _dl_time = perf_counter()
             rows = send_pyarrow_table_to_postgresql(
@@ -232,24 +232,24 @@ def dump_store_to_adx(
             )
             total_rows += rows
             _up_time = perf_counter()
-            LOGGER.info(T("coal.logs.database.row_count").format(count=rows))
+            LOGGER.info(T("coal.services.database.row_count").format(count=rows))
             LOGGER.debug(
-                T("coal.logs.progress.operation_timing").format(
+                T("coal.common.timing.operation_completed").format(
                     operation="Load from datastore", time=f"{_dl_time - _s_time:0.3}"
                 )
             )
             LOGGER.debug(
-                T("coal.logs.progress.operation_timing").format(
+                T("coal.common.timing.operation_completed").format(
                     operation="Send to postgresql", time=f"{_up_time - _dl_time:0.3}"
                 )
             )
         _process_end = perf_counter()
         LOGGER.info(
-            T("coal.logs.database.rows_fetched").format(
+            T("coal.services.database.rows_fetched").format(
                 table="all tables",
                 count=total_rows,
                 time=f"{_process_end - _process_start:0.3}",
             )
         )
     else:
-        LOGGER.info(T("coal.logs.database.store_empty"))
+        LOGGER.info(T("coal.services.database.store_empty"))

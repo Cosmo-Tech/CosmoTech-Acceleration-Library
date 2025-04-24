@@ -29,33 +29,35 @@ def read_solution_file(solution_file) -> Optional[Solution]:
     elif solution_path.suffix == ".json":
         open_function = json.load
     else:
-        LOGGER.error(T("coal.errors.solution.invalid_file").format(file=solution_file))
+        LOGGER.error(T("coal.cosmotech_api.solution.invalid_file").format(file=solution_file))
         return None
     with solution_path.open() as _sf:
         solution_content = open_function(_sf)
-    LOGGER.info(T("coal.solution.loaded").format(path=solution_path.absolute()))
+    LOGGER.info(T("coal.cosmotech_api.solution.loaded").format(path=solution_path.absolute()))
     _solution = Solution(
         _configuration=cosmotech_api.Configuration(),
         _spec_property_naming=True,
         **solution_content,
     )
     LOGGER.debug(
-        T("coal.logs.api.solution_debug").format(solution=json.dumps(_solution.to_dict(), indent=2, default=str))
+        T("coal.services.api.solution_debug").format(solution=json.dumps(_solution.to_dict(), indent=2, default=str))
     )
     return _solution
 
 
 def get_solution(organization_id, workspace_id) -> Optional[Solution]:
-    LOGGER.info(T("coal.solution.api_configured"))
+    LOGGER.info(T("coal.cosmotech_api.solution.api_configured"))
     with get_api_client()[0] as api_client:
         api_w = WorkspaceApi(api_client)
 
-        LOGGER.info(T("coal.solution.loading_workspace"))
+        LOGGER.info(T("coal.cosmotech_api.solution.loading_workspace"))
         try:
             r_data: Workspace = api_w.find_workspace_by_id(organization_id=organization_id, workspace_id=workspace_id)
         except ServiceException as e:
             LOGGER.error(
-                T("coal.errors.workspace.not_found").format(workspace_id=workspace_id, organization_id=organization_id)
+                T("coal.cosmotech_api.workspace.not_found").format(
+                    workspace_id=workspace_id, organization_id=organization_id
+                )
             )
             LOGGER.debug(e)
             return None

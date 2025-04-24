@@ -43,9 +43,9 @@ def download_file_dataset(
         Tuple of (content dict, folder path)
     """
     start_time = time.time()
-    LOGGER.info(T("coal.logs.dataset.download_started").format(dataset_type="File"))
+    LOGGER.info(T("coal.services.dataset.download_started").format(dataset_type="File"))
     LOGGER.debug(
-        T("coal.logs.dataset.file_downloading").format(
+        T("coal.services.dataset.file_downloading").format(
             organization_id=organization_id,
             workspace_id=workspace_id,
             file_name=file_name,
@@ -60,7 +60,7 @@ def download_file_dataset(
         tmp_dataset_dir.mkdir(parents=True, exist_ok=True)
         tmp_dataset_dir = str(tmp_dataset_dir)
 
-    LOGGER.debug(T("coal.logs.dataset.using_folder").format(folder=tmp_dataset_dir))
+    LOGGER.debug(T("coal.services.dataset.using_folder").format(folder=tmp_dataset_dir))
 
     content = dict()
 
@@ -69,23 +69,23 @@ def download_file_dataset(
 
         # Find all files matching the pattern
         list_start = time.time()
-        LOGGER.debug(T("coal.logs.dataset.listing_workspace_files"))
+        LOGGER.debug(T("coal.services.dataset.listing_workspace_files"))
         all_api_files = api_ws.find_all_workspace_files(organization_id, workspace_id)
 
         existing_files = list(_f.file_name for _f in all_api_files if _f.file_name.startswith(file_name))
         list_time = time.time() - list_start
 
-        LOGGER.debug(T("coal.logs.dataset.workspace_files_found").format(count=len(existing_files)))
-        LOGGER.debug(T("coal.logs.dataset.operation_timing").format(operation="file listing", time=list_time))
+        LOGGER.debug(T("coal.services.dataset.workspace_files_found").format(count=len(existing_files)))
+        LOGGER.debug(T("coal.common.timing.operation_completed").format(operation="file listing", time=list_time))
 
         if not existing_files:
-            LOGGER.warning(T("coal.logs.dataset.no_files_found").format(file_name=file_name))
+            LOGGER.warning(T("coal.services.dataset.no_files_found").format(file_name=file_name))
             return content, Path(tmp_dataset_dir)
 
         # Download and process each file
         for _file_name in existing_files:
             download_start = time.time()
-            LOGGER.debug(T("coal.logs.dataset.downloading_file").format(file_name=_file_name))
+            LOGGER.debug(T("coal.services.dataset.downloading_file").format(file_name=_file_name))
 
             dl_file = api_ws.download_workspace_file(
                 organization_id=organization_id,
@@ -98,9 +98,11 @@ def download_file_dataset(
                 tmp_file.write(dl_file)
 
             download_time = time.time() - download_start
-            LOGGER.debug(T("coal.logs.dataset.file_downloaded").format(file_name=_file_name, path=target_file))
+            LOGGER.debug(T("coal.services.dataset.file_downloaded").format(file_name=_file_name, path=target_file))
             LOGGER.debug(
-                T("coal.logs.dataset.operation_timing").format(operation=f"download {_file_name}", time=download_time)
+                T("coal.common.timing.operation_completed").format(
+                    operation=f"download {_file_name}", time=download_time
+                )
             )
 
             if not read_files:
@@ -110,7 +112,7 @@ def download_file_dataset(
             process_start = time.time()
 
             if ".xls" in _file_name:
-                LOGGER.debug(T("coal.logs.dataset.processing_excel").format(file_name=target_file))
+                LOGGER.debug(T("coal.services.dataset.processing_excel").format(file_name=target_file))
                 wb = load_workbook(target_file, data_only=True)
 
                 for sheet_name in wb.sheetnames:
@@ -139,10 +141,12 @@ def download_file_dataset(
                             content[sheet_name].append(new_row)
                             row_count += 1
 
-                    LOGGER.debug(T("coal.logs.dataset.sheet_processed").format(sheet_name=sheet_name, rows=row_count))
+                    LOGGER.debug(
+                        T("coal.services.dataset.sheet_processed").format(sheet_name=sheet_name, rows=row_count)
+                    )
 
             elif ".csv" in _file_name:
-                LOGGER.debug(T("coal.logs.dataset.processing_csv").format(file_name=target_file))
+                LOGGER.debug(T("coal.services.dataset.processing_csv").format(file_name=target_file))
                 with open(target_file, "r") as file:
                     current_filename = os.path.basename(target_file)[: -len(".csv")]
                     content[current_filename] = list()
@@ -169,11 +173,11 @@ def download_file_dataset(
                         row_count += 1
 
                     LOGGER.debug(
-                        T("coal.logs.dataset.csv_processed").format(file_name=current_filename, rows=row_count)
+                        T("coal.services.dataset.csv_processed").format(file_name=current_filename, rows=row_count)
                     )
 
             elif ".json" in _file_name:
-                LOGGER.debug(T("coal.logs.dataset.processing_json").format(file_name=target_file))
+                LOGGER.debug(T("coal.services.dataset.processing_json").format(file_name=target_file))
                 with open(target_file, "r") as _file:
                     current_filename = os.path.basename(target_file)
                     content[current_filename] = json.load(_file)
@@ -186,27 +190,27 @@ def download_file_dataset(
                         item_count = 1
 
                     LOGGER.debug(
-                        T("coal.logs.dataset.json_processed").format(file_name=current_filename, items=item_count)
+                        T("coal.services.dataset.json_processed").format(file_name=current_filename, items=item_count)
                     )
 
             else:
-                LOGGER.debug(T("coal.logs.dataset.processing_text").format(file_name=target_file))
+                LOGGER.debug(T("coal.services.dataset.processing_text").format(file_name=target_file))
                 with open(target_file, "r") as _file:
                     current_filename = os.path.basename(target_file)
                     content[current_filename] = "\n".join(line for line in _file)
 
                     line_count = content[current_filename].count("\n") + 1
                     LOGGER.debug(
-                        T("coal.logs.dataset.text_processed").format(file_name=current_filename, lines=line_count)
+                        T("coal.services.dataset.text_processed").format(file_name=current_filename, lines=line_count)
                     )
 
             process_time = time.time() - process_start
             LOGGER.debug(
-                T("coal.logs.dataset.operation_timing").format(operation=f"process {_file_name}", time=process_time)
+                T("coal.common.timing.operation_completed").format(operation=f"process {_file_name}", time=process_time)
             )
 
     elapsed_time = time.time() - start_time
-    LOGGER.info(T("coal.logs.dataset.operation_timing").format(operation="File download", time=elapsed_time))
-    LOGGER.info(T("coal.logs.dataset.download_completed").format(dataset_type="File"))
+    LOGGER.info(T("coal.common.timing.operation_completed").format(operation="File download", time=elapsed_time))
+    LOGGER.info(T("coal.services.dataset.download_completed").format(dataset_type="File"))
 
     return content, Path(tmp_dataset_dir)

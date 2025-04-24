@@ -1,3 +1,4 @@
+# Azure Storage-specific messages
 deleting_objects: "Deleting {objects}"
 no_objects: "No objects to delete"
 downloading: "Downloading {path} to {output}"

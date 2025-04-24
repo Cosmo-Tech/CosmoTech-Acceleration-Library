@@ -1,3 +1,4 @@
+# Data transfer messages
 sending_table: "Sending table {table_name} as {output_type}"
 sending_data: "  Sending {size} bytes of data"
 table_empty: "Table {table_name} is empty (skipping)"

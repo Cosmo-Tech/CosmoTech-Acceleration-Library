@@ -1,0 +1,7 @@
+# Common error messages
+no_env_vars: "No environment variables found for connection"
+missing_var: "Missing environment variable: {envvar}"
+no_valid_connection: "No valid connection configuration found"
+no_credentials: "No credentials available for connection"
+operation_failed: "Operation '{operation}' failed: {error}"
+unexpected_error: "Unexpected error: {error}"

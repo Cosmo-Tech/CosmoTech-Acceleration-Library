@@ -1,3 +1,4 @@
+# Runner-specific messages
 starting_download: "Starting the Run data download"
 no_parameters: "no parameters found in the runner"
 loaded_data: "Loaded run data"

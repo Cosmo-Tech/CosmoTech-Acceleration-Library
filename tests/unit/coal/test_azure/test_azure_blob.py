@@ -38,7 +38,7 @@ class TestBlobFunctions:
 
         with patch("cosmotech.coal.azure.blob.Store", return_value=mock_store):
             # Act & Assert
-            with pytest.raises(ValueError, match="is not a valid type of output"):
+            with pytest.raises(ValueError, match="Invalid output type"):
                 dump_store_to_azure(
                     store_folder=store_folder,
                     account_name=account_name,

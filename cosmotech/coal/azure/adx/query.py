@@ -24,11 +24,13 @@ def run_query(client: KustoClient, database: str, query: str) -> KustoResponseDa
     Returns:
         KustoResponseDataSet: The results of the query
     """
-    LOGGER.debug(T("coal.logs.adx.running_query").format(database=database, query=query))
+    LOGGER.debug(T("coal.services.adx.running_query").format(database=database, query=query))
 
     result = client.execute(database, query)
     LOGGER.debug(
-        T("coal.logs.adx.query_complete").format(rows=len(result.primary_results[0]) if result.primary_results else 0)
+        T("coal.services.adx.query_complete").format(
+            rows=len(result.primary_results[0]) if result.primary_results else 0
+        )
     )
 
     return result
@@ -46,9 +48,9 @@ def run_command_query(client: KustoClient, database: str, query: str) -> KustoRe
     Returns:
         KustoResponseDataSet: The results of the query
     """
-    LOGGER.debug(T("coal.logs.adx.running_command").format(database=database, query=query))
+    LOGGER.debug(T("coal.services.adx.running_command").format(database=database, query=query))
 
     result = client.execute_mgmt(database, query)
-    LOGGER.debug(T("coal.logs.adx.command_complete"))
+    LOGGER.debug(T("coal.services.adx.command_complete"))
 
     return result

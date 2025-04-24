@@ -1,3 +1,4 @@
+# Database-specific messages
 creating_table: "creating table {table}"
 updating_metadata: "adding/updating runner metadata"
 metadata_updated: "Runner metadata table has been updated"

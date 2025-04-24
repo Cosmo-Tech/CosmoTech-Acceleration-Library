@@ -36,15 +36,15 @@ def download_adt_dataset(
         Tuple of (content dict, folder path)
     """
     start_time = time.time()
-    LOGGER.info(T("coal.logs.dataset.download_started").format(dataset_type="ADT"))
-    LOGGER.debug(T("coal.logs.dataset.adt_connecting").format(url=adt_address))
+    LOGGER.info(T("coal.services.dataset.download_started").format(dataset_type="ADT"))
+    LOGGER.debug(T("coal.services.dataset.adt_connecting").format(url=adt_address))
 
     # Create credentials if not provided
     if credentials is None:
         if get_api_client()[1] == "Azure Entra Connection":
             credentials = DefaultAzureCredential()
         else:
-            LOGGER.error(T("coal.logs.dataset.adt_no_credentials"))
+            LOGGER.error(T("coal.services.dataset.adt_no_credentials"))
             raise ValueError("No credentials available for ADT connection")
 
     # Create client and download data
@@ -52,7 +52,7 @@ def download_adt_dataset(
 
     # Query twins
     query_start = time.time()
-    LOGGER.debug(T("coal.logs.dataset.adt_querying_twins"))
+    LOGGER.debug(T("coal.services.dataset.adt_querying_twins"))
     query_expression = "SELECT * FROM digitaltwins"
     query_result = client.query_twins(query_expression)
 
@@ -74,12 +74,12 @@ def download_adt_dataset(
         json_content[entity_type].append(t_content)
 
     query_time = time.time() - query_start
-    LOGGER.debug(T("coal.logs.dataset.adt_twins_found").format(count=twin_count))
-    LOGGER.debug(T("coal.logs.dataset.operation_timing").format(operation="twins query", time=query_time))
+    LOGGER.debug(T("coal.services.dataset.adt_twins_found").format(count=twin_count))
+    LOGGER.debug(T("coal.common.timing.operation_completed").format(operation="twins query", time=query_time))
 
     # Query relationships
     rel_start = time.time()
-    LOGGER.debug(T("coal.logs.dataset.adt_querying_relations"))
+    LOGGER.debug(T("coal.services.dataset.adt_querying_relations"))
     relations_query = "SELECT * FROM relationships"
     query_result = client.query_twins(relations_query)
 
@@ -102,8 +102,8 @@ def download_adt_dataset(
         json_content[relation["$relationshipName"]].append(r_content)
 
     rel_time = time.time() - rel_start
-    LOGGER.debug(T("coal.logs.dataset.adt_relations_found").format(count=relation_count))
-    LOGGER.debug(T("coal.logs.dataset.operation_timing").format(operation="relations query", time=rel_time))
+    LOGGER.debug(T("coal.services.dataset.adt_relations_found").format(count=relation_count))
+    LOGGER.debug(T("coal.common.timing.operation_completed").format(operation="relations query", time=rel_time))
 
     # Convert to files if target_folder is provided
     if target_folder:
@@ -113,7 +113,7 @@ def download_adt_dataset(
         target_folder = tempfile.mkdtemp()
 
     elapsed_time = time.time() - start_time
-    LOGGER.info(T("coal.logs.dataset.operation_timing").format(operation="ADT download", time=elapsed_time))
-    LOGGER.info(T("coal.logs.dataset.download_completed").format(dataset_type="ADT"))
+    LOGGER.info(T("coal.common.timing.operation_completed").format(operation="ADT download", time=elapsed_time))
+    LOGGER.info(T("coal.services.dataset.download_completed").format(dataset_type="ADT"))
 
     return json_content, Path(target_folder)

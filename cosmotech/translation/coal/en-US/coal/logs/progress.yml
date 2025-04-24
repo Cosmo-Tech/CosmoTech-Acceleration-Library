@@ -1,3 +1,0 @@
-loading_file: "Loading {file_name} from the API"
-file_loaded: "{file} successfully loaded from the API"
-operation_timing: "{operation} took {time:0.3}s"

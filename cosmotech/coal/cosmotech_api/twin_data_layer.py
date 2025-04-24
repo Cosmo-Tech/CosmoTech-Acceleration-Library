@@ -38,7 +38,7 @@ class CSVSourceFile:
     def __init__(self, file_path: pathlib.Path):
         self.file_path = file_path
         if not file_path.name.endswith(".csv"):
-            raise ValueError(T("coal.errors.validation.not_csv_file").format(file_path=file_path))
+            raise ValueError(T("coal.common.validation.not_csv_file").format(file_path=file_path))
         with open(file_path) as _file:
             dr = DictReader(_file)
             self.fields = list(dr.fieldnames)
@@ -63,16 +63,16 @@ class CSVSourceFile:
         is_relation = all([has_source, has_target])
 
         if not has_id and not is_relation:
-            LOGGER.error(T("coal.errors.validation.invalid_nodes_relations").format(file_path=file_path))
-            LOGGER.error(T("coal.errors.validation.node_requirements").format(id_column=ID_COLUMN))
+            LOGGER.error(T("coal.common.validation.invalid_nodes_relations").format(file_path=file_path))
+            LOGGER.error(T("coal.common.validation.node_requirements").format(id_column=ID_COLUMN))
             LOGGER.error(
-                T("coal.errors.validation.relationship_requirements").format(
+                T("coal.common.validation.relationship_requirements").format(
                     id_column=ID_COLUMN,
                     source_column=SOURCE_COLUMN,
                     target_column=TARGET_COLUMN,
                 )
             )
-            raise ValueError(T("coal.errors.validation.invalid_nodes_relations").format(file_path=file_path))
+            raise ValueError(T("coal.common.validation.invalid_nodes_relations").format(file_path=file_path))
 
         self.is_node = has_id and not is_relation
 
@@ -159,8 +159,10 @@ def get_dataset_id_from_runner(organization_id: str, workspace_id: str, runner_i
     )
 
     if (datasets_len := len(runner_info.dataset_list)) != 1:
-        LOGGER.error(T("coal.logs.runner.not_single_dataset").format(runner_id=runner_info.id, count=datasets_len))
-        LOGGER.debug(T("coal.logs.runner.runner_info").format(info=runner_info))
+        LOGGER.error(
+            T("coal.cosmotech_api.runner.not_single_dataset").format(runner_id=runner_info.id, count=datasets_len)
+        )
+        LOGGER.debug(T("coal.cosmotech_api.runner.runner_info").format(info=runner_info))
         raise ValueError(f"Runner {runner_info.id} does not have exactly one dataset")
 
     return runner_info.dataset_list[0]
@@ -202,17 +204,17 @@ def send_files_to_tdl(
 
     content_path = pathlib.Path(directory_path)
     if not content_path.is_dir():
-        LOGGER.error(T("coal.errors.file_system.not_directory").format(target_dir=directory_path))
+        LOGGER.error(T("coal.common.file_operations.not_directory").format(target_dir=directory_path))
         raise ValueError(f"{directory_path} is not a directory")
 
     # Process CSV files
     for file_path in content_path.glob("*.csv"):
         _csv = CSVSourceFile(file_path)
         if _csv.is_node:
-            LOGGER.info(T("coal.logs.storage.sending_content").format(file=file_path))
+            LOGGER.info(T("coal.services.azure_storage.sending_content").format(file=file_path))
             entities_queries[file_path] = _csv.generate_query_insert()
         else:
-            LOGGER.info(T("coal.logs.storage.sending_content").format(file=file_path))
+            LOGGER.info(T("coal.services.azure_storage.sending_content").format(file=file_path))
             relation_queries[file_path] = _csv.generate_query_insert()
 
     # Prepare headers
@@ -228,7 +230,7 @@ def send_files_to_tdl(
 
     # Clear dataset if requested
     if clear:
-        LOGGER.info(T("coal.logs.storage.clearing_content"))
+        LOGGER.info(T("coal.services.azure_storage.clearing_content"))
         clear_query = "MATCH (n) DETACH DELETE n"
         api_ds.twingraph_query(organization_id, dataset_id, DatasetTwinGraphQuery(query=str(clear_query)))
 
@@ -244,7 +246,7 @@ def send_files_to_tdl(
                 header=header,
             )
 
-    LOGGER.info(T("coal.logs.storage.all_data_sent"))
+    LOGGER.info(T("coal.services.azure_storage.all_data_sent"))
 
     # Update dataset status
     dataset_info.ingestion_status = "SUCCESS"
@@ -276,7 +278,7 @@ def _process_csv_file(
     batch = 1
     errors = []
     query_craft = api_url + f"/organizations/{organization_id}/datasets/{dataset_id}/batch?query={query}"
-    LOGGER.info(T("coal.logs.storage.sending_content").format(file=file_path))
+    LOGGER.info(T("coal.services.azure_storage.sending_content").format(file=file_path))
 
     with open(file_path, "r") as _f:
         dr = DictReader(_f)
@@ -286,7 +288,7 @@ def _process_csv_file(
             dw.writerow(row)
             size += 1
             if size > BATCH_SIZE_LIMIT:
-                LOGGER.info(T("coal.logs.storage.row_batch").format(count=batch * BATCH_SIZE_LIMIT))
+                LOGGER.info(T("coal.services.azure_storage.row_batch").format(count=batch * BATCH_SIZE_LIMIT))
                 batch += 1
                 content.seek(0)
                 post = requests.post(query_craft, data=content.read(), headers=header)
@@ -307,9 +309,9 @@ def _process_csv_file(
         errors.extend(json.loads(post.content)["errors"])
 
     if len(errors):
-        LOGGER.error(T("coal.logs.storage.import_errors").format(count=len(errors)))
+        LOGGER.error(T("coal.services.azure_storage.import_errors").format(count=len(errors)))
         for _err in errors:
-            LOGGER.error(T("coal.logs.storage.error_detail").format(error=str(_err)))
+            LOGGER.error(T("coal.services.azure_storage.error_detail").format(error=str(_err)))
         raise ValueError(f"Error importing data from {file_path}")
 
 
@@ -338,15 +340,17 @@ def load_files_from_tdl(
     dataset_info = api_ds.find_dataset_by_id(organization_id, dataset_id)
     if dataset_info.ingestion_status != "SUCCESS":
         LOGGER.error(
-            T("coal.logs.runner.dataset_state").format(dataset_id=dataset_id, status=dataset_info.ingestion_status)
+            T("coal.cosmotech_api.runner.dataset_state").format(
+                dataset_id=dataset_id, status=dataset_info.ingestion_status
+            )
         )
-        LOGGER.debug(T("coal.logs.runner.dataset_info").format(info=dataset_info))
+        LOGGER.debug(T("coal.cosmotech_api.runner.dataset_info").format(info=dataset_info))
         raise ValueError(f"Dataset {dataset_id} is not in SUCCESS state")
 
     # Create directory
     directory_path = pathlib.Path(directory_path)
     if directory_path.is_file():
-        LOGGER.error(T("coal.errors.file_system.not_directory").format(target_dir=directory_path))
+        LOGGER.error(T("coal.common.file_operations.not_directory").format(target_dir=directory_path))
         raise ValueError(f"{directory_path} is not a directory")
 
     directory_path.mkdir(parents=True, exist_ok=True)
@@ -369,7 +373,7 @@ def load_files_from_tdl(
     files_content, files_headers = _execute_queries(api_ds, organization_id, dataset_id, item_queries)
     _write_files(directory_path, files_content, files_headers)
 
-    LOGGER.info(T("coal.logs.storage.all_csv_written"))
+    LOGGER.info(T("coal.services.azure_storage.all_csv_written"))
 
 
 def _get_node_properties(api_ds: DatasetApi, organization_id: str, dataset_id: str) -> Dict[str, Set[str]]:
@@ -479,7 +483,9 @@ def _write_files(
     """
     for file_name in files_content.keys():
         file_path = directory_path / (file_name + ".csv")
-        LOGGER.info(T("coal.logs.storage.writing_lines").format(count=len(files_content[file_name]), file=file_path))
+        LOGGER.info(
+            T("coal.services.azure_storage.writing_lines").format(count=len(files_content[file_name]), file=file_path)
+        )
         with file_path.open("w") as _f:
             headers = files_headers[file_name]
             has_id = "id" in headers

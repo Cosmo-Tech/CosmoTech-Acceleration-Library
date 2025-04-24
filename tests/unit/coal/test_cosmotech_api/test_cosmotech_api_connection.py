@@ -41,9 +41,7 @@ class TestConnectionFunctions:
         # Arrange
         with patch.dict(os.environ, {}, clear=True):
             # Act & Assert
-            with pytest.raises(
-                EnvironmentError, match="No set of environment variables found for a valid Cosmo Tech API connection"
-            ):
+            with pytest.raises(EnvironmentError, match="No environment variables found for connection"):
                 get_api_client()
 
     def test_get_api_client_with_api_key(self):
@@ -282,9 +280,7 @@ class TestConnectionFunctions:
 
         with patch.dict(os.environ, env_vars, clear=True):
             # Act & Assert
-            with pytest.raises(
-                EnvironmentError, match="No set of environment variables found for a valid Cosmo Tech API connection"
-            ):
+            with pytest.raises(EnvironmentError, match="No environment variables found for connection"):
                 get_api_client()
 
     def test_env_keys_constants(self):

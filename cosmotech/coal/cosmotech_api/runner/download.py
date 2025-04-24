@@ -63,7 +63,7 @@ def download_runner_data(
     Returns:
         Dictionary with runner data, datasets, and parameters
     """
-    LOGGER.info(T("coal.logs.runner.starting_download"))
+    LOGGER.info(T("coal.cosmotech_api.runner.starting_download"))
 
     # Get credentials if needed
     credentials = None
@@ -78,10 +78,10 @@ def download_runner_data(
 
     # Skip if no parameters found
     if not runner_data.parameters_values:
-        LOGGER.warning(T("coal.logs.runner.no_parameters"))
+        LOGGER.warning(T("coal.cosmotech_api.runner.no_parameters"))
         return result
 
-    LOGGER.info(T("coal.logs.runner.loaded_data"))
+    LOGGER.info(T("coal.cosmotech_api.runner.loaded_data"))
 
     # Format parameters
     parameters = format_parameters_list(runner_data)
@@ -92,7 +92,7 @@ def download_runner_data(
         dataset_ids = get_dataset_ids_from_runner(runner_data)
 
         if dataset_ids:
-            LOGGER.info(T("coal.logs.runner.downloading_datasets").format(count=len(dataset_ids)))
+            LOGGER.info(T("coal.cosmotech_api.runner.downloading_datasets").format(count=len(dataset_ids)))
 
             datasets = download_datasets(
                 organization_id=organization_id,
@@ -134,11 +134,13 @@ def download_runner_data(
                     pathlib.Path(dataset_folder).mkdir(parents=True, exist_ok=True)
                     dataset_folder_path = dataset_to_file(dataset_info)
                     shutil.copytree(dataset_folder_path, dataset_folder, dirs_exist_ok=True)
-                    LOGGER.debug(T("coal.logs.runner.dataset_debug").format(folder=dataset_folder, id=dataset_id))
+                    LOGGER.debug(
+                        T("coal.cosmotech_api.runner.dataset_debug").format(folder=dataset_folder, id=dataset_id)
+                    )
 
     # Write parameters to files
     if write_json or write_csv:
-        LOGGER.info(T("coal.logs.runner.writing_parameters"))
+        LOGGER.info(T("coal.cosmotech_api.runner.writing_parameters"))
         write_parameters(parameter_folder, parameters, write_csv, write_json)
 
     return result

@@ -47,7 +47,7 @@ def send_csv_to_run_data(
     source_dir = pathlib.Path(source_folder)
 
     if not source_dir.exists():
-        LOGGER.error(T("coal.errors.file_system.file_not_found").format(source_folder=source_dir))
+        LOGGER.error(T("coal.common.file_operations.not_found").format(source_folder=source_dir))
         raise FileNotFoundError(f"{source_dir} does not exist")
 
     with get_api_client()[0] as api_client:
@@ -57,7 +57,7 @@ def send_csv_to_run_data(
                 dr = DictReader(_f)
                 table_name = csv_path.name.replace(".csv", "")
                 LOGGER.info(T("coal.logs.run_data.sending_to_table").format(table_name=f"CD_{table_name}"))
-                LOGGER.debug(T("coal.logs.database.column_list").format(columns=dr.fieldnames))
+                LOGGER.debug(T("coal.services.database.column_list").format(columns=dr.fieldnames))
                 data = []
 
                 for row in dr:
@@ -72,7 +72,7 @@ def send_csv_to_run_data(
                             n_row[k] = v
                     data.append(n_row)
 
-                LOGGER.info(T("coal.logs.database.row_count").format(count=len(data)))
+                LOGGER.info(T("coal.services.database.row_count").format(count=len(data)))
                 api_run.send_run_data(
                     organization_id,
                     workspace_id,
@@ -102,7 +102,7 @@ def send_store_to_run_data(
     source_dir = pathlib.Path(store_folder)
 
     if not source_dir.exists():
-        LOGGER.error(T("coal.errors.file_system.file_not_found").format(source_folder=source_dir))
+        LOGGER.error(T("coal.common.file_operations.not_found").format(source_folder=source_dir))
         raise FileNotFoundError(f"{source_dir} does not exist")
 
     with get_api_client()[0] as api_client:
@@ -112,15 +112,15 @@ def send_store_to_run_data(
             LOGGER.info(T("coal.logs.run_data.sending_to_table").format(table_name=f"CD_{table_name}"))
             data = convert_table_as_pylist(table_name)
             if not len(data):
-                LOGGER.info(T("coal.logs.database.no_rows"))
+                LOGGER.info(T("coal.services.database.no_rows"))
                 continue
             fieldnames = _s.get_table_schema(table_name).names
             for row in data:
                 for field in fieldnames:
                     if row[field] is None:
                         del row[field]
-            LOGGER.debug(T("coal.logs.database.column_list").format(columns=fieldnames))
-            LOGGER.info(T("coal.logs.database.row_count").format(count=len(data)))
+            LOGGER.debug(T("coal.services.database.column_list").format(columns=fieldnames))
+            LOGGER.info(T("coal.services.database.row_count").format(count=len(data)))
             api_run.send_run_data(
                 organization_id,
                 workspace_id,
@@ -160,7 +160,7 @@ def load_csv_from_run_data(
             organization_id, workspace_id, runner_id, run_id, RunDataQuery(query=query)
         )
         if query_result.result:
-            LOGGER.info(T("coal.logs.database.query_results").format(count=len(query_result.result)))
+            LOGGER.info(T("coal.services.database.query_results").format(count=len(query_result.result)))
             with open(target_dir / (file_name + ".csv"), "w") as _f:
                 headers = set()
                 for r in query_result.result:
@@ -168,6 +168,6 @@ def load_csv_from_run_data(
                 dw = DictWriter(_f, fieldnames=sorted(headers))
                 dw.writeheader()
                 dw.writerows(query_result.result)
-            LOGGER.info(T("coal.logs.database.saved_results").format(file=f"{target_dir / file_name}.csv"))
+            LOGGER.info(T("coal.services.database.saved_results").format(file=f"{target_dir / file_name}.csv"))
         else:
-            LOGGER.info(T("coal.logs.database.no_results"))
+            LOGGER.info(T("coal.services.database.no_results"))

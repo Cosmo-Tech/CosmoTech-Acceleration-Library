@@ -45,9 +45,9 @@ def download_dataset_by_id(
         Tuple of (dataset info dict, folder path)
     """
     start_time = time.time()
-    LOGGER.info(T("coal.logs.dataset.download_started").format(dataset_type="Dataset"))
+    LOGGER.info(T("coal.services.dataset.download_started").format(dataset_type="Dataset"))
     LOGGER.debug(
-        T("coal.logs.dataset.dataset_downloading").format(organization_id=organization_id, dataset_id=dataset_id)
+        T("coal.services.dataset.dataset_downloading").format(organization_id=organization_id, dataset_id=dataset_id)
     )
 
     with get_api_client()[0] as api_client:
@@ -59,9 +59,11 @@ def download_dataset_by_id(
         info_time = time.time() - info_start
 
         LOGGER.debug(
-            T("coal.logs.dataset.dataset_info_retrieved").format(dataset_name=dataset.name, dataset_id=dataset_id)
+            T("coal.services.dataset.dataset_info_retrieved").format(dataset_name=dataset.name, dataset_id=dataset_id)
         )
-        LOGGER.debug(T("coal.logs.dataset.operation_timing").format(operation="dataset info retrieval", time=info_time))
+        LOGGER.debug(
+            T("coal.common.timing.operation_completed").format(operation="dataset info retrieval", time=info_time)
+        )
 
         # Determine dataset type and download
         if dataset.connector is None:
@@ -79,7 +81,7 @@ def download_dataset_by_id(
         download_start = time.time()
 
         if is_adt:
-            LOGGER.debug(T("coal.logs.dataset.dataset_type_detected").format(type="ADT"))
+            LOGGER.debug(T("coal.services.dataset.dataset_type_detected").format(type="ADT"))
             content, folder = download_adt_dataset(
                 adt_address=parameters["AZURE_DIGITAL_TWINS_URL"],
                 target_folder=target_folder,
@@ -87,7 +89,7 @@ def download_dataset_by_id(
             dataset_type = "adt"
 
         elif is_legacy_twin_cache:
-            LOGGER.debug(T("coal.logs.dataset.dataset_type_detected").format(type="Legacy TwinGraph"))
+            LOGGER.debug(T("coal.services.dataset.dataset_type_detected").format(type="Legacy TwinGraph"))
             twin_cache_name = parameters["TWIN_CACHE_NAME"]
             content, folder = download_legacy_twingraph_dataset(
                 organization_id=organization_id,
@@ -98,10 +100,10 @@ def download_dataset_by_id(
 
         elif is_storage or is_in_workspace_file:
             if is_storage:
-                LOGGER.debug(T("coal.logs.dataset.dataset_type_detected").format(type="Storage"))
+                LOGGER.debug(T("coal.services.dataset.dataset_type_detected").format(type="Storage"))
                 _file_name = parameters["AZURE_STORAGE_CONTAINER_BLOB_PREFIX"].replace("%WORKSPACE_FILE%/", "")
             else:
-                LOGGER.debug(T("coal.logs.dataset.dataset_type_detected").format(type="Workspace File"))
+                LOGGER.debug(T("coal.services.dataset.dataset_type_detected").format(type="Workspace File"))
                 _file_name = dataset.source.location
 
             content, folder = download_file_dataset(
@@ -113,7 +115,7 @@ def download_dataset_by_id(
             dataset_type = _file_name.split(".")[-1]
 
         else:
-            LOGGER.debug(T("coal.logs.dataset.dataset_type_detected").format(type="TwinGraph"))
+            LOGGER.debug(T("coal.services.dataset.dataset_type_detected").format(type="TwinGraph"))
             content, folder = download_twingraph_dataset(
                 organization_id=organization_id,
                 dataset_id=dataset_id,
@@ -122,13 +124,17 @@ def download_dataset_by_id(
             dataset_type = "twincache"
 
         download_time = time.time() - download_start
-        LOGGER.debug(T("coal.logs.dataset.operation_timing").format(operation="content download", time=download_time))
+        LOGGER.debug(
+            T("coal.common.timing.operation_completed").format(operation="content download", time=download_time)
+        )
 
     # Prepare result
     dataset_info = {"type": dataset_type, "content": content, "name": dataset.name}
 
     elapsed_time = time.time() - start_time
-    LOGGER.info(T("coal.logs.dataset.operation_timing").format(operation="total dataset download", time=elapsed_time))
-    LOGGER.info(T("coal.logs.dataset.download_completed").format(dataset_type="Dataset"))
+    LOGGER.info(
+        T("coal.common.timing.operation_completed").format(operation="total dataset download", time=elapsed_time)
+    )
+    LOGGER.info(T("coal.services.dataset.download_completed").format(dataset_type="Dataset"))
 
     return dataset_info, folder

@@ -45,7 +45,7 @@ def get_content_from_twin_graph_data(
         Dict mapping entity types to lists of entities
     """
     LOGGER.debug(
-        T("coal.logs.dataset.processing_graph_data").format(
+        T("coal.services.dataset.processing_graph_data").format(
             nodes_count=len(nodes),
             relationships_count=len(relationships),
             restore_names=restore_names,
@@ -85,7 +85,7 @@ def get_content_from_twin_graph_data(
 
     # Log the number of entities by type
     for entity_type, entities in content.items():
-        LOGGER.debug(T("coal.logs.dataset.entity_count").format(entity_type=entity_type, count=len(entities)))
+        LOGGER.debug(T("coal.services.dataset.entity_count").format(entity_type=entity_type, count=len(entities)))
 
     return content
 
@@ -100,7 +100,7 @@ def sheet_to_header(sheet_content: List[Dict]) -> List[str]:
     Returns:
         List of field names with id, source, and target fields first if present
     """
-    LOGGER.debug(T("coal.logs.dataset.extracting_headers").format(rows=len(sheet_content)))
+    LOGGER.debug(T("coal.services.dataset.extracting_headers").format(rows=len(sheet_content)))
 
     fieldnames = []
     has_src = False
@@ -123,7 +123,7 @@ def sheet_to_header(sheet_content: List[Dict]) -> List[str]:
         fieldnames = ["id"] + fieldnames
 
     LOGGER.debug(
-        T("coal.logs.dataset.headers_extracted").format(
+        T("coal.services.dataset.headers_extracted").format(
             count=len(fieldnames),
             fields=", ".join(fieldnames[:5]) + ("..." if len(fieldnames) > 5 else ""),
         )

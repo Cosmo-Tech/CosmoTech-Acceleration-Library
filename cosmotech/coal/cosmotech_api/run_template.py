@@ -56,7 +56,9 @@ def load_run_template_handlers(
             r_data: Workspace = api_w.find_workspace_by_id(organization_id=organization_id, workspace_id=workspace_id)
         except ServiceException as e:
             LOGGER.error(
-                T("coal.errors.workspace.not_found").format(workspace_id=workspace_id, organization_id=organization_id)
+                T("coal.cosmotech_api.workspace.not_found").format(
+                    workspace_id=workspace_id, organization_id=organization_id
+                )
             )
             LOGGER.debug(T("coal.logs.orchestrator.error_details").format(details=e.body))
             raise ValueError(f"Workspace {workspace_id} not found in organization {organization_id}")

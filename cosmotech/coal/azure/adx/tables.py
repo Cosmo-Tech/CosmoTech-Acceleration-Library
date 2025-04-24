@@ -26,17 +26,17 @@ def table_exists(client: KustoClient, database: str, table_name: str) -> bool:
     Returns:
         bool: True if the table exists, False otherwise
     """
-    LOGGER.debug(T("coal.logs.adx.checking_table").format(database=database, table_name=table_name))
+    LOGGER.debug(T("coal.services.adx.checking_table").format(database=database, table_name=table_name))
 
     get_tables_query = f".show database ['{database}'] schema| distinct TableName"
     tables = client.execute(database, get_tables_query)
 
     for r in tables.primary_results[0]:
         if table_name == r[0]:
-            LOGGER.debug(T("coal.logs.adx.table_exists").format(table_name=table_name))
+            LOGGER.debug(T("coal.services.adx.table_exists").format(table_name=table_name))
             return True
 
-    LOGGER.debug(T("coal.logs.adx.table_not_exists").format(table_name=table_name))
+    LOGGER.debug(T("coal.services.adx.table_not_exists").format(table_name=table_name))
     return False
 
 
@@ -53,12 +53,12 @@ def check_and_create_table(kusto_client: KustoClient, database: str, table_name:
     Returns:
         bool: True if the table was created, False if it already existed
     """
-    LOGGER.debug(T("coal.logs.adx.checking_table_exists"))
+    LOGGER.debug(T("coal.services.adx.checking_table_exists"))
     if not table_exists(kusto_client, database, table_name):
         from cosmotech.coal.azure.adx.utils import create_column_mapping
 
         mapping = create_column_mapping(data)
-        LOGGER.debug(T("coal.logs.adx.creating_nonexistent_table"))
+        LOGGER.debug(T("coal.services.adx.creating_nonexistent_table"))
         create_table(kusto_client, database, table_name, mapping)
         return True
     return False
@@ -73,16 +73,16 @@ def _drop_by_tag(kusto_client: KustoClient, database: str, tag: str) -> None:
         database: The database name
         tag: The tag to drop data by
     """
-    LOGGER.info(T("coal.logs.adx.dropping_data_by_tag").format(tag=tag))
+    LOGGER.info(T("coal.services.adx.dropping_data_by_tag").format(tag=tag))
 
     try:
         # Execute the drop by tag command
         drop_command = f'.drop extents <| .show database extents where tags has "drop-by:{tag}"'
         kusto_client.execute_mgmt(database, drop_command)
-        LOGGER.info(T("coal.logs.adx.drop_completed"))
+        LOGGER.info(T("coal.services.adx.drop_completed"))
     except Exception as e:
-        LOGGER.error(T("coal.logs.adx.drop_error").format(error=str(e)))
-        LOGGER.exception(T("coal.logs.adx.drop_details"))
+        LOGGER.error(T("coal.services.adx.drop_error").format(error=str(e)))
+        LOGGER.exception(T("coal.services.adx.drop_details"))
 
 
 def create_table(client: KustoClient, database: str, table_name: str, schema: Dict[str, str]) -> bool:
@@ -98,7 +98,7 @@ def create_table(client: KustoClient, database: str, table_name: str, schema: Di
     Returns:
         bool: True if the table was created successfully, False otherwise
     """
-    LOGGER.debug(T("coal.logs.adx.creating_table").format(database=database, table_name=table_name))
+    LOGGER.debug(T("coal.services.adx.creating_table").format(database=database, table_name=table_name))
 
     create_query = f".create-merge table {table_name}("
 
@@ -107,12 +107,12 @@ def create_table(client: KustoClient, database: str, table_name: str, schema: Di
 
     create_query = create_query[:-1] + ")"
 
-    LOGGER.debug(T("coal.logs.adx.create_query").format(query=create_query))
+    LOGGER.debug(T("coal.services.adx.create_query").format(query=create_query))
 
     try:
         client.execute(database, create_query)
-        LOGGER.info(T("coal.logs.adx.table_created").format(table_name=table_name))
+        LOGGER.info(T("coal.services.adx.table_created").format(table_name=table_name))
         return True
     except Exception as e:
-        LOGGER.error(T("coal.logs.adx.table_creation_error").format(table_name=table_name, error=str(e)))
+        LOGGER.error(T("coal.services.adx.table_creation_error").format(table_name=table_name, error=str(e)))
         return False

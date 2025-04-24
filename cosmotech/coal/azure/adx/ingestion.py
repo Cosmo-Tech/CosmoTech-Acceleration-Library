@@ -64,7 +64,7 @@ def ingest_dataframe(
     Returns:
         The ingestion result with source_id for status tracking
     """
-    LOGGER.debug(T("coal.logs.adx.ingesting_dataframe").format(table_name=table_name, rows=len(dataframe)))
+    LOGGER.debug(T("coal.services.adx.ingesting_dataframe").format(table_name=table_name, rows=len(dataframe)))
 
     drop_by_tags = [drop_by_tag] if (drop_by_tag is not None) else None
 
@@ -83,7 +83,7 @@ def ingest_dataframe(
     _ingest_status[source_id] = IngestionStatus.QUEUED
     _ingest_times[source_id] = time.time()
 
-    LOGGER.debug(T("coal.logs.adx.ingestion_queued").format(source_id=source_id))
+    LOGGER.debug(T("coal.services.adx.ingestion_queued").format(source_id=source_id))
 
     return ingestion_result
 
@@ -112,10 +112,10 @@ def send_to_adx(
     Returns:
         The ingestion result with source_id for status tracking
     """
-    LOGGER.debug(T("coal.logs.adx.sending_to_adx").format(table_name=table_name, items=len(dict_list)))
+    LOGGER.debug(T("coal.services.adx.sending_to_adx").format(table_name=table_name, items=len(dict_list)))
 
     if not dict_list:
-        LOGGER.warning(T("coal.logs.adx.empty_dict_list"))
+        LOGGER.warning(T("coal.services.adx.empty_dict_list"))
         return None
 
     if not ignore_table_creation:
@@ -125,7 +125,7 @@ def send_to_adx(
 
         # Then try to create the table
         if not create_table(query_client, database, table_name, types):
-            LOGGER.error(T("coal.logs.adx.table_creation_failed").format(table_name=table_name))
+            LOGGER.error(T("coal.services.adx.table_creation_failed").format(table_name=table_name))
             return False
 
     # Create a dataframe with the data to write and send them to ADX
@@ -169,7 +169,7 @@ def check_ingestion_status(
     if not remaining_ids:
         return
 
-    LOGGER.debug(T("coal.logs.adx.checking_status").format(count=len(remaining_ids)))
+    LOGGER.debug(T("coal.services.adx.checking_status").format(count=len(remaining_ids)))
 
     # Get status queues
     qs = KustoIngestStatusQueues(client)
@@ -183,7 +183,7 @@ def check_ingestion_status(
     successes = get_messages(qs.success._get_queues())
     failures = get_messages(qs.failure._get_queues())
 
-    LOGGER.debug(T("coal.logs.adx.status_messages").format(success=len(successes), failure=len(failures)))
+    LOGGER.debug(T("coal.services.adx.status_messages").format(success=len(successes), failure=len(failures)))
 
     queued_ids = list(remaining_ids)
     # Process success and failure messages
@@ -199,7 +199,7 @@ def check_ingestion_status(
                 if dm.IngestionSourceId == str(source_id):
                     _ingest_status[source_id] = status
 
-                    log_function(T("coal.logs.adx.status_found").format(source_id=source_id, status=status.value))
+                    log_function(T("coal.services.adx.status_found").format(source_id=source_id, status=status.value))
 
                     _q.delete_message(_m)
                     remaining_ids.remove(source_id)
@@ -213,7 +213,7 @@ def check_ingestion_status(
     for source_id in remaining_ids:
         if time.time() - _ingest_times[source_id] > actual_timeout:
             _ingest_status[source_id] = IngestionStatus.TIMEOUT
-            LOGGER.warning(T("coal.logs.adx.ingestion_timeout").format(source_id=source_id))
+            LOGGER.warning(T("coal.services.adx.ingestion_timeout").format(source_id=source_id))
 
     # Yield results for remaining IDs
     for source_id in queued_ids:
@@ -237,7 +237,7 @@ def monitor_ingestion(
     has_failures = False
     source_ids_copy = source_ids.copy()
 
-    LOGGER.info(T("coal.logs.adx.waiting_ingestion"))
+    LOGGER.info(T("coal.services.adx.waiting_ingestion"))
 
     with tqdm.tqdm(desc="Ingestion status", total=len(source_ids_copy)) as pbar:
         while any(
@@ -252,7 +252,7 @@ def monitor_ingestion(
             for ingestion_id, ingestion_status in results:
                 if ingestion_status == IngestionStatus.FAILURE:
                     LOGGER.error(
-                        T("coal.logs.adx.ingestion_failed").format(
+                        T("coal.services.adx.ingestion_failed").format(
                             ingestion_id=ingestion_id, table=table_ingestion_id_mapping.get(ingestion_id)
                         )
                     )
@@ -273,14 +273,14 @@ def monitor_ingestion(
             for ingestion_id, ingestion_status in results:
                 if ingestion_status == IngestionStatus.FAILURE:
                     LOGGER.error(
-                        T("coal.logs.adx.ingestion_failed").format(
+                        T("coal.services.adx.ingestion_failed").format(
                             ingestion_id=ingestion_id, table=table_ingestion_id_mapping.get(ingestion_id)
                         )
                     )
                     has_failures = True
         pbar.update(len(source_ids_copy))
 
-    LOGGER.info(T("coal.logs.adx.ingestion_completed"))
+    LOGGER.info(T("coal.services.adx.ingestion_completed"))
     return has_failures
 
 
@@ -298,7 +298,7 @@ def handle_failures(kusto_client: KustoClient, database: str, operation_tag: str
         bool: True if the process should abort, False otherwise
     """
     if has_failures:
-        LOGGER.warning(T("coal.logs.adx.failures_detected").format(operation_tag=operation_tag))
+        LOGGER.warning(T("coal.services.adx.failures_detected").format(operation_tag=operation_tag))
         _drop_by_tag(kusto_client, database, operation_tag)
         return True
     return False
@@ -314,10 +314,10 @@ def clear_ingestion_status_queues(client: QueuedIngestClient, confirmation: bool
         confirmation: Must be True to proceed with clearing
     """
     if not confirmation:
-        LOGGER.warning(T("coal.logs.adx.clear_queues_no_confirmation"))
+        LOGGER.warning(T("coal.services.adx.clear_queues_no_confirmation"))
         return
 
-    LOGGER.warning(T("coal.logs.adx.clearing_queues"))
+    LOGGER.warning(T("coal.services.adx.clearing_queues"))
     qs = KustoIngestStatusQueues(client)
 
     while not qs.success.is_empty():
@@ -326,4 +326,4 @@ def clear_ingestion_status_queues(client: QueuedIngestClient, confirmation: bool
     while not qs.failure.is_empty():
         qs.failure.pop(32)
 
-    LOGGER.info(T("coal.logs.adx.queues_cleared"))
+    LOGGER.info(T("coal.services.adx.queues_cleared"))

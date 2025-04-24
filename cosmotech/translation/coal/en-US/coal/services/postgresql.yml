@@ -1,3 +1,4 @@
+# PostgreSQL-specific messages
 getting_schema: "Getting schema for table {postgres_schema}.{target_table_name}"
 table_not_found: "Table {postgres_schema}.{target_table_name} not found"
 schema_adaptation_start: "Starting schema adaptation for table with {rows} rows"
@@ -22,7 +23,6 @@ no_existing_table: "No existing table found - will create new table"
 connecting: "Connecting to PostgreSQL database"
 ingesting_data: "Ingesting data with mode: {mode}"
 ingestion_success: "Successfully ingested {rows} rows"
-runner:
-  creating_table: "Creating table {schema_table}"
-  metadata: "Metadata: {metadata}"
-  metadata_updated: "Metadata updated"
+creating_table: "Creating table {schema_table}"
+metadata: "Metadata: {metadata}"
+metadata_updated: "Metadata updated"

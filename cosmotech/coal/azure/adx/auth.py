@@ -33,7 +33,7 @@ def create_kusto_client(
     Returns:
         KustoClient: A client for querying ADX
     """
-    LOGGER.debug(T("coal.logs.adx.creating_kusto_client").format(cluster_url=cluster_url))
+    LOGGER.debug(T("coal.services.adx.creating_kusto_client").format(cluster_url=cluster_url))
 
     try:
         az_client_id = client_id or os.environ["AZURE_CLIENT_ID"]
@@ -43,9 +43,9 @@ def create_kusto_client(
         kcsb = KustoConnectionStringBuilder.with_aad_application_key_authentication(
             cluster_url, az_client_id, az_client_secret, az_tenant_id
         )
-        LOGGER.debug(T("coal.logs.adx.using_app_auth"))
+        LOGGER.debug(T("coal.services.adx.using_app_auth"))
     except KeyError:
-        LOGGER.debug(T("coal.logs.adx.using_cli_auth"))
+        LOGGER.debug(T("coal.services.adx.using_cli_auth"))
         kcsb = KustoConnectionStringBuilder.with_az_cli_authentication(cluster_url)
 
     return KustoClient(kcsb)
@@ -69,7 +69,7 @@ def create_ingest_client(
     Returns:
         QueuedIngestClient: A client for ingesting data to ADX
     """
-    LOGGER.debug(T("coal.logs.adx.creating_ingest_client").format(ingest_url=ingest_url))
+    LOGGER.debug(T("coal.services.adx.creating_ingest_client").format(ingest_url=ingest_url))
 
     try:
         az_client_id = client_id or os.environ["AZURE_CLIENT_ID"]
@@ -79,9 +79,9 @@ def create_ingest_client(
         kcsb = KustoConnectionStringBuilder.with_aad_application_key_authentication(
             ingest_url, az_client_id, az_client_secret, az_tenant_id
         )
-        LOGGER.debug(T("coal.logs.adx.using_app_auth"))
+        LOGGER.debug(T("coal.services.adx.using_app_auth"))
     except KeyError:
-        LOGGER.debug(T("coal.logs.adx.using_cli_auth"))
+        LOGGER.debug(T("coal.services.adx.using_cli_auth"))
         kcsb = KustoConnectionStringBuilder.with_az_cli_authentication(ingest_url)
 
     return QueuedIngestClient(kcsb)
@@ -98,7 +98,7 @@ def initialize_clients(adx_uri: str, adx_ingest_uri: str) -> Tuple[KustoClient, 
     Returns:
         tuple: (kusto_client, ingest_client)
     """
-    LOGGER.debug(T("coal.logs.adx.auth.initializing_clients"))
+    LOGGER.debug(T("coal.services.adx.initializing_clients"))
     kusto_client = create_kusto_client(adx_uri)
     ingest_client = create_ingest_client(adx_ingest_uri)
     return kusto_client, ingest_client
@@ -115,7 +115,9 @@ def get_cluster_urls(cluster_name: str, cluster_region: str) -> Tuple[str, str]:
     Returns:
         tuple: (cluster_url, ingest_url)
     """
-    LOGGER.debug(T("coal.logs.adx.generating_urls").format(cluster_name=cluster_name, cluster_region=cluster_region))
+    LOGGER.debug(
+        T("coal.services.adx.generating_urls").format(cluster_name=cluster_name, cluster_region=cluster_region)
+    )
 
     cluster_url = f"https://{cluster_name}.{cluster_region}.kusto.windows.net"
     ingest_url = f"https://ingest-{cluster_name}.{cluster_region}.kusto.windows.net"

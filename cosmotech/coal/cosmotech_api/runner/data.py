@@ -27,7 +27,7 @@ def get_runner_data(organization_id: str, workspace_id: str, runner_id: str):
     Returns:
         Runner data object
     """
-    LOGGER.info(T("coal.logs.runner.loading_data"))
+    LOGGER.info(T("coal.cosmotech_api.runner.loading_data"))
     with get_api_client()[0] as api_client:
         api_instance = RunnerApi(api_client)
         runner_data = api_instance.get_runner(

@@ -50,16 +50,16 @@ def dump_store_to_postgresql(
 
     tables = list(_s.list_tables())
     if len(tables):
-        LOGGER.info(T("coal.logs.database.sending_data").format(table=f"{postgres_db}.{postgres_schema}"))
+        LOGGER.info(T("coal.services.database.sending_data").format(table=f"{postgres_db}.{postgres_schema}"))
         total_rows = 0
         _process_start = perf_counter()
         for table_name in tables:
             _s_time = perf_counter()
             target_table_name = f"{table_prefix}{table_name}"
-            LOGGER.info(T("coal.logs.database.table_entry").format(table=target_table_name))
+            LOGGER.info(T("coal.services.database.table_entry").format(table=target_table_name))
             data = _s.get_table(table_name)
             if not len(data):
-                LOGGER.info(T("coal.logs.database.no_rows"))
+                LOGGER.info(T("coal.services.database.no_rows"))
                 continue
             _dl_time = perf_counter()
             rows = send_pyarrow_table_to_postgresql(
@@ -75,24 +75,24 @@ def dump_store_to_postgresql(
             )
             total_rows += rows
             _up_time = perf_counter()
-            LOGGER.info(T("coal.logs.database.row_count").format(count=rows))
+            LOGGER.info(T("coal.services.database.row_count").format(count=rows))
             LOGGER.debug(
-                T("coal.logs.progress.operation_timing").format(
+                T("coal.common.timing.operation_completed").format(
                     operation="Load from datastore", time=f"{_dl_time - _s_time:0.3}"
                 )
             )
             LOGGER.debug(
-                T("coal.logs.progress.operation_timing").format(
+                T("coal.common.timing.operation_completed").format(
                     operation="Send to postgresql", time=f"{_up_time - _dl_time:0.3}"
                 )
             )
         _process_end = perf_counter()
         LOGGER.info(
-            T("coal.logs.database.rows_fetched").format(
+            T("coal.services.database.rows_fetched").format(
                 table="all tables",
                 count=total_rows,
                 time=f"{_process_end - _process_start:0.3}",
             )
         )
     else:
-        LOGGER.info(T("coal.logs.database.store_empty"))
+        LOGGER.info(T("coal.services.database.store_empty"))
