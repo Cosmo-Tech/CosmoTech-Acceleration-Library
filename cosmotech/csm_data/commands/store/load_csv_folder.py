@@ -39,5 +39,5 @@ def load_csv_folder(store_folder, csv_folder):
     from cosmotech.coal.utils.logger import LOGGER
 
     for csv_path in pathlib.Path(csv_folder).glob("*.csv"):
-        LOGGER.info(T("coal.logs.storage.found_file").format(file=csv_path.name))
+        LOGGER.info(T("coal.services.azure_storage.found_file").format(file=csv_path.name))
         store_csv_file(csv_path.name[:-4], csv_path, store=Store(False, store_folder))

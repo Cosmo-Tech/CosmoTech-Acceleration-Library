@@ -33,7 +33,7 @@ def api(ctx: click.Context):
     if ctx.invoked_subcommand is None:
         try:
             api_client, description = get_api_client()
-            LOGGER.info(T("coal.logs.connection.found_valid").format(type=description))
+            LOGGER.info(T("coal.cosmotech_api.connection.found_valid").format(type=description))
         except EnvironmentError:
             raise click.Abort()
 

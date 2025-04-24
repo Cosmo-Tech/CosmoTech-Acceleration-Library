@@ -28,4 +28,4 @@ def reset(store_folder):
     from cosmotech.coal.utils.logger import LOGGER
 
     Store(True, store_folder)
-    LOGGER.info(T("coal.logs.database.store_reset").format(folder=store_folder))
+    LOGGER.info(T("coal.services.database.store_reset").format(folder=store_folder))

@@ -36,10 +36,10 @@ def list_workspace_files(
 
     if not target_list:
         LOGGER.error(
-            T("coal.errors.data.no_workspace_files").format(file_prefix=file_prefix, workspace_id=workspace_id)
+            T("coal.common.errors.data_no_workspace_files").format(file_prefix=file_prefix, workspace_id=workspace_id)
         )
         raise ValueError(
-            T("coal.errors.data.no_workspace_files").format(file_prefix=file_prefix, workspace_id=workspace_id)
+            T("coal.common.errors.data_no_workspace_files").format(file_prefix=file_prefix, workspace_id=workspace_id)
         )
 
     return target_list

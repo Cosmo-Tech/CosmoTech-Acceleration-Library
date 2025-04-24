@@ -56,7 +56,7 @@ def send_csv_to_run_data(
             with open(csv_path) as _f:
                 dr = DictReader(_f)
                 table_name = csv_path.name.replace(".csv", "")
-                LOGGER.info(T("coal.logs.run_data.sending_to_table").format(table_name=f"CD_{table_name}"))
+                LOGGER.info(T("coal.cosmotech_api.run_data.sending_to_table").format(table_name=f"CD_{table_name}"))
                 LOGGER.debug(T("coal.services.database.column_list").format(columns=dr.fieldnames))
                 data = []
 
@@ -109,7 +109,7 @@ def send_store_to_run_data(
         api_run = RunApi(api_client)
         _s = Store()
         for table_name in _s.list_tables():
-            LOGGER.info(T("coal.logs.run_data.sending_to_table").format(table_name=f"CD_{table_name}"))
+            LOGGER.info(T("coal.cosmotech_api.run_data.sending_to_table").format(table_name=f"CD_{table_name}"))
             data = convert_table_as_pylist(table_name)
             if not len(data):
                 LOGGER.info(T("coal.services.database.no_rows"))

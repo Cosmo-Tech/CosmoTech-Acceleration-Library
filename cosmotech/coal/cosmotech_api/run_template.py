@@ -51,7 +51,7 @@ def load_run_template_handlers(
     with get_api_client()[0] as api_client:
         api_w = WorkspaceApi(api_client)
 
-        LOGGER.info(T("coal.logs.orchestrator.loading_solution"))
+        LOGGER.info(T("coal.cosmotech_api.run_template.loading_solution"))
         try:
             r_data: Workspace = api_w.find_workspace_by_id(organization_id=organization_id, workspace_id=workspace_id)
         except ServiceException as e:
@@ -60,7 +60,7 @@ def load_run_template_handlers(
                     workspace_id=workspace_id, organization_id=organization_id
                 )
             )
-            LOGGER.debug(T("coal.logs.orchestrator.error_details").format(details=e.body))
+            LOGGER.debug(T("coal.cosmotech_api.run_template.error_details").format(details=e.body))
             raise ValueError(f"Workspace {workspace_id} not found in organization {organization_id}")
         solution_id = r_data.solution.solution_id
 
@@ -71,7 +71,9 @@ def load_run_template_handlers(
         for handler_id in handler_list.split(","):
             handler_path: pathlib.Path = template_path / handler_id
             LOGGER.info(
-                T("coal.logs.orchestrator.querying_handler").format(handler=handler_id, template=run_template_id)
+                T("coal.cosmotech_api.run_template.querying_handler").format(
+                    handler=handler_id, template=run_template_id
+                )
             )
             try:
                 rt_data = api_sol.download_run_template_handler(
@@ -82,25 +84,25 @@ def load_run_template_handlers(
                 )
             except ServiceException as e:
                 LOGGER.error(
-                    T("coal.logs.orchestrator.handler_not_found").format(
+                    T("coal.cosmotech_api.run_template.handler_not_found").format(
                         handler=handler_id,
                         template=run_template_id,
                         solution=solution_id,
                     )
                 )
-                LOGGER.debug(T("coal.logs.orchestrator.error_details").format(details=e.body))
+                LOGGER.debug(T("coal.cosmotech_api.run_template.error_details").format(details=e.body))
                 has_errors = True
                 continue
-            LOGGER.info(T("coal.logs.orchestrator.extracting_handler").format(path=handler_path.absolute()))
+            LOGGER.info(T("coal.cosmotech_api.run_template.extracting_handler").format(path=handler_path.absolute()))
             handler_path.mkdir(parents=True, exist_ok=True)
 
             try:
                 with ZipFile(BytesIO(rt_data)) as _zip:
                     _zip.extractall(handler_path)
             except BadZipfile:
-                LOGGER.error(T("coal.logs.orchestrator.handler_not_zip").format(handler=handler_id))
+                LOGGER.error(T("coal.cosmotech_api.run_template.handler_not_zip").format(handler=handler_id))
                 has_errors = True
         if has_errors:
-            LOGGER.error(T("coal.logs.orchestrator.run_issues"))
+            LOGGER.error(T("coal.cosmotech_api.run_template.run_issues"))
             return False
         return True

@@ -37,10 +37,12 @@ def list_tables(store_folder, schema):
     _s = Store(store_location=store_folder)
     tables = list(_s.list_tables())
     if len(tables):
-        LOGGER.info(T("coal.logs.database.store_tables"))
+        LOGGER.info(T("coal.services.database.store_tables"))
         for table_name in tables:
-            LOGGER.info(T("coal.logs.database.table_entry").format(table=table_name))
+            LOGGER.info(T("coal.services.database.table_entry").format(table=table_name))
             if schema:
-                LOGGER.info(T("coal.logs.database.table_schema").format(schema=str(_s.get_table_schema(table_name))))
+                LOGGER.info(
+                    T("coal.services.database.table_schema").format(schema=str(_s.get_table_schema(table_name)))
+                )
     else:
-        LOGGER.info(T("coal.logs.database.store_empty"))
+        LOGGER.info(T("coal.services.database.store_empty"))

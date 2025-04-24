@@ -136,7 +136,7 @@ def insert_csv_files(
             report_level=ReportLevel.FailuresAndSuccesses,
             additional_properties={"ignoreFirstRecord": "true"},
         )
-        LOGGER.info(T("coal.logs.ingestion.ingesting").format(table=filename))
+        LOGGER.info(T("coal.services.adx.ingesting").format(table=filename))
         results: IngestionResult = ingest_client.ingest_from_file(fd, ingestion_properties)
         ingestion_ids[str(results.source_id)] = filename
     if wait:
@@ -149,14 +149,14 @@ def insert_csv_files(
         ):
             count += 1
             if count > wait_limit:
-                LOGGER.warning(T("coal.logs.ingestion.max_retry"))
+                LOGGER.warning(T("coal.services.adx.max_retry"))
                 break
             LOGGER.info(
-                T("coal.logs.ingestion.waiting_results").format(duration=wait_duration, count=count, limit=wait_limit)
+                T("coal.services.adx.waiting_results").format(duration=wait_duration, count=count, limit=wait_limit)
             )
             time.sleep(wait_duration)
 
-        LOGGER.info(T("coal.logs.ingestion.status"))
+        LOGGER.info(T("coal.services.adx.status"))
         for _id, status in check_ingestion_status(ingest_client, source_ids=list(ingestion_ids.keys())):
             color = (
                 "red"
@@ -166,10 +166,10 @@ def insert_csv_files(
                 else "bright_black"
             )
             LOGGER.info(
-                T("coal.logs.ingestion.status_report").format(table=ingestion_ids[_id], status=status.name, color=color)
+                T("coal.services.adx.status_report").format(table=ingestion_ids[_id], status=status.name, color=color)
             )
     else:
-        LOGGER.info(T("coal.logs.ingestion.no_wait"))
+        LOGGER.info(T("coal.services.adx.no_wait"))
 
 
 def send_runner_data(
@@ -205,13 +205,13 @@ def send_runner_data(
     queries = construct_create_query(csv_data)
     kusto_client, ingest_client = initialize_clients(adx_uri, adx_ingest_uri)
     for k, v in queries.items():
-        LOGGER.info(T("coal.logs.ingestion.creating_table").format(query=v))
+        LOGGER.info(T("coal.services.adx.creating_table").format(table_name=k, database=database_name))
         r: KustoResponseDataSet = run_query(kusto_client, database_name, v)
         if r.errors_count == 0:
-            LOGGER.info(T("coal.logs.ingestion.table_created").format(table=k))
+            LOGGER.info(T("coal.services.adx.table_created").format(table_name=k))
         else:
-            LOGGER.error(T("coal.logs.ingestion.table_creation_failed").format(table=k))
-            LOGGER.error(T("coal.logs.ingestion.exceptions").format(exceptions=r.get_exceptions()))
+            LOGGER.error(T("coal.services.adx.table_creation_failed").format(table_name=k, database=database_name))
+            LOGGER.error(T("coal.services.adx.exceptions").format(exceptions=r.get_exceptions()))
             raise RuntimeError(f"Failed to create table {k}")
     insert_csv_files(
         files_data=csv_data,
