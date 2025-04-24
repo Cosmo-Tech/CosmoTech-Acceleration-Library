@@ -144,7 +144,7 @@ class TestRunnerFunctions:
         mock_ingest_client.ingest_from_file.side_effect = [mock_ingestion_result1, mock_ingestion_result2]
 
         # Act
-        insert_csv_files(files_data, mock_kusto_client, mock_ingest_client, runner_id, database, wait=False)
+        insert_csv_files(files_data, mock_ingest_client, runner_id, database, wait=False)
 
         # Assert
         # Verify that ingest_from_file was called for each CSV file
@@ -182,7 +182,7 @@ class TestRunnerFunctions:
         ]
 
         # Act
-        insert_csv_files(files_data, mock_kusto_client, mock_ingest_client, runner_id, database, wait=True)
+        insert_csv_files(files_data, mock_ingest_client, runner_id, database, wait=True)
 
         # Assert
         # Verify that check_ingestion_status was called
@@ -223,16 +223,7 @@ class TestRunnerFunctions:
         ]
 
         # Act
-        insert_csv_files(
-            files_data,
-            mock_kusto_client,
-            mock_ingest_client,
-            runner_id,
-            database,
-            wait=True,
-            wait_limit=2,
-            wait_duration=0,
-        )
+        insert_csv_files(files_data, mock_ingest_client, runner_id, database, wait=True, wait_limit=2, wait_duration=0)
 
         # Assert
         # Verify that check_ingestion_status was called
@@ -319,7 +310,6 @@ class TestRunnerFunctions:
         # Verify that insert_csv_files was called
         mock_insert_csv_files.assert_called_once_with(
             files_data=mock_csv_content,
-            kusto_client=mock_kusto_client,
             ingest_client=mock_ingest_client,
             runner_id=runner_id,
             database=database_name,

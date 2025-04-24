@@ -83,7 +83,6 @@ def construct_create_query(files_data: Dict[str, Dict[str, Any]]) -> Dict[str, s
 
 def insert_csv_files(
     files_data: Dict[str, Dict[str, Any]],
-    kusto_client: KustoClient,
     ingest_client: QueuedIngestClient,
     runner_id: str,
     database: str,
@@ -214,10 +213,5 @@ def send_runner_data(
             LOGGER.error(T("coal.services.adx.exceptions").format(exceptions=r.get_exceptions()))
             raise RuntimeError(f"Failed to create table {k}")
     insert_csv_files(
-        files_data=csv_data,
-        kusto_client=kusto_client,
-        ingest_client=ingest_client,
-        runner_id=runner_id,
-        database=database_name,
-        wait=wait,
+        files_data=csv_data, ingest_client=ingest_client, runner_id=runner_id, database=database_name, wait=wait
     )
