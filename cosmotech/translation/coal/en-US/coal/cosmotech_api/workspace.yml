@@ -1,0 +1,7 @@
+# Workspace-specific messages
+target_is_folder: "Target {target_dir} is a folder"
+loading_file: "Loading file {file_name}"
+file_loaded: "File {file} loaded"
+sending_to_api: "Sending file to API"
+file_sent: "File sent to API"
+not_found: "Workspace {workspace_id} not found in organization {organization_id}"

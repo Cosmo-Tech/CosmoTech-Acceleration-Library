@@ -11,6 +11,7 @@ import ssl
 import cosmotech_api
 
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 api_env_keys = {"CSM_API_KEY", "CSM_API_URL"}
 azure_env_keys = {
@@ -35,19 +36,15 @@ def get_api_client() -> (cosmotech_api.ApiClient, str):
     missing_api_keys = api_env_keys - existing_keys
     missing_keycloak_keys = keycloak_env_keys - existing_keys
     if all((missing_api_keys, missing_azure_keys, missing_keycloak_keys)):
-        LOGGER.error(
-            "No set of environment variables found for a valid Cosmo Tech API connection"
-        )
-        LOGGER.error("Existing sets are:")
-        LOGGER.error(f"  Azure Entra Connection : {', '.join(azure_env_keys)}")
-        LOGGER.error(f"  Cosmo Tech API Key : {', '.join(api_env_keys)}")
-        LOGGER.error(f"  Keycloak connection : {', '.join(keycloak_env_keys)}")
-        raise EnvironmentError(
-            "No set of environment variables found for a valid Cosmo Tech API connection"
-        )
+        LOGGER.error(T("coal.common.errors.no_env_vars"))
+        LOGGER.error(T("coal.cosmotech_api.connection.existing_sets"))
+        LOGGER.error(T("coal.cosmotech_api.connection.azure_connection").format(keys=", ".join(azure_env_keys)))
+        LOGGER.error(T("coal.cosmotech_api.connection.api_key_connection").format(keys=", ".join(api_env_keys)))
+        LOGGER.error(T("coal.cosmotech_api.connection.keycloak_connection").format(keys=", ".join(keycloak_env_keys)))
+        raise EnvironmentError(T("coal.common.errors.no_env_vars"))
 
     if not missing_keycloak_keys:
-        LOGGER.info("Found Keycloack connection info")
+        LOGGER.info(T("coal.cosmotech_api.connection.found_keycloak"))
         from keycloak import KeycloakOpenID
 
         server_url = os.environ.get("IDP_BASE_URL")
@@ -59,12 +56,8 @@ def get_api_client() -> (cosmotech_api.ApiClient, str):
             realm_name=os.environ.get("IDP_TENANT_ID"),
             client_secret_key=os.environ.get("IDP_CLIENT_SECRET"),
         )
-        if (ca_cert_path := os.environ.get("IDP_CA_CERT")) and pathlib.Path(
-            ca_cert_path
-        ).exists():
-            LOGGER.info(
-                "Found Certificate Authority override for IDP connection, using it."
-            )
+        if (ca_cert_path := os.environ.get("IDP_CA_CERT")) and pathlib.Path(ca_cert_path).exists():
+            LOGGER.info(T("coal.cosmotech_api.connection.found_cert_authority"))
             keycloack_parameters["verify"] = ca_cert_path
         keycloak_openid = KeycloakOpenID(**keycloack_parameters)
 
@@ -77,7 +70,7 @@ def get_api_client() -> (cosmotech_api.ApiClient, str):
         return cosmotech_api.ApiClient(configuration), "Keycloak Connection"
 
     if not missing_api_keys:
-        LOGGER.info("Found Api Key connection info")
+        LOGGER.info(T("coal.cosmotech_api.connection.found_api_key"))
         configuration = cosmotech_api.Configuration(
             host=os.environ.get("CSM_API_URL"),
         )
@@ -91,15 +84,13 @@ def get_api_client() -> (cosmotech_api.ApiClient, str):
         )
 
     if not missing_azure_keys:
-        LOGGER.info("Found Azure Entra connection info")
+        LOGGER.info(T("coal.cosmotech_api.connection.found_azure"))
         from azure.identity import EnvironmentCredential
 
         credentials = EnvironmentCredential()
         token = credentials.get_token(os.environ.get("CSM_API_SCOPE"))
 
-        configuration = cosmotech_api.Configuration(
-            host=os.environ.get("CSM_API_URL"), access_token=token.token
-        )
+        configuration = cosmotech_api.Configuration(host=os.environ.get("CSM_API_URL"), access_token=token.token)
         return cosmotech_api.ApiClient(configuration), "Azure Entra Connection"
 
-    raise EnvironmentError("No valid connection available to the Cosmo Tech API")
+    raise EnvironmentError(T("coal.common.errors.no_valid_connection"))

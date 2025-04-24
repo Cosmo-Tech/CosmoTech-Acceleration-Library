@@ -1,0 +1,9 @@
+# Common error messages
+no_env_vars: "No environment variables found for connection"
+missing_var: "Missing environment variable: {envvar}"
+no_valid_connection: "No valid connection configuration found"
+no_credentials: "No credentials available for connection"
+operation_failed: "Operation '{operation}' failed: {error}"
+unexpected_error: "Unexpected error: {error}"
+data_invalid_output_type: "Invalid output type: {output_type}"
+data_no_workspace_files: "No workspace files found with prefix {file_prefix} in workspace {workspace_id}"

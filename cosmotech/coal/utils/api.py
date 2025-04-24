@@ -19,6 +19,7 @@ from cosmotech_api.exceptions import ServiceException
 
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 def read_solution_file(solution_file) -> Optional[Solution]:
@@ -28,41 +29,40 @@ def read_solution_file(solution_file) -> Optional[Solution]:
     elif solution_path.suffix == ".json":
         open_function = json.load
     else:
-        LOGGER.error(f"{solution_file} is not a `.yaml` or `.json` file")
+        LOGGER.error(T("coal.cosmotech_api.solution.invalid_file").format(file=solution_file))
         return None
     with solution_path.open() as _sf:
         solution_content = open_function(_sf)
-    LOGGER.info(f"Loaded {solution_path.absolute()}")
+    LOGGER.info(T("coal.cosmotech_api.solution.loaded").format(path=solution_path.absolute()))
     _solution = Solution(
         _configuration=cosmotech_api.Configuration(),
         _spec_property_naming=True,
         **solution_content,
     )
-    LOGGER.debug(json.dumps(_solution.to_dict(), indent=2, default=str))
+    LOGGER.debug(
+        T("coal.services.api.solution_debug").format(solution=json.dumps(_solution.to_dict(), indent=2, default=str))
+    )
     return _solution
 
 
 def get_solution(organization_id, workspace_id) -> Optional[Solution]:
-    LOGGER.info("Configuration to the api set")
+    LOGGER.info(T("coal.cosmotech_api.solution.api_configured"))
     with get_api_client()[0] as api_client:
         api_w = WorkspaceApi(api_client)
 
-        LOGGER.info("Loading Workspace information to get Solution ID")
+        LOGGER.info(T("coal.cosmotech_api.solution.loading_workspace"))
         try:
-            r_data: Workspace = api_w.find_workspace_by_id(
-                organization_id=organization_id, workspace_id=workspace_id
-            )
+            r_data: Workspace = api_w.find_workspace_by_id(organization_id=organization_id, workspace_id=workspace_id)
         except ServiceException as e:
             LOGGER.error(
-                f"Workspace {workspace_id} was not found "
-                f"in Organization {organization_id}"
+                T("coal.cosmotech_api.workspace.not_found").format(
+                    workspace_id=workspace_id, organization_id=organization_id
+                )
             )
-            LOGGER.debug(e.body)
+            LOGGER.debug(e)
             return None
         solution_id = r_data.solution.solution_id
 
         api_sol = SolutionApi(api_client)
-        sol: Solution = api_sol.find_solution_by_id(
-            organization_id=organization_id, solution_id=solution_id
-        )
+        sol: Solution = api_sol.find_solution_by_id(organization_id=organization_id, solution_id=solution_id)
     return sol

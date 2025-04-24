@@ -1,0 +1,8 @@
+# Validation-related messages
+not_csv_file: "'{file_path}' is not a csv file"
+invalid_nodes_relations: "'{file_path}' does not contains valid nodes or relations"
+invalid_truth_value: '"{string} is not a recognized truth value'
+node_requirements: "Node files must have an '{id_column}' column"
+relationship_requirements: "Relationship files must have '{source_column}' and '{target_column}' columns, or '{id_column}'"
+invalid_output_type: "Invalid output type: {output_type}"
+missing_field: "Required field '{field}' is missing"

@@ -1,0 +1,31 @@
+name: Check Untested Functions
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check-untested-functions:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[test]"
+
+    - name: Run untested functions check
+      run: |
+        python find_untested_functions.py
+        # This is informational only for now, will not fail the build
+        # In the future, we can make this fail the build by adding:
+        # exit $(python find_untested_functions.py | grep "Total untested functions:" | awk '{print $4}')

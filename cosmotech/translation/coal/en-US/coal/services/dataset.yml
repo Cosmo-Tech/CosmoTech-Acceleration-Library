@@ -1,0 +1,68 @@
+# Dataset-specific messages
+# General
+download_started: "Starting download of {dataset_type} dataset"
+download_completed: "Successfully downloaded {dataset_type} dataset"
+operation_timing: "{operation} took {time} seconds"
+dataset_downloading: "Downloading dataset (organization: {organization_id}, dataset: {dataset_id})"
+dataset_info_retrieved: "Retrieved dataset info: {dataset_name} ({dataset_id})"
+dataset_type_detected: "Detected dataset type: {type}"
+parallel_download: "Downloading {count} datasets in parallel"
+sequential_download: "Downloading {count} datasets sequentially"
+
+# Processing
+processing_graph_data: "Processing graph data with {nodes_count} nodes and {relationships_count} relationships (restore_names={restore_names})"
+entity_count: "Found {count} entities of type {entity_type}"
+extracting_headers: "Extracting headers from {rows} rows"
+headers_extracted: "Extracted {count} fields: {fields}"
+
+# File operations
+converting_to_files: "Converting {dataset_type} dataset '{dataset_name}' to files"
+created_temp_folder: "Created temporary folder: {folder}"
+using_folder: "Using folder: {folder}"
+converting_graph_data: "Converting graph data with {entity_types} entity types to folder: {folder}"
+converting_file_data: "Converting {file_count} files of type {file_type} to folder: {folder}"
+skipping_empty_entity: "Skipping empty entity type: {entity_type}"
+writing_csv: "Writing CSV file with {count} records: {file_name}"
+writing_file: "Writing file: {file_name} (type: {file_type})"
+file_written: "File written: {file_path}"
+files_created: "Created {count} files in folder: {folder}"
+
+# ADT specific
+adt_connecting: "Connecting to ADT instance at {url}"
+adt_no_credentials: "No credentials available for ADT connection"
+adt_querying_twins: "Querying digital twins"
+adt_twins_found: "Found {count} digital twins"
+adt_querying_relations: "Querying relationships"
+adt_relations_found: "Found {count} relationships"
+
+# TwinGraph specific
+twingraph_downloading: "Downloading TwinGraph dataset (organization: {organization_id}, dataset: {dataset_id})"
+twingraph_querying_nodes: "Querying TwinGraph nodes for dataset {dataset_id}"
+twingraph_nodes_found: "Found {count} nodes in TwinGraph"
+twingraph_querying_edges: "Querying TwinGraph edges for dataset {dataset_id}"
+twingraph_edges_found: "Found {count} edges in TwinGraph"
+
+# Legacy TwinGraph specific
+legacy_twingraph_downloading: "Downloading legacy TwinGraph dataset (organization: {organization_id}, cache: {cache_name})"
+legacy_twingraph_querying_nodes: "Querying legacy TwinGraph nodes for cache {cache_name}"
+legacy_twingraph_nodes_found: "Found {count} nodes in legacy TwinGraph"
+legacy_twingraph_querying_relations: "Querying legacy TwinGraph relationships for cache {cache_name}"
+legacy_twingraph_relations_found: "Found {count} relationships in legacy TwinGraph"
+
+# File specific
+file_downloading: "Downloading file dataset (organization: {organization_id}, workspace: {workspace_id}, file: {file_name})"
+listing_workspace_files: "Listing workspace files"
+workspace_files_found: "Found {count} workspace files"
+no_files_found: "No files found matching: {file_name}"
+downloading_file: "Downloading file: {file_name}"
+file_downloaded: "Downloaded file: {file_name} to {path}"
+
+# File processing
+processing_excel: "Processing Excel file: {file_name}"
+sheet_processed: "Processed sheet {sheet_name} with {rows} rows"
+processing_csv: "Processing CSV file: {file_name}"
+csv_processed: "Processed CSV file {file_name} with {rows} rows"
+processing_json: "Processing JSON file: {file_name}"
+json_processed: "Processed JSON file {file_name} with {items} items"
+processing_text: "Processing text file: {file_name}"
+text_processed: "Processed text file {file_name} with {lines} lines"

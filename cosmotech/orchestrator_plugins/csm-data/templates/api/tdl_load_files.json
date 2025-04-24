@@ -1,0 +1,32 @@
+{
+  "id": "csm-data tdl-load-files",
+  "command": "csm-data",
+  "arguments": [
+    "api",
+    "tdl-load-files"
+  ],
+  "description": "Use csm-data to query a twingraph and loads all the data from it",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_DATASET_ABSOLUTE_PATH": {
+      "description": "Target folder in which to write the resulting CSV files"
+    },
+    "CSM_API_URL": {
+      "description": "The URL to a Cosmo Tech API instance"
+    },
+    "CSM_ORGANIZATION_ID": {
+      "description": "An organization id for the Cosmo Tech API"
+    },
+    "CSM_WORKSPACE_ID": {
+      "description": "A workspace id for the Cosmo Tech API"
+    },
+    "CSM_SCENARIO_ID": {
+      "description": "A scenario id for the Cosmo Tech API",
+      "optional": true
+    },
+    "CSM_RUNNER_ID": {
+      "description": "A runner id for the Cosmo Tech API",
+      "optional": true
+    }
+  }
+}

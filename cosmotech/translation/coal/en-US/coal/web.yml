@@ -1,0 +1,2 @@
+failed_open: "Failed to open: {url}"
+opened: "Opened {url} in your navigator"

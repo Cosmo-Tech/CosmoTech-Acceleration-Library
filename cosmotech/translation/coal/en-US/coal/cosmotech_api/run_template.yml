@@ -1,0 +1,8 @@
+# Run Template-specific messages
+loading_solution: "Loading solution information"
+error_details: "Error details: {details}"
+querying_handler: "Querying handler {handler} for template {template}"
+handler_not_found: "Handler {handler} not found in template {template} for solution {solution}"
+extracting_handler: "Extracting handler to {path}"
+handler_not_zip: "Handler {handler} is not a valid zip file"
+run_issues: "Run template has issues"

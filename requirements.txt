@@ -34,6 +34,7 @@ adbc-driver-postgresql~=1.1.0
 click~=8.1.7
 rich-click~=1.7.3
 click-log~=0.4.0
+tqdm~=4.67.1
 
 # Other requirements
 openpyxl~=3.1

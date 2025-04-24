@@ -1,0 +1,6 @@
+# Progress-related messages
+operation_started: "Operation '{operation}' started"
+operation_completed: "Operation '{operation}' completed"
+processing_items: "Processing {count} items"
+items_processed: "Processed {count} items"
+percentage_complete: "{percentage}% complete"

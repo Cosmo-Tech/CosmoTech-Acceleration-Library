@@ -132,3 +132,7 @@ tmp/
 .idea/
 
 generated/
+.vscode/
+
+# sonarcube folders
+.scannerwork/

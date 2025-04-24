@@ -1,0 +1,34 @@
+{
+  "id": "csm-data store-load-from-singlestore",
+  "command": "csm-data",
+  "arguments": [
+    "store",
+    "load-from-singlestore"
+  ],
+  "description": "Use csm-data to load data from SingleStore into a store",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_PARAMETERS_ABSOLUTE_PATH": {
+      "description": "Folder containing the store to load data into"
+    },
+    "SINGLE_STORE_HOST": {
+      "description": "SingleStore host URI"
+    },
+    "SINGLE_STORE_PORT": {
+      "description": "SingleStore host port",
+      "defaultValue": "3306"
+    },
+    "SINGLE_STORE_DB": {
+      "description": "SingleStore database name"
+    },
+    "SINGLE_STORE_USERNAME": {
+      "description": "SingleStore user name"
+    },
+    "SINGLE_STORE_PASSWORD": {
+      "description": "SingleStore user password"
+    },
+    "SINGLE_STORE_TABLES": {
+      "description": "Comma-separated list of tables to load from SingleStore"
+    }
+  }
+}

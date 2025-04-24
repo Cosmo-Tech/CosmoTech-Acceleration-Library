@@ -1,0 +1,27 @@
+{
+  "id": "csm-data rds-load-csv",
+  "command": "csm-data",
+  "arguments": [
+    "api",
+    "rds-load-csv"
+  ],
+  "description": "Use csm-data to query the results api and store it in a csv file, you need to add your arguments for filename and query while using this template",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_DATASET_ABSOLUTE_PATH": {
+      "description": "Target folder in which to write the resulting CSV file"
+    },
+    "CSM_ORGANIZATION_ID": {
+      "description": "An organization id for the Cosmo Tech API"
+    },
+    "CSM_WORKSPACE_ID": {
+      "description": "A workspace id for the Cosmo Tech API"
+    },
+    "CSM_RUNNER_ID": {
+      "description": "A runner id for the Cosmo Tech API"
+    },
+    "CSM_RUN_ID": {
+      "description": "A run id for the Cosmo Tech API"
+    }
+  }
+}

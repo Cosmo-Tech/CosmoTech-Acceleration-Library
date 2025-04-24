@@ -9,6 +9,7 @@ import pathlib
 import cosmotech_api
 
 from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.orchestrator.utils.translate import T
 
 
 def list_workspace_files(
@@ -27,16 +28,18 @@ def list_workspace_files(
     """
     target_list = []
     api_ws = cosmotech_api.api.workspace_api.WorkspaceApi(api_client)
-    LOGGER.info(f"Target path is a folder, listing content")
+    LOGGER.info(T("coal.cosmotech_api.workspace.target_is_folder"))
     wsf = api_ws.find_all_workspace_files(organization_id, workspace_id)
     for workspace_file in wsf:
         if workspace_file.file_name.startswith(file_prefix):
             target_list.append(workspace_file.file_name)
 
     if not target_list:
-        LOGGER.error(f"No workspace file were found with filter {file_prefix}")
+        LOGGER.error(
+            T("coal.common.errors.data_no_workspace_files").format(file_prefix=file_prefix, workspace_id=workspace_id)
+        )
         raise ValueError(
-            f"No workspace file were found with filter {file_prefix} in workspace {workspace_id}"
+            T("coal.common.errors.data_no_workspace_files").format(file_prefix=file_prefix, workspace_id=workspace_id)
         )
 
     return target_list
@@ -60,14 +63,12 @@ def download_workspace_file(
     :return: The path to the created file
     """
     if target_dir.is_file():
-        raise ValueError(f"{target_dir} is a file and not a directory")
+        raise ValueError(T("coal.common.file_operations.not_directory").format(target_dir=target_dir))
     api_ws = cosmotech_api.api.workspace_api.WorkspaceApi(api_client)
 
-    LOGGER.info(f"Loading {file_name} from the API")
+    LOGGER.info(T("coal.cosmotech_api.workspace.loading_file").format(file_name=file_name))
 
-    _file_content = api_ws.download_workspace_file(
-        organization_id, workspace_id, file_name
-    )
+    _file_content = api_ws.download_workspace_file(organization_id, workspace_id, file_name)
 
     local_target_file = target_dir / file_name
     local_target_file.parent.mkdir(parents=True, exist_ok=True)
@@ -75,7 +76,7 @@ def download_workspace_file(
     with open(local_target_file, "wb") as _file:
         _file.write(_file_content)
 
-    LOGGER.info(f"{local_target_file} successfuly loaded from the API")
+    LOGGER.info(T("coal.cosmotech_api.workspace.file_loaded").format(file=local_target_file))
 
     return local_target_file
 
@@ -104,29 +105,23 @@ def upload_workspace_file(
     """
     target_file = pathlib.Path(file_path)
     if not target_file.exists():
-        LOGGER.error(f'"{file_path}" does not exists')
-        raise ValueError(f'"{file_path}" does not exists')
+        LOGGER.error(T("coal.common.file_operations.not_exists").format(file_path=file_path))
+        raise ValueError(T("coal.common.file_operations.not_exists").format(file_path=file_path))
     if not target_file.is_file():
-        LOGGER.error(f'"{file_path}" is not a single file')
-        raise ValueError(f'"{file_path}" is not a single file')
+        LOGGER.error(T("coal.common.file_operations.not_single_file").format(file_path=file_path))
+        raise ValueError(T("coal.common.file_operations.not_single_file").format(file_path=file_path))
 
     api_ws = cosmotech_api.api.workspace_api.WorkspaceApi(api_client)
-    destination = (
-        workspace_path + target_file.name
-        if workspace_path.endswith("/")
-        else workspace_path
-    )
+    destination = workspace_path + target_file.name if workspace_path.endswith("/") else workspace_path
 
-    LOGGER.info(f"Sending {destination} to the API")
+    LOGGER.info(T("coal.cosmotech_api.workspace.sending_to_api").format(destination=destination))
     try:
         _file = api_ws.upload_workspace_file(
             organization_id, workspace_id, file_path, overwrite, destination=destination
         )
     except cosmotech_api.exceptions.ApiException as e:
-        LOGGER.error(
-            f"{destination}already exists, use the overwrite flag to replace it"
-        )
+        LOGGER.error(T("coal.common.file_operations.already_exists").format(csv_path=destination))
         raise e
 
-    LOGGER.info(f"{_file.file_name} successfuly sent to the API")
+    LOGGER.info(T("coal.cosmotech_api.workspace.file_sent").format(file=_file.file_name))
     return _file.file_name

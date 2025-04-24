@@ -1,0 +1,35 @@
+{
+  "id": "csm-data store-dump-to-azure",
+  "command": "csm-data",
+  "arguments": [
+    "store",
+    "dump-to-azure"
+  ],
+  "description": "Use csm-data to dump a store to Azure Blob Storage",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_PARAMETERS_ABSOLUTE_PATH": {
+      "description": "Folder containing the store to dump to Azure Blob Storage"
+    },
+    "AZURE_ACCOUNT_NAME": {
+      "description": "Azure Storage account name"
+    },
+    "AZURE_CONTAINER_NAME": {
+      "description": "Azure Storage container name"
+    },
+    "CSM_DATA_PREFIX": {
+      "description": "Prefix to add to uploaded files",
+      "optional": true,
+      "defaultValue": ""
+    },
+    "AZURE_TENANT_ID": {
+      "description": "Azure tenant ID"
+    },
+    "AZURE_CLIENT_ID": {
+      "description": "Azure client ID"
+    },
+    "AZURE_CLIENT_SECRET": {
+      "description": "Azure client secret"
+    }
+  }
+}

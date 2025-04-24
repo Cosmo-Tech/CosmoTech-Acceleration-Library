@@ -1,0 +1,29 @@
+{
+  "id": "csm-data adx-send-runnerdata",
+  "command": "csm-data",
+  "arguments": [
+    "adx-send-runnerdata"
+  ],
+  "description": "Use csm-data to send runner data to Azure Data Explorer. Requires a valid Azure Data Explorer configuration, here using environment variables.",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_DATASET_ABSOLUTE_PATH": {
+      "description": "Target folder containing dataset files to send to ADX"
+    },
+    "CSM_PARAMETERS_ABSOLUTE_PATH": {
+      "description": "Folder containing parameter files to send to ADX"
+    },
+    "CSM_RUNNER_ID": {
+      "description": "Unique identifier for the runner"
+    },
+    "AZURE_DATA_EXPLORER_RESOURCE_URI": {
+      "description": "URI required to connect to Azure Data Explorer"
+    },
+    "AZURE_DATA_EXPLORER_RESOURCE_INGEST_URI": {
+      "description": "Ingestion URI for Azure Data Explorer"
+    },
+    "AZURE_DATA_EXPLORER_DATABASE_NAME": {
+      "description": "Name of the database in Azure Data Explorer"
+    }
+  }
+}

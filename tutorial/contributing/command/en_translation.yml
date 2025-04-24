@@ -1,0 +1,11 @@
+commands:
+  store:
+    dump_to_mongodb:
+      description: |
+        Dump store data to MongoDB.
+      parameters:
+        store_folder: Folder containing the store
+        collection_prefix: Prefix for MongoDB collections
+        mongodb_uri: MongoDB connection URI
+        mongodb_db: MongoDB database name
+        replace: Replace existing collections

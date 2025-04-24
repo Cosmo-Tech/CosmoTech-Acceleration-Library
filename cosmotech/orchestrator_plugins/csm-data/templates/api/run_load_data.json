@@ -1,0 +1,30 @@
+{
+  "id": "csm-data run-load-data",
+  "command": "csm-data",
+  "arguments": [
+    "api",
+    "run-load-data"
+  ],
+  "description": "Use csm-data to download runner data from the Cosmo Tech API",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_ORGANIZATION_ID": {
+      "description": "An organization id for the Cosmo Tech API"
+    },
+    "CSM_WORKSPACE_ID": {
+      "description": "A workspace id for the Cosmo Tech API"
+    },
+    "CSM_RUNNER_ID": {
+      "description": "A runner id for the Cosmo Tech API"
+    },
+    "CSM_DATASET_ABSOLUTE_PATH": {
+      "description": "Target folder in which to write the dataset from the Cosmo Tech API"
+    },
+    "CSM_PARAMETERS_ABSOLUTE_PATH": {
+      "description": "Target folder in which to write the parameters from the Cosmo Tech API"
+    },
+    "CSM_API_URL": {
+      "description": "The URL to a Cosmo Tech API instance"
+    }
+  }
+}

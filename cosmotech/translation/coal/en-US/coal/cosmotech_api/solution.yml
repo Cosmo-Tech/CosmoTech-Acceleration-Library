@@ -1,0 +1,5 @@
+# Solution-specific messages
+loaded: "Loaded {path}"
+api_configured: "Configuration to the api set"
+loading_workspace: "Loading Workspace information to get Solution ID"
+invalid_file: "Invalid solution file: {file}"

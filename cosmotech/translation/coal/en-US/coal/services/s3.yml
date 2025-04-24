@@ -1,0 +1,9 @@
+# S3-specific messages
+bucket_upload: "Uploading to S3 bucket: {bucket_name}"
+bucket_download: "Downloading from S3 bucket: {bucket_name}"
+bucket_delete: "Deleting from S3 bucket: {bucket_name}"
+file_uploaded: "File uploaded to S3: {file_path} as {uploaded_name}"
+file_downloaded: "File downloaded from S3: {file_path}"
+file_deleted: "File deleted from S3: {file_path}"
+bucket_listing: "Listing contents of bucket: {bucket_name}"
+bucket_items_found: "Found {count} items in bucket"

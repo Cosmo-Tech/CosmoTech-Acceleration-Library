@@ -1,0 +1,40 @@
+{
+  "id": "csm-data postgres-send-runner-metadata",
+  "command": "csm-data",
+  "arguments": [
+    "api",
+    "postgres-send-runner-metadata"
+  ],
+  "description": "Use csm-data to send runner metadata to a PostgreSQL database",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_ORGANIZATION_ID": {
+      "description": "An organization id for the Cosmo Tech API"
+    },
+    "CSM_WORKSPACE_ID": {
+      "description": "A workspace id for the Cosmo Tech API"
+    },
+    "CSM_RUNNER_ID": {
+      "description": "A runner id for the Cosmo Tech API"
+    },
+    "POSTGRES_HOST_URI": {
+      "description": "PostgreSQL host URI"
+    },
+    "POSTGRES_HOST_PORT": {
+      "description": "PostgreSQL host port",
+      "defaultValue": "5432"
+    },
+    "POSTGRES_DB_NAME": {
+      "description": "PostgreSQL database name"
+    },
+    "POSTGRES_DB_SCHEMA": {
+      "description": "PostgreSQL database schema"
+    },
+    "POSTGRES_USER_NAME": {
+      "description": "PostgreSQL user name"
+    },
+    "POSTGRES_USER_PASSWORD": {
+      "description": "PostgreSQL user password"
+    }
+  }
+}

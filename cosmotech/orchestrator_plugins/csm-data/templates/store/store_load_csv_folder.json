@@ -1,0 +1,18 @@
+{
+  "id": "csm-data store-load-csv-folder",
+  "command": "csm-data",
+  "arguments": [
+    "store",
+    "load-csv-folder"
+  ],
+  "description": "Use csm-data to load CSV files from a folder into a store",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_PARAMETERS_ABSOLUTE_PATH": {
+      "description": "Folder containing the store to load CSV files into"
+    },
+    "CSM_DATASET_ABSOLUTE_PATH": {
+      "description": "Folder containing CSV files to load into the store"
+    }
+  }
+}

@@ -11,6 +11,7 @@ from urllib.parse import quote
 import adbc_driver_manager
 import pyarrow as pa
 from adbc_driver_postgresql import dbapi
+from cosmotech.orchestrator.utils.translate import T
 from pyarrow import Table
 
 from cosmotech.coal.utils.logger import LOGGER
@@ -64,7 +65,11 @@ def get_postgresql_table_schema(
     Returns:
         PyArrow Schema if table exists, None otherwise
     """
-    LOGGER.debug(f"Getting schema for table {postgres_schema}.{target_table_name}")
+    LOGGER.debug(
+        T("coal.services.postgresql.getting_schema").format(
+            postgres_schema=postgres_schema, target_table_name=target_table_name
+        )
+    )
 
     postgresql_full_uri = generate_postgresql_full_uri(
         postgres_host,
@@ -82,7 +87,11 @@ def get_postgresql_table_schema(
                 db_schema_filter=postgres_schema,
             )
         except adbc_driver_manager.ProgrammingError:
-            LOGGER.warning(f"Table {postgres_schema}.{target_table_name} not found")
+            LOGGER.warning(
+                T("coal.services.postgresql.table_not_found").format(
+                    postgres_schema=postgres_schema, target_table_name=target_table_name
+                )
+            )
         return None
 
 
@@ -90,9 +99,9 @@ def adapt_table_to_schema(data: pa.Table, target_schema: pa.Schema) -> pa.Table:
     """
     Adapt a PyArrow table to match a target schema with detailed logging.
     """
-    LOGGER.debug(f"Starting schema adaptation for table with {len(data)} rows")
-    LOGGER.debug(f"Original schema: {data.schema}")
-    LOGGER.debug(f"Target schema: {target_schema}")
+    LOGGER.debug(T("coal.services.postgresql.schema_adaptation_start").format(rows=len(data)))
+    LOGGER.debug(T("coal.services.postgresql.original_schema").format(schema=data.schema))
+    LOGGER.debug(T("coal.services.postgresql.target_schema").format(schema=target_schema))
 
     target_fields = {field.name: field.type for field in target_schema}
     new_columns = []
@@ -112,53 +121,55 @@ def adapt_table_to_schema(data: pa.Table, target_schema: pa.Schema) -> pa.Table:
 
             if original_type != target_type:
                 LOGGER.debug(
-                    f"Attempting to cast column '{field_name}' "
-                    f"from {original_type} to {target_type}"
+                    T("coal.services.postgresql.casting_column").format(
+                        field_name=field_name,
+                        original_type=original_type,
+                        target_type=target_type,
+                    )
                 )
                 try:
                     new_col = pa.compute.cast(col, target_type)
                     new_columns.append(new_col)
-                    type_conversions.append(
-                        f"{field_name}: {original_type} -> {target_type}"
-                    )
+                    type_conversions.append(f"{field_name}: {original_type} -> {target_type}")
                 except pa.ArrowInvalid as e:
                     LOGGER.warning(
-                        f"Failed to cast column '{field_name}' "
-                        f"from {original_type} to {target_type}. "
-                        f"Filling with nulls. Error: {str(e)}"
+                        T("coal.services.postgresql.cast_failed").format(
+                            field_name=field_name,
+                            original_type=original_type,
+                            target_type=target_type,
+                            error=str(e),
+                        )
                     )
                     new_columns.append(pa.nulls(len(data), type=target_type))
-                    failed_conversions.append(
-                        f"{field_name}: {original_type} -> {target_type}"
-                    )
+                    failed_conversions.append(f"{field_name}: {original_type} -> {target_type}")
             else:
                 new_columns.append(col)
         else:
             # Column doesn't exist - add nulls
-            LOGGER.debug(f"Adding missing column '{field_name}' with null values")
+            LOGGER.debug(T("coal.services.postgresql.adding_missing_column").format(field_name=field_name))
             new_columns.append(pa.nulls(len(data), type=target_type))
             added_columns.append(field_name)
 
     # Log columns that will be dropped
     dropped_columns = [name for name in data.column_names if name not in target_fields]
     if dropped_columns:
-        LOGGER.debug(f"Dropping extra columns not in target schema: {dropped_columns}")
+        LOGGER.debug(T("coal.services.postgresql.dropping_columns").format(columns=dropped_columns))
 
     # Create new table
     adapted_table = pa.Table.from_arrays(new_columns, schema=target_schema)
 
     # Log summary of adaptations
-    LOGGER.debug("Schema adaptation summary:")
+    LOGGER.debug(T("coal.services.postgresql.adaptation_summary"))
     if added_columns:
-        LOGGER.debug(f"- Added columns (filled with nulls): {added_columns}")
+        LOGGER.debug(T("coal.services.postgresql.added_columns").format(columns=added_columns))
     if dropped_columns:
-        LOGGER.debug(f"- Dropped columns: {dropped_columns}")
+        LOGGER.debug(T("coal.services.postgresql.dropped_columns").format(columns=dropped_columns))
     if type_conversions:
-        LOGGER.debug(f"- Successful type conversions: {type_conversions}")
+        LOGGER.debug(T("coal.services.postgresql.successful_conversions").format(conversions=type_conversions))
     if failed_conversions:
-        LOGGER.debug(f"- Failed conversions (filled with nulls): {failed_conversions}")
+        LOGGER.debug(T("coal.services.postgresql.failed_conversions").format(conversions=failed_conversions))
 
-    LOGGER.debug(f"Final adapted table schema: {adapted_table.schema}")
+    LOGGER.debug(T("coal.services.postgresql.final_schema").format(schema=adapted_table.schema))
     return adapted_table
 
 
@@ -175,9 +186,11 @@ def send_pyarrow_table_to_postgresql(
     force_encode: bool = False,
 ) -> int:
     LOGGER.debug(
-        f"Preparing to send data to PostgreSQL table '{postgres_schema}.{target_table_name}'"
+        T("coal.services.postgresql.preparing_send").format(
+            postgres_schema=postgres_schema, target_table_name=target_table_name
+        )
     )
-    LOGGER.debug(f"Input table has {len(data)} rows")
+    LOGGER.debug(T("coal.services.postgresql.input_rows").format(rows=len(data)))
 
     # Get existing schema if table exists
     existing_schema = get_postgresql_table_schema(
@@ -192,14 +205,14 @@ def send_pyarrow_table_to_postgresql(
     )
 
     if existing_schema is not None:
-        LOGGER.debug(f"Found existing table with schema: {existing_schema}")
+        LOGGER.debug(T("coal.services.postgresql.found_existing_table").format(schema=existing_schema))
         if not replace:
-            LOGGER.debug("Adapting incoming data to match existing schema")
+            LOGGER.debug(T("coal.services.postgresql.adapting_data"))
             data = adapt_table_to_schema(data, existing_schema)
         else:
-            LOGGER.debug("Replace mode enabled - skipping schema adaptation")
+            LOGGER.debug(T("coal.services.postgresql.replace_mode"))
     else:
-        LOGGER.debug("No existing table found - will create new table")
+        LOGGER.debug(T("coal.services.postgresql.no_existing_table"))
 
     # Proceed with ingestion
     total = 0
@@ -212,18 +225,12 @@ def send_pyarrow_table_to_postgresql(
         force_encode,
     )
 
-    LOGGER.debug("Connecting to PostgreSQL database")
+    LOGGER.debug(T("coal.services.postgresql.connecting"))
     with dbapi.connect(postgresql_full_uri, autocommit=True) as conn:
         with conn.cursor() as curs:
-            LOGGER.debug(
-                f"Ingesting data with mode: {'replace' if replace else 'create_append'}"
-            )
-            total += curs.adbc_ingest(
-                target_table_name,
-                data,
-                "replace" if replace else "create_append",
-                db_schema_name=postgres_schema,
-            )
+            mode = "replace" if replace else "create_append"
+            LOGGER.debug(T("coal.services.postgresql.ingesting_data").format(mode=mode))
+            total += curs.adbc_ingest(target_table_name, data, mode, db_schema_name=postgres_schema)
 
-    LOGGER.debug(f"Successfully ingested {total} rows")
+    LOGGER.debug(T("coal.services.postgresql.ingestion_success").format(rows=total))
     return total

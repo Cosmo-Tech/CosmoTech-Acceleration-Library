@@ -1,0 +1,6 @@
+# Data transfer messages
+sending_table: "Sending table {table_name} as {output_type}"
+sending_data: "  Sending {size} bytes of data"
+table_empty: "Table {table_name} is empty (skipping)"
+rows_inserted: "Inserted {rows} rows in table {table_name}"
+file_sent: "Sending {file_path} as {uploaded_name}"

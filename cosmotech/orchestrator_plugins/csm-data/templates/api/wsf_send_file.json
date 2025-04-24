@@ -1,0 +1,36 @@
+{
+  "id": "csm-data wsf-send-file",
+  "command": "csm-data",
+  "arguments": [
+    "api",
+    "wsf-send-file"
+  ],
+  "description": "Use csm-data to send a file to a workspace inside the API",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_FILE_PATH": {
+      "description": "Path to the file to send as a workspace file"
+    },
+    "CSM_API_URL": {
+      "description": "The URL to a Cosmo Tech API instance"
+    },
+    "CSM_API_KEY": {
+      "description": "An API key defined during the setup of the API instance granting access to the Run/data/send endpoint",
+      "optional": true
+    },
+    "CSM_API_KEY_HEADER": {
+      "description": "The header key required to use the API key previously defined",
+      "defaultValue": "X-CSM-API-KEY",
+      "optional": true
+    },
+    "CSM_ORGANIZATION_ID": {
+      "description": "An organization id for the Cosmo Tech API"
+    },
+    "CSM_WORKSPACE_ID": {
+      "description": "A workspace id for the Cosmo Tech API"
+    },
+    "CSM_WORKSPACE_PATH": {
+      "description": "Path inside the workspace to store the file (end with '/' for a folder))"
+    }
+  }
+}

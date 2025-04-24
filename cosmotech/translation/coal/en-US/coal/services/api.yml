@@ -1,0 +1,8 @@
+# API-specific messages
+solution_debug: "Solution: {solution}"
+api_request: "API request: {method} {url}"
+api_response: "API response: {status_code}"
+api_error: "API error: {error}"
+api_success: "API request successful"
+api_timeout: "API request timed out after {timeout} seconds"
+api_retry: "Retrying API request ({attempt}/{max_attempts})"

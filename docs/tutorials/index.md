@@ -38,4 +38,32 @@ The datastore is your friend to keep data between orchestration steps. It comes 
 </div>
 </article>
 
+<article markdown>
+<div class="text" markdown>
+:material-api: __CosmoTech API__
+
+---
+Learn how to interact with the CosmoTech API directly: authentication, workspaces, Twin Data Layer, and more.
+
+---
+<footer markdown>
+[:octicons-arrow-right-24: CosmoTech API](./cosmotech-api.md)
+</footer>
+</div>
+</article>
+
+<article markdown>
+<div class="text" markdown>
+:material-git: __Contributing to CoAL__
+
+---
+Learn how to contribute to CoAL: from setting up your development environment to implementing new features and submitting pull requests.
+
+---
+<footer markdown>
+[:octicons-arrow-right-24: Contributing](./contributing.md)
+</footer>
+</div>
+</article>
+
 </main>

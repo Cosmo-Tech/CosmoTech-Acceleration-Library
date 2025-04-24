@@ -1,0 +1,27 @@
+{
+  "id": "csm-data runtemplate-load-handler",
+  "command": "csm-data",
+  "arguments": [
+    "api",
+    "runtemplate-load-handler"
+  ],
+  "description": "Use csm-data to load run template handlers from the Cosmo Tech API",
+  "useSystemEnvironment": true,
+  "environment": {
+    "CSM_ORGANIZATION_ID": {
+      "description": "An organization id for the Cosmo Tech API"
+    },
+    "CSM_WORKSPACE_ID": {
+      "description": "A workspace id for the Cosmo Tech API"
+    },
+    "CSM_RUN_TEMPLATE_ID": {
+      "description": "A run template id for the Cosmo Tech API"
+    },
+    "CSM_CONTAINER_MODE": {
+      "description": "Comma-separated list of handlers to load"
+    },
+    "CSM_API_URL": {
+      "description": "The URL to a Cosmo Tech API instance"
+    }
+  }
+}

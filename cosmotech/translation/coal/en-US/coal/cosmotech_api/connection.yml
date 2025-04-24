@@ -1,0 +1,10 @@
+# Connection-specific messages
+existing_sets: "Existing sets are:"
+azure_connection: "  Azure Entra Connection : {keys}"
+api_key_connection: "  Cosmo Tech API Key : {keys}"
+keycloak_connection: "  Keycloak connection : {keys}"
+found_keycloak: "Found Keycloack connection info"
+found_cert_authority: "Found Certificate Authority override for IDP connection, using it."
+found_api_key: "Found Api Key connection info"
+found_azure: "Found Azure Entra connection info"
+found_valid: "Found valid connection of type: {type}"

@@ -1,0 +1,9 @@
+{
+  "id": "csm-data try-api-connection",
+  "command": "csm-data",
+  "arguments": [
+    "api"
+  ],
+  "description": "Use csm-data check if a valid Cosmo Tech API connection exists.",
+  "useSystemEnvironment": true
+}
