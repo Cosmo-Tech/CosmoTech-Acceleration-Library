@@ -25,7 +25,7 @@ singlestoredb~=1.10.0
 cosmotech-run-orchestrator~=2.0.0
 
 # Data store requirements
-pyarrow~=17.0.0
+pyarrow~=20.0.0
 adbc-driver-manager~=1.1.0
 adbc-driver-sqlite~=1.1.0
 adbc-driver-postgresql~=1.1.0
