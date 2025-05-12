@@ -12,12 +12,12 @@ from cosmotech.orchestrator.utils.translate import T
 
 @click.command()
 @web_help("csm-data/api/runtemplate-load-handler")
-@translate_help("csm-data.commands.api.runtemplate_load_handler.description")
+@translate_help("csm_data.commands.api.runtemplate_load_handler.description")
 @click.option(
     "--organization-id",
     envvar="CSM_ORGANIZATION_ID",
     show_envvar=True,
-    help=T("csm-data.commands.api.runtemplate_load_handler.parameters.organization_id"),
+    help=T("csm_data.commands.api.runtemplate_load_handler.parameters.organization_id"),
     metavar="o-##########",
     required=True,
 )
@@ -25,7 +25,7 @@ from cosmotech.orchestrator.utils.translate import T
     "--workspace-id",
     envvar="CSM_WORKSPACE_ID",
     show_envvar=True,
-    help=T("csm-data.commands.api.runtemplate_load_handler.parameters.workspace_id"),
+    help=T("csm_data.commands.api.runtemplate_load_handler.parameters.workspace_id"),
     metavar="w-##########",
     required=True,
 )
@@ -33,7 +33,7 @@ from cosmotech.orchestrator.utils.translate import T
     "--run-template-id",
     envvar="CSM_RUN_TEMPLATE_ID",
     show_envvar=True,
-    help=T("csm-data.commands.api.runtemplate_load_handler.parameters.run_template_id"),
+    help=T("csm_data.commands.api.runtemplate_load_handler.parameters.run_template_id"),
     metavar="NAME",
     required=True,
 )
@@ -41,7 +41,7 @@ from cosmotech.orchestrator.utils.translate import T
     "--handler-list",
     envvar="CSM_CONTAINER_MODE",
     show_envvar=True,
-    help=T("csm-data.commands.api.runtemplate_load_handler.parameters.handler_list"),
+    help=T("csm_data.commands.api.runtemplate_load_handler.parameters.handler_list"),
     metavar="HANDLER,...,HANDLER",
     required=True,
 )

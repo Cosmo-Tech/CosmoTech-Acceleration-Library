@@ -18,7 +18,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--organization-id",
     envvar="CSM_ORGANIZATION_ID",
-    help=T("csm-data.commands.api.wsf_load_file.parameters.organization_id"),
+    help=T("csm_data.commands.api.wsf_load_file.parameters.organization_id"),
     metavar="o-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -27,7 +27,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--workspace-id",
     envvar="CSM_WORKSPACE_ID",
-    help=T("csm-data.commands.api.wsf_load_file.parameters.workspace_id"),
+    help=T("csm_data.commands.api.wsf_load_file.parameters.workspace_id"),
     metavar="w-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -35,14 +35,14 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--workspace-path",
-    help=T("csm-data.commands.api.wsf_load_file.parameters.workspace_path"),
+    help=T("csm_data.commands.api.wsf_load_file.parameters.workspace_path"),
     metavar="PATH",
     default="/",
     type=str,
 )
 @click.option(
     "--target-folder",
-    help=T("csm-data.commands.api.wsf_load_file.parameters.target_folder"),
+    help=T("csm_data.commands.api.wsf_load_file.parameters.target_folder"),
     metavar="PATH",
     default="./",
     type=str,
@@ -51,7 +51,7 @@ from cosmotech.orchestrator.utils.translate import T
     required=True,
 )
 @web_help("csm-data/api/wsf-load-file")
-@translate_help("csm-data.commands.api.wsf_load_file.description")
+@translate_help("csm_data.commands.api.wsf_load_file.description")
 def wsf_load_file(organization_id, workspace_id, workspace_path: str, target_folder: str):
     with get_api_client()[0] as api_client:
         target_list = list_workspace_files(api_client, organization_id, workspace_id, workspace_path)

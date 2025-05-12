@@ -12,11 +12,11 @@ from cosmotech.orchestrator.utils.translate import T
 
 @click.command()
 @web_help("csm-data/store/reset")
-@translate_help("csm-data.commands.store.reset.description")
+@translate_help("csm_data.commands.store.reset.description")
 @click.option(
     "--store-folder",
     envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-    help=T("csm-data.commands.store.reset.parameters.store_folder"),
+    help=T("csm_data.commands.store.reset.parameters.store_folder"),
     metavar="PATH",
     type=str,
     show_envvar=True,

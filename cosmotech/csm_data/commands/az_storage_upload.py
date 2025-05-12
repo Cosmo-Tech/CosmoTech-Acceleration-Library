@@ -14,7 +14,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--source-folder",
     envvar="CSM_DATASET_ABSOLUTE_PATH",
-    help=T("csm-data.commands.storage.az_storage_upload.parameters.source_folder"),
+    help=T("csm_data.commands.storage.az_storage_upload.parameters.source_folder"),
     metavar="PATH",
     type=str,
     show_envvar=True,
@@ -23,14 +23,14 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--recursive/--no-recursive",
     default=False,
-    help=T("csm-data.commands.storage.az_storage_upload.parameters.recursive"),
+    help=T("csm_data.commands.storage.az_storage_upload.parameters.recursive"),
     type=bool,
     is_flag=True,
 )
 @click.option(
     "--blob-name",
     envvar="AZURE_STORAGE_BLOB_NAME",
-    help=T("csm-data.commands.storage.az_storage_upload.parameters.blob_name"),
+    help=T("csm_data.commands.storage.az_storage_upload.parameters.blob_name"),
     metavar="BUCKET",
     type=str,
     show_envvar=True,
@@ -40,7 +40,7 @@ from cosmotech.orchestrator.utils.translate import T
     "--prefix",
     "file_prefix",
     envvar="CSM_DATA_BLOB_PREFIX",
-    help=T("csm-data.commands.storage.az_storage_upload.parameters.prefix"),
+    help=T("csm_data.commands.storage.az_storage_upload.parameters.prefix"),
     metavar="PREFIX",
     type=str,
     show_envvar=True,
@@ -48,14 +48,14 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--az-storage-sas-url",
-    help=T("csm-data.commands.storage.az_storage_upload.parameters.az_storage_sas_url"),
+    help=T("csm_data.commands.storage.az_storage_upload.parameters.az_storage_sas_url"),
     type=str,
     show_envvar=True,
     metavar="URL",
     envvar="AZURE_STORAGE_SAS_URL",
 )
 @web_help("csm-data/az-storage-upload")
-@translate_help("csm-data.commands.storage.az_storage_upload.description")
+@translate_help("csm_data.commands.storage.az_storage_upload.description")
 def az_storage_upload(
     source_folder,
     blob_name: str,

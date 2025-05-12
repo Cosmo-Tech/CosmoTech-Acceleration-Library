@@ -16,7 +16,7 @@ from cosmotech.orchestrator.utils.translate import T
     "--organization-id",
     envvar="CSM_ORGANIZATION_ID",
     show_envvar=True,
-    help=T("csm-data.commands.api.run_load_data.parameters.organization_id"),
+    help=T("csm_data.commands.api.run_load_data.parameters.organization_id"),
     metavar="o-##########",
     required=True,
 )
@@ -24,7 +24,7 @@ from cosmotech.orchestrator.utils.translate import T
     "--workspace-id",
     envvar="CSM_WORKSPACE_ID",
     show_envvar=True,
-    help=T("csm-data.commands.api.run_load_data.parameters.workspace_id"),
+    help=T("csm_data.commands.api.run_load_data.parameters.workspace_id"),
     metavar="w-##########",
     required=True,
 )
@@ -32,7 +32,7 @@ from cosmotech.orchestrator.utils.translate import T
     "--runner-id",
     envvar="CSM_RUNNER_ID",
     show_envvar=True,
-    help=T("csm-data.commands.api.run_load_data.parameters.runner_id"),
+    help=T("csm_data.commands.api.run_load_data.parameters.runner_id"),
     metavar="s-##########",
     required=True,
 )
@@ -40,7 +40,7 @@ from cosmotech.orchestrator.utils.translate import T
     "--dataset-absolute-path",
     envvar="CSM_DATASET_ABSOLUTE_PATH",
     show_envvar=True,
-    help=T("csm-data.commands.api.run_load_data.parameters.dataset_absolute_path"),
+    help=T("csm_data.commands.api.run_load_data.parameters.dataset_absolute_path"),
     metavar="PATH",
     required=True,
 )
@@ -49,7 +49,7 @@ from cosmotech.orchestrator.utils.translate import T
     envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
     metavar="PATH",
     show_envvar=True,
-    help=T("csm-data.commands.api.run_load_data.parameters.parameters_absolute_path"),
+    help=T("csm_data.commands.api.run_load_data.parameters.parameters_absolute_path"),
     required=True,
 )
 @click.option(
@@ -58,7 +58,7 @@ from cosmotech.orchestrator.utils.translate import T
     show_envvar=True,
     default=True,
     show_default=True,
-    help=T("csm-data.commands.api.run_load_data.parameters.write_json"),
+    help=T("csm_data.commands.api.run_load_data.parameters.write_json"),
 )
 @click.option(
     "--write-csv/--no-write-csv",
@@ -66,7 +66,7 @@ from cosmotech.orchestrator.utils.translate import T
     show_envvar=True,
     default=False,
     show_default=True,
-    help=T("csm-data.commands.api.run_load_data.parameters.write_csv"),
+    help=T("csm_data.commands.api.run_load_data.parameters.write_csv"),
 )
 @click.option(
     "--fetch-dataset/--no-fetch-dataset",
@@ -74,7 +74,7 @@ from cosmotech.orchestrator.utils.translate import T
     show_envvar=True,
     default=True,
     show_default=True,
-    help=T("csm-data.commands.api.run_load_data.parameters.fetch_dataset"),
+    help=T("csm_data.commands.api.run_load_data.parameters.fetch_dataset"),
 )
 @click.option(
     "--parallel/--no-parallel",
@@ -82,12 +82,12 @@ from cosmotech.orchestrator.utils.translate import T
     show_envvar=True,
     default=True,
     show_default=True,
-    help=T("csm-data.commands.api.run_load_data.parameters.parallel"),
+    help=T("csm_data.commands.api.run_load_data.parameters.parallel"),
 )
 @require_env("CSM_API_SCOPE", "The identification scope of a Cosmotech API")
 @require_env("CSM_API_URL", "The URL to a Cosmotech API")
 @web_help("csm-data/api/run-load-data")
-@translate_help("csm-data.commands.api.run_load_data.description")
+@translate_help("csm_data.commands.api.run_load_data.description")
 def run_load_data(
     runner_id: str,
     workspace_id: str,

@@ -12,11 +12,11 @@ from cosmotech.orchestrator.utils.translate import T
 
 @click.command()
 @web_help("csm-data/api/postgres-send-runner-metadata")
-@translate_help("csm-data.commands.api.postgres_send_runner_metadata.description")
+@translate_help("csm_data.commands.api.postgres_send_runner_metadata.description")
 @click.option(
     "--organization-id",
     envvar="CSM_ORGANIZATION_ID",
-    help=T("csm-data.commands.api.postgres_send_runner_metadata.parameters.organization_id"),
+    help=T("csm_data.commands.api.postgres_send_runner_metadata.parameters.organization_id"),
     metavar="o-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -25,7 +25,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--workspace-id",
     envvar="CSM_WORKSPACE_ID",
-    help=T("csm-data.commands.api.postgres_send_runner_metadata.parameters.workspace_id"),
+    help=T("csm_data.commands.api.postgres_send_runner_metadata.parameters.workspace_id"),
     metavar="w-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -34,7 +34,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--runner-id",
     envvar="CSM_RUNNER_ID",
-    help=T("csm-data.commands.api.postgres_send_runner_metadata.parameters.runner_id"),
+    help=T("csm_data.commands.api.postgres_send_runner_metadata.parameters.runner_id"),
     metavar="r-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -42,21 +42,21 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--table-prefix",
-    help=T("csm-data.commands.api.postgres_send_runner_metadata.parameters.table_prefix"),
+    help=T("csm_data.commands.api.postgres_send_runner_metadata.parameters.table_prefix"),
     metavar="PREFIX",
     type=str,
     default="Cosmotech_",
 )
 @click.option(
     "--postgres-host",
-    help=T("csm-data.commands.api.postgres_send_runner_metadata.parameters.postgres_host"),
+    help=T("csm_data.commands.api.postgres_send_runner_metadata.parameters.postgres_host"),
     envvar="POSTGRES_HOST_URI",
     show_envvar=True,
     required=True,
 )
 @click.option(
     "--postgres-port",
-    help=T("csm-data.commands.api.postgres_send_runner_metadata.parameters.postgres_port"),
+    help=T("csm_data.commands.api.postgres_send_runner_metadata.parameters.postgres_port"),
     envvar="POSTGRES_HOST_PORT",
     show_envvar=True,
     required=False,
@@ -64,28 +64,28 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--postgres-db",
-    help=T("csm-data.commands.api.postgres_send_runner_metadata.parameters.postgres_db"),
+    help=T("csm_data.commands.api.postgres_send_runner_metadata.parameters.postgres_db"),
     envvar="POSTGRES_DB_NAME",
     show_envvar=True,
     required=True,
 )
 @click.option(
     "--postgres-schema",
-    help=T("csm-data.commands.api.postgres_send_runner_metadata.parameters.postgres_schema"),
+    help=T("csm_data.commands.api.postgres_send_runner_metadata.parameters.postgres_schema"),
     envvar="POSTGRES_DB_SCHEMA",
     show_envvar=True,
     required=True,
 )
 @click.option(
     "--postgres-user",
-    help=T("csm-data.commands.api.postgres_send_runner_metadata.parameters.postgres_user"),
+    help=T("csm_data.commands.api.postgres_send_runner_metadata.parameters.postgres_user"),
     envvar="POSTGRES_USER_NAME",
     show_envvar=True,
     required=True,
 )
 @click.option(
     "--postgres-password",
-    help=T("csm-data.commands.api.postgres_send_runner_metadata.parameters.postgres_password"),
+    help=T("csm_data.commands.api.postgres_send_runner_metadata.parameters.postgres_password"),
     envvar="POSTGRES_USER_PASSWORD",
     show_envvar=True,
     required=True,

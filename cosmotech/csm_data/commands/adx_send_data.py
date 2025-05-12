@@ -12,14 +12,14 @@ from cosmotech.csm_data.utils.decorators import web_help, translate_help
 
 @click.command()
 @web_help("csm-data/adx-send-data")
-@translate_help("csm-data.commands.storage.adx_send_data.description")
+@translate_help("csm_data.commands.storage.adx_send_data.description")
 @click.option(
     "--adx-uri",
     envvar="AZURE_DATA_EXPLORER_RESOURCE_URI",
     show_envvar=True,
     required=True,
     metavar="URI",
-    help=T("csm-data.commands.storage.adx_send_data.parameters.adx_uri"),
+    help=T("csm_data.commands.storage.adx_send_data.parameters.adx_uri"),
 )
 @click.option(
     "--adx-ingest-uri",
@@ -27,7 +27,7 @@ from cosmotech.csm_data.utils.decorators import web_help, translate_help
     show_envvar=True,
     required=True,
     metavar="URI",
-    help=T("csm-data.commands.storage.adx_send_data.parameters.adx_ingest_uri"),
+    help=T("csm_data.commands.storage.adx_send_data.parameters.adx_ingest_uri"),
 )
 @click.option(
     "--database-name",
@@ -35,7 +35,7 @@ from cosmotech.csm_data.utils.decorators import web_help, translate_help
     show_envvar=True,
     required=True,
     metavar="NAME",
-    help=T("csm-data.commands.storage.adx_send_data.parameters.database_name"),
+    help=T("csm_data.commands.storage.adx_send_data.parameters.database_name"),
 )
 @click.option(
     "--wait/--no-wait",
@@ -44,19 +44,19 @@ from cosmotech.csm_data.utils.decorators import web_help, translate_help
     show_envvar=True,
     default=False,
     show_default=True,
-    help=T("csm-data.commands.storage.adx_send_data.parameters.waiting_ingestion"),
+    help=T("csm_data.commands.storage.adx_send_data.parameters.waiting_ingestion"),
 )
 @click.option(
     "--tag",
     envvar="CSM_DATA_ADX_TAG",
     show_envvar=True,
     default=None,
-    help=T("csm-data.commands.storage.adx_send_data.parameters.adx_tag"),
+    help=T("csm_data.commands.storage.adx_send_data.parameters.adx_tag"),
 )
 @click.option(
     "--store-folder",
     envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-    help=T("csm-data.commands.storage.adx_send_data.parameters.store_folder"),
+    help=T("csm_data.commands.storage.adx_send_data.parameters.store_folder"),
     metavar="PATH",
     type=str,
     show_envvar=True,

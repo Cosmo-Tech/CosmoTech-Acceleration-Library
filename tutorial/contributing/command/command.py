@@ -12,11 +12,11 @@ from cosmotech.orchestrator.utils.translate import T
 
 @click.command()
 @web_help("csm-data/store/dump-to-mongodb")
-@translate_help("csm-data.commands.store.dump_to_mongodb.description")
+@translate_help("csm_data.commands.store.dump_to_mongodb.description")
 @click.option(
     "--store-folder",
     envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-    help=T("csm-data.commands.store.dump_to_mongodb.parameters.store_folder"),
+    help=T("csm_data.commands.store.dump_to_mongodb.parameters.store_folder"),
     metavar="PATH",
     type=str,
     show_envvar=True,
@@ -24,21 +24,21 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--collection-prefix",
-    help=T("csm-data.commands.store.dump_to_mongodb.parameters.collection_prefix"),
+    help=T("csm_data.commands.store.dump_to_mongodb.parameters.collection_prefix"),
     metavar="PREFIX",
     type=str,
     default="Cosmotech_",
 )
 @click.option(
     "--mongodb-uri",
-    help=T("csm-data.commands.store.dump_to_mongodb.parameters.mongodb_uri"),
+    help=T("csm_data.commands.store.dump_to_mongodb.parameters.mongodb_uri"),
     envvar="MONGODB_URI",
     show_envvar=True,
     required=True,
 )
 @click.option(
     "--mongodb-db",
-    help=T("csm-data.commands.store.dump_to_mongodb.parameters.mongodb_db"),
+    help=T("csm_data.commands.store.dump_to_mongodb.parameters.mongodb_db"),
     envvar="MONGODB_DB_NAME",
     show_envvar=True,
     required=True,
@@ -46,7 +46,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--replace/--append",
     "replace",
-    help=T("csm-data.commands.store.dump_to_mongodb.parameters.replace"),
+    help=T("csm_data.commands.store.dump_to_mongodb.parameters.replace"),
     default=True,
     is_flag=True,
     show_default=True,

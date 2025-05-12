@@ -12,11 +12,11 @@ from cosmotech.orchestrator.utils.translate import T
 
 @click.command()
 @web_help("csm-data/store/dump-to-postgres")
-@translate_help("csm-data.commands.store.dump_to_postgresql.description")
+@translate_help("csm_data.commands.store.dump_to_postgresql.description")
 @click.option(
     "--store-folder",
     envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-    help=T("csm-data.commands.store.dump_to_postgresql.parameters.store_folder"),
+    help=T("csm_data.commands.store.dump_to_postgresql.parameters.store_folder"),
     metavar="PATH",
     type=str,
     show_envvar=True,
@@ -24,21 +24,21 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--table-prefix",
-    help=T("csm-data.commands.store.dump_to_postgresql.parameters.table_prefix"),
+    help=T("csm_data.commands.store.dump_to_postgresql.parameters.table_prefix"),
     metavar="PREFIX",
     type=str,
     default="Cosmotech_",
 )
 @click.option(
     "--postgres-host",
-    help=T("csm-data.commands.store.dump_to_postgresql.parameters.postgres_host"),
+    help=T("csm_data.commands.store.dump_to_postgresql.parameters.postgres_host"),
     envvar="POSTGRES_HOST_URI",
     show_envvar=True,
     required=True,
 )
 @click.option(
     "--postgres-port",
-    help=T("csm-data.commands.store.dump_to_postgresql.parameters.postgres_port"),
+    help=T("csm_data.commands.store.dump_to_postgresql.parameters.postgres_port"),
     envvar="POSTGRES_HOST_PORT",
     show_envvar=True,
     required=False,
@@ -46,28 +46,28 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--postgres-db",
-    help=T("csm-data.commands.store.dump_to_postgresql.parameters.postgres_db"),
+    help=T("csm_data.commands.store.dump_to_postgresql.parameters.postgres_db"),
     envvar="POSTGRES_DB_NAME",
     show_envvar=True,
     required=True,
 )
 @click.option(
     "--postgres-schema",
-    help=T("csm-data.commands.store.dump_to_postgresql.parameters.postgres_schema"),
+    help=T("csm_data.commands.store.dump_to_postgresql.parameters.postgres_schema"),
     envvar="POSTGRES_DB_SCHEMA",
     show_envvar=True,
     required=True,
 )
 @click.option(
     "--postgres-user",
-    help=T("csm-data.commands.store.dump_to_postgresql.parameters.postgres_user"),
+    help=T("csm_data.commands.store.dump_to_postgresql.parameters.postgres_user"),
     envvar="POSTGRES_USER_NAME",
     show_envvar=True,
     required=True,
 )
 @click.option(
     "--postgres-password",
-    help=T("csm-data.commands.store.dump_to_postgresql.parameters.postgres_password"),
+    help=T("csm_data.commands.store.dump_to_postgresql.parameters.postgres_password"),
     envvar="POSTGRES_USER_PASSWORD",
     show_envvar=True,
     required=True,
@@ -75,7 +75,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--replace/--append",
     "replace",
-    help=T("csm-data.commands.store.dump_to_postgresql.parameters.replace"),
+    help=T("csm_data.commands.store.dump_to_postgresql.parameters.replace"),
     default=True,
     is_flag=True,
     show_default=True,

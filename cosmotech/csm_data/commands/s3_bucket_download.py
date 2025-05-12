@@ -16,7 +16,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--target-folder",
     envvar="CSM_DATASET_ABSOLUTE_PATH",
-    help=T("csm-data.commands.storage.s3_bucket_download.parameters.target_folder"),
+    help=T("csm_data.commands.storage.s3_bucket_download.parameters.target_folder"),
     metavar="PATH",
     type=str,
     show_envvar=True,
@@ -25,7 +25,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--bucket-name",
     envvar="CSM_DATA_BUCKET_NAME",
-    help=T("csm-data.commands.storage.s3_bucket_download.parameters.bucket_name"),
+    help=T("csm_data.commands.storage.s3_bucket_download.parameters.bucket_name"),
     metavar="BUCKET",
     type=str,
     show_envvar=True,
@@ -35,7 +35,7 @@ from cosmotech.orchestrator.utils.translate import T
     "--prefix-filter",
     "file_prefix",
     envvar="CSM_DATA_BUCKET_PREFIX",
-    help=T("csm-data.commands.storage.s3_bucket_download.parameters.prefix_filter"),
+    help=T("csm_data.commands.storage.s3_bucket_download.parameters.prefix_filter"),
     metavar="PREFIX",
     type=str,
     show_envvar=True,
@@ -43,14 +43,14 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--use-ssl/--no-ssl",
     default=True,
-    help=T("csm-data.commands.storage.s3_bucket_download.parameters.use_ssl"),
+    help=T("csm_data.commands.storage.s3_bucket_download.parameters.use_ssl"),
     type=bool,
     is_flag=True,
 )
 @click.option(
     "--s3-url",
     "endpoint_url",
-    help=T("csm-data.commands.storage.s3_bucket_download.parameters.s3_url"),
+    help=T("csm_data.commands.storage.s3_bucket_download.parameters.s3_url"),
     type=str,
     required=True,
     show_envvar=True,
@@ -60,7 +60,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--access-id",
     "access_id",
-    help=T("csm-data.commands.storage.s3_bucket_download.parameters.access_id"),
+    help=T("csm_data.commands.storage.s3_bucket_download.parameters.access_id"),
     type=str,
     required=True,
     show_envvar=True,
@@ -70,7 +70,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--secret-key",
     "secret_key",
-    help=T("csm-data.commands.storage.s3_bucket_download.parameters.secret_key"),
+    help=T("csm_data.commands.storage.s3_bucket_download.parameters.secret_key"),
     type=str,
     required=True,
     show_envvar=True,
@@ -79,14 +79,14 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--ssl-cert-bundle",
-    help=T("csm-data.commands.storage.s3_bucket_download.parameters.ssl_cert_bundle"),
+    help=T("csm_data.commands.storage.s3_bucket_download.parameters.ssl_cert_bundle"),
     type=str,
     show_envvar=True,
     metavar="PATH",
     envvar="CSM_S3_CA_BUNDLE",
 )
 @web_help("csm-data/s3-bucket-download")
-@translate_help("csm-data.commands.storage.s3_bucket_download.description")
+@translate_help("csm_data.commands.storage.s3_bucket_download.description")
 def s3_bucket_download(
     target_folder: str,
     bucket_name: str,

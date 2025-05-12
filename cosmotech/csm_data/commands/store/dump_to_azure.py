@@ -20,7 +20,7 @@ VALID_TYPES = (
 @click.option(
     "--store-folder",
     envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-    help=T("csm-data.commands.store.dump_to_azure.parameters.store_folder"),
+    help=T("csm_data.commands.store.dump_to_azure.parameters.store_folder"),
     metavar="PATH",
     type=str,
     show_envvar=True,
@@ -29,14 +29,14 @@ VALID_TYPES = (
 @click.option(
     "--output-type",
     default="sqlite",
-    help=T("csm-data.commands.store.dump_to_azure.parameters.output_type"),
+    help=T("csm_data.commands.store.dump_to_azure.parameters.output_type"),
     type=click.Choice(VALID_TYPES, case_sensitive=False),
 )
 @click.option(
     "--account-name",
     "account_name",
     envvar="AZURE_ACCOUNT_NAME",
-    help=T("csm-data.commands.store.dump_to_azure.parameters.account_name"),
+    help=T("csm_data.commands.store.dump_to_azure.parameters.account_name"),
     type=str,
     show_envvar=True,
     required=True,
@@ -45,7 +45,7 @@ VALID_TYPES = (
     "--container-name",
     "container_name",
     envvar="AZURE_CONTAINER_NAME",
-    help=T("csm-data.commands.store.dump_to_azure.parameters.container_name"),
+    help=T("csm_data.commands.store.dump_to_azure.parameters.container_name"),
     type=str,
     show_envvar=True,
     default="",
@@ -54,7 +54,7 @@ VALID_TYPES = (
     "--prefix",
     "file_prefix",
     envvar="CSM_DATA_PREFIX",
-    help=T("csm-data.commands.store.dump_to_azure.parameters.prefix"),
+    help=T("csm_data.commands.store.dump_to_azure.parameters.prefix"),
     metavar="PREFIX",
     type=str,
     show_envvar=True,
@@ -63,7 +63,7 @@ VALID_TYPES = (
 @click.option(
     "--tenant-id",
     "tenant_id",
-    help=T("csm-data.commands.store.dump_to_azure.parameters.tenant_id"),
+    help=T("csm_data.commands.store.dump_to_azure.parameters.tenant_id"),
     type=str,
     required=True,
     show_envvar=True,
@@ -73,7 +73,7 @@ VALID_TYPES = (
 @click.option(
     "--client-id",
     "client_id",
-    help=T("csm-data.commands.store.dump_to_azure.parameters.client_id"),
+    help=T("csm_data.commands.store.dump_to_azure.parameters.client_id"),
     type=str,
     required=True,
     show_envvar=True,
@@ -83,7 +83,7 @@ VALID_TYPES = (
 @click.option(
     "--client-secret",
     "client_secret",
-    help=T("csm-data.commands.store.dump_to_azure.parameters.client_secret"),
+    help=T("csm_data.commands.store.dump_to_azure.parameters.client_secret"),
     type=str,
     required=True,
     show_envvar=True,
@@ -91,7 +91,7 @@ VALID_TYPES = (
     envvar="AZURE_CLIENT_SECRET",
 )
 @web_help("csm-data/store/dump-to-azure")
-@translate_help("csm-data.commands.store.dump_to_azure.description")
+@translate_help("csm_data.commands.store.dump_to_azure.description")
 def dump_to_azure(
     store_folder,
     account_name: str,

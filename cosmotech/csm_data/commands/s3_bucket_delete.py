@@ -16,7 +16,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--bucket-name",
     envvar="CSM_DATA_BUCKET_NAME",
-    help=T("csm-data.commands.storage.s3_bucket_delete.parameters.bucket_name"),
+    help=T("csm_data.commands.storage.s3_bucket_delete.parameters.bucket_name"),
     metavar="BUCKET",
     type=str,
     show_envvar=True,
@@ -26,7 +26,7 @@ from cosmotech.orchestrator.utils.translate import T
     "--prefix-filter",
     "file_prefix",
     envvar="CSM_DATA_BUCKET_PREFIX",
-    help=T("csm-data.commands.storage.s3_bucket_delete.parameters.prefix_filter"),
+    help=T("csm_data.commands.storage.s3_bucket_delete.parameters.prefix_filter"),
     metavar="PREFIX",
     type=str,
     show_envvar=True,
@@ -34,14 +34,14 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--use-ssl/--no-ssl",
     default=True,
-    help=T("csm-data.commands.storage.s3_bucket_delete.parameters.use_ssl"),
+    help=T("csm_data.commands.storage.s3_bucket_delete.parameters.use_ssl"),
     type=bool,
     is_flag=True,
 )
 @click.option(
     "--s3-url",
     "endpoint_url",
-    help=T("csm-data.commands.storage.s3_bucket_delete.parameters.s3_url"),
+    help=T("csm_data.commands.storage.s3_bucket_delete.parameters.s3_url"),
     type=str,
     required=True,
     show_envvar=True,
@@ -51,7 +51,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--access-id",
     "access_id",
-    help=T("csm-data.commands.storage.s3_bucket_delete.parameters.access_id"),
+    help=T("csm_data.commands.storage.s3_bucket_delete.parameters.access_id"),
     type=str,
     required=True,
     show_envvar=True,
@@ -61,7 +61,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--secret-key",
     "secret_key",
-    help=T("csm-data.commands.storage.s3_bucket_delete.parameters.secret_key"),
+    help=T("csm_data.commands.storage.s3_bucket_delete.parameters.secret_key"),
     type=str,
     required=True,
     show_envvar=True,
@@ -70,14 +70,14 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--ssl-cert-bundle",
-    help=T("csm-data.commands.storage.s3_bucket_delete.parameters.ssl_cert_bundle"),
+    help=T("csm_data.commands.storage.s3_bucket_delete.parameters.ssl_cert_bundle"),
     type=str,
     show_envvar=True,
     metavar="PATH",
     envvar="CSM_S3_CA_BUNDLE",
 )
 @web_help("csm-data/s3-bucket-delete")
-@translate_help("csm-data.commands.storage.s3_bucket_delete.description")
+@translate_help("csm_data.commands.storage.s3_bucket_delete.description")
 def s3_bucket_delete(
     bucket_name: str,
     file_prefix: str,

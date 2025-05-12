@@ -16,7 +16,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--source-folder",
     envvar="CSM_DATASET_ABSOLUTE_PATH",
-    help=T("csm-data.commands.storage.s3_bucket_upload.parameters.source_folder"),
+    help=T("csm_data.commands.storage.s3_bucket_upload.parameters.source_folder"),
     metavar="PATH",
     type=str,
     show_envvar=True,
@@ -25,14 +25,14 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--recursive/--no-recursive",
     default=False,
-    help=T("csm-data.commands.storage.s3_bucket_upload.parameters.recursive"),
+    help=T("csm_data.commands.storage.s3_bucket_upload.parameters.recursive"),
     type=bool,
     is_flag=True,
 )
 @click.option(
     "--bucket-name",
     envvar="CSM_DATA_BUCKET_NAME",
-    help=T("csm-data.commands.storage.s3_bucket_upload.parameters.bucket_name"),
+    help=T("csm_data.commands.storage.s3_bucket_upload.parameters.bucket_name"),
     metavar="BUCKET",
     type=str,
     show_envvar=True,
@@ -42,7 +42,7 @@ from cosmotech.orchestrator.utils.translate import T
     "--prefix",
     "file_prefix",
     envvar="CSM_DATA_BUCKET_PREFIX",
-    help=T("csm-data.commands.storage.s3_bucket_upload.parameters.prefix"),
+    help=T("csm_data.commands.storage.s3_bucket_upload.parameters.prefix"),
     metavar="PREFIX",
     type=str,
     show_envvar=True,
@@ -51,14 +51,14 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--use-ssl/--no-ssl",
     default=True,
-    help=T("csm-data.commands.storage.s3_bucket_upload.parameters.use_ssl"),
+    help=T("csm_data.commands.storage.s3_bucket_upload.parameters.use_ssl"),
     type=bool,
     is_flag=True,
 )
 @click.option(
     "--s3-url",
     "endpoint_url",
-    help=T("csm-data.commands.storage.s3_bucket_upload.parameters.s3_url"),
+    help=T("csm_data.commands.storage.s3_bucket_upload.parameters.s3_url"),
     type=str,
     required=True,
     show_envvar=True,
@@ -68,7 +68,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--access-id",
     "access_id",
-    help=T("csm-data.commands.storage.s3_bucket_upload.parameters.access_id"),
+    help=T("csm_data.commands.storage.s3_bucket_upload.parameters.access_id"),
     type=str,
     required=True,
     show_envvar=True,
@@ -78,7 +78,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--secret-key",
     "secret_key",
-    help=T("csm-data.commands.storage.s3_bucket_upload.parameters.secret_key"),
+    help=T("csm_data.commands.storage.s3_bucket_upload.parameters.secret_key"),
     type=str,
     required=True,
     show_envvar=True,
@@ -87,14 +87,14 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--ssl-cert-bundle",
-    help=T("csm-data.commands.storage.s3_bucket_upload.parameters.ssl_cert_bundle"),
+    help=T("csm_data.commands.storage.s3_bucket_upload.parameters.ssl_cert_bundle"),
     type=str,
     show_envvar=True,
     metavar="PATH",
     envvar="CSM_S3_CA_BUNDLE",
 )
 @web_help("csm-data/s3-bucket-upload")
-@translate_help("csm-data.commands.storage.s3_bucket_upload.description")
+@translate_help("csm_data.commands.storage.s3_bucket_upload.description")
 def s3_bucket_upload(
     source_folder,
     bucket_name: str,

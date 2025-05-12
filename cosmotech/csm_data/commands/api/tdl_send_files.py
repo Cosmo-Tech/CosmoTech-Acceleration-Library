@@ -14,7 +14,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--api-url",
     envvar="CSM_API_URL",
-    help=T("csm-data.commands.api.tdl_send_files.parameters.api_url"),
+    help=T("csm_data.commands.api.tdl_send_files.parameters.api_url"),
     metavar="URI",
     type=str,
     show_envvar=True,
@@ -23,7 +23,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--organization-id",
     envvar="CSM_ORGANIZATION_ID",
-    help=T("csm-data.commands.api.tdl_send_files.parameters.organization_id"),
+    help=T("csm_data.commands.api.tdl_send_files.parameters.organization_id"),
     metavar="o-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -32,7 +32,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--workspace-id",
     envvar="CSM_WORKSPACE_ID",
-    help=T("csm-data.commands.api.tdl_send_files.parameters.workspace_id"),
+    help=T("csm_data.commands.api.tdl_send_files.parameters.workspace_id"),
     metavar="w-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -41,7 +41,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--runner-id",
     envvar="CSM_RUNNER_ID",
-    help=T("csm-data.commands.api.tdl_send_files.parameters.runner_id"),
+    help=T("csm_data.commands.api.tdl_send_files.parameters.runner_id"),
     metavar="r-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -50,7 +50,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--dir",
     "directory_path",
-    help=T("csm-data.commands.api.tdl_send_files.parameters.dir"),
+    help=T("csm_data.commands.api.tdl_send_files.parameters.dir"),
     metavar="PATH",
     default="./",
     type=str,
@@ -60,14 +60,14 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--clear/--keep",
-    help=T("csm-data.commands.api.tdl_send_files.parameters.clear"),
+    help=T("csm_data.commands.api.tdl_send_files.parameters.clear"),
     is_flag=True,
     default=True,
     show_default=True,
     type=bool,
 )
 @web_help("csm-data/api/tdl-send-files")
-@translate_help("csm-data.commands.api.tdl_send_files.description")
+@translate_help("csm_data.commands.api.tdl_send_files.description")
 def tdl_send_files(api_url, organization_id, workspace_id, runner_id, directory_path, clear: bool):
     # Import the function at the start of the command
     from cosmotech.coal.cosmotech_api import send_files_to_tdl

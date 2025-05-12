@@ -12,11 +12,11 @@ from cosmotech.orchestrator.utils.translate import T
 
 @click.command()
 @web_help("csm-data/store/list-tables")
-@translate_help("csm-data.commands.store.list_tables.description")
+@translate_help("csm_data.commands.store.list_tables.description")
 @click.option(
     "--store-folder",
     envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-    help=T("csm-data.commands.store.list_tables.parameters.store_folder"),
+    help=T("csm_data.commands.store.list_tables.parameters.store_folder"),
     metavar="PATH",
     type=str,
     show_envvar=True,
@@ -24,7 +24,7 @@ from cosmotech.orchestrator.utils.translate import T
 )
 @click.option(
     "--schema/--no-schema",
-    help=T("csm-data.commands.store.list_tables.parameters.schema"),
+    help=T("csm_data.commands.store.list_tables.parameters.schema"),
     is_flag=True,
     type=bool,
     default=False,

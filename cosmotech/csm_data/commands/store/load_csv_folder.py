@@ -12,11 +12,11 @@ from cosmotech.orchestrator.utils.translate import T
 
 @click.command()
 @web_help("csm-data/store/load-csv-folder")
-@translate_help("csm-data.commands.store.load_csv_folder.description")
+@translate_help("csm_data.commands.store.load_csv_folder.description")
 @click.option(
     "--store-folder",
     envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-    help=T("csm-data.commands.store.load_csv_folder.parameters.store_folder"),
+    help=T("csm_data.commands.store.load_csv_folder.parameters.store_folder"),
     metavar="PATH",
     type=str,
     show_envvar=True,
@@ -25,7 +25,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--csv-folder",
     envvar="CSM_DATASET_ABSOLUTE_PATH",
-    help=T("csm-data.commands.store.load_csv_folder.parameters.csv_folder"),
+    help=T("csm_data.commands.store.load_csv_folder.parameters.csv_folder"),
     metavar="PATH",
     type=str,
     show_envvar=True,

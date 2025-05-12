@@ -22,7 +22,7 @@ VALID_TYPES = (
 @click.option(
     "--store-folder",
     envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-    help=T("csm-data.commands.store.dump_to_s3.parameters.store_folder"),
+    help=T("csm_data.commands.store.dump_to_s3.parameters.store_folder"),
     metavar="PATH",
     type=str,
     show_envvar=True,
@@ -31,13 +31,13 @@ VALID_TYPES = (
 @click.option(
     "--output-type",
     default="sqlite",
-    help=T("csm-data.commands.store.dump_to_s3.parameters.output_type"),
+    help=T("csm_data.commands.store.dump_to_s3.parameters.output_type"),
     type=click.Choice(VALID_TYPES, case_sensitive=False),
 )
 @click.option(
     "--bucket-name",
     envvar="CSM_DATA_BUCKET_NAME",
-    help=T("csm-data.commands.store.dump_to_s3.parameters.bucket_name"),
+    help=T("csm_data.commands.store.dump_to_s3.parameters.bucket_name"),
     metavar="BUCKET",
     type=str,
     show_envvar=True,
@@ -47,7 +47,7 @@ VALID_TYPES = (
     "--prefix",
     "file_prefix",
     envvar="CSM_DATA_BUCKET_PREFIX",
-    help=T("csm-data.commands.store.dump_to_s3.parameters.prefix"),
+    help=T("csm_data.commands.store.dump_to_s3.parameters.prefix"),
     metavar="PREFIX",
     type=str,
     show_envvar=True,
@@ -56,14 +56,14 @@ VALID_TYPES = (
 @click.option(
     "--use-ssl/--no-ssl",
     default=True,
-    help=T("csm-data.commands.store.dump_to_s3.parameters.use_ssl"),
+    help=T("csm_data.commands.store.dump_to_s3.parameters.use_ssl"),
     type=bool,
     is_flag=True,
 )
 @click.option(
     "--s3-url",
     "endpoint_url",
-    help=T("csm-data.commands.store.dump_to_s3.parameters.s3_url"),
+    help=T("csm_data.commands.store.dump_to_s3.parameters.s3_url"),
     type=str,
     required=True,
     show_envvar=True,
@@ -73,7 +73,7 @@ VALID_TYPES = (
 @click.option(
     "--access-id",
     "access_id",
-    help=T("csm-data.commands.store.dump_to_s3.parameters.access_id"),
+    help=T("csm_data.commands.store.dump_to_s3.parameters.access_id"),
     type=str,
     required=True,
     show_envvar=True,
@@ -83,7 +83,7 @@ VALID_TYPES = (
 @click.option(
     "--secret-key",
     "secret_key",
-    help=T("csm-data.commands.store.dump_to_s3.parameters.secret_key"),
+    help=T("csm_data.commands.store.dump_to_s3.parameters.secret_key"),
     type=str,
     required=True,
     show_envvar=True,
@@ -92,14 +92,14 @@ VALID_TYPES = (
 )
 @click.option(
     "--ssl-cert-bundle",
-    help=T("csm-data.commands.store.dump_to_s3.parameters.ssl_cert_bundle"),
+    help=T("csm_data.commands.store.dump_to_s3.parameters.ssl_cert_bundle"),
     type=str,
     show_envvar=True,
     metavar="PATH",
     envvar="CSM_S3_CA_BUNDLE",
 )
 @web_help("csm-data/store/dump-to-s3")
-@translate_help("csm-data.commands.store.dump_to_s3.description")
+@translate_help("csm_data.commands.store.dump_to_s3.description")
 def dump_to_s3(
     store_folder,
     bucket_name: str,

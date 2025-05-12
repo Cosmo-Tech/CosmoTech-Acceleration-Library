@@ -12,12 +12,12 @@ from cosmotech.orchestrator.utils.translate import T
 
 @click.command()
 @web_help("csm-data/store/load-from-singlestore")
-@translate_help("csm-data.commands.store.load_from_singlestore.description")
+@translate_help("csm_data.commands.store.load_from_singlestore.description")
 @click.option(
     "--singlestore-host",
     "single_store_host",
     envvar="SINGLE_STORE_HOST",
-    help=T("csm-data.commands.store.load_from_singlestore.parameters.singlestore_host"),
+    help=T("csm_data.commands.store.load_from_singlestore.parameters.singlestore_host"),
     type=str,
     show_envvar=True,
     required=True,
@@ -25,7 +25,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--singlestore-port",
     "single_store_port",
-    help=T("csm-data.commands.store.load_from_singlestore.parameters.singlestore_port"),
+    help=T("csm_data.commands.store.load_from_singlestore.parameters.singlestore_port"),
     envvar="SINGLE_STORE_PORT",
     show_envvar=True,
     required=False,
@@ -34,7 +34,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--singlestore-db",
     "single_store_db",
-    help=T("csm-data.commands.store.load_from_singlestore.parameters.singlestore_db"),
+    help=T("csm_data.commands.store.load_from_singlestore.parameters.singlestore_db"),
     envvar="SINGLE_STORE_DB",
     show_envvar=True,
     required=True,
@@ -42,7 +42,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--singlestore-user",
     "single_store_user",
-    help=T("csm-data.commands.store.load_from_singlestore.parameters.singlestore_user"),
+    help=T("csm_data.commands.store.load_from_singlestore.parameters.singlestore_user"),
     envvar="SINGLE_STORE_USERNAME",
     show_envvar=True,
     required=True,
@@ -50,7 +50,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--singlestore-password",
     "single_store_password",
-    help=T("csm-data.commands.store.load_from_singlestore.parameters.singlestore_password"),
+    help=T("csm_data.commands.store.load_from_singlestore.parameters.singlestore_password"),
     envvar="SINGLE_STORE_PASSWORD",
     show_envvar=True,
     required=True,
@@ -58,7 +58,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--singlestore-tables",
     "single_store_tables",
-    help=T("csm-data.commands.store.load_from_singlestore.parameters.singlestore_tables"),
+    help=T("csm_data.commands.store.load_from_singlestore.parameters.singlestore_tables"),
     envvar="SINGLE_STORE_TABLES",
     show_envvar=True,
     required=True,
@@ -67,7 +67,7 @@ from cosmotech.orchestrator.utils.translate import T
     "--store-folder",
     "store_folder",
     envvar="CSM_PARAMETERS_ABSOLUTE_PATH",
-    help=T("csm-data.commands.store.load_from_singlestore.parameters.store_folder"),
+    help=T("csm_data.commands.store.load_from_singlestore.parameters.store_folder"),
     metavar="PATH",
     type=str,
     show_envvar=True,

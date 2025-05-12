@@ -28,7 +28,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.group(invoke_without_command=True)
 @web_help("csm-data/api")
 @click.pass_context
-@translate_help("csm-data.commands.api.description")
+@translate_help("csm_data.commands.api.description")
 def api(ctx: click.Context):
     if ctx.invoked_subcommand is None:
         try:

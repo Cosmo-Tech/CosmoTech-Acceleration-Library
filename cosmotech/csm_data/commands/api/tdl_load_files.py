@@ -14,7 +14,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--organization-id",
     envvar="CSM_ORGANIZATION_ID",
-    help=T("csm-data.commands.api.tdl_load_files.parameters.organization_id"),
+    help=T("csm_data.commands.api.tdl_load_files.parameters.organization_id"),
     metavar="o-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -23,7 +23,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--workspace-id",
     envvar="CSM_WORKSPACE_ID",
-    help=T("csm-data.commands.api.tdl_load_files.parameters.workspace_id"),
+    help=T("csm_data.commands.api.tdl_load_files.parameters.workspace_id"),
     metavar="w-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -32,7 +32,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--scenario-id",
     envvar="CSM_SCENARIO_ID",
-    help=T("csm-data.commands.api.tdl_load_files.parameters.scenario_id"),
+    help=T("csm_data.commands.api.tdl_load_files.parameters.scenario_id"),
     metavar="s-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -41,7 +41,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--runner-id",
     envvar="CSM_RUNNER_ID",
-    help=T("csm-data.commands.api.tdl_load_files.parameters.runner_id"),
+    help=T("csm_data.commands.api.tdl_load_files.parameters.runner_id"),
     metavar="r-XXXXXXXX",
     type=str,
     show_envvar=True,
@@ -50,7 +50,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--dir",
     "directory_path",
-    help=T("csm-data.commands.api.tdl_load_files.parameters.dir"),
+    help=T("csm_data.commands.api.tdl_load_files.parameters.dir"),
     metavar="PATH",
     default="./",
     type=str,
@@ -59,7 +59,7 @@ from cosmotech.orchestrator.utils.translate import T
     required=True,
 )
 @web_help("csm-data/api/tdl-load-file")
-@translate_help("csm-data.commands.api.tdl_load_files.description")
+@translate_help("csm_data.commands.api.tdl_load_files.description")
 def tdl_load_files(organization_id, workspace_id, scenario_id, runner_id, directory_path):
     # Import the function at the start of the command
     from cosmotech.coal.cosmotech_api import load_files_from_tdl

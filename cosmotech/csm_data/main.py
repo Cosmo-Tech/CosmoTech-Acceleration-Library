@@ -39,7 +39,7 @@ def print_version(ctx, param, value):
     help="Print version number and return.",
 )
 @web_help("csm-data")
-@translate_help("csm-data.commands.main.description")
+@translate_help("csm_data.commands.main.description")
 def main():
     pass
 
