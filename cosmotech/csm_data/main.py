@@ -24,11 +24,12 @@ from cosmotech.orchestrator.utils.translate import T
 def print_version(ctx, param, value):
     if not value or ctx.resilient_parsing:
         return
-    click.echo(f"Cosmo Tech Data Interface {__version__}")
+    click.echo(T("csm_data.commons.version.message").format(version=__version__))
     ctx.exit()
 
 
-@click.group("csm-data")
+@click.group("csm-data", invoke_without_command=True)
+@click.pass_context
 @click_log.simple_verbosity_option(LOGGER, "--log-level", envvar="LOG_LEVEL", show_envvar=True)
 @click.option(
     "--version",
@@ -40,8 +41,9 @@ def print_version(ctx, param, value):
 )
 @web_help("csm-data")
 @translate_help("csm_data.commands.main.description")
-def main():
-    pass
+def main(ctx):
+    if ctx.invoked_subcommand is None:
+        click.echo(T("csm_data.commands.main.content"))
 
 
 main.add_command(api, "api")
