@@ -1,0 +1,8 @@
+description: |
+  Cosmo Tech API helper command
+
+  This command will inform you of which connection is available to use for the Cosmo Tech API
+
+  If no connection is available, will list all possible set of parameters and return an error code,
+
+  You can use this command in a csm-orc template to make sure that API connection is available.

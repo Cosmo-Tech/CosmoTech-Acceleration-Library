@@ -1,0 +1,6 @@
+description: |
+  Cosmo Tech Data Interface
+
+  Command toolkit providing quick implementation of data connections to use inside the Cosmo Tech Platform
+parameters:
+  version: Print version number and return.

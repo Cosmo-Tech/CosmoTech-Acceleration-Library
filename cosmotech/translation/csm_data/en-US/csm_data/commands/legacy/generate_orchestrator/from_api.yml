@@ -1,0 +1,8 @@
+description: |
+  Generate an orchestrator configuration by fetching the solution from the API.
+parameters:
+  output: Path where to write the generated configuration
+  organization_id: The id of an organization in the cosmotech api
+  workspace_id: The id of a solution in the cosmotech api
+  run_template_id: The name of the run template in the cosmotech api
+  describe: Show a description of the generated template after generation

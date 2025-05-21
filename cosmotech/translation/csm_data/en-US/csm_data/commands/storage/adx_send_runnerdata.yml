@@ -1,0 +1,15 @@
+description: |
+  Uses environment variables to send content of CSV files to ADX
+  Requires a valid Azure connection either with:
+  - The AZ cli command: az login
+  - A triplet of env var AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+parameters:
+  dataset_absolute_path: A local folder to store the main dataset content
+  parameters_absolute_path: A local folder to store the parameters content
+  runner_id: the Runner Id to add to records
+  adx_uri: the ADX cluster path (URI info can be found into ADX cluster page)
+  adx_ingest_uri: The ADX cluster ingest path (URI info can be found into ADX cluster page)
+  database_name: The targeted database name
+  send_parameters: whether or not to send parameters (parameters path is mandatory then)
+  send_datasets: whether or not to send datasets (parameters path is mandatory then)
+  wait: Toggle waiting for the ingestion results

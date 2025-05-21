@@ -1,0 +1,8 @@
+description: "Send data to ADX"
+parameters:
+  adx_uri: The ADX cluster path (URI info can be found into ADX cluster page)
+  adx_ingest_uri: The ADX cluster ingest path (URI info can be found into ADX cluster page)
+  database_name: The targeted database name
+  waiting_ingestion: Toggle waiting for the ingestion results
+  adx_tag: The ADX tag to use for the ingestion
+  store_folder: The folder containing the datastore containing the data to send

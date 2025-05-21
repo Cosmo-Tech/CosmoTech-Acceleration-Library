@@ -1,0 +1,5 @@
+description: |
+  Running this command will find all csvs in the given folder and put them in the store
+parameters:
+  store_folder: The folder containing the store files
+  csv_folder: The folder containing the csv files to store

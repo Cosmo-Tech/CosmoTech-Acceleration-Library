@@ -1,0 +1,4 @@
+description: |
+  Storage operations command group
+
+  This group of commands provides functionality for interacting with various storage systems

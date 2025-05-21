@@ -1,0 +1,26 @@
+description: |
+  Dump a datastore to a S3
+
+  Will upload everything from a given data store to a S3 bucket.
+
+  3 modes currently exists:
+    - sqlite: will dump the data store underlying database as is
+    - csv: will convert every table of the datastore to csv and send them as separate files
+    - parquet: will convert every table of the datastore to parquet and send them as separate files
+
+  Giving a prefix will add it to every upload (finishing the prefix with a "/" will allow to upload in a folder inside the bucket)
+
+  Make use of the boto3 library to access the bucket
+
+  More information is available on this page:
+  [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html]
+parameters:
+  store_folder: The folder containing the store files
+  output_type: Choose the type of file output to use (sqlite, csv, parquet)
+  bucket_name: The bucket on S3 to upload to
+  prefix: A prefix by which all uploaded files should start with in the bucket
+  use_ssl: Use SSL to secure connection to S3
+  s3_url: URL to connect to the S3 system
+  access_id: Identity used to connect to the S3 system
+  secret_key: Secret tied to the ID used to connect to the S3 system
+  ssl_cert_bundle: Path to an alternate CA Bundle to validate SSL connections

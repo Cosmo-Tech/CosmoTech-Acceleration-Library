@@ -1,0 +1,8 @@
+description: |
+  Upload a folder to an Azure Storage Blob
+parameters:
+  source_folder: The folder/file to upload to the target blob storage
+  recursive: Recursively send the content of every folder inside the starting folder to the blob storage
+  blob_name: The blob name in the Azure Storage service to upload to
+  prefix: A prefix by which all uploaded files should start with in the blob storage
+  az_storage_sas_url: SAS url allowing access to the AZ storage container

@@ -1,0 +1,4 @@
+description: |
+  Running this command will reset the state of your store
+parameters:
+  store_folder: The folder containing the store files

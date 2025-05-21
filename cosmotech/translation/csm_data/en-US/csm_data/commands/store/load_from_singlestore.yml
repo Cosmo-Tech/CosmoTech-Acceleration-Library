@@ -1,0 +1,16 @@
+description: |
+  Load data from SingleStore tables into the store.
+  Will download everything from a given SingleStore database following some configuration into the store.
+
+  Make use of the singlestoredb to access to SingleStore
+
+  More information is available on this page:
+  [https://docs.singlestore.com/cloud/developer-resources/connect-with-application-development-tools/connect-with-python/connect-using-the-singlestore-python-client/]
+parameters:
+  singlestore_host: SingleStore instance URI
+  singlestore_port: SingleStore port
+  singlestore_db: SingleStore database name
+  singlestore_user: SingleStore connection user name
+  singlestore_password: SingleStore connection password
+  singlestore_tables: SingleStore table names to fetched (separated by comma)
+  store_folder: The folder containing the store files

@@ -1,0 +1,15 @@
+description: |
+  Download a runner data from the Cosmo Tech API
+  Requires a valid Azure connection either with:
+  - The AZ cli command: az login
+  - A triplet of env var AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+parameters:
+  organization_id: The id of an organization in the cosmotech api
+  workspace_id: The id of a workspace in the cosmotech api
+  runner_id: The id of a runner in the cosmotech api
+  parameters_absolute_path: A local folder to store the parameters content
+  dataset_absolute_path: A local folder to store the main dataset content
+  write_json: Whether to write the data in JSON format
+  write_csv: Whether to write the data in CSV format
+  fetch_dataset: Whether to fetch datasets
+  parallel: Whether to fetch datasets in parallel

@@ -1,0 +1,5 @@
+description: |
+  Generate an orchestrator configuration file from a solution's run template.
+
+  This command group provides tools to generate orchestrator configuration files either from a local solution file
+  or directly from the Cosmo Tech API.

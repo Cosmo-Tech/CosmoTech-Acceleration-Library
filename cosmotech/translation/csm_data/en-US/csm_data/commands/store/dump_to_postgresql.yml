@@ -1,0 +1,19 @@
+description: |
+  Running this command will dump your store to a given postgresql database
+
+  Tables names from the store will be prepended with table-prefix in target database
+
+  The postgresql user must have USAGE granted on the schema for this script to work due to the use of the command COPY FROM STDIN
+
+  You can simply give him that grant by running the command:
+  GRANT USAGE ON SCHEMA <schema> TO <username>
+parameters:
+  store_folder: The folder containing the store files
+  table_prefix: Prefix to add to the table name
+  postgres_host: PostgreSQL host URI
+  postgres_port: PostgreSQL database port
+  postgres_db: PostgreSQL database name
+  postgres_schema: PostgreSQL schema name
+  postgres_user: PostgreSQL connection user name
+  postgres_password: PostgreSQL connection password
+  replace: Append data on existing tables

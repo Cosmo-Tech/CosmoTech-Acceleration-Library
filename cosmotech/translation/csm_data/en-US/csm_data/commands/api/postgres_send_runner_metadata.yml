@@ -1,0 +1,16 @@
+description: |
+  Send runner metadata to a PostgreSQL database.
+
+  Creates or updates a table in PostgreSQL with runner metadata including id, name, last run id, and run template id.
+  The table will be created if it doesn't exist, and existing records will be updated based on the runner id.
+parameters:
+  organization_id: An organization id for the Cosmo Tech API
+  workspace_id: A workspace id for the Cosmo Tech API
+  runner_id: A runner id for the Cosmo Tech API
+  table_prefix: Prefix to add to the table name
+  postgres_host: PostgreSQL host URI
+  postgres_port: PostgreSQL database port
+  postgres_db: PostgreSQL database name
+  postgres_schema: PostgreSQL schema name
+  postgres_user: PostgreSQL connection user name
+  postgres_password: PostgreSQL connection password

@@ -1,0 +1,23 @@
+description: |
+  Dump a datastore to a Azure storage account.
+
+  Will upload everything from a given data store to a Azure storage container.
+
+  3 modes currently exists:
+    - sqlite: will dump the data store underlying database as is
+    - csv: will convert every table of the datastore to csv and send them as separate files
+    - parquet: will convert every table of the datastore to parquet and send them as separate files
+
+  Make use of the azure.storage.blob library to access the container
+
+  More information is available on this page:
+  [https://learn.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-python?tabs=managed-identity%2Croles-azure-portal%2Csign-in-azure-cli&pivots=blob-storage-quickstart-scratch]
+parameters:
+  store_folder: The folder containing the store files
+  output_type: Choose the type of file output to use (sqlite, csv, parquet)
+  account_name: The account name on Azure to upload to
+  container_name: The container name on Azure to upload to
+  prefix: A prefix by which all uploaded files should start with in the container
+  tenant_id: Tenant Identity used to connect to Azure storage system
+  client_id: Client Identity used to connect to Azure storage system
+  client_secret: Client Secret tied to the ID used to connect to Azure storage system

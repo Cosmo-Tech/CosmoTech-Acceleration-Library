@@ -59,7 +59,7 @@ def web_help(effective_target="", base_url=WEB_DOCUMENTATION_ROOT):
         @click.option(
             "--web-help",
             is_flag=True,
-            help="Open the web documentation",
+            help=T("csm_data.commons.decorators.parameters.web_help").format(url=documentation_url),
             is_eager=True,
             callback=open_documentation,
         )

@@ -1,0 +1,5 @@
+description: |
+  Running this command will list the existing tables in your datastore
+parameters:
+  store_folder: The folder containing the store files
+  schema: Display the schema of the tables

@@ -1,0 +1,21 @@
+description: |
+  Upload a folder to a S3 Bucket
+
+  Will upload everything from a given folder to a S3 bucket. If a single file is passed only it will be uploaded, and recursive will be ignored
+
+  Giving a prefix will add it to every upload (finishing the prefix with a "/" will allow to upload in a folder inside the bucket)
+
+  Make use of the boto3 library to access the bucket
+
+  More information is available on this page:
+  [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html]
+parameters:
+  source_folder: The folder/file to upload to the target bucket
+  recursive: Recursively send the content of every folder inside the starting folder to the bucket
+  bucket_name: The bucket on S3 to upload to
+  prefix: A prefix by which all uploaded files should start with in the bucket
+  use_ssl: Use SSL to secure connection to S3
+  s3_url: URL to connect to the S3 system
+  access_id: Identity used to connect to the S3 system
+  secret_key: Secret tied to the ID used to connect to the S3 system
+  ssl_cert_bundle: Path to an alternate CA Bundle to validate SSL connections

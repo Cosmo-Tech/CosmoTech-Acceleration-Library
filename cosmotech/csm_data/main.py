@@ -36,7 +36,7 @@ def print_version(ctx, param, value):
     callback=print_version,
     expose_value=False,
     is_eager=True,
-    help="Print version number and return.",
+    help=T("csm_data.commands.main.parameters.version"),
 )
 @web_help("csm-data")
 @translate_help("csm_data.commands.main.description")

@@ -1,0 +1,17 @@
+description: |
+  Delete S3 bucket content to a given folder
+
+  Will delete everything in the bucket unless a prefix is set, then only file following the given prefix will be deleted
+
+  Make use of the boto3 library to access the bucket
+
+  More information is available on this page:
+  [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html]
+parameters:
+  bucket_name: The bucket on S3 to delete
+  prefix_filter: A prefix by which all deleted files should start in the bucket
+  use_ssl: Use SSL to secure connection to S3
+  s3_url: URL to connect to the S3 system
+  access_id: Identity used to connect to the S3 system
+  secret_key: Secret tied to the ID used to connect to the S3 system
+  ssl_cert_bundle: Path to an alternate CA Bundle to validate SSL connections

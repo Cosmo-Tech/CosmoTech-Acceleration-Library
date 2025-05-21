@@ -1,0 +1,12 @@
+description: |
+  Send CSV files to a runner's RDS database.
+
+  Takes all CSV files from a source folder and sends their content to the runner's RDS database.
+  Each CSV file will be sent to a table named after the file (without the .csv extension).
+  The table name will be prefixed with "CD_" in the database.
+parameters:
+  source_folder: The folder containing csvs to send
+  organization_id: An organization id for the Cosmo Tech API
+  workspace_id: A workspace id for the Cosmo Tech API
+  runner_id: A runner id for the Cosmo Tech API
+  run_id: A run id for the Cosmo Tech API

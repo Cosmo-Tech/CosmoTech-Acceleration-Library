@@ -1,0 +1,10 @@
+description: |
+  Download files from a workspace.
+
+  Downloads files from a specified path in a workspace to a local target folder.
+  If the workspace path ends with '/', it will be treated as a folder and all files within will be downloaded.
+parameters:
+  organization_id: An organization id for the Cosmo Tech API
+  workspace_id: A workspace id for the Cosmo Tech API
+  workspace_path: Path inside the workspace to load (end with '/' for a folder)
+  target_folder: Folder in which to send the downloaded file

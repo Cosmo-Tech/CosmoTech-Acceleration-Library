@@ -1,0 +1,12 @@
+description: |
+  Upload a file to a workspace.
+
+  Uploads a local file to a specified path in a workspace.
+  If the workspace path ends with '/', the file will be uploaded to that folder with its original name.
+  Otherwise, the file will be uploaded with the name specified in the workspace path.
+parameters:
+  organization_id: An organization id for the Cosmo Tech API
+  workspace_id: A workspace id for the Cosmo Tech API
+  file_path: Path to the file to send as a workspace file
+  workspace_path: Path inside the workspace to store the file (end with '/' for a folder)
+  overwrite: Flag to overwrite the target file if it exists
