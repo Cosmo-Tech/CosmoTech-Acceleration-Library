@@ -3,301 +3,141 @@
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/dependencies/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/pull_request/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/adx-send-data/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/adx-send-runnerdata/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/az-storage-upload/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/s3-bucket-delete/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/s3-bucket-download/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/s3-bucket-upload/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/api/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/api/postgres-send-runner-metadata/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/api/rds-load-csv/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/api/rds-send-csv/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/api/rds-send-store/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/api/run-load-data/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/api/runtemplate-load-handler/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/api/tdl-load-files/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/api/tdl-send-files/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/api/wsf-load-file/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/api/wsf-send-file/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/store/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/store/dump-to-azure/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/store/dump-to-postgresql/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/store/dump-to-s3/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/store/list-tables/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/store/load-csv-folder/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/store/load-from-singlestore/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/store/rds-send-store/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/store/reset/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/SUMMARY/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/utils/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/aws/s3/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/azure/blob/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/azure/storage/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/azure/adx/auth/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/azure/adx/ingestion/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/azure/adx/query/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/azure/adx/tables/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/azure/adx/utils/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/cosmotech_api/connection/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/cosmotech_api/parameters/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/cosmotech_api/run/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/cosmotech_api/twin_data_layer/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/cosmotech_api/workspace/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/cosmotech_api/dataset/utils/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/cosmotech_api/runner/metadata/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/cosmotech_api/runner/parameters/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/csm/engine/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/store/csv/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/store/native_python/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/store/pandas/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/store/pyarrow/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/store/store/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/references/coal/utils/postgresql/</loc>
-         <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/tutorials/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/tutorials/contributing/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/tutorials/cosmotech-api/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/tutorials/csm-data/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/tutorials/datastore/</loc>
          <lastmod>2025-05-23</lastmod>
-         <changefreq>daily</changefreq>
     </url>
 </urlset>
