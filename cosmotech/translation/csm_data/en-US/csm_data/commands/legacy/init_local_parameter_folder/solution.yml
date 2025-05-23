@@ -1,8 +1,0 @@
-description: |
-  Initialize parameter folder from a local solution file.
-parameters:
-  solution_file: Path to the solution file to read
-  output_folder: Path where to create the parameter folder structure
-  run_template_id: The ID of the run template to use
-  write_json: Toggle writing of parameters in json format
-  write_csv: Toggle writing of parameters in csv format

@@ -1,7 +1,0 @@
-description: |
-  Generate an orchestrator configuration from a local solution file.
-parameters:
-  solution_file: Path to the solution file to read
-  output: Path where to write the generated configuration
-  run_template_id: The ID of the run template to use
-  describe: Show a description of the generated template after generation

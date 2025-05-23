@@ -22,7 +22,7 @@ from cosmotech.orchestrator.utils.translate import T
 
 @click.group()
 @web_help("csm-data/store")
-@translate_help("csm_data.commands.store.description")
+@translate_help("csm_data.commands.store.store.description")
 def store():
     pass
 

@@ -1,9 +1,0 @@
-description: |
-  Initialize parameter folder by fetching the solution from the API.
-parameters:
-  output_folder: Path where to create the parameter folder structure
-  organization_id: The id of an organization in the cosmotech api
-  workspace_id: The id of a solution in the cosmotech api
-  run_template_id: The name of the run template in the cosmotech api
-  write_json: Toggle writing of parameters in json format
-  write_csv: Toggle writing of parameters in csv format
