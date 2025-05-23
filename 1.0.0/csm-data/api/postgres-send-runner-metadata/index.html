@@ -6,32 +6,32 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Command help: `csm-data legacy generate-orchestrator from-file`">
+        <meta name="description" content="Command help: `csm-data api postgres-send-runner-metadata`">
       
       
       
-        <link rel="canonical" href="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/legacy/generate-orchestrator/from-file/">
+        <link rel="canonical" href="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/api/postgres-send-runner-metadata/">
       
       
-        <link rel="prev" href="../from-api/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../../init-local-parameter-folder/">
+        <link rel="next" href="../rds-load-csv/">
       
       
-      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.18">
     
     
       
-        <title>from-file - Cosmotech Acceleration Library Docs</title>
+        <title>postgres-send-runner-metadata - Cosmotech Acceleration Library Docs</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.66ac8b77.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.66ac8b77.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -50,13 +50,13 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
-      <link rel="stylesheet" href="../../../../stylesheets/templates.css">
+      <link rel="stylesheet" href="../../../stylesheets/templates.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -65,11 +65,11 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="from-file - Cosmotech Acceleration Library Docs" >
+        <meta  property="og:title"  content="postgres-send-runner-metadata - Cosmotech Acceleration Library Docs" >
       
-        <meta  property="og:description"  content="Command help: `csm-data legacy generate-orchestrator from-file`" >
+        <meta  property="og:description"  content="Command help: `csm-data api postgres-send-runner-metadata`" >
       
-        <meta  property="og:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/assets/images/social/csm-data/legacy/generate-orchestrator/from-file.png" >
+        <meta  property="og:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/assets/images/social/csm-data/api/postgres-send-runner-metadata.png" >
       
         <meta  property="og:image:type"  content="image/png" >
       
@@ -77,15 +77,15 @@
       
         <meta  property="og:image:height"  content="630" >
       
-        <meta  property="og:url"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/legacy/generate-orchestrator/from-file/" >
+        <meta  property="og:url"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/csm-data/api/postgres-send-runner-metadata/" >
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="from-file - Cosmotech Acceleration Library Docs" >
+        <meta  name="twitter:title"  content="postgres-send-runner-metadata - Cosmotech Acceleration Library Docs" >
       
-        <meta  name="twitter:description"  content="Command help: `csm-data legacy generate-orchestrator from-file`" >
+        <meta  name="twitter:description"  content="Command help: `csm-data api postgres-send-runner-metadata`" >
       
-        <meta  name="twitter:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/assets/images/social/csm-data/legacy/generate-orchestrator/from-file.png" >
+        <meta  name="twitter:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/1.0.0/assets/images/social/csm-data/api/postgres-send-runner-metadata.png" >
       
     
     
@@ -108,7 +108,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#from-file" class="md-skip">
+        <a href="#postgres-send-runner-metadata" class="md-skip">
           Skip to content
         </a>
       
@@ -128,9 +128,9 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../.." title="Cosmotech Acceleration Library Docs" class="md-header__button md-logo" aria-label="Cosmotech Acceleration Library Docs" data-md-component="logo">
+    <a href="../../.." title="Cosmotech Acceleration Library Docs" class="md-header__button md-logo" aria-label="Cosmotech Acceleration Library Docs" data-md-component="logo">
       
-  <img src="../../../../assets/logo.png" alt="logo">
+  <img src="../../../assets/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -147,7 +147,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              from-file
+              postgres-send-runner-metadata
             
           </span>
         </div>
@@ -248,7 +248,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../.." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
     
@@ -267,7 +267,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../dependencies/" class="md-tabs__link">
+        <a href="../../../dependencies/" class="md-tabs__link">
           
   
     
@@ -287,7 +287,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../tutorials/" class="md-tabs__link">
+        <a href="../../../tutorials/" class="md-tabs__link">
           
   
     
@@ -325,7 +325,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../references/coal/cosmotech_api/run/" class="md-tabs__link">
+        <a href="../../../references/coal/cosmotech_api/run/" class="md-tabs__link">
           
   
     
@@ -356,7 +356,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../../" class="md-tabs__link">
+        <a href="../../" class="md-tabs__link">
           
   
     
@@ -399,9 +399,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="Cosmotech Acceleration Library Docs" class="md-nav__button md-logo" aria-label="Cosmotech Acceleration Library Docs" data-md-component="logo">
+    <a href="../../.." title="Cosmotech Acceleration Library Docs" class="md-nav__button md-logo" aria-label="Cosmotech Acceleration Library Docs" data-md-component="logo">
       
-  <img src="../../../../assets/logo.png" alt="logo">
+  <img src="../../../assets/logo.png" alt="logo">
 
     </a>
     Cosmotech Acceleration Library Docs
@@ -428,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -496,7 +496,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../dependencies/" class="md-nav__link">
+      <a href="../../../dependencies/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -517,7 +517,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../pull_request/" class="md-nav__link">
+      <a href="../../../pull_request/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -578,7 +578,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../tutorials/" class="md-nav__link ">
+            <a href="../../../tutorials/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -611,7 +611,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tutorials/contributing/" class="md-nav__link">
+      <a href="../../../tutorials/contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -632,7 +632,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tutorials/cosmotech-api/" class="md-nav__link">
+      <a href="../../../tutorials/cosmotech-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -653,7 +653,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tutorials/csm-data/" class="md-nav__link">
+      <a href="../../../tutorials/csm-data/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -674,7 +674,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tutorials/datastore/" class="md-nav__link">
+      <a href="../../../tutorials/datastore/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -908,7 +908,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/cosmotech_api/run/" class="md-nav__link">
+      <a href="../../../references/coal/cosmotech_api/run/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -929,7 +929,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/cosmotech_api/workspace/" class="md-nav__link">
+      <a href="../../../references/coal/cosmotech_api/workspace/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -950,7 +950,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/cosmotech_api/twin_data_layer/" class="md-nav__link">
+      <a href="../../../references/coal/cosmotech_api/twin_data_layer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -971,7 +971,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/cosmotech_api/connection/" class="md-nav__link">
+      <a href="../../../references/coal/cosmotech_api/connection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -992,7 +992,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/cosmotech_api/parameters/" class="md-nav__link">
+      <a href="../../../references/coal/cosmotech_api/parameters/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1061,7 +1061,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/cosmotech_api/runner/metadata/" class="md-nav__link">
+      <a href="../../../references/coal/cosmotech_api/runner/metadata/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1082,7 +1082,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/cosmotech_api/runner/parameters/" class="md-nav__link">
+      <a href="../../../references/coal/cosmotech_api/runner/parameters/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1157,7 +1157,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/cosmotech_api/dataset/utils/" class="md-nav__link">
+      <a href="../../../references/coal/cosmotech_api/dataset/utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1248,7 +1248,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/store/native_python/" class="md-nav__link">
+      <a href="../../../references/coal/store/native_python/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1269,7 +1269,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/store/pyarrow/" class="md-nav__link">
+      <a href="../../../references/coal/store/pyarrow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1290,7 +1290,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/store/csv/" class="md-nav__link">
+      <a href="../../../references/coal/store/csv/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1311,7 +1311,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/store/store/" class="md-nav__link">
+      <a href="../../../references/coal/store/store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1332,7 +1332,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/store/pandas/" class="md-nav__link">
+      <a href="../../../references/coal/store/pandas/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1407,7 +1407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/aws/s3/" class="md-nav__link">
+      <a href="../../../references/coal/aws/s3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1484,7 +1484,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/utils/" class="md-nav__link">
+      <a href="../../../references/coal/utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1505,7 +1505,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/utils/postgresql/" class="md-nav__link">
+      <a href="../../../references/coal/utils/postgresql/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1580,7 +1580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/csm/engine/" class="md-nav__link">
+      <a href="../../../references/coal/csm/engine/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1659,7 +1659,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/azure/blob/" class="md-nav__link">
+      <a href="../../../references/coal/azure/blob/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1680,7 +1680,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/azure/storage/" class="md-nav__link">
+      <a href="../../../references/coal/azure/storage/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1755,7 +1755,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/azure/adx/query/" class="md-nav__link">
+      <a href="../../../references/coal/azure/adx/query/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1776,7 +1776,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/azure/adx/tables/" class="md-nav__link">
+      <a href="../../../references/coal/azure/adx/tables/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1797,7 +1797,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/azure/adx/ingestion/" class="md-nav__link">
+      <a href="../../../references/coal/azure/adx/ingestion/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1818,7 +1818,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/azure/adx/auth/" class="md-nav__link">
+      <a href="../../../references/coal/azure/adx/auth/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1839,7 +1839,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../references/coal/azure/adx/utils/" class="md-nav__link">
+      <a href="../../../references/coal/azure/adx/utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1943,7 +1943,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1976,7 +1976,28 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adx-send-runnerdata/" class="md-nav__link">
+      <a href="../../adx-send-data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    adx-send-data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adx-send-runnerdata/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1997,7 +2018,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../az-storage-upload/" class="md-nav__link">
+      <a href="../../az-storage-upload/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2018,7 +2039,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../s3-bucket-delete/" class="md-nav__link">
+      <a href="../../s3-bucket-delete/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2039,7 +2060,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../s3-bucket-download/" class="md-nav__link">
+      <a href="../../s3-bucket-download/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2060,7 +2081,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../s3-bucket-upload/" class="md-nav__link">
+      <a href="../../s3-bucket-upload/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2078,282 +2099,6 @@
                 
   
   
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_7" >
-        
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../../api/" class="md-nav__link ">
-              
-  
-  <span class="md-ellipsis">
-    Api
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_5_7" id="__nav_5_7_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_7">
-            <span class="md-nav__icon md-icon"></span>
-            Api
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../api/rds-load-csv/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    rds-load-csv
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../api/rds-send-csv/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    rds-send-csv
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../api/rds-send-store/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    rds-send-store
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../api/run-load-data/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    run-load-data
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../api/runtemplate-load-handler/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    runtemplate-load-handler
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../api/tdl-load-files/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    tdl-load-files
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../api/tdl-send-files/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    tdl-send-files
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../api/wsf-load-file/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    wsf-load-file
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../api/wsf-send-file/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    wsf-send-file
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -2363,6 +2108,22 @@
       
         
           
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
         
       
         
@@ -2389,11 +2150,11 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
-    Legacy
+    Api
   </span>
   
 
@@ -2409,93 +2170,10 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_8_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5_8">
             <span class="md-nav__icon md-icon"></span>
-            Legacy
+            Api
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_8_2" checked>
-        
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
-              
-  
-  <span class="md-ellipsis">
-    Generate orchestrator
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_5_8_2" id="__nav_5_8_2_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_8_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_8_2">
-            <span class="md-nav__icon md-icon"></span>
-            Generate orchestrator
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../from-api/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    from-api
-  </span>
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -2518,7 +2196,7 @@
         
   
   <span class="md-ellipsis">
-    from-file
+    postgres-send-runner-metadata
   </span>
   
 
@@ -2529,76 +2207,6 @@
 
               
             
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_8_3" >
-        
-          
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../init-local-parameter-folder/" class="md-nav__link ">
-              
-  
-  <span class="md-ellipsis">
-    Init local parameter folder
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_5_8_3" id="__nav_5_8_3_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_8_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_8_3">
-            <span class="md-nav__icon md-icon"></span>
-            Init local parameter folder
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
               
                 
   
@@ -2606,11 +2214,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../init-local-parameter-folder/cloud/" class="md-nav__link">
+      <a href="../rds-load-csv/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    cloud
+    rds-load-csv
   </span>
   
 
@@ -2627,11 +2235,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../init-local-parameter-folder/solution/" class="md-nav__link">
+      <a href="../rds-send-csv/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    solution
+    rds-send-csv
   </span>
   
 
@@ -2641,9 +2249,148 @@
 
               
             
-          </ul>
-        </nav>
-      
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rds-send-store/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    rds-send-store
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../run-load-data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    run-load-data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtemplate-load-handler/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    runtemplate-load-handler
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tdl-load-files/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tdl-load-files
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tdl-send-files/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tdl-send-files
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wsf-load-file/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    wsf-load-file
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wsf-send-file/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    wsf-send-file
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -2708,7 +2455,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../store/" class="md-nav__link ">
+            <a href="../../store/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2741,7 +2488,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../store/dump-to-azure/" class="md-nav__link">
+      <a href="../../store/dump-to-azure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2762,7 +2509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../store/dump-to-postgresql/" class="md-nav__link">
+      <a href="../../store/dump-to-postgresql/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2783,7 +2530,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../store/dump-to-s3/" class="md-nav__link">
+      <a href="../../store/dump-to-s3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2804,7 +2551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../store/list-tables/" class="md-nav__link">
+      <a href="../../store/list-tables/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2825,7 +2572,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../store/load-csv-folder/" class="md-nav__link">
+      <a href="../../store/load-csv-folder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2846,7 +2593,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../store/load-from-singlestore/" class="md-nav__link">
+      <a href="../../store/load-from-singlestore/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2867,7 +2614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../store/rds-send-store/" class="md-nav__link">
+      <a href="../../store/rds-send-store/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2888,7 +2635,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../store/reset/" class="md-nav__link">
+      <a href="../../store/reset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2957,10 +2704,49 @@
   
 
 
-<h1 id="from-file">from-file<a class="headerlink" href="#from-file" title="Permanent link">&para;</a></h1>
+<h1 id="postgres-send-runner-metadata">postgres-send-runner-metadata<a class="headerlink" href="#postgres-send-runner-metadata" title="Permanent link">&para;</a></h1>
 <div class="admonition info">
 <p class="admonition-title">Help command</p>
-<div class="highlight"><pre><span></span><code>
+<div class="highlight"><pre><span></span><code>&gt; csm-data api postgres-send-runner-metadata --help
+
+ Usage: csm-data api postgres-send-runner-metadata [OPTIONS]                    
+
+ Send runner metadata to a PostgreSQL database.                                 
+ Creates or updates a table in PostgreSQL with runner metadata including id,    
+ name, last run id, and run template id. The table will be created if it        
+ doesn&#39;t exist, and existing records will be updated based on the runner id.    
+
+╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
+│ *  --organization-id      o-XXXXXXXX  An organization id for the Cosmo Tech  │
+│                                       API                                    │
+│                                       ENV: CSM_ORGANIZATION_ID               │
+│                                       [required]                             │
+│ *  --workspace-id         w-XXXXXXXX  A workspace id for the Cosmo Tech API  │
+│                                       ENV: CSM_WORKSPACE_ID                  │
+│                                       [required]                             │
+│ *  --runner-id            r-XXXXXXXX  A runner id for the Cosmo Tech API     │
+│                                       ENV: CSM_RUNNER_ID                     │
+│                                       [required]                             │
+│    --table-prefix         PREFIX      Prefix to add to the table name        │
+│ *  --postgres-host        TEXT        PostgreSQL host URI                    │
+│                                       ENV: POSTGRES_HOST_URI                 │
+│                                       [required]                             │
+│    --postgres-port        INTEGER     PostgreSQL database port               │
+│                                       ENV: POSTGRES_HOST_PORT                │
+│ *  --postgres-db          TEXT        PostgreSQL database name               │
+│                                       ENV: POSTGRES_DB_NAME                  │
+│                                       [required]                             │
+│ *  --postgres-schema      TEXT        PostgreSQL schema name                 │
+│                                       ENV: POSTGRES_DB_SCHEMA                │
+│                                       [required]                             │
+│ *  --postgres-user        TEXT        PostgreSQL connection user name        │
+│                                       ENV: POSTGRES_USER_NAME                │
+│                                       [required]                             │
+│ *  --postgres-password    TEXT        PostgreSQL connection password         │
+│                                       ENV: POSTGRES_USER_PASSWORD            │
+│                                       [required]                             │
+│    --help                             Show this message and exit.            │
+╰──────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 
@@ -3005,7 +2791,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../from-api/" class="md-footer__link md-footer__link--prev" aria-label="Previous: from-api">
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: api">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -3015,20 +2801,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                from-api
+                api
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../init-local-parameter-folder/" class="md-footer__link md-footer__link--next" aria-label="Next: init-local-parameter-folder">
+          <a href="../rds-load-csv/" class="md-footer__link md-footer__link--next" aria-label="Next: rds-load-csv">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                init-local-parameter-folder
+                rds-load-csv
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -3120,14 +2906,14 @@
       </div>
       <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.code.copy", "content.code.annotate", "content.tooltips", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.top", "navigation.indexes", "navigation.instant", "navigation.footer", "navigation.sections"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.code.annotate", "content.tooltips", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.top", "navigation.indexes", "navigation.instant", "navigation.footer", "navigation.sections"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.3220b9d7.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.3220b9d7.min.js"></script>
       
         <script src="https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js"></script>
       
-        <script src="../../../../javascript/tablesort.js"></script>
+        <script src="../../../javascript/tablesort.js"></script>
       
     
   </body>
