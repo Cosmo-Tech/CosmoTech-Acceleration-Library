@@ -28,12 +28,11 @@ theme:
     - content.tooltips
     - navigation.tabs
     - navigation.tabs.sticky
-    - navigation.expand
+    - navigation.sections
     - navigation.top
     - navigation.indexes
     - navigation.instant
     - navigation.footer
-    - navigation.sections
   custom_dir: docs/overrides
   icon:
     repo: fontawesome/brands/github
@@ -56,15 +55,6 @@ extra:
       as to measure the effectiveness of our documentation and whether users
       find what they're searching for. With your consent, you're helping us to
       make our documentation better.
-
-nav:
-  - Home: 'index.md'
-  - Getting started:
-      - Dependencies: 'dependencies.md'
-      - Pull Request Checklist: 'pull_request.md'
-  - Tutorials: tutorials/
-  - References: references/
-  - csm-data: csm-data/
 
 markdown_extensions:
   - admonition
@@ -116,12 +106,12 @@ plugins:
             heading_level: 2
   - gen-files:
       scripts:
-        - docs/scripts/generate_references.py
+#        - docs/scripts/generate_references.py
         - docs/scripts/generate_dependencies_markdown.py
         - docs/scripts/generate_index.py
         - docs/scripts/generate_command_helps.py
   - mike
   - social
   - table-reader
-  - awesome-pages
+  - awesome-nav
   - literate-nav
