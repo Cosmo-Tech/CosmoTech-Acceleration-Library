@@ -32,6 +32,7 @@ def send_runner_metadata_to_postgresql(
     postgres_user: str,
     postgres_password: str,
     table_prefix: str = "Cosmotech_",
+    force_encode: bool = False,
 ) -> None:
     """
     Send runner metadata to a PostgreSQL database.
@@ -47,6 +48,7 @@ def send_runner_metadata_to_postgresql(
         postgres_user: PostgreSQL username
         postgres_password: PostgreSQL password
         table_prefix: Table prefix
+        force_encode: force password encoding to percent encoding
     """
     # Get runner metadata
     with get_api_client()[0] as api_client:
@@ -54,7 +56,7 @@ def send_runner_metadata_to_postgresql(
 
     # Generate PostgreSQL URI
     postgresql_full_uri = generate_postgresql_full_uri(
-        postgres_host, str(postgres_port), postgres_db, postgres_user, postgres_password
+        postgres_host, str(postgres_port), postgres_db, postgres_user, postgres_password, force_encode=force_encode
     )
 
     # Connect to PostgreSQL and update runner metadata

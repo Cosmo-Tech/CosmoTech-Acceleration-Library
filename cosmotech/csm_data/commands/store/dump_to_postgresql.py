@@ -80,6 +80,16 @@ from cosmotech.orchestrator.utils.translate import T
     is_flag=True,
     show_default=True,
 )
+@click.option(
+    "--encode-password/--no-encode-password",
+    "force_encode",
+    help=T("csm_data.commands.store.dump_to_postgresql.parameters.encode_password"),
+    envvar="CSM_PSQL_FORCE_PASSWORD_ENCODING",
+    show_envvar=True,
+    default=True,
+    is_flag=True,
+    show_default=True,
+)
 def dump_to_postgresql(
     store_folder,
     table_prefix: str,
@@ -90,6 +100,7 @@ def dump_to_postgresql(
     postgres_user,
     postgres_password,
     replace: bool,
+    force_encode: bool,
 ):
     # Import the function at the start of the command
     from cosmotech.coal.postgresql import dump_store_to_postgresql
@@ -104,4 +115,5 @@ def dump_to_postgresql(
         postgres_user=postgres_user,
         postgres_password=postgres_password,
         replace=replace,
+        force_encode=force_encode,
     )

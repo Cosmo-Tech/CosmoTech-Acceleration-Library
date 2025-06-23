@@ -17,3 +17,4 @@ parameters:
   postgres_user: PostgreSQL connection user name
   postgres_password: PostgreSQL connection password
   replace: Append data on existing tables
+  encode_password: Force encoding of password to percent encoding
