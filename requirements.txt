@@ -9,10 +9,6 @@ tenacity~=8.3.0
 # Keycloak connection
 python-keycloak~=4.7.3
 
-# Modelops requirements
-redis==4.4.4
-redisgraph_bulk_loader==0.10.2
-
 # Cosmotech specific requirements
 cosmotech-api~=3.2
 

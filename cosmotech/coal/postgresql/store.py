@@ -31,6 +31,7 @@ def dump_store_to_postgresql(
     postgres_password: str,
     table_prefix: str = "Cosmotech_",
     replace: bool = True,
+    force_encode: bool = False,
 ) -> None:
     """
     Dump Store data to a PostgreSQL database.
@@ -45,6 +46,7 @@ def dump_store_to_postgresql(
         postgres_password: PostgreSQL password
         table_prefix: Table prefix
         replace: Whether to replace existing tables
+        force_encode: force password encoding
     """
     _s = Store(store_location=store_folder)
 
@@ -72,6 +74,7 @@ def dump_store_to_postgresql(
                 postgres_user,
                 postgres_password,
                 replace,
+                force_encode,
             )
             total_rows += rows
             _up_time = perf_counter()

@@ -86,6 +86,7 @@ class TestStoreFunctions:
                     postgres_user,
                     postgres_password,
                     replace,
+                    False,
                 ),
                 call(
                     table2_data,
@@ -97,6 +98,7 @@ class TestStoreFunctions:
                     postgres_user,
                     postgres_password,
                     replace,
+                    False,
                 ),
             ]
         )
@@ -235,4 +237,5 @@ class TestStoreFunctions:
             postgres_user,
             postgres_password,
             True,  # Default replace is True
+            False,
         )

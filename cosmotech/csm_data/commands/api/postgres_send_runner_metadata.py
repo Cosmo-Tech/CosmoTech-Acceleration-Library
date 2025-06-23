@@ -90,6 +90,16 @@ from cosmotech.orchestrator.utils.translate import T
     show_envvar=True,
     required=True,
 )
+@click.option(
+    "--encode-password/--no-encode-password",
+    "force_encode",
+    help=T("csm_data.commands.store.postgres_send_runner_metadata.parameters.encode_password"),
+    envvar="CSM_PSQL_FORCE_PASSWORD_ENCODING",
+    show_envvar=True,
+    default=True,
+    is_flag=True,
+    show_default=True,
+)
 def postgres_send_runner_metadata(
     organization_id,
     workspace_id,
@@ -101,6 +111,7 @@ def postgres_send_runner_metadata(
     postgres_schema,
     postgres_user,
     postgres_password,
+    force_encode: bool,
 ):
     # Import the function at the start of the command
     from cosmotech.coal.postgresql import send_runner_metadata_to_postgresql
@@ -116,4 +127,5 @@ def postgres_send_runner_metadata(
         postgres_schema=postgres_schema,
         postgres_user=postgres_user,
         postgres_password=postgres_password,
+        force_encode=force_encode,
     )
