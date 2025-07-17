@@ -12,7 +12,7 @@ Dataset handling functions.
 import multiprocessing
 import tempfile
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Union, Tuple
+from typing import Dict, List, Any, Optional, Union
 
 from azure.identity import DefaultAzureCredential
 from cosmotech_api.api.dataset_api import DatasetApi
@@ -54,7 +54,6 @@ def download_dataset(
     workspace_id: str,
     dataset_id: str,
     read_files: bool = True,
-    credentials: Optional[DefaultAzureCredential] = None,
 ) -> Dict[str, Any]:
     """
     Download a single dataset by ID.
@@ -64,7 +63,6 @@ def download_dataset(
         workspace_id: Workspace ID
         dataset_id: Dataset ID
         read_files: Whether to read file contents
-        credentials: Azure credentials (if None, uses DefaultAzureCredential if needed)
 
     Returns:
         Dataset information dictionary
@@ -91,7 +89,7 @@ def download_dataset(
         if is_adt:
             content, folder_path = download_adt_dataset(
                 adt_address=parameters["AZURE_DIGITAL_TWINS_URL"],
-                credentials=credentials,
+                credentials=DefaultAzureCredential(),
             )
             return {
                 "type": "adt",
@@ -160,7 +158,7 @@ def download_dataset(
 
 
 def download_dataset_process(
-    _dataset_id, organization_id, workspace_id, read_files, credentials, _return_dict, _error_dict
+    _dataset_id, organization_id, workspace_id, read_files, _return_dict, _error_dict
 ):
     """
     Process function for downloading a dataset in a separate process.
@@ -174,7 +172,6 @@ def download_dataset_process(
         organization_id: Organization ID
         workspace_id: Workspace ID
         read_files: Whether to read file contents
-        credentials: Azure credentials (if None, uses DefaultAzureCredential if needed)
         _return_dict: Shared dictionary to store successful download results
         _error_dict: Shared dictionary to store error messages
 
@@ -187,7 +184,6 @@ def download_dataset_process(
             workspace_id=workspace_id,
             dataset_id=_dataset_id,
             read_files=read_files,
-            credentials=credentials,
         )
         _return_dict[_dataset_id] = _c
     except Exception as e:
@@ -200,7 +196,6 @@ def download_datasets_parallel(
     workspace_id: str,
     dataset_ids: List[str],
     read_files: bool = True,
-    credentials: Optional[DefaultAzureCredential] = None,
 ) -> Dict[str, Dict[str, Any]]:
     """
     Download multiple datasets in parallel.
@@ -210,7 +205,6 @@ def download_datasets_parallel(
         workspace_id: Workspace ID
         dataset_ids: List of dataset IDs
         read_files: Whether to read file contents
-        credentials: Azure credentials (if None, uses DefaultAzureCredential if needed)
 
     Returns:
         Dictionary mapping dataset IDs to dataset information
@@ -225,7 +219,7 @@ def download_datasets_parallel(
             dataset_id,
             multiprocessing.Process(
                 target=download_dataset_process,
-                args=(dataset_id, organization_id, workspace_id, read_files, credentials, return_dict, error_dict),
+                args=(dataset_id, organization_id, workspace_id, read_files, return_dict, error_dict),
             ),
         )
         for dataset_id in dataset_ids
@@ -251,7 +245,6 @@ def download_datasets_sequential(
     workspace_id: str,
     dataset_ids: List[str],
     read_files: bool = True,
-    credentials: Optional[DefaultAzureCredential] = None,
 ) -> Dict[str, Dict[str, Any]]:
     """
     Download multiple datasets sequentially.
@@ -261,7 +254,6 @@ def download_datasets_sequential(
         workspace_id: Workspace ID
         dataset_ids: List of dataset IDs
         read_files: Whether to read file contents
-        credentials: Azure credentials (if None, uses DefaultAzureCredential if needed)
 
     Returns:
         Dictionary mapping dataset IDs to dataset information
@@ -279,7 +271,6 @@ def download_datasets_sequential(
                 workspace_id=workspace_id,
                 dataset_id=dataset_id,
                 read_files=read_files,
-                credentials=credentials,
             )
         except Exception as e:
             error_dict[dataset_id] = f"{type(e).__name__}: {str(e)}"
@@ -294,7 +285,6 @@ def download_datasets(
     dataset_ids: List[str],
     read_files: bool = True,
     parallel: bool = True,
-    credentials: Optional[DefaultAzureCredential] = None,
 ) -> Dict[str, Dict[str, Any]]:
     """
     Download multiple datasets, either in parallel or sequentially.
@@ -305,7 +295,6 @@ def download_datasets(
         dataset_ids: List of dataset IDs
         read_files: Whether to read file contents
         parallel: Whether to download in parallel
-        credentials: Azure credentials (if None, uses DefaultAzureCredential if needed)
 
     Returns:
         Dictionary mapping dataset IDs to dataset information
@@ -319,7 +308,6 @@ def download_datasets(
             workspace_id=workspace_id,
             dataset_ids=dataset_ids,
             read_files=read_files,
-            credentials=credentials,
         )
     else:
         return download_datasets_sequential(
@@ -327,7 +315,6 @@ def download_datasets(
             workspace_id=workspace_id,
             dataset_ids=dataset_ids,
             read_files=read_files,
-            credentials=credentials,
         )
 
 
