@@ -12,13 +12,8 @@ Orchestration functions for downloading runner and run data.
 import os
 import pathlib
 import shutil
-from typing import Dict, List, Any, Optional
+from typing import Dict, Any, Optional
 
-from azure.identity import DefaultAzureCredential
-from cosmotech_api.api.runner_api import RunnerApi
-from cosmotech_api.exceptions import ApiException
-
-from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.runner.data import get_runner_data
 from cosmotech.coal.cosmotech_api.runner.parameters import (
     format_parameters_list,
@@ -65,11 +60,6 @@ def download_runner_data(
     """
     LOGGER.info(T("coal.cosmotech_api.runner.starting_download"))
 
-    # Get credentials if needed
-    credentials = None
-    if get_api_client()[1] == "Azure Entra Connection":
-        credentials = DefaultAzureCredential()
-
     # Get runner data
     runner_data = get_runner_data(organization_id, workspace_id, runner_id)
 
@@ -100,7 +90,6 @@ def download_runner_data(
                 dataset_ids=dataset_ids,
                 read_files=read_files,
                 parallel=parallel,
-                credentials=credentials,
             )
 
             result["datasets"] = datasets
