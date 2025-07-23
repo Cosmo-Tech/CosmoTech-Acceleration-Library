@@ -64,11 +64,18 @@ def download_scenario_data(
         pathlib.Path(dataset_folder).mkdir(parents=True, exist_ok=True)
         for k in datasets.keys():
             if k in scenario_data.dataset_list:
-                shutil.copytree(
-                    dl.dataset_to_file(k, datasets[k]),
-                    dataset_folder,
-                    dirs_exist_ok=True,
-                )
+                dataset_path = pathlib.Path(dl.dataset_to_file(k, datasets[k]))
+                for dataset_part_path in dataset_path.glob("*"):
+                    if dataset_part_path.is_file():
+                        shutil.copy(dataset_part_path,
+                                    dataset_folder)
+                    else:
+                        folder_name = dataset_part_path.name
+                        shutil.copytree(
+                            dataset_part_path,
+                            pathlib.Path(dataset_folder)/folder_name,
+                            dirs_exist_ok=True,
+                        )
                 LOGGER.debug(f"  - {dataset_folder} ({k} )")
             if k in datasets_parameters_ids.keys():
                 param_dir = os.path.join(parameter_folder, datasets_parameters_ids[k])
