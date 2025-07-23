@@ -1654,42 +1654,36 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data s3-bucket-delete --help
 
- Usage: csm-data s3-bucket-delete [OPTIONS]                                     
+ Usage: csm-data s3-bucket-delete [OPTIONS]                                                                                                                                                                        
 
- Delete S3 bucket content to a given folder                                     
- Will delete everything in the bucket unless a prefix is set, then only file    
- following the given prefix will be deleted                                     
+ Delete S3 bucket content to a given folder                                                                                                                                                                        
+ Will delete everything in the bucket unless a prefix is set, then only file following the given prefix will be deleted                                                                                            
 
- Make use of the boto3 library to access the bucket                             
+ Make use of the boto3 library to access the bucket                                                                                                                                                                
 
- More information is available on this page:                                    
- [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.h 
- tml]                                                                           
+ More information is available on this page: [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html]                                                                                    
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ *  --bucket-name         BUCKET  The bucket on S3 to delete                  │
-│                                  ENV: CSM_DATA_BUCKET_NAME                   │
-│                                  [required]                                  │
-│    --prefix-filter       PREFIX  A prefix by which all deleted files should  │
-│                                  start in the bucket                         │
-│                                  ENV: CSM_DATA_BUCKET_PREFIX                 │
-│    --use-ssl/--no-ssl            Use SSL to secure connection to S3          │
-│ *  --s3-url              URL     URL to connect to the S3 system             │
-│                                  ENV: AWS_ENDPOINT_URL                       │
-│                                  [required]                                  │
-│ *  --access-id           ID      Identity used to connect to the S3 system   │
-│                                  ENV: AWS_ACCESS_KEY_ID                      │
-│                                  [required]                                  │
-│ *  --secret-key          ID      Secret tied to the ID used to connect to    │
-│                                  the S3 system                               │
-│                                  ENV: AWS_SECRET_ACCESS_KEY                  │
-│                                  [required]                                  │
-│    --ssl-cert-bundle     PATH    Path to an alternate CA Bundle to validate  │
-│                                  SSL connections                             │
-│                                  ENV: CSM_S3_CA_BUNDLE                       │
-│    --web-help                    Open the web documentation                  │
-│    --help                        Show this message and exit.                 │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *  --bucket-name         BUCKET  The bucket on S3 to delete                                                                                                                                                     │
+│                                  ENV: CSM_DATA_BUCKET_NAME                                                                                                                                                      │
+│                                  [required]                                                                                                                                                                     │
+│    --prefix-filter       PREFIX  A prefix by which all deleted files should start in the bucket                                                                                                                 │
+│                                  ENV: CSM_DATA_BUCKET_PREFIX                                                                                                                                                    │
+│    --use-ssl/--no-ssl            Use SSL to secure connection to S3                                                                                                                                             │
+│ *  --s3-url              URL     URL to connect to the S3 system                                                                                                                                                │
+│                                  ENV: AWS_ENDPOINT_URL                                                                                                                                                          │
+│                                  [required]                                                                                                                                                                     │
+│ *  --access-id           ID      Identity used to connect to the S3 system                                                                                                                                      │
+│                                  ENV: AWS_ACCESS_KEY_ID                                                                                                                                                         │
+│                                  [required]                                                                                                                                                                     │
+│ *  --secret-key          ID      Secret tied to the ID used to connect to the S3 system                                                                                                                         │
+│                                  ENV: AWS_SECRET_ACCESS_KEY                                                                                                                                                     │
+│                                  [required]                                                                                                                                                                     │
+│    --ssl-cert-bundle     PATH    Path to an alternate CA Bundle to validate SSL connections                                                                                                                     │
+│                                  ENV: CSM_S3_CA_BUNDLE                                                                                                                                                          │
+│    --web-help                    Open the web documentation                                                                                                                                                     │
+│    --help                        Show this message and exit.                                                                                                                                                    │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 

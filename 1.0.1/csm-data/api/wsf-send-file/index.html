@@ -1658,34 +1658,28 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data api wsf-send-file --help
 
- Usage: csm-data api wsf-send-file [OPTIONS]                                    
+ Usage: csm-data api wsf-send-file [OPTIONS]                                                                                                                                                                       
 
- Upload a file to a workspace.                                                  
- Uploads a local file to a specified path in a workspace. If the workspace path 
- ends with &#39;/&#39;, the file will be uploaded to that folder with its original      
- name. Otherwise, the file will be uploaded with the name specified in the      
- workspace path.                                                                
+ Upload a file to a workspace.                                                                                                                                                                                     
+ Uploads a local file to a specified path in a workspace. If the workspace path ends with &#39;/&#39;, the file will be uploaded to that folder with its original name. Otherwise, the file will be uploaded with the name 
+ specified in the workspace path.                                                                                                                                                                                  
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ *  --organization-id     o-XXXXXXXX  An organization id for the Cosmo Tech   │
-│                                      API                                     │
-│                                      ENV: CSM_ORGANIZATION_ID                │
-│                                      [required]                              │
-│ *  --workspace-id        w-XXXXXXXX  A workspace id for the Cosmo Tech API   │
-│                                      ENV: CSM_WORKSPACE_ID                   │
-│                                      [required]                              │
-│ *  --file-path           PATH        Path to the file to send as a workspace │
-│                                      file                                    │
-│                                      [required]                              │
-│ *  --workspace-path      PATH        Path inside the workspace to store the  │
-│                                      file (end with &#39;/&#39; for a folder)        │
-│                                      [required]                              │
-│    --overwrite/--keep                Flag to overwrite the target file if it │
-│                                      exists                                  │
-│                                      DEFAULT: overwrite                      │
-│    --web-help                        Open the web documentation              │
-│    --help                            Show this message and exit.             │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *  --organization-id     o-XXXXXXXX  An organization id for the Cosmo Tech API                                                                                                                                  │
+│                                      ENV: CSM_ORGANIZATION_ID                                                                                                                                                   │
+│                                      [required]                                                                                                                                                                 │
+│ *  --workspace-id        w-XXXXXXXX  A workspace id for the Cosmo Tech API                                                                                                                                      │
+│                                      ENV: CSM_WORKSPACE_ID                                                                                                                                                      │
+│                                      [required]                                                                                                                                                                 │
+│ *  --file-path           PATH        Path to the file to send as a workspace file                                                                                                                               │
+│                                      [required]                                                                                                                                                                 │
+│ *  --workspace-path      PATH        Path inside the workspace to store the file (end with &#39;/&#39; for a folder)                                                                                                    │
+│                                      [required]                                                                                                                                                                 │
+│    --overwrite/--keep                Flag to overwrite the target file if it exists                                                                                                                             │
+│                                      DEFAULT: overwrite                                                                                                                                                         │
+│    --web-help                        Open the web documentation                                                                                                                                                 │
+│    --help                            Show this message and exit.                                                                                                                                                │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 

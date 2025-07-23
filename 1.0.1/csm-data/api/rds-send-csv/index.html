@@ -1658,34 +1658,31 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data api rds-send-csv --help
 
- Usage: csm-data api rds-send-csv [OPTIONS]                                     
+ Usage: csm-data api rds-send-csv [OPTIONS]                                                                                                                                                                        
 
- Send CSV files to a runner&#39;s RDS database.                                     
- Takes all CSV files from a source folder and sends their content to the        
- runner&#39;s RDS database. Each CSV file will be sent to a table named after the   
- file (without the .csv extension). The table name will be prefixed with &quot;CD_&quot;  
- in the database.                                                               
+ Send CSV files to a runner&#39;s RDS database.                                                                                                                                                                        
+ Takes all CSV files from a source folder and sends their content to the runner&#39;s RDS database. Each CSV file will be sent to a table named after the file (without the .csv extension). The table name will be    
+ prefixed with &quot;CD_&quot; in the database.                                                                                                                                                                              
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ *  --source-folder      PATH        The folder containing csvs to send       │
-│                                     ENV: CSM_DATASET_ABSOLUTE_PATH           │
-│                                     [required]                               │
-│ *  --organization-id    o-XXXXXXXX  An organization id for the Cosmo Tech    │
-│                                     API                                      │
-│                                     ENV: CSM_ORGANIZATION_ID                 │
-│                                     [required]                               │
-│ *  --workspace-id       w-XXXXXXXX  A workspace id for the Cosmo Tech API    │
-│                                     ENV: CSM_WORKSPACE_ID                    │
-│                                     [required]                               │
-│ *  --runner-id          r-XXXXXXXX  A runner id for the Cosmo Tech API       │
-│                                     ENV: CSM_RUNNER_ID                       │
-│                                     [required]                               │
-│ *  --run-id             run-XXXXXX  A run id for the Cosmo Tech API          │
-│                                     ENV: CSM_RUN_ID                          │
-│                                     [required]                               │
-│    --web-help                       Open the web documentation               │
-│    --help                           Show this message and exit.              │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *  --source-folder      PATH        The folder containing csvs to send                                                                                                                                          │
+│                                     ENV: CSM_DATASET_ABSOLUTE_PATH                                                                                                                                              │
+│                                     [required]                                                                                                                                                                  │
+│ *  --organization-id    o-XXXXXXXX  An organization id for the Cosmo Tech API                                                                                                                                   │
+│                                     ENV: CSM_ORGANIZATION_ID                                                                                                                                                    │
+│                                     [required]                                                                                                                                                                  │
+│ *  --workspace-id       w-XXXXXXXX  A workspace id for the Cosmo Tech API                                                                                                                                       │
+│                                     ENV: CSM_WORKSPACE_ID                                                                                                                                                       │
+│                                     [required]                                                                                                                                                                  │
+│ *  --runner-id          r-XXXXXXXX  A runner id for the Cosmo Tech API                                                                                                                                          │
+│                                     ENV: CSM_RUNNER_ID                                                                                                                                                          │
+│                                     [required]                                                                                                                                                                  │
+│ *  --run-id             run-XXXXXX  A run id for the Cosmo Tech API                                                                                                                                             │
+│                                     ENV: CSM_RUN_ID                                                                                                                                                             │
+│                                     [required]                                                                                                                                                                  │
+│    --web-help                       Open the web documentation                                                                                                                                                  │
+│    --help                           Show this message and exit.                                                                                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 

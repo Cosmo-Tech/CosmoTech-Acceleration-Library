@@ -1658,44 +1658,39 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data api tdl-send-files --help
 
- Usage: csm-data api tdl-send-files [OPTIONS]                                   
+ Usage: csm-data api tdl-send-files [OPTIONS]                                                                                                                                                                      
 
- Reads a folder CSVs and send those to the Cosmo Tech API as a Dataset          
- CSVs must follow a given format:                                               
+ Reads a folder CSVs and send those to the Cosmo Tech API as a Dataset                                                                                                                                             
+ CSVs must follow a given format:                                                                                                                                                                                  
 
-  • Nodes files must have an id column                                          
-  • Relationship files must have id, src and dest columns                       
+  • Nodes files must have an id column                                                                                                                                                                             
+  • Relationship files must have id, src and dest columns                                                                                                                                                          
 
- Non-existing relationship (aka dest or src does not point to existing node)    
- won&#39;t trigger an error, the relationship will not be created instead.          
+ Non-existing relationship (aka dest or src does not point to existing node) won&#39;t trigger an error, the relationship will not be created instead.                                                                 
 
- Requires a valid connection to the API to send the data                        
+ Requires a valid connection to the API to send the data                                                                                                                                                           
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ *  --api-url            URI         The URI to a Cosmo Tech API instance     │
-│                                     ENV: CSM_API_URL                         │
-│                                     [required]                               │
-│ *  --organization-id    o-XXXXXXXX  An organization id for the Cosmo Tech    │
-│                                     API                                      │
-│                                     ENV: CSM_ORGANIZATION_ID                 │
-│                                     [required]                               │
-│ *  --workspace-id       w-XXXXXXXX  A workspace id for the Cosmo Tech API    │
-│                                     ENV: CSM_WORKSPACE_ID                    │
-│                                     [required]                               │
-│ *  --runner-id          r-XXXXXXXX  A runner id for the Cosmo Tech API       │
-│                                     ENV: CSM_RUNNER_ID                       │
-│                                     [required]                               │
-│ *  --dir                PATH        Path to the directory containing csvs to │
-│                                     send                                     │
-│                                     ENV: CSM_DATASET_ABSOLUTE_PATH           │
-│                                     [required]                               │
-│    --clear/--keep                   Flag to clear the target dataset first   │
-│                                     (if set to True will clear the dataset   │
-│                                     before sending anything, irreversibly)   │
-│                                     DEFAULT: clear                           │
-│    --web-help                       Open the web documentation               │
-│    --help                           Show this message and exit.              │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *  --api-url            URI         The URI to a Cosmo Tech API instance                                                                                                                                        │
+│                                     ENV: CSM_API_URL                                                                                                                                                            │
+│                                     [required]                                                                                                                                                                  │
+│ *  --organization-id    o-XXXXXXXX  An organization id for the Cosmo Tech API                                                                                                                                   │
+│                                     ENV: CSM_ORGANIZATION_ID                                                                                                                                                    │
+│                                     [required]                                                                                                                                                                  │
+│ *  --workspace-id       w-XXXXXXXX  A workspace id for the Cosmo Tech API                                                                                                                                       │
+│                                     ENV: CSM_WORKSPACE_ID                                                                                                                                                       │
+│                                     [required]                                                                                                                                                                  │
+│ *  --runner-id          r-XXXXXXXX  A runner id for the Cosmo Tech API                                                                                                                                          │
+│                                     ENV: CSM_RUNNER_ID                                                                                                                                                          │
+│                                     [required]                                                                                                                                                                  │
+│ *  --dir                PATH        Path to the directory containing csvs to send                                                                                                                               │
+│                                     ENV: CSM_DATASET_ABSOLUTE_PATH                                                                                                                                              │
+│                                     [required]                                                                                                                                                                  │
+│    --clear/--keep                   Flag to clear the target dataset first (if set to True will clear the dataset before sending anything, irreversibly)                                                        │
+│                                     DEFAULT: clear                                                                                                                                                              │
+│    --web-help                       Open the web documentation                                                                                                                                                  │
+│    --help                           Show this message and exit.                                                                                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 

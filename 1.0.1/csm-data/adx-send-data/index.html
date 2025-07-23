@@ -1654,33 +1654,30 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data adx-send-data --help
 
- Usage: csm-data adx-send-data [OPTIONS]                                        
+ Usage: csm-data adx-send-data [OPTIONS]                                                                                                                                                                           
 
- Send data to ADX                                                               
+ Send data to ADX                                                                                                                                                                                                  
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ *  --adx-uri           URI   The ADX cluster path (URI info can be found     │
-│                              into ADX cluster page)                          │
-│                              ENV: AZURE_DATA_EXPLORER_RESOURCE_URI           │
-│                              [required]                                      │
-│ *  --adx-ingest-uri    URI   The ADX cluster ingest path (URI info can be    │
-│                              found into ADX cluster page)                    │
-│                              ENV: AZURE_DATA_EXPLORER_RESOURCE_INGEST_URI    │
-│                              [required]                                      │
-│ *  --database-name     NAME  The targeted database name                      │
-│                              ENV: AZURE_DATA_EXPLORER_DATABASE_NAME          │
-│                              [required]                                      │
-│    --wait/--no-wait          Toggle waiting for the ingestion results        │
-│                              ENV: CSM_DATA_ADX_WAIT_INGESTION                │
-│                              DEFAULT: no-wait                                │
-│    --tag               TEXT  The ADX tag to use for the ingestion            │
-│                              ENV: CSM_DATA_ADX_TAG                           │
-│ *  --store-folder      PATH  The folder containing the datastore containing  │
-│                              the data to send                                │
-│                              ENV: CSM_PARAMETERS_ABSOLUTE_PATH               │
-│                              [required]                                      │
-│    --help                    Show this message and exit.                     │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *  --adx-uri           URI   The ADX cluster path (URI info can be found into ADX cluster page)                                                                                                                 │
+│                              ENV: AZURE_DATA_EXPLORER_RESOURCE_URI                                                                                                                                              │
+│                              [required]                                                                                                                                                                         │
+│ *  --adx-ingest-uri    URI   The ADX cluster ingest path (URI info can be found into ADX cluster page)                                                                                                          │
+│                              ENV: AZURE_DATA_EXPLORER_RESOURCE_INGEST_URI                                                                                                                                       │
+│                              [required]                                                                                                                                                                         │
+│ *  --database-name     NAME  The targeted database name                                                                                                                                                         │
+│                              ENV: AZURE_DATA_EXPLORER_DATABASE_NAME                                                                                                                                             │
+│                              [required]                                                                                                                                                                         │
+│    --wait/--no-wait          Toggle waiting for the ingestion results                                                                                                                                           │
+│                              ENV: CSM_DATA_ADX_WAIT_INGESTION                                                                                                                                                   │
+│                              DEFAULT: no-wait                                                                                                                                                                   │
+│    --tag               TEXT  The ADX tag to use for the ingestion                                                                                                                                               │
+│                              ENV: CSM_DATA_ADX_TAG                                                                                                                                                              │
+│ *  --store-folder      PATH  The folder containing the datastore containing the data to send                                                                                                                    │
+│                              ENV: CSM_PARAMETERS_ABSOLUTE_PATH                                                                                                                                                  │
+│                              [required]                                                                                                                                                                         │
+│    --help                    Show this message and exit.                                                                                                                                                        │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 

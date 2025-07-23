@@ -1658,41 +1658,36 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data store load-from-singlestore --help
 
- Usage: csm-data store load-from-singlestore [OPTIONS]                          
+ Usage: csm-data store load-from-singlestore [OPTIONS]                                                                                                                                                             
 
- Load data from SingleStore tables into the store. Will download everything     
- from a given SingleStore database following some configuration into the store. 
- Make use of the singlestoredb to access to SingleStore                         
+ Load data from SingleStore tables into the store. Will download everything from a given SingleStore database following some configuration into the store.                                                         
+ Make use of the singlestoredb to access to SingleStore                                                                                                                                                            
 
- More information is available on this page:                                    
- [https://docs.singlestore.com/cloud/developer-resources/connect-with-applicati 
- on-development-tools/connect-with-python/connect-using-the-singlestore-python- 
- client/]                                                                       
+ More information is available on this page: [https://docs.singlestore.com/cloud/developer-resources/connect-with-application-development-tools/connect-with-python/connect-using-the-singlestore-python-client/]  
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ *  --singlestore-host        TEXT     SingleStore instance URI               │
-│                                       ENV: SINGLE_STORE_HOST                 │
-│                                       [required]                             │
-│    --singlestore-port        INTEGER  SingleStore port                       │
-│                                       ENV: SINGLE_STORE_PORT                 │
-│ *  --singlestore-db          TEXT     SingleStore database name              │
-│                                       ENV: SINGLE_STORE_DB                   │
-│                                       [required]                             │
-│ *  --singlestore-user        TEXT     SingleStore connection user name       │
-│                                       ENV: SINGLE_STORE_USERNAME             │
-│                                       [required]                             │
-│ *  --singlestore-password    TEXT     SingleStore connection password        │
-│                                       ENV: SINGLE_STORE_PASSWORD             │
-│                                       [required]                             │
-│ *  --singlestore-tables      TEXT     SingleStore table names to fetched     │
-│                                       (separated by comma)                   │
-│                                       ENV: SINGLE_STORE_TABLES               │
-│                                       [required]                             │
-│ *  --store-folder            PATH     The folder containing the store files  │
-│                                       ENV: CSM_PARAMETERS_ABSOLUTE_PATH      │
-│                                       [required]                             │
-│    --help                             Show this message and exit.            │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *  --singlestore-host        TEXT     SingleStore instance URI                                                                                                                                                  │
+│                                       ENV: SINGLE_STORE_HOST                                                                                                                                                    │
+│                                       [required]                                                                                                                                                                │
+│    --singlestore-port        INTEGER  SingleStore port                                                                                                                                                          │
+│                                       ENV: SINGLE_STORE_PORT                                                                                                                                                    │
+│ *  --singlestore-db          TEXT     SingleStore database name                                                                                                                                                 │
+│                                       ENV: SINGLE_STORE_DB                                                                                                                                                      │
+│                                       [required]                                                                                                                                                                │
+│ *  --singlestore-user        TEXT     SingleStore connection user name                                                                                                                                          │
+│                                       ENV: SINGLE_STORE_USERNAME                                                                                                                                                │
+│                                       [required]                                                                                                                                                                │
+│ *  --singlestore-password    TEXT     SingleStore connection password                                                                                                                                           │
+│                                       ENV: SINGLE_STORE_PASSWORD                                                                                                                                                │
+│                                       [required]                                                                                                                                                                │
+│ *  --singlestore-tables      TEXT     SingleStore table names to fetched (separated by comma)                                                                                                                   │
+│                                       ENV: SINGLE_STORE_TABLES                                                                                                                                                  │
+│                                       [required]                                                                                                                                                                │
+│ *  --store-folder            PATH     The folder containing the store files                                                                                                                                     │
+│                                       ENV: CSM_PARAMETERS_ABSOLUTE_PATH                                                                                                                                         │
+│                                       [required]                                                                                                                                                                │
+│    --help                             Show this message and exit.                                                                                                                                               │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 

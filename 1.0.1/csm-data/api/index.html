@@ -1648,46 +1648,34 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data api --help
 
- Usage: csm-data api [OPTIONS] COMMAND [ARGS]...                                
+ Usage: csm-data api [OPTIONS] COMMAND [ARGS]...                                                                                                                                                                   
 
- Cosmo Tech API helper command                                                  
- This command will inform you of which connection is available to use for the   
- Cosmo Tech API                                                                 
+ Cosmo Tech API helper command                                                                                                                                                                                     
+ This command will inform you of which connection is available to use for the Cosmo Tech API                                                                                                                       
 
- If no connection is available, will list all possible set of parameters and    
- return an error code,                                                          
+ If no connection is available, will list all possible set of parameters and return an error code,                                                                                                                 
 
- You can use this command in a csm-orc template to make sure that API           
- connection is available.                                                       
+ You can use this command in a csm-orc template to make sure that API connection is available.                                                                                                                     
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ --web-help      Open the web documentation                                   │
-│ --help          Show this message and exit.                                  │
-╰──────────────────────────────────────────────────────────────────────────────╯
-╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ postgres-send-runner-metadata  Send runner metadata to a PostgreSQL          │
-│                                database.                                     │
-│ rds-load-csv                   Load data from a runner&#39;s RDS database into a │
-│                                CSV file.                                     │
-│ rds-send-csv                   Send CSV files to a runner&#39;s RDS database.    │
-│ rds-send-store                 Send data from a store to a runner&#39;s RDS      │
-│                                database.                                     │
-│ run-load-data                  Download a runner data from the Cosmo Tech    │
-│                                API Requires a valid Azure connection either  │
-│                                with:                                         │
-│                                                                              │
-│                                 • The AZ cli command: az login               │
-│                                 • A triplet of env var AZURE_TENANT_ID,      │
-│                                   AZURE_CLIENT_ID, AZURE_CLIENT_SECRET       │
-│ runtemplate-load-handler       Uses environment variables to download cloud  │
-│                                based Template steps                          │
-│ tdl-load-files                 Query a twingraph and loads all the data from │
-│                                it                                            │
-│ tdl-send-files                 Reads a folder CSVs and send those to the     │
-│                                Cosmo Tech API as a Dataset                   │
-│ wsf-load-file                  Download files from a workspace.              │
-│ wsf-send-file                  Upload a file to a workspace.                 │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --web-help      Open the web documentation                                                                                                                                                                      │
+│ --help          Show this message and exit.                                                                                                                                                                     │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ postgres-send-runner-metadata  Send runner metadata to a PostgreSQL database.                                                                                                                                   │
+│ rds-load-csv                   Load data from a runner&#39;s RDS database into a CSV file.                                                                                                                          │
+│ rds-send-csv                   Send CSV files to a runner&#39;s RDS database.                                                                                                                                       │
+│ rds-send-store                 Send data from a store to a runner&#39;s RDS database.                                                                                                                               │
+│ run-load-data                  Download a runner data from the Cosmo Tech API Requires a valid Azure connection either with:                                                                                    │
+│                                                                                                                                                                                                                 │
+│                                 • The AZ cli command: az login                                                                                                                                                  │
+│                                 • A triplet of env var AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET                                                                                                    │
+│ runtemplate-load-handler       Uses environment variables to download cloud based Template steps                                                                                                                │
+│ tdl-load-files                 Query a twingraph and loads all the data from it                                                                                                                                 │
+│ tdl-send-files                 Reads a folder CSVs and send those to the Cosmo Tech API as a Dataset                                                                                                            │
+│ wsf-load-file                  Download files from a workspace.                                                                                                                                                 │
+│ wsf-send-file                  Upload a file to a workspace.                                                                                                                                                    │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 

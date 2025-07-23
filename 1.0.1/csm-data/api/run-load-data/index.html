@@ -1658,58 +1658,46 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data api run-load-data --help
 
- Usage: csm-data api run-load-data [OPTIONS]                                    
+ Usage: csm-data api run-load-data [OPTIONS]                                                                                                                                                                       
 
- Download a runner data from the Cosmo Tech API Requires a valid Azure          
- connection either with:                                                        
+ Download a runner data from the Cosmo Tech API Requires a valid Azure connection either with:                                                                                                                     
 
-  • The AZ cli command: az login                                                
-  • A triplet of env var AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET  
- Requires env var CSM_API_URL     The URL to a Cosmotech API                    
- Requires env var CSM_API_SCOPE   The identification scope of a Cosmotech API   
+  • The AZ cli command: az login                                                                                                                                                                                   
+  • A triplet of env var AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET                                                                                                                                     
+ Requires env var CSM_API_URL     The URL to a Cosmotech API                                                                                                                                                       
+ Requires env var CSM_API_SCOPE   The identification scope of a Cosmotech API                                                                                                                                      
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ *  --organization-id              o-##########  The id of an organization in │
-│                                                 the cosmotech api            │
-│                                                 ENV: CSM_ORGANIZATION_ID     │
-│                                                 [required]                   │
-│ *  --workspace-id                 w-##########  The id of a workspace in the │
-│                                                 cosmotech api                │
-│                                                 ENV: CSM_WORKSPACE_ID        │
-│                                                 [required]                   │
-│ *  --runner-id                    s-##########  The id of a runner in the    │
-│                                                 cosmotech api                │
-│                                                 ENV: CSM_RUNNER_ID           │
-│                                                 [required]                   │
-│ *  --dataset-absolute-path        PATH          A local folder to store the  │
-│                                                 main dataset content         │
-│                                                 ENV:                         │
-│                                                 CSM_DATASET_ABSOLUTE_PATH    │
-│                                                 [required]                   │
-│ *  --parameters-absolute-path     PATH          A local folder to store the  │
-│                                                 parameters content           │
-│                                                 ENV:                         │
-│                                                 CSM_PARAMETERS_ABSOLUTE_PATH │
-│                                                 [required]                   │
-│    --write-json/--no-write-js…                  Whether to write the data in │
-│                                                 JSON format                  │
-│                                                 ENV: WRITE_JSON              │
-│                                                 DEFAULT: write-json          │
-│    --write-csv/--no-write-csv                   Whether to write the data in │
-│                                                 CSV format                   │
-│                                                 ENV: WRITE_CSV               │
-│                                                 DEFAULT: no-write-csv        │
-│    --fetch-dataset/--no-fetch…                  Whether to fetch datasets    │
-│                                                 ENV: FETCH_DATASET           │
-│                                                 DEFAULT: fetch-dataset       │
-│    --parallel/--no-parallel                     Whether to fetch datasets in │
-│                                                 parallel                     │
-│                                                 ENV:                         │
-│                                                 FETCH_DATASETS_IN_PARALLEL   │
-│                                                 DEFAULT: parallel            │
-│    --web-help                                   Open the web documentation   │
-│    --help                                       Show this message and exit.  │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *  --organization-id                     o-##########  The id of an organization in the cosmotech api                                                                                                           │
+│                                                        ENV: CSM_ORGANIZATION_ID                                                                                                                                 │
+│                                                        [required]                                                                                                                                               │
+│ *  --workspace-id                        w-##########  The id of a workspace in the cosmotech api                                                                                                               │
+│                                                        ENV: CSM_WORKSPACE_ID                                                                                                                                    │
+│                                                        [required]                                                                                                                                               │
+│ *  --runner-id                           s-##########  The id of a runner in the cosmotech api                                                                                                                  │
+│                                                        ENV: CSM_RUNNER_ID                                                                                                                                       │
+│                                                        [required]                                                                                                                                               │
+│ *  --dataset-absolute-path               PATH          A local folder to store the main dataset content                                                                                                         │
+│                                                        ENV: CSM_DATASET_ABSOLUTE_PATH                                                                                                                           │
+│                                                        [required]                                                                                                                                               │
+│ *  --parameters-absolute-path            PATH          A local folder to store the parameters content                                                                                                           │
+│                                                        ENV: CSM_PARAMETERS_ABSOLUTE_PATH                                                                                                                        │
+│                                                        [required]                                                                                                                                               │
+│    --write-json/--no-write-json                        Whether to write the data in JSON format                                                                                                                 │
+│                                                        ENV: WRITE_JSON                                                                                                                                          │
+│                                                        DEFAULT: write-json                                                                                                                                      │
+│    --write-csv/--no-write-csv                          Whether to write the data in CSV format                                                                                                                  │
+│                                                        ENV: WRITE_CSV                                                                                                                                           │
+│                                                        DEFAULT: no-write-csv                                                                                                                                    │
+│    --fetch-dataset/--no-fetch-dataset                  Whether to fetch datasets                                                                                                                                │
+│                                                        ENV: FETCH_DATASET                                                                                                                                       │
+│                                                        DEFAULT: fetch-dataset                                                                                                                                   │
+│    --parallel/--no-parallel                            Whether to fetch datasets in parallel                                                                                                                    │
+│                                                        ENV: FETCH_DATASETS_IN_PARALLEL                                                                                                                          │
+│                                                        DEFAULT: parallel                                                                                                                                        │
+│    --web-help                                          Open the web documentation                                                                                                                               │
+│    --help                                              Show this message and exit.                                                                                                                              │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 

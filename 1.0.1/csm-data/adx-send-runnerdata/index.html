@@ -1654,61 +1654,43 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data adx-send-runnerdata --help
 
- Usage: csm-data adx-send-runnerdata [OPTIONS]                                  
+ Usage: csm-data adx-send-runnerdata [OPTIONS]                                                                                                                                                                     
 
- Uses environment variables to send content of CSV files to ADX Requires a      
- valid Azure connection either with:                                            
+ Uses environment variables to send content of CSV files to ADX Requires a valid Azure connection either with:                                                                                                     
 
-  • The AZ cli command: az login                                                
-  • A triplet of env var AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET  
+  • The AZ cli command: az login                                                                                                                                                                                   
+  • A triplet of env var AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET                                                                                                                                     
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ *  --dataset-absolute-path            PATH  A local folder to store the main │
-│                                             dataset content                  │
-│                                             ENV: CSM_DATASET_ABSOLUTE_PATH   │
-│                                             [required]                       │
-│ *  --parameters-absolute-path         PATH  A local folder to store the      │
-│                                             parameters content               │
-│                                             ENV:                             │
-│                                             CSM_PARAMETERS_ABSOLUTE_PATH     │
-│                                             [required]                       │
-│ *  --runner-id                        UUID  the Runner Id to add to records  │
-│                                             ENV: CSM_RUNNER_ID               │
-│                                             [required]                       │
-│ *  --adx-uri                          URI   the ADX cluster path (URI info   │
-│                                             can be found into ADX cluster    │
-│                                             page)                            │
-│                                             ENV:                             │
-│                                             AZURE_DATA_EXPLORER_RESOURCE_URI │
-│                                             [required]                       │
-│ *  --adx-ingest-uri                   URI   The ADX cluster ingest path (URI │
-│                                             info can be found into ADX       │
-│                                             cluster page)                    │
-│                                             ENV:                             │
-│                                             AZURE_DATA_EXPLORER_RESOURCE_IN… │
-│                                             [required]                       │
-│ *  --database-name                    NAME  The targeted database name       │
-│                                             ENV:                             │
-│                                             AZURE_DATA_EXPLORER_DATABASE_NA… │
-│                                             [required]                       │
-│    --send-parameters/--no-send-pa…          whether or not to send           │
-│                                             parameters (parameters path is   │
-│                                             mandatory then)                  │
-│                                             ENV:                             │
-│                                             CSM_SEND_DATAWAREHOUSE_PARAMETE… │
-│                                             DEFAULT: no-send-parameters      │
-│    --send-datasets/--no-send-data…          whether or not to send datasets  │
-│                                             (parameters path is mandatory    │
-│                                             then)                            │
-│                                             ENV:                             │
-│                                             CSM_SEND_DATAWAREHOUSE_DATASETS  │
-│                                             DEFAULT: no-send-datasets        │
-│    --wait/--no-wait                         Toggle waiting for the ingestion │
-│                                             results                          │
-│                                             ENV: WAIT_FOR_INGESTION          │
-│                                             DEFAULT: no-wait                 │
-│    --help                                   Show this message and exit.      │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *  --dataset-absolute-path                   PATH  A local folder to store the main dataset content                                                                                                             │
+│                                                    ENV: CSM_DATASET_ABSOLUTE_PATH                                                                                                                               │
+│                                                    [required]                                                                                                                                                   │
+│ *  --parameters-absolute-path                PATH  A local folder to store the parameters content                                                                                                               │
+│                                                    ENV: CSM_PARAMETERS_ABSOLUTE_PATH                                                                                                                            │
+│                                                    [required]                                                                                                                                                   │
+│ *  --runner-id                               UUID  the Runner Id to add to records                                                                                                                              │
+│                                                    ENV: CSM_RUNNER_ID                                                                                                                                           │
+│                                                    [required]                                                                                                                                                   │
+│ *  --adx-uri                                 URI   the ADX cluster path (URI info can be found into ADX cluster page)                                                                                           │
+│                                                    ENV: AZURE_DATA_EXPLORER_RESOURCE_URI                                                                                                                        │
+│                                                    [required]                                                                                                                                                   │
+│ *  --adx-ingest-uri                          URI   The ADX cluster ingest path (URI info can be found into ADX cluster page)                                                                                    │
+│                                                    ENV: AZURE_DATA_EXPLORER_RESOURCE_INGEST_URI                                                                                                                 │
+│                                                    [required]                                                                                                                                                   │
+│ *  --database-name                           NAME  The targeted database name                                                                                                                                   │
+│                                                    ENV: AZURE_DATA_EXPLORER_DATABASE_NAME                                                                                                                       │
+│                                                    [required]                                                                                                                                                   │
+│    --send-parameters/--no-send-parameters          whether or not to send parameters (parameters path is mandatory then)                                                                                        │
+│                                                    ENV: CSM_SEND_DATAWAREHOUSE_PARAMETERS                                                                                                                       │
+│                                                    DEFAULT: no-send-parameters                                                                                                                                  │
+│    --send-datasets/--no-send-datasets              whether or not to send datasets (parameters path is mandatory then)                                                                                          │
+│                                                    ENV: CSM_SEND_DATAWAREHOUSE_DATASETS                                                                                                                         │
+│                                                    DEFAULT: no-send-datasets                                                                                                                                    │
+│    --wait/--no-wait                                Toggle waiting for the ingestion results                                                                                                                     │
+│                                                    ENV: WAIT_FOR_INGESTION                                                                                                                                      │
+│                                                    DEFAULT: no-wait                                                                                                                                             │
+│    --help                                          Show this message and exit.                                                                                                                                  │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 

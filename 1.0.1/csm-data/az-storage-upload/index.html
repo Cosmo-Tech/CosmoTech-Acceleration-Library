@@ -1654,32 +1654,25 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data az-storage-upload --help
 
- Usage: csm-data az-storage-upload [OPTIONS]                                    
+ Usage: csm-data az-storage-upload [OPTIONS]                                                                                                                                                                       
 
- Upload a folder to an Azure Storage Blob                                       
+ Upload a folder to an Azure Storage Blob                                                                                                                                                                          
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ *  --source-folder               PATH    The folder/file to upload to the    │
-│                                          target blob storage                 │
-│                                          ENV: CSM_DATASET_ABSOLUTE_PATH      │
-│                                          [required]                          │
-│    --recursive/--no-recursive            Recursively send the content of     │
-│                                          every folder inside the starting    │
-│                                          folder to the blob storage          │
-│ *  --blob-name                   BUCKET  The blob name in the Azure Storage  │
-│                                          service to upload to                │
-│                                          ENV: AZURE_STORAGE_BLOB_NAME        │
-│                                          [required]                          │
-│    --prefix                      PREFIX  A prefix by which all uploaded      │
-│                                          files should start with in the blob │
-│                                          storage                             │
-│                                          ENV: CSM_DATA_BLOB_PREFIX           │
-│    --az-storage-sas-url          URL     SAS url allowing access to the AZ   │
-│                                          storage container                   │
-│                                          ENV: AZURE_STORAGE_SAS_URL          │
-│    --web-help                            Open the web documentation          │
-│    --help                                Show this message and exit.         │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *  --source-folder               PATH    The folder/file to upload to the target blob storage                                                                                                                   │
+│                                          ENV: CSM_DATASET_ABSOLUTE_PATH                                                                                                                                         │
+│                                          [required]                                                                                                                                                             │
+│    --recursive/--no-recursive            Recursively send the content of every folder inside the starting folder to the blob storage                                                                            │
+│ *  --blob-name                   BUCKET  The blob name in the Azure Storage service to upload to                                                                                                                │
+│                                          ENV: AZURE_STORAGE_BLOB_NAME                                                                                                                                           │
+│                                          [required]                                                                                                                                                             │
+│    --prefix                      PREFIX  A prefix by which all uploaded files should start with in the blob storage                                                                                             │
+│                                          ENV: CSM_DATA_BLOB_PREFIX                                                                                                                                              │
+│    --az-storage-sas-url          URL     SAS url allowing access to the AZ storage container                                                                                                                    │
+│                                          ENV: AZURE_STORAGE_SAS_URL                                                                                                                                             │
+│    --web-help                            Open the web documentation                                                                                                                                             │
+│    --help                                Show this message and exit.                                                                                                                                            │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 

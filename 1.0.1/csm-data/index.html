@@ -1644,34 +1644,31 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data --help
 
- Usage: csm-data [OPTIONS] COMMAND [ARGS]...                                    
+ Usage: csm-data [OPTIONS] COMMAND [ARGS]...                                                                                                                                                                       
 
- Cosmo Tech Data Interface                                                      
- Command toolkit providing quick implementation of data connections to use      
- inside the Cosmo Tech Platform                                                 
+ Cosmo Tech Data Interface                                                                                                                                                                                         
+ Command toolkit providing quick implementation of data connections to use inside the Cosmo Tech Platform                                                                                                          
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ --log-level    LVL  Either CRITICAL, ERROR, WARNING, INFO or DEBUG           │
-│                     ENV: LOG_LEVEL                                           │
-│ --version           Print version number and return.                         │
-│ --web-help          Open the web documentation                               │
-│ --help              Show this message and exit.                              │
-╰──────────────────────────────────────────────────────────────────────────────╯
-╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ adx-send-data        Send data to ADX                                        │
-│ adx-send-runnerdata  Uses environment variables to send content of CSV files │
-│                      to ADX Requires a valid Azure connection either with:   │
-│                                                                              │
-│                       • The AZ cli command: az login                         │
-│                       • A triplet of env var AZURE_TENANT_ID,                │
-│                         AZURE_CLIENT_ID, AZURE_CLIENT_SECRET                 │
-│ api                  Cosmo Tech API helper command                           │
-│ az-storage-upload    Upload a folder to an Azure Storage Blob                │
-│ s3-bucket-delete     Delete S3 bucket content to a given folder              │
-│ s3-bucket-download   Download S3 bucket content to a given folder            │
-│ s3-bucket-upload     Upload a folder to a S3 Bucket                          │
-│ store                CoAL Data Store command group                           │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --log-level    LVL  Either CRITICAL, ERROR, WARNING, INFO or DEBUG                                                                                                                                              │
+│                     ENV: LOG_LEVEL                                                                                                                                                                              │
+│ --version           Print version number and return.                                                                                                                                                            │
+│ --web-help          Open the web documentation                                                                                                                                                                  │
+│ --help              Show this message and exit.                                                                                                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ adx-send-data        Send data to ADX                                                                                                                                                                           │
+│ adx-send-runnerdata  Uses environment variables to send content of CSV files to ADX Requires a valid Azure connection either with:                                                                              │
+│                                                                                                                                                                                                                 │
+│                       • The AZ cli command: az login                                                                                                                                                            │
+│                       • A triplet of env var AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET                                                                                                              │
+│ api                  Cosmo Tech API helper command                                                                                                                                                              │
+│ az-storage-upload    Upload a folder to an Azure Storage Blob                                                                                                                                                   │
+│ s3-bucket-delete     Delete S3 bucket content to a given folder                                                                                                                                                 │
+│ s3-bucket-download   Download S3 bucket content to a given folder                                                                                                                                               │
+│ s3-bucket-upload     Upload a folder to a S3 Bucket                                                                                                                                                             │
+│ store                CoAL Data Store command group                                                                                                                                                              │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 

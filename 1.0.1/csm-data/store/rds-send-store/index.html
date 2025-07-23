@@ -1658,33 +1658,31 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data store rds-send-store --help
 
- Usage: csm-data store rds-send-store [OPTIONS]                                 
+ Usage: csm-data store rds-send-store [OPTIONS]                                                                                                                                                                    
 
- Send data from a store to a runner&#39;s RDS database.                             
- Takes all tables from a store and sends their content to the runner&#39;s RDS      
- database. Each table will be sent to a table with the same name, prefixed with 
- &quot;CD_&quot; in the database. Null values in rows will be removed before sending.     
+ Send data from a store to a runner&#39;s RDS database.                                                                                                                                                                
+ Takes all tables from a store and sends their content to the runner&#39;s RDS database. Each table will be sent to a table with the same name, prefixed with &quot;CD_&quot; in the database. Null values in rows will be       
+ removed before sending.                                                                                                                                                                                           
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ *  --store-folder       PATH        The folder containing the store files    │
-│                                     ENV: CSM_PARAMETERS_ABSOLUTE_PATH        │
-│                                     [required]                               │
-│ *  --organization-id    o-XXXXXXXX  An organization id for the Cosmo Tech    │
-│                                     API                                      │
-│                                     ENV: CSM_ORGANIZATION_ID                 │
-│                                     [required]                               │
-│ *  --workspace-id       w-XXXXXXXX  A workspace id for the Cosmo Tech API    │
-│                                     ENV: CSM_WORKSPACE_ID                    │
-│                                     [required]                               │
-│ *  --runner-id          r-XXXXXXXX  A runner id for the Cosmo Tech API       │
-│                                     ENV: CSM_RUNNER_ID                       │
-│                                     [required]                               │
-│ *  --run-id             run-XXXXXX  A run id for the Cosmo Tech API          │
-│                                     ENV: CSM_RUN_ID                          │
-│                                     [required]                               │
-│    --web-help                       Open the web documentation               │
-│    --help                           Show this message and exit.              │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *  --store-folder       PATH        The folder containing the store files                                                                                                                                       │
+│                                     ENV: CSM_PARAMETERS_ABSOLUTE_PATH                                                                                                                                           │
+│                                     [required]                                                                                                                                                                  │
+│ *  --organization-id    o-XXXXXXXX  An organization id for the Cosmo Tech API                                                                                                                                   │
+│                                     ENV: CSM_ORGANIZATION_ID                                                                                                                                                    │
+│                                     [required]                                                                                                                                                                  │
+│ *  --workspace-id       w-XXXXXXXX  A workspace id for the Cosmo Tech API                                                                                                                                       │
+│                                     ENV: CSM_WORKSPACE_ID                                                                                                                                                       │
+│                                     [required]                                                                                                                                                                  │
+│ *  --runner-id          r-XXXXXXXX  A runner id for the Cosmo Tech API                                                                                                                                          │
+│                                     ENV: CSM_RUNNER_ID                                                                                                                                                          │
+│                                     [required]                                                                                                                                                                  │
+│ *  --run-id             run-XXXXXX  A run id for the Cosmo Tech API                                                                                                                                             │
+│                                     ENV: CSM_RUN_ID                                                                                                                                                             │
+│                                     [required]                                                                                                                                                                  │
+│    --web-help                       Open the web documentation                                                                                                                                                  │
+│    --help                           Show this message and exit.                                                                                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 

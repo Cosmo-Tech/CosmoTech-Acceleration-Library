@@ -1658,53 +1658,45 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data api postgres-send-runner-metadata --help
 
- Usage: csm-data api postgres-send-runner-metadata [OPTIONS]                    
+ Usage: csm-data api postgres-send-runner-metadata [OPTIONS]                                                                                                                                                       
 
- Send runner metadata to a PostgreSQL database.                                 
- Creates or updates a table in PostgreSQL with runner metadata including id,    
- name, last run id, and run template id. The table will be created if it        
- doesn&#39;t exist, and existing records will be updated based on the runner id.    
+ Send runner metadata to a PostgreSQL database.                                                                                                                                                                    
+ Creates or updates a table in PostgreSQL with runner metadata including id, name, last run id, and run template id. The table will be created if it doesn&#39;t exist, and existing records will be updated based on  
+ the runner id.                                                                                                                                                                                                    
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ *  --organization-id               o-XXXXXXXX  An organization id for the    │
-│                                                Cosmo Tech API                │
-│                                                ENV: CSM_ORGANIZATION_ID      │
-│                                                [required]                    │
-│ *  --workspace-id                  w-XXXXXXXX  A workspace id for the Cosmo  │
-│                                                Tech API                      │
-│                                                ENV: CSM_WORKSPACE_ID         │
-│                                                [required]                    │
-│ *  --runner-id                     r-XXXXXXXX  A runner id for the Cosmo     │
-│                                                Tech API                      │
-│                                                ENV: CSM_RUNNER_ID            │
-│                                                [required]                    │
-│    --table-prefix                  PREFIX      Prefix to add to the table    │
-│                                                name                          │
-│ *  --postgres-host                 TEXT        PostgreSQL host URI           │
-│                                                ENV: POSTGRES_HOST_URI        │
-│                                                [required]                    │
-│    --postgres-port                 INTEGER     PostgreSQL database port      │
-│                                                ENV: POSTGRES_HOST_PORT       │
-│ *  --postgres-db                   TEXT        PostgreSQL database name      │
-│                                                ENV: POSTGRES_DB_NAME         │
-│                                                [required]                    │
-│ *  --postgres-schema               TEXT        PostgreSQL schema name        │
-│                                                ENV: POSTGRES_DB_SCHEMA       │
-│                                                [required]                    │
-│ *  --postgres-user                 TEXT        PostgreSQL connection user    │
-│                                                name                          │
-│                                                ENV: POSTGRES_USER_NAME       │
-│                                                [required]                    │
-│ *  --postgres-password             TEXT        PostgreSQL connection         │
-│                                                password                      │
-│                                                ENV: POSTGRES_USER_PASSWORD   │
-│                                                [required]                    │
-│    --encode-password/--no-enco…                csm_data.commands.store.post… │
-│                                                ENV:                          │
-│                                                CSM_PSQL_FORCE_PASSWORD_ENCO… │
-│                                                DEFAULT: encode-password      │
-│    --help                                      Show this message and exit.   │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *  --organization-id                         o-XXXXXXXX  An organization id for the Cosmo Tech API                                                                                                              │
+│                                                          ENV: CSM_ORGANIZATION_ID                                                                                                                               │
+│                                                          [required]                                                                                                                                             │
+│ *  --workspace-id                            w-XXXXXXXX  A workspace id for the Cosmo Tech API                                                                                                                  │
+│                                                          ENV: CSM_WORKSPACE_ID                                                                                                                                  │
+│                                                          [required]                                                                                                                                             │
+│ *  --runner-id                               r-XXXXXXXX  A runner id for the Cosmo Tech API                                                                                                                     │
+│                                                          ENV: CSM_RUNNER_ID                                                                                                                                     │
+│                                                          [required]                                                                                                                                             │
+│    --table-prefix                            PREFIX      Prefix to add to the table name                                                                                                                        │
+│ *  --postgres-host                           TEXT        PostgreSQL host URI                                                                                                                                    │
+│                                                          ENV: POSTGRES_HOST_URI                                                                                                                                 │
+│                                                          [required]                                                                                                                                             │
+│    --postgres-port                           INTEGER     PostgreSQL database port                                                                                                                               │
+│                                                          ENV: POSTGRES_HOST_PORT                                                                                                                                │
+│ *  --postgres-db                             TEXT        PostgreSQL database name                                                                                                                               │
+│                                                          ENV: POSTGRES_DB_NAME                                                                                                                                  │
+│                                                          [required]                                                                                                                                             │
+│ *  --postgres-schema                         TEXT        PostgreSQL schema name                                                                                                                                 │
+│                                                          ENV: POSTGRES_DB_SCHEMA                                                                                                                                │
+│                                                          [required]                                                                                                                                             │
+│ *  --postgres-user                           TEXT        PostgreSQL connection user name                                                                                                                        │
+│                                                          ENV: POSTGRES_USER_NAME                                                                                                                                │
+│                                                          [required]                                                                                                                                             │
+│ *  --postgres-password                       TEXT        PostgreSQL connection password                                                                                                                         │
+│                                                          ENV: POSTGRES_USER_PASSWORD                                                                                                                            │
+│                                                          [required]                                                                                                                                             │
+│    --encode-password/--no-encode-password                csm_data.commands.store.postgres_send_runner_metadata.parameters.encode_password                                                                       │
+│                                                          ENV: CSM_PSQL_FORCE_PASSWORD_ENCODING                                                                                                                  │
+│                                                          DEFAULT: encode-password                                                                                                                               │
+│    --help                                                Show this message and exit.                                                                                                                            │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 

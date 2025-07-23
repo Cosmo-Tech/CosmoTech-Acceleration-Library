@@ -1658,41 +1658,35 @@
 <p class="admonition-title">Help command</p>
 <div class="highlight"><pre><span></span><code>&gt; csm-data api rds-load-csv --help
 
- Usage: csm-data api rds-load-csv [OPTIONS]                                     
+ Usage: csm-data api rds-load-csv [OPTIONS]                                                                                                                                                                        
 
- Load data from a runner&#39;s RDS database into a CSV file.                        
- Executes a SQL query against the runner&#39;s RDS database and saves the results   
- to a CSV file. By default, it will list all tables in the public schema if no  
- specific query is provided.                                                    
+ Load data from a runner&#39;s RDS database into a CSV file.                                                                                                                                                           
+ Executes a SQL query against the runner&#39;s RDS database and saves the results to a CSV file. By default, it will list all tables in the public schema if no specific query is provided.                            
 
-╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ *  --target-folder      PATH        The folder where the csv will be written │
-│                                     ENV: CSM_DATASET_ABSOLUTE_PATH           │
-│                                     [required]                               │
-│ *  --organization-id    o-XXXXXXXX  An organization id for the Cosmo Tech    │
-│                                     API                                      │
-│                                     ENV: CSM_ORGANIZATION_ID                 │
-│                                     [required]                               │
-│ *  --workspace-id       w-XXXXXXXX  A workspace id for the Cosmo Tech API    │
-│                                     ENV: CSM_WORKSPACE_ID                    │
-│                                     [required]                               │
-│ *  --runner-id          r-XXXXXXXX  A runner id for the Cosmo Tech API       │
-│                                     ENV: CSM_RUNNER_ID                       │
-│                                     [required]                               │
-│ *  --run-id             run-XXXXXX  A run id for the Cosmo Tech API          │
-│                                     ENV: CSM_RUN_ID                          │
-│                                     [required]                               │
-│ *  --file-name          NAME        A file name to write the query results   │
-│                                     DEFAULT: results                         │
-│                                     [required]                               │
-│    --query              SQL_QUERY   SQL query to execute (defaults to        │
-│                                     listing all tables in public schema)     │
-│                                     DEFAULT: SELECT table_name FROM          │
-│                                     information_schema.tables WHERE          │
-│                                     table_schema=&#39;public&#39;                    │
-│    --web-help                       Open the web documentation               │
-│    --help                           Show this message and exit.              │
-╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ OPTIONS ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *  --target-folder      PATH        The folder where the csv will be written                                                                                                                                    │
+│                                     ENV: CSM_DATASET_ABSOLUTE_PATH                                                                                                                                              │
+│                                     [required]                                                                                                                                                                  │
+│ *  --organization-id    o-XXXXXXXX  An organization id for the Cosmo Tech API                                                                                                                                   │
+│                                     ENV: CSM_ORGANIZATION_ID                                                                                                                                                    │
+│                                     [required]                                                                                                                                                                  │
+│ *  --workspace-id       w-XXXXXXXX  A workspace id for the Cosmo Tech API                                                                                                                                       │
+│                                     ENV: CSM_WORKSPACE_ID                                                                                                                                                       │
+│                                     [required]                                                                                                                                                                  │
+│ *  --runner-id          r-XXXXXXXX  A runner id for the Cosmo Tech API                                                                                                                                          │
+│                                     ENV: CSM_RUNNER_ID                                                                                                                                                          │
+│                                     [required]                                                                                                                                                                  │
+│ *  --run-id             run-XXXXXX  A run id for the Cosmo Tech API                                                                                                                                             │
+│                                     ENV: CSM_RUN_ID                                                                                                                                                             │
+│                                     [required]                                                                                                                                                                  │
+│ *  --file-name          NAME        A file name to write the query results                                                                                                                                      │
+│                                     DEFAULT: results                                                                                                                                                            │
+│                                     [required]                                                                                                                                                                  │
+│    --query              SQL_QUERY   SQL query to execute (defaults to listing all tables in public schema)                                                                                                      │
+│                                     DEFAULT: SELECT table_name FROM information_schema.tables WHERE table_schema=&#39;public&#39;                                                                                       │
+│    --web-help                       Open the web documentation                                                                                                                                                  │
+│    --help                           Show this message and exit.                                                                                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
 
