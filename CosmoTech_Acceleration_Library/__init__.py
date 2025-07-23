@@ -1,4 +1,4 @@
 # Copyright (C) - 2023 - 2025 - Cosmo Tech
 # Licensed under the MIT license.
 
-__version__ = '0.10.0'
+__version__ = '0.10.1'
