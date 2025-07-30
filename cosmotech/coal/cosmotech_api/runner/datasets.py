@@ -25,6 +25,7 @@ from cosmotech.coal.cosmotech_api.dataset import (
     download_legacy_twingraph_dataset,
     download_file_dataset,
 )
+from cosmotech.coal.cosmotech_api.dataset.download import file
 from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 
@@ -50,6 +51,70 @@ def get_dataset_ids_from_runner(runner_data) -> List[str]:
 
 
 def download_dataset(
+    organization_id: str,
+    workspace_id: str,
+    dataset_id: str,
+    read_files: bool = True,
+) -> Dict[str, Any]:
+    """
+        retro-compatibility to cosmo-api v4
+    """
+    from cosmotech.coal.utils.semver import semver_of
+
+    csm_version = semver_of("cosmotech_api")
+    if csm_version.major >= 5:
+        download_dataset_v5(organization_id, workspace_id, dataset_id, read_files)
+    else:
+        download_dataset_v4(organization_id, workspace_id, dataset_id, read_files)
+
+
+def download_dataset_v5(
+    organization_id: str,
+    workspace_id: str,
+    dataset_id: str,
+    read_files: bool = True,
+) -> Dict[str, Any]:
+    """
+    Download a single dataset by ID.
+
+    Args:
+        organization_id: Organization ID
+        workspace_id: Workspace ID
+        dataset_id: Dataset ID
+        read_files: Whether to read file contents
+
+    Returns:
+        Dataset information dictionary
+    """
+
+    # Get dataset information
+    with get_api_client()[0] as api_client:
+        dataset_api_instance = DatasetApi(api_client)
+        dataset = dataset_api_instance.get_dataset(organization_id=organization_id,
+                                                   workspace_id=workspace_id,
+                                                   dataset_id=dataset_id)
+
+        tmp_dataset_dir = tempfile.mkdtemp()
+        tmp_dataset_dir_path = Path(tmp_dataset_dir)
+        for part in dataset.parts:
+            part_file_path = tmp_dataset_dir_path / part.source_name
+            data_part = dataset_api_instance.download_dataset_part(organization_id, workspace_id, dataset_id, part.id)
+            with open(part_file_path, "wb") as binary_file:
+                binary_file.write(data_part)
+
+            if read_files:
+                content = file.read_file(part_file_path)
+
+        return {
+            "type": "twincache",
+            "content": content,
+            "name": dataset.name,
+            "folder_path": str(part_file_path),
+            "dataset_id": dataset_id,
+        }
+
+
+def download_dataset_v4(
     organization_id: str,
     workspace_id: str,
     dataset_id: str,

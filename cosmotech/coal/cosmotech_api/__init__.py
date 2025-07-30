@@ -16,12 +16,15 @@ from cosmotech.coal.cosmotech_api.parameters import (
     write_parameters,
 )
 
-# Re-export functions from the twin_data_layer module
-from cosmotech.coal.cosmotech_api.twin_data_layer import (
-    get_dataset_id_from_runner,
-    send_files_to_tdl,
-    load_files_from_tdl,
-)
+from cosmotech.coal.utils.semver import semver_of
+csm_version = semver_of('cosmotech_api')
+if csm_version.major < 5:
+    # Re-export functions from the twin_data_layer module
+    from cosmotech.coal.cosmotech_api.twin_data_layer import (
+        get_dataset_id_from_runner,
+        send_files_to_tdl,
+        load_files_from_tdl,
+    )
 
 # Re-export functions from the run_data module
 from cosmotech.coal.cosmotech_api.run_data import (

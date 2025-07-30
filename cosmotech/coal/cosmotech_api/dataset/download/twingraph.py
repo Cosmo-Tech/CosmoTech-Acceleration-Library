@@ -8,14 +8,9 @@
 import time
 import tempfile
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Union, Tuple
+from typing import Dict, Any, Optional, Union, Tuple
 
-from cosmotech_api import (
-    DatasetApi,
-    DatasetTwinGraphQuery,
-    TwinGraphQuery,
-    TwingraphApi,
-)
+import cosmotech_api
 
 from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
@@ -47,12 +42,12 @@ def download_twingraph_dataset(
     )
 
     with get_api_client()[0] as api_client:
-        dataset_api = DatasetApi(api_client)
+        dataset_api = cosmotech_api.DatasetApi(api_client)
 
         # Query nodes
         nodes_start = time.time()
         LOGGER.debug(T("coal.services.dataset.twingraph_querying_nodes").format(dataset_id=dataset_id))
-        nodes_query = DatasetTwinGraphQuery(query="MATCH(n) RETURN n")
+        nodes_query = cosmotech_api.DatasetTwinGraphQuery(query="MATCH(n) RETURN n")
 
         nodes = dataset_api.twingraph_query(
             organization_id=organization_id,
@@ -67,7 +62,7 @@ def download_twingraph_dataset(
         # Query edges
         edges_start = time.time()
         LOGGER.debug(T("coal.services.dataset.twingraph_querying_edges").format(dataset_id=dataset_id))
-        edges_query = DatasetTwinGraphQuery(query="MATCH(n)-[r]->(m) RETURN n as src, r as rel, m as dest")
+        edges_query = cosmotech_api.DatasetTwinGraphQuery(query="MATCH(n)-[r]->(m) RETURN n as src, r as rel, m as dest")
 
         edges = dataset_api.twingraph_query(
             organization_id=organization_id,
@@ -129,12 +124,12 @@ def download_legacy_twingraph_dataset(
     )
 
     with get_api_client()[0] as api_client:
-        api_instance = TwingraphApi(api_client)
+        api_instance = cosmotech_api.TwingraphApi(api_client)
 
         # Query nodes
         nodes_start = time.time()
         LOGGER.debug(T("coal.services.dataset.legacy_twingraph_querying_nodes").format(cache_name=cache_name))
-        _query_nodes = TwinGraphQuery(query="MATCH(n) RETURN n")
+        _query_nodes = cosmotech_api.TwinGraphQuery(query="MATCH(n) RETURN n")
 
         nodes = api_instance.query(
             organization_id=organization_id,
@@ -149,7 +144,7 @@ def download_legacy_twingraph_dataset(
         # Query relationships
         rel_start = time.time()
         LOGGER.debug(T("coal.services.dataset.legacy_twingraph_querying_relations").format(cache_name=cache_name))
-        _query_rel = TwinGraphQuery(query="MATCH(n)-[r]->(m) RETURN n as src, r as rel, m as dest")
+        _query_rel = cosmotech_api.TwinGraphQuery(query="MATCH(n)-[r]->(m) RETURN n as src, r as rel, m as dest")
 
         rel = api_instance.query(
             organization_id=organization_id,

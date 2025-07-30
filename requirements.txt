@@ -10,7 +10,8 @@ tenacity~=8.3.0
 python-keycloak~=4.7.3
 
 # Cosmotech specific requirements
-cosmotech-api~=3.2
+cosmotech-api>=3.2
+
 
 # Commands requirements
 boto3~=1.35.19

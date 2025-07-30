@@ -94,14 +94,14 @@ def download_runner_data(
 
             result["datasets"] = datasets
 
-            # Process datasets
+            # List datasets set as parameter
             datasets_parameters_ids = {
                 param.value: param.parameter_id
                 for param in runner_data.parameters_values
                 if param.var_type == "%DATASETID%" and param.value
             }
 
-            # Save datasets to parameter folders
+            # Save parameter datasets to parameter folders
             for dataset_id, dataset_info in datasets.items():
                 # If dataset is referenced by a parameter, save to parameter folder
                 if dataset_id in datasets_parameters_ids:
