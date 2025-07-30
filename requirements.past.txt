@@ -1,0 +1,1 @@
+cosmotech-api~=3.2

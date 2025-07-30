@@ -12,14 +12,135 @@ import os
 import tempfile
 import time
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Union, Tuple
+from typing import Dict, Any, Optional, Union, Tuple
 
 from cosmotech_api import WorkspaceApi
 from openpyxl import load_workbook
 
+from cosmotech.coal.utils.decorator import timed
 from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
 from cosmotech.coal.cosmotech_api.connection import get_api_client
+
+
+def process_xls(target_file) -> Dict[str, Any]:
+    content = {}
+
+    LOGGER.debug(T("coal.services.dataset.processing_excel").format(file_name=target_file))
+    wb = load_workbook(target_file, data_only=True)
+
+    for sheet_name in wb.sheetnames:
+        sheet = wb[sheet_name]
+        content[sheet_name] = list()
+        headers = next(sheet.iter_rows(max_row=1, values_only=True))
+
+        row_count = 0
+        for r in sheet.iter_rows(min_row=2, values_only=True):
+            row = {k: v for k, v in zip(headers, r)}
+            new_row = dict()
+
+            for key, value in row.items():
+                try:
+                    converted_value = json.load(io.StringIO(value))
+                except (json.decoder.JSONDecodeError, TypeError):
+                    converted_value = value
+
+                if converted_value is not None:
+                    new_row[key] = converted_value
+
+            if new_row:
+                content[sheet_name].append(new_row)
+                row_count += 1
+
+        LOGGER.debug(
+            T("coal.services.dataset.sheet_processed").format(sheet_name=sheet_name, rows=row_count)
+        )
+    return content
+
+
+def process_csv(target_file) -> Dict[str, Any]:
+    content = {}
+
+    LOGGER.debug(T("coal.services.dataset.processing_csv").format(file_name=target_file))
+    with open(target_file, "r") as file:
+        current_filename = os.path.basename(target_file)[: -len(".csv")]
+        content[current_filename] = list()
+
+        row_count = 0
+        for csv_row in csv.DictReader(file):
+            csv_row: dict
+            new_row = dict()
+
+            for key, value in csv_row.items():
+                try:
+                    # Try to convert any json row to dict object
+                    converted_value = json.load(io.StringIO(value))
+                except json.decoder.JSONDecodeError:
+                    converted_value = value
+
+                if converted_value == "":
+                    converted_value = None
+
+                if converted_value is not None:
+                    new_row[key] = converted_value
+
+            content[current_filename].append(new_row)
+            row_count += 1
+
+        LOGGER.debug(
+            T("coal.services.dataset.csv_processed").format(file_name=current_filename, rows=row_count)
+        )
+    return content
+
+
+def process_json(target_file) -> Dict[str, Any]:
+    content = {}
+    LOGGER.debug(T("coal.services.dataset.processing_json").format(file_name=target_file))
+    with open(target_file, "r") as _file:
+        current_filename = os.path.basename(target_file)
+        content[current_filename] = json.load(_file)
+
+        if isinstance(content[current_filename], dict):
+            item_count = len(content[current_filename])
+        elif isinstance(content[current_filename], list):
+            item_count = len(content[current_filename])
+        else:
+            item_count = 1
+
+        LOGGER.debug(
+            T("coal.services.dataset.json_processed").format(file_name=current_filename, items=item_count)
+        )
+    return content
+
+
+def process_txt(target_file) -> Dict[str, Any]:
+    content = {}
+    LOGGER.debug(T("coal.services.dataset.processing_text").format(file_name=target_file))
+    with open(target_file, "r") as _file:
+        current_filename = os.path.basename(target_file)
+        content[current_filename] = "\n".join(line for line in _file)
+
+        line_count = content[current_filename].count("\n") + 1
+        LOGGER.debug(
+            T("coal.services.dataset.text_processed").format(file_name=current_filename, lines=line_count)
+        )
+    return content
+
+
+def read_file(file_name, file):
+    @timed(f"process{file_name}", debug=True)
+    def timed_read_file(file_name, file):
+        content = {}
+        if ".xls" in file_name:
+            content.update(process_xls(file))
+        elif ".csv" in file_name:
+            content.update(process_csv(file))
+        elif ".json" in file_name:
+            content.update(process_json(file))
+        else:
+            content.update(process_txt(file))
+        return content
+    return timed_read_file(file_name, file)
 
 
 def download_file_dataset(
@@ -105,109 +226,8 @@ def download_file_dataset(
                 )
             )
 
-            if not read_files:
-                continue
-
-            # Process file based on type
-            process_start = time.time()
-
-            if ".xls" in _file_name:
-                LOGGER.debug(T("coal.services.dataset.processing_excel").format(file_name=target_file))
-                wb = load_workbook(target_file, data_only=True)
-
-                for sheet_name in wb.sheetnames:
-                    sheet = wb[sheet_name]
-                    content[sheet_name] = list()
-                    headers = next(sheet.iter_rows(max_row=1, values_only=True))
-
-                    def item(_row: tuple) -> dict:
-                        return {k: v for k, v in zip(headers, _row)}
-
-                    row_count = 0
-                    for r in sheet.iter_rows(min_row=2, values_only=True):
-                        row = item(r)
-                        new_row = dict()
-
-                        for key, value in row.items():
-                            try:
-                                converted_value = json.load(io.StringIO(value))
-                            except (json.decoder.JSONDecodeError, TypeError):
-                                converted_value = value
-
-                            if converted_value is not None:
-                                new_row[key] = converted_value
-
-                        if new_row:
-                            content[sheet_name].append(new_row)
-                            row_count += 1
-
-                    LOGGER.debug(
-                        T("coal.services.dataset.sheet_processed").format(sheet_name=sheet_name, rows=row_count)
-                    )
-
-            elif ".csv" in _file_name:
-                LOGGER.debug(T("coal.services.dataset.processing_csv").format(file_name=target_file))
-                with open(target_file, "r") as file:
-                    current_filename = os.path.basename(target_file)[: -len(".csv")]
-                    content[current_filename] = list()
-
-                    row_count = 0
-                    for csv_row in csv.DictReader(file):
-                        csv_row: dict
-                        new_row = dict()
-
-                        for key, value in csv_row.items():
-                            try:
-                                # Try to convert any json row to dict object
-                                converted_value = json.load(io.StringIO(value))
-                            except json.decoder.JSONDecodeError:
-                                converted_value = value
-
-                            if converted_value == "":
-                                converted_value = None
-
-                            if converted_value is not None:
-                                new_row[key] = converted_value
-
-                        content[current_filename].append(new_row)
-                        row_count += 1
-
-                    LOGGER.debug(
-                        T("coal.services.dataset.csv_processed").format(file_name=current_filename, rows=row_count)
-                    )
-
-            elif ".json" in _file_name:
-                LOGGER.debug(T("coal.services.dataset.processing_json").format(file_name=target_file))
-                with open(target_file, "r") as _file:
-                    current_filename = os.path.basename(target_file)
-                    content[current_filename] = json.load(_file)
-
-                    if isinstance(content[current_filename], dict):
-                        item_count = len(content[current_filename])
-                    elif isinstance(content[current_filename], list):
-                        item_count = len(content[current_filename])
-                    else:
-                        item_count = 1
-
-                    LOGGER.debug(
-                        T("coal.services.dataset.json_processed").format(file_name=current_filename, items=item_count)
-                    )
-
-            else:
-                LOGGER.debug(T("coal.services.dataset.processing_text").format(file_name=target_file))
-                with open(target_file, "r") as _file:
-                    current_filename = os.path.basename(target_file)
-                    content[current_filename] = "\n".join(line for line in _file)
-
-                    line_count = content[current_filename].count("\n") + 1
-                    LOGGER.debug(
-                        T("coal.services.dataset.text_processed").format(file_name=current_filename, lines=line_count)
-                    )
-
-            process_time = time.time() - process_start
-            LOGGER.debug(
-                T("coal.common.timing.operation_completed").format(operation=f"process {_file_name}", time=process_time)
-            )
+            if read_files:
+                content.update(read_file(_file_name, target_file))
 
     elapsed_time = time.time() - start_time
     LOGGER.info(T("coal.common.timing.operation_completed").format(operation="File download", time=elapsed_time))
