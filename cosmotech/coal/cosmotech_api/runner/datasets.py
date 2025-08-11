@@ -110,7 +110,7 @@ def download_dataset_v5(
             "type": "csm_dataset",
             "content": content,
             "name": dataset.name,
-            "folder_path": str(part_file_path),
+            "folder_path": tmp_dataset_dir,
             "dataset_id": dataset_id,
         }
 
