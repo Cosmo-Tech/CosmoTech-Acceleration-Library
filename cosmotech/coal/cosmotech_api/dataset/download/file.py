@@ -118,7 +118,7 @@ def process_txt(target_file) -> Dict[str, Any]:
     LOGGER.debug(T("coal.services.dataset.processing_text").format(file_name=target_file))
     with open(target_file, "r") as _file:
         current_filename = os.path.basename(target_file)
-        content[current_filename] = "\n".join(line for line in _file)
+        content[current_filename] = "".join(line for line in _file)
 
         line_count = content[current_filename].count("\n") + 1
         LOGGER.debug(
@@ -128,7 +128,7 @@ def process_txt(target_file) -> Dict[str, Any]:
 
 
 def read_file(file_name, file):
-    @timed(f"process{file_name}", debug=True)
+    @timed(f"process {file_name}", debug=True)
     def timed_read_file(file_name, file):
         content = {}
         if ".xls" in file_name:
