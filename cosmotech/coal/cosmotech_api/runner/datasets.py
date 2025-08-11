@@ -63,9 +63,9 @@ def download_dataset(
 
     csm_version = semver_of("cosmotech_api")
     if csm_version.major >= 5:
-        download_dataset_v5(organization_id, workspace_id, dataset_id, read_files)
+        return download_dataset_v5(organization_id, workspace_id, dataset_id, read_files)
     else:
-        download_dataset_v4(organization_id, workspace_id, dataset_id, read_files)
+        return download_dataset_v4(organization_id, workspace_id, dataset_id, read_files)
 
 
 def download_dataset_v5(
@@ -94,6 +94,7 @@ def download_dataset_v5(
                                                    workspace_id=workspace_id,
                                                    dataset_id=dataset_id)
 
+        content = dict()
         tmp_dataset_dir = tempfile.mkdtemp()
         tmp_dataset_dir_path = Path(tmp_dataset_dir)
         for part in dataset.parts:
@@ -103,10 +104,10 @@ def download_dataset_v5(
                 binary_file.write(data_part)
 
             if read_files:
-                content = file.read_file(part_file_path)
+                content.update(file.read_file(part.source_name, part_file_path))
 
         return {
-            "type": "twincache",
+            "type": "csm_dataset",
             "content": content,
             "name": dataset.name,
             "folder_path": str(part_file_path),
