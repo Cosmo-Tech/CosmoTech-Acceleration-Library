@@ -11,12 +11,13 @@ def timed(operation, debug=False):
         @wraps(func)
         def wrapper(*args, **kwargs):
             process_start = time.time()
-            func(*args, **kwargs)
+            r = func(*args, **kwargs)
             process_time = time.time() - process_start
             msg = T("coal.common.timing.operation_completed").format(operation=operation, time=process_time)
             if debug:
                 LOGGER.debug(msg)
             else:
                 LOGGER.info(msg)
+            return r
         return wrapper
     return decorator
