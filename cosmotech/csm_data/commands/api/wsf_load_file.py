@@ -8,9 +8,6 @@ import pathlib
 
 from cosmotech.csm_data.utils.click import click
 from cosmotech.csm_data.utils.decorators import web_help, translate_help
-from cosmotech.coal.cosmotech_api.connection import get_api_client
-from cosmotech.coal.cosmotech_api.workspace import download_workspace_file
-from cosmotech.coal.cosmotech_api.workspace import list_workspace_files
 from cosmotech.orchestrator.utils.translate import T
 
 
@@ -53,6 +50,11 @@ from cosmotech.orchestrator.utils.translate import T
 @web_help("csm-data/api/wsf-load-file")
 @translate_help("csm_data.commands.api.wsf_load_file.description")
 def wsf_load_file(organization_id, workspace_id, workspace_path: str, target_folder: str):
+
+    from cosmotech.coal.cosmotech_api.connection import get_api_client
+    from cosmotech.coal.cosmotech_api.workspace import download_workspace_file
+    from cosmotech.coal.cosmotech_api.workspace import list_workspace_files
+
     with get_api_client()[0] as api_client:
         target_list = list_workspace_files(api_client, organization_id, workspace_id, workspace_path)
 

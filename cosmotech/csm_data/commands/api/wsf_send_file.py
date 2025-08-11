@@ -7,8 +7,6 @@
 
 from cosmotech.csm_data.utils.click import click
 from cosmotech.csm_data.utils.decorators import web_help, translate_help
-from cosmotech.coal.cosmotech_api.connection import get_api_client
-from cosmotech.coal.cosmotech_api.workspace import upload_workspace_file
 from cosmotech.orchestrator.utils.translate import T
 
 
@@ -57,6 +55,10 @@ from cosmotech.orchestrator.utils.translate import T
 @web_help("csm-data/api/wsf-send-file")
 @translate_help("csm_data.commands.api.wsf_send_file.description")
 def wsf_send_file(organization_id, workspace_id, file_path, workspace_path: str, overwrite: bool):
+
+    from cosmotech.coal.cosmotech_api.connection import get_api_client
+    from cosmotech.coal.cosmotech_api.workspace import upload_workspace_file
+
     with get_api_client()[0] as api_client:
         upload_workspace_file(
             api_client,

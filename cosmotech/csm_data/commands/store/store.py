@@ -17,7 +17,6 @@ from cosmotech.csm_data.commands.store.load_from_singlestore import (
 from cosmotech.csm_data.commands.store.reset import reset
 from cosmotech.csm_data.utils.click import click
 from cosmotech.csm_data.utils.decorators import web_help, translate_help
-from cosmotech.orchestrator.utils.translate import T
 
 
 @click.group()
