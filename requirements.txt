@@ -23,9 +23,9 @@ cosmotech-run-orchestrator~=2.0.0
 
 # Data store requirements
 pyarrow~=20.0.0
-adbc-driver-manager~=1.1.0
-adbc-driver-sqlite~=1.1.0
-adbc-driver-postgresql~=1.1.0
+adbc-driver-manager~=1.7.0
+adbc-driver-sqlite~=1.7.0
+adbc-driver-postgresql~=1.7.0
 
 # CLI requirements
 click~=8.1.7
