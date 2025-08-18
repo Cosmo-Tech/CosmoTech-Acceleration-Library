@@ -5,19 +5,13 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import multiprocessing
-import tempfile
-from pathlib import Path
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 
 import pytest
-from azure.identity import DefaultAzureCredential
 
 from cosmotech.coal.cosmotech_api.runner.datasets import (
-    download_dataset,
     download_datasets_parallel,
     download_datasets_sequential,
-    download_datasets,
     dataset_to_file,
 )
 
@@ -106,14 +100,12 @@ class TestDatasetsCoverage:
             workspace_id=workspace_id,
             dataset_id="dataset-1",
             read_files=True,
-            credentials=None,
         )
         mock_download_dataset.assert_any_call(
             organization_id=organization_id,
             workspace_id=workspace_id,
             dataset_id="dataset-2",
             read_files=True,
-            credentials=None,
         )
 
     @patch("tempfile.mkdtemp")

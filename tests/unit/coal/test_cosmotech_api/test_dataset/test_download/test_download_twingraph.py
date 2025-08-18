@@ -11,14 +11,21 @@ from unittest.mock import MagicMock, patch, call
 
 import pytest
 import cosmotech_api
-from cosmotech_api import DatasetApi, TwingraphApi
+from cosmotech_api import DatasetApi
+from cosmotech.coal.utils.semver import semver_of
+if semver_of('cosmotech_api').major < 5:
+    from cosmotech_api import TwingraphApi
+    from cosmotech.coal.cosmotech_api.dataset.download.twingraph import (
+        download_twingraph_dataset,
+        download_legacy_twingraph_dataset,
+    )
 
-from cosmotech.coal.cosmotech_api.dataset.download.twingraph import (
-    download_twingraph_dataset,
-    download_legacy_twingraph_dataset,
+skip_under_v5 = pytest.mark.skipif(
+    semver_of('cosmotech_api').major >= 5, reason='not supported under version 5'
 )
 
 
+@skip_under_v5
 class TestTwingraphFunctions:
     """Tests for top-level functions in the twingraph module."""
 

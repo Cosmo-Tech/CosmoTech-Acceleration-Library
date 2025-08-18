@@ -5,16 +5,7 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import os
-import pathlib
-import shutil
-import tempfile
-from unittest.mock import MagicMock, patch, call
-
-import pytest
-from azure.identity import DefaultAzureCredential
-from cosmotech_api import RunnerApi, ScenarioApi
-from cosmotech_api.exceptions import ApiException
+from unittest.mock import MagicMock, patch
 
 from cosmotech.coal.cosmotech_api.runner.download import download_runner_data
 
@@ -22,8 +13,6 @@ from cosmotech.coal.cosmotech_api.runner.download import download_runner_data
 class TestDownloadEdgeCases:
     """Tests for edge cases in the download module."""
 
-    @patch("cosmotech.coal.cosmotech_api.runner.download.get_api_client")
-    @patch("cosmotech.coal.cosmotech_api.runner.download.DefaultAzureCredential")
     @patch("cosmotech.coal.cosmotech_api.runner.download.get_runner_data")
     @patch("cosmotech.coal.cosmotech_api.runner.download.format_parameters_list")
     @patch("cosmotech.coal.cosmotech_api.runner.download.write_parameters")
@@ -36,8 +25,6 @@ class TestDownloadEdgeCases:
         mock_write_parameters,
         mock_format_parameters,
         mock_get_runner_data,
-        mock_default_credential,
-        mock_get_api_client,
     ):
         """Test the download_runner_data function with Azure credentials."""
         # Arrange
@@ -45,15 +32,6 @@ class TestDownloadEdgeCases:
         workspace_id = "ws-123"
         runner_id = "runner-123"
         parameter_folder = "/tmp/params"
-
-        # Mock API client with Azure Entra Connection
-        mock_api_client = MagicMock()
-        mock_api_client.__enter__.return_value = mock_api_client
-        mock_get_api_client.return_value = (mock_api_client, "Azure Entra Connection")
-
-        # Mock DefaultAzureCredential
-        mock_credential = MagicMock(spec=DefaultAzureCredential)
-        mock_default_credential.return_value = mock_credential
 
         # Mock runner data
         mock_runner_data = MagicMock()
@@ -88,12 +66,10 @@ class TestDownloadEdgeCases:
         )
 
         # Assert
-        mock_default_credential.assert_called_once()
         mock_download_datasets.assert_called_once_with(
             organization_id=organization_id,
             workspace_id=workspace_id,
             dataset_ids=["dataset-1"],
             read_files=False,
             parallel=True,
-            credentials=mock_credential,
         )

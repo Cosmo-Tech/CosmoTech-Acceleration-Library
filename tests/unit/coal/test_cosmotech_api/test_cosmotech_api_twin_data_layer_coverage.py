@@ -17,18 +17,28 @@ from unittest.mock import MagicMock, patch, mock_open, call
 
 import pytest
 import requests
-from cosmotech_api import DatasetApi, RunnerApi, DatasetTwinGraphQuery
 
-from cosmotech.coal.cosmotech_api.twin_data_layer import (
-    get_dataset_id_from_runner,
-    send_files_to_tdl,
-    load_files_from_tdl,
-    _process_csv_file,
-    _write_files,
-    BATCH_SIZE_LIMIT,
+from cosmotech.coal.utils.semver import semver_of
+from cosmotech_api import DatasetApi, RunnerApi
+
+if semver_of('cosmotech_api').major < 5:
+    from cosmotech_api import DatasetTwinGraphQuery
+
+    from cosmotech.coal.cosmotech_api.twin_data_layer import (
+        get_dataset_id_from_runner,
+        send_files_to_tdl,
+        load_files_from_tdl,
+        _process_csv_file,
+        _write_files,
+        BATCH_SIZE_LIMIT,
+    )
+
+skip_under_v5 = pytest.mark.skipif(
+    semver_of('cosmotech_api').major >= 5, reason='not supported under version 5'
 )
 
 
+@skip_under_v5
 class TestTwinDataLayerCoverage:
     """Additional tests for the twin_data_layer module to improve coverage."""
 

@@ -14,18 +14,26 @@ from unittest.mock import MagicMock, patch, mock_open, call
 
 import pytest
 import requests
-from cosmotech_api import DatasetApi, RunnerApi, DatasetTwinGraphQuery
 
+from cosmotech.coal.utils.semver import semver_of
+from cosmotech_api import DatasetApi, RunnerApi
+if semver_of('cosmotech_api').major < 5:
+    from cosmotech_api import DatasetTwinGraphQuery
+    from cosmotech.coal.cosmotech_api.twin_data_layer import (
+        send_files_to_tdl,
+        load_files_from_tdl,
+        _process_csv_file,
+        _get_node_properties,
+        _get_relationship_properties,
+    )
 from cosmotech.orchestrator.utils.translate import T
-from cosmotech.coal.cosmotech_api.twin_data_layer import (
-    send_files_to_tdl,
-    load_files_from_tdl,
-    _process_csv_file,
-    _get_node_properties,
-    _get_relationship_properties,
+
+skip_under_v5 = pytest.mark.skipif(
+    semver_of('cosmotech_api').major >= 5, reason='not supported under version 5'
 )
 
 
+@skip_under_v5
 class TestTwinDataLayerEdgeCases:
     """Tests for edge cases in the twin_data_layer module."""
 

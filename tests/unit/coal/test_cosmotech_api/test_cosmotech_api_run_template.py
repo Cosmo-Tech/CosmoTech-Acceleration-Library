@@ -7,8 +7,7 @@
 
 import pathlib
 import pytest
-from unittest.mock import MagicMock, patch, mock_open
-from io import BytesIO
+from unittest.mock import MagicMock, patch
 from zipfile import BadZipfile, ZipFile
 
 import cosmotech_api
@@ -17,8 +16,12 @@ from cosmotech_api.api.workspace_api import Workspace, WorkspaceApi
 from cosmotech_api.exceptions import ServiceException
 
 from cosmotech.coal.cosmotech_api.run_template import load_run_template_handlers
+from cosmotech.coal.utils.semver import semver_of
 
 
+@pytest.mark.skipif(
+    semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
+)
 class TestRunTemplateFunctions:
     """Tests for top-level functions in the run_template module."""
 
@@ -66,7 +69,6 @@ class TestRunTemplateFunctions:
             patch("cosmotech.coal.cosmotech_api.run_template.WorkspaceApi", return_value=mock_workspace_api),
             patch("cosmotech.coal.cosmotech_api.run_template.SolutionApi", return_value=mock_solution_api),
             patch("cosmotech.coal.cosmotech_api.run_template.ZipFile", return_value=mock_zipfile_context),
-            patch("cosmotech.coal.cosmotech_api.run_template.BytesIO") as mock_bytesio,
             patch("cosmotech.coal.cosmotech_api.run_template.pathlib.Path") as mock_path_class,
         ):
             mock_path_class.return_value = mock_path
