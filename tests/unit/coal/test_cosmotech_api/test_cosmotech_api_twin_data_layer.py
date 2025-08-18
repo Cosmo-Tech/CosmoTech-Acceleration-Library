@@ -14,21 +14,29 @@ from unittest.mock import MagicMock, patch, mock_open
 
 import pytest
 import requests
-from cosmotech_api import DatasetApi, RunnerApi, DatasetTwinGraphQuery
 
-from cosmotech.coal.cosmotech_api.twin_data_layer import (
-    get_dataset_id_from_runner,
-    send_files_to_tdl,
-    load_files_from_tdl,
-    CSVSourceFile,
-    _process_csv_file,
-    _get_node_properties,
-    _get_relationship_properties,
-    _execute_queries,
-    _write_files,
-    ID_COLUMN,
-    SOURCE_COLUMN,
-    TARGET_COLUMN,
+from cosmotech.coal.utils.semver import semver_of
+from cosmotech_api import DatasetApi, RunnerApi
+if semver_of('cosmotech_api').major < 5:
+    from cosmotech_api import DatasetTwinGraphQuery
+
+    from cosmotech.coal.cosmotech_api.twin_data_layer import (
+        get_dataset_id_from_runner,
+        send_files_to_tdl,
+        load_files_from_tdl,
+        CSVSourceFile,
+        _process_csv_file,
+        _get_node_properties,
+        _get_relationship_properties,
+        _execute_queries,
+        _write_files,
+        ID_COLUMN,
+        SOURCE_COLUMN,
+        TARGET_COLUMN,
+    )
+
+pytestmark = pytest.mark.skipif(
+    semver_of('cosmotech_api').major >= 5, reason='not supported under version 5'
 )
 
 

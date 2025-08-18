@@ -5,12 +5,10 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import multiprocessing
 from pathlib import Path
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 
 import pytest
-from azure.identity import DefaultAzureCredential
 from cosmotech_api import DatasetApi
 
 from cosmotech.coal.cosmotech_api.runner.datasets import (
@@ -19,12 +17,16 @@ from cosmotech.coal.cosmotech_api.runner.datasets import (
     download_datasets,
     dataset_to_file,
 )
+from cosmotech.coal.utils.semver import semver_of
 
 
 class TestDatasetsAdditional:
     """Additional tests for the datasets module to improve coverage."""
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
+    @pytest.mark.skipif(
+        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
+    )
     def test_download_dataset_no_connector(self, mock_get_api_client):
         """Test the download_dataset function with a dataset that has no connector."""
         # Arrange
@@ -189,12 +191,11 @@ class TestDatasetsAdditional:
         mock_process.side_effect = [mock_process_instance1, mock_process_instance2]
 
         # Act
-        with patch("cosmotech.coal.cosmotech_api.runner.datasets.download_dataset") as mock_download_dataset:
-            download_datasets_parallel(
-                organization_id=organization_id,
-                workspace_id=workspace_id,
-                dataset_ids=dataset_ids,
-            )
+        download_datasets_parallel(
+            organization_id=organization_id,
+            workspace_id=workspace_id,
+            dataset_ids=dataset_ids,
+        )
 
         # Assert
         # Check that start and join were called for each process

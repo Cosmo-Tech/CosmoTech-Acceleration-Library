@@ -5,11 +5,9 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import multiprocessing
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
-from azure.identity import DefaultAzureCredential
 
 from cosmotech.coal.cosmotech_api.runner.datasets import download_dataset_process
 
@@ -25,7 +23,6 @@ class TestRunnerDatasetsProcess:
         organization_id = "org-123"
         workspace_id = "ws-123"
         read_files = True
-        credentials = None
 
         # Create shared dictionaries
         return_dict = {}
@@ -43,7 +40,7 @@ class TestRunnerDatasetsProcess:
 
         # Act
         download_dataset_process(
-            dataset_id, organization_id, workspace_id, read_files, credentials, return_dict, error_dict
+            dataset_id, organization_id, workspace_id, read_files, return_dict, error_dict
         )
 
         # Assert
@@ -52,48 +49,6 @@ class TestRunnerDatasetsProcess:
             workspace_id=workspace_id,
             dataset_id=dataset_id,
             read_files=read_files,
-            credentials=credentials,
-        )
-        assert dataset_id in return_dict
-        assert return_dict[dataset_id] == mock_dataset_info
-        assert len(error_dict) == 0
-
-    @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_dataset")
-    def test_download_dataset_process_with_credentials(self, mock_download_dataset):
-        """Test the download_dataset_process function with credentials."""
-        # Arrange
-        dataset_id = "dataset-123"
-        organization_id = "org-123"
-        workspace_id = "ws-123"
-        read_files = True
-        credentials = MagicMock(spec=DefaultAzureCredential)
-
-        # Create shared dictionaries
-        return_dict = {}
-        error_dict = {}
-
-        # Mock download_dataset to return dataset info
-        mock_dataset_info = {
-            "type": "adt",
-            "content": {"nodes": [], "edges": []},
-            "name": "test-dataset",
-            "folder_path": "/tmp/dataset",
-            "dataset_id": dataset_id,
-        }
-        mock_download_dataset.return_value = mock_dataset_info
-
-        # Act
-        download_dataset_process(
-            dataset_id, organization_id, workspace_id, read_files, credentials, return_dict, error_dict
-        )
-
-        # Assert
-        mock_download_dataset.assert_called_once_with(
-            organization_id=organization_id,
-            workspace_id=workspace_id,
-            dataset_id=dataset_id,
-            read_files=read_files,
-            credentials=credentials,
         )
         assert dataset_id in return_dict
         assert return_dict[dataset_id] == mock_dataset_info
@@ -107,7 +62,6 @@ class TestRunnerDatasetsProcess:
         organization_id = "org-123"
         workspace_id = "ws-123"
         read_files = True
-        credentials = None
 
         # Create shared dictionaries
         return_dict = {}
@@ -120,7 +74,7 @@ class TestRunnerDatasetsProcess:
         # Act & Assert
         with pytest.raises(ValueError) as excinfo:
             download_dataset_process(
-                dataset_id, organization_id, workspace_id, read_files, credentials, return_dict, error_dict
+                dataset_id, organization_id, workspace_id, read_files, return_dict, error_dict
             )
 
         # Verify the error was re-raised

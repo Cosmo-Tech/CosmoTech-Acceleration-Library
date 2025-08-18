@@ -5,13 +5,10 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import multiprocessing
-import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch, call
-
 import pytest
-from azure.identity import DefaultAzureCredential
+
 from cosmotech_api import DatasetApi
 
 from cosmotech.coal.cosmotech_api.runner.datasets import (
@@ -22,6 +19,7 @@ from cosmotech.coal.cosmotech_api.runner.datasets import (
     download_datasets,
     dataset_to_file,
 )
+from cosmotech.coal.utils.semver import semver_of
 
 
 class TestDatasetsFunctions:
@@ -60,6 +58,9 @@ class TestDatasetsFunctions:
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_adt_dataset")
+    @pytest.mark.skipif(
+        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
+    )
     def test_download_dataset_adt(self, mock_download_adt, mock_get_api_client):
         """Test the download_dataset function with ADT dataset."""
         # Arrange
@@ -106,6 +107,9 @@ class TestDatasetsFunctions:
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_legacy_twingraph_dataset")
+    @pytest.mark.skipif(
+        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
+    )
     def test_download_dataset_legacy_twingraph(self, mock_download_legacy, mock_get_api_client):
         """Test the download_dataset function with legacy twin graph dataset."""
         # Arrange
@@ -153,6 +157,9 @@ class TestDatasetsFunctions:
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_file_dataset")
+    @pytest.mark.skipif(
+        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
+    )
     def test_download_dataset_storage(self, mock_download_file, mock_get_api_client):
         """Test the download_dataset function with storage dataset."""
         # Arrange
@@ -205,6 +212,9 @@ class TestDatasetsFunctions:
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_file_dataset")
+    @pytest.mark.skipif(
+        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
+    )
     def test_download_dataset_workspace_file(self, mock_download_file, mock_get_api_client):
         """Test the download_dataset function with workspace file dataset."""
         # Arrange
@@ -260,6 +270,9 @@ class TestDatasetsFunctions:
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_twingraph_dataset")
+    @pytest.mark.skipif(
+        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
+    )
     def test_download_dataset_twingraph(self, mock_download_twingraph, mock_get_api_client):
         """Test the download_dataset function with twin graph dataset."""
         # Arrange
@@ -309,6 +322,9 @@ class TestDatasetsFunctions:
     @patch("multiprocessing.Process")
     @patch("multiprocessing.Manager")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
+    @pytest.mark.skipif(
+        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
+    )
     def test_download_datasets_parallel(self, mock_get_api_client, mock_manager, mock_process, mock_download_dataset):
         """Test the download_datasets_parallel function."""
         # Arrange
@@ -392,14 +408,12 @@ class TestDatasetsFunctions:
                     workspace_id=workspace_id,
                     dataset_id="dataset-1",
                     read_files=True,
-                    credentials=None,
                 ),
                 call(
                     organization_id=organization_id,
                     workspace_id=workspace_id,
                     dataset_id="dataset-2",
                     read_files=True,
-                    credentials=None,
                 ),
             ]
         )
@@ -436,7 +450,6 @@ class TestDatasetsFunctions:
             workspace_id=workspace_id,
             dataset_ids=dataset_ids,
             read_files=True,
-            credentials=None,
         )
         mock_sequential.assert_not_called()
         assert len(result) == 2
@@ -472,7 +485,6 @@ class TestDatasetsFunctions:
             workspace_id=workspace_id,
             dataset_ids=dataset_ids,
             read_files=True,
-            credentials=None,
         )
         mock_parallel.assert_not_called()
         assert len(result) == 2
@@ -507,7 +519,6 @@ class TestDatasetsFunctions:
             workspace_id=workspace_id,
             dataset_ids=dataset_ids,
             read_files=True,
-            credentials=None,
         )
         mock_parallel.assert_not_called()
         assert len(result) == 1
