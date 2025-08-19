@@ -6,14 +6,18 @@
 # specifically authorized by written means by Cosmo Tech.
 
 import pytest
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 from pathlib import Path
 
 from cosmotech_api import DatasetApi
 
 from cosmotech.coal.cosmotech_api.dataset.download.common import download_dataset_by_id
+from cosmotech.coal.utils.semver import semver_of
 
 
+@pytest.mark.skipif(
+    semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
+)
 class TestCommonFunctions:
     """Tests for top-level functions in the common module."""
 
