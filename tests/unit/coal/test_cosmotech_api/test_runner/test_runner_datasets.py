@@ -318,13 +318,64 @@ class TestDatasetsFunctions:
             assert result["folder_path"] == str(mock_folder_path)
             assert result["dataset_id"] == dataset_id
 
+    @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
+    @pytest.mark.skipif(
+        semver_of('cosmotech_api').major < 5, reason='supported only in version 5'
+    )
+    def test_download_dataset_v5(self, mock_get_api_client):
+        """Test the download_dataset function with twin graph dataset."""
+        # Arrange
+        organization_id = "org-123"
+        workspace_id = "ws-123"
+        dataset_id = "dataset-123"
+        dataset_part_id = "part-123"
+
+        # Mock API client
+        mock_api_client = MagicMock()
+        mock_api_client.__enter__.return_value = mock_api_client
+        mock_get_api_client.return_value = (mock_api_client, "API Key")
+
+        # Mock dataset API
+        mock_dataset_api = MagicMock(spec=DatasetApi)
+        mock_dataset_part = MagicMock()
+        mock_dataset_part.id = dataset_part_id
+        mock_dataset_part.source_name = "test-dataset-part.txt"
+        mock_dataset = MagicMock()
+        mock_dataset.id = dataset_id
+        mock_dataset.name = "test-dataset"
+        mock_dataset.parts = [mock_dataset_part]
+        mock_dataset_api.get_dataset.return_value = mock_dataset
+
+        # Mock file part download
+        mock_content = b'test file part content in byte format'
+        mock_dataset_api.download_dataset_part.return_value = mock_content
+
+        with patch("cosmotech.coal.cosmotech_api.runner.datasets.DatasetApi", return_value=mock_dataset_api):
+            # Act
+            result = download_dataset(
+                organization_id=organization_id,
+                workspace_id=workspace_id,
+                dataset_id=dataset_id,
+            )
+
+            # Assert
+            mock_dataset_api.get_dataset.assert_called_once_with(
+                organization_id=organization_id, workspace_id=workspace_id, dataset_id=dataset_id
+            )
+            mock_dataset_api.download_dataset_part.assert_called_once_with(
+                    organization_id,
+                    workspace_id,
+                    dataset_id,
+                    dataset_part_id)
+            assert result["type"] == "csm_dataset"
+            assert result["content"] == {'test-dataset-part.txt': 'test file part content in byte format'}
+            assert result["name"] == "test-dataset"
+            assert result["dataset_id"] == "dataset-123"
+
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_dataset")
     @patch("multiprocessing.Process")
     @patch("multiprocessing.Manager")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
-    @pytest.mark.skipif(
-        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
-    )
     def test_download_datasets_parallel(self, mock_get_api_client, mock_manager, mock_process, mock_download_dataset):
         """Test the download_datasets_parallel function."""
         # Arrange

@@ -6,7 +6,7 @@
 # specifically authorized by written means by Cosmo Tech.
 
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, ANY
 
 import pytest
 from azure.identity import DefaultAzureCredential
@@ -64,13 +64,12 @@ class TestDatasetsEdgeCases:
                 organization_id=organization_id,
                 workspace_id=workspace_id,
                 dataset_id=dataset_id,
-                credentials=mock_credential,  # Provide credentials
             )
 
             # Assert
             mock_download_adt.assert_called_once_with(
                 adt_address="https://adt.example.com",
-                credentials=mock_credential,
+                credentials=ANY,
             )
             assert result["type"] == "adt"
 
