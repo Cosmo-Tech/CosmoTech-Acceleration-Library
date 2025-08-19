@@ -19,5 +19,7 @@ def timed(operation, debug=False):
             else:
                 LOGGER.info(msg)
             return r
+
         return wrapper
+
     return decorator

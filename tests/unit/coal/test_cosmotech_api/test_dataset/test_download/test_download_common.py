@@ -15,9 +15,7 @@ from cosmotech.coal.cosmotech_api.dataset.download.common import download_datase
 from cosmotech.coal.utils.semver import semver_of
 
 
-@pytest.mark.skipif(
-    semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
-)
+@pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported in version 5")
 class TestCommonFunctions:
     """Tests for top-level functions in the common module."""
 

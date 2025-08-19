@@ -27,9 +27,7 @@ class TestDatasetsEdgeCases:
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_adt_dataset")
-    @pytest.mark.skipif(
-        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
-    )
+    @pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported in version 5")
     def test_download_dataset_adt_pass_credentials(self, mock_download_adt, mock_get_api_client):
         """Test that download_dataset passes credentials to download_adt_dataset."""
         # Arrange

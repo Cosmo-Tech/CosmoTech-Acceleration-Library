@@ -57,7 +57,7 @@ def download_dataset(
     read_files: bool = True,
 ) -> Dict[str, Any]:
     """
-        retro-compatibility to cosmo-api v4
+    retro-compatibility to cosmo-api v4
     """
     from cosmotech.coal.utils.semver import semver_of
 
@@ -90,9 +90,9 @@ def download_dataset_v5(
     # Get dataset information
     with get_api_client()[0] as api_client:
         dataset_api_instance = DatasetApi(api_client)
-        dataset = dataset_api_instance.get_dataset(organization_id=organization_id,
-                                                   workspace_id=workspace_id,
-                                                   dataset_id=dataset_id)
+        dataset = dataset_api_instance.get_dataset(
+            organization_id=organization_id, workspace_id=workspace_id, dataset_id=dataset_id
+        )
 
         content = dict()
         tmp_dataset_dir = tempfile.mkdtemp()
@@ -223,9 +223,7 @@ def download_dataset_v4(
             }
 
 
-def download_dataset_process(
-    _dataset_id, organization_id, workspace_id, read_files, _return_dict, _error_dict
-):
+def download_dataset_process(_dataset_id, organization_id, workspace_id, read_files, _return_dict, _error_dict):
     """
     Process function for downloading a dataset in a separate process.
 

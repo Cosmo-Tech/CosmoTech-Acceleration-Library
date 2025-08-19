@@ -52,9 +52,7 @@ def process_xls(target_file) -> Dict[str, Any]:
                 content[sheet_name].append(new_row)
                 row_count += 1
 
-        LOGGER.debug(
-            T("coal.services.dataset.sheet_processed").format(sheet_name=sheet_name, rows=row_count)
-        )
+        LOGGER.debug(T("coal.services.dataset.sheet_processed").format(sheet_name=sheet_name, rows=row_count))
     return content
 
 
@@ -87,9 +85,7 @@ def process_csv(target_file) -> Dict[str, Any]:
             content[current_filename].append(new_row)
             row_count += 1
 
-        LOGGER.debug(
-            T("coal.services.dataset.csv_processed").format(file_name=current_filename, rows=row_count)
-        )
+        LOGGER.debug(T("coal.services.dataset.csv_processed").format(file_name=current_filename, rows=row_count))
     return content
 
 
@@ -107,9 +103,7 @@ def process_json(target_file) -> Dict[str, Any]:
         else:
             item_count = 1
 
-        LOGGER.debug(
-            T("coal.services.dataset.json_processed").format(file_name=current_filename, items=item_count)
-        )
+        LOGGER.debug(T("coal.services.dataset.json_processed").format(file_name=current_filename, items=item_count))
     return content
 
 
@@ -121,9 +115,7 @@ def process_txt(target_file) -> Dict[str, Any]:
         content[current_filename] = "".join(line for line in _file)
 
         line_count = content[current_filename].count("\n") + 1
-        LOGGER.debug(
-            T("coal.services.dataset.text_processed").format(file_name=current_filename, lines=line_count)
-        )
+        LOGGER.debug(T("coal.services.dataset.text_processed").format(file_name=current_filename, lines=line_count))
     return content
 
 
@@ -140,6 +132,7 @@ def read_file(file_name, file):
         else:
             content.update(process_txt(file))
         return content
+
     return timed_read_file(file_name, file)
 
 

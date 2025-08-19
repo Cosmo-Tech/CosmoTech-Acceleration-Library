@@ -17,7 +17,8 @@ import requests
 
 from cosmotech.coal.utils.semver import semver_of
 from cosmotech_api import DatasetApi, RunnerApi
-if semver_of('cosmotech_api').major < 5:
+
+if semver_of("cosmotech_api").major < 5:
     from cosmotech_api import DatasetTwinGraphQuery
     from cosmotech.coal.cosmotech_api.twin_data_layer import (
         send_files_to_tdl,
@@ -29,9 +30,7 @@ if semver_of('cosmotech_api').major < 5:
 
 from cosmotech.orchestrator.utils.translate import T
 
-skip_under_v5 = pytest.mark.skipif(
-    semver_of('cosmotech_api').major >= 5, reason='not supported under version 5'
-)
+skip_under_v5 = pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported under version 5")
 
 
 @skip_under_v5

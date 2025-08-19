@@ -19,9 +19,7 @@ from cosmotech.coal.cosmotech_api.run_template import load_run_template_handlers
 from cosmotech.coal.utils.semver import semver_of
 
 
-@pytest.mark.skipif(
-    semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
-)
+@pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported in version 5")
 class TestRunTemplateFunctions:
     """Tests for top-level functions in the run_template module."""
 
