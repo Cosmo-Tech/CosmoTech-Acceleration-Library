@@ -58,9 +58,7 @@ class TestDatasetsFunctions:
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_adt_dataset")
-    @pytest.mark.skipif(
-        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
-    )
+    @pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported in version 5")
     def test_download_dataset_adt(self, mock_download_adt, mock_get_api_client):
         """Test the download_dataset function with ADT dataset."""
         # Arrange
@@ -107,9 +105,7 @@ class TestDatasetsFunctions:
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_legacy_twingraph_dataset")
-    @pytest.mark.skipif(
-        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
-    )
+    @pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported in version 5")
     def test_download_dataset_legacy_twingraph(self, mock_download_legacy, mock_get_api_client):
         """Test the download_dataset function with legacy twin graph dataset."""
         # Arrange
@@ -157,9 +153,7 @@ class TestDatasetsFunctions:
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_file_dataset")
-    @pytest.mark.skipif(
-        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
-    )
+    @pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported in version 5")
     def test_download_dataset_storage(self, mock_download_file, mock_get_api_client):
         """Test the download_dataset function with storage dataset."""
         # Arrange
@@ -212,9 +206,7 @@ class TestDatasetsFunctions:
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_file_dataset")
-    @pytest.mark.skipif(
-        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
-    )
+    @pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported in version 5")
     def test_download_dataset_workspace_file(self, mock_download_file, mock_get_api_client):
         """Test the download_dataset function with workspace file dataset."""
         # Arrange
@@ -270,9 +262,7 @@ class TestDatasetsFunctions:
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_twingraph_dataset")
-    @pytest.mark.skipif(
-        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
-    )
+    @pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported in version 5")
     def test_download_dataset_twingraph(self, mock_download_twingraph, mock_get_api_client):
         """Test the download_dataset function with twin graph dataset."""
         # Arrange
@@ -319,9 +309,7 @@ class TestDatasetsFunctions:
             assert result["dataset_id"] == dataset_id
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
-    @pytest.mark.skipif(
-        semver_of('cosmotech_api').major < 5, reason='supported only in version 5'
-    )
+    @pytest.mark.skipif(semver_of("cosmotech_api").major < 5, reason="supported only in version 5")
     def test_download_dataset_v5(self, mock_get_api_client):
         """Test the download_dataset function with twin graph dataset."""
         # Arrange
@@ -347,7 +335,7 @@ class TestDatasetsFunctions:
         mock_dataset_api.get_dataset.return_value = mock_dataset
 
         # Mock file part download
-        mock_content = b'test file part content in byte format'
+        mock_content = b"test file part content in byte format"
         mock_dataset_api.download_dataset_part.return_value = mock_content
 
         with patch("cosmotech.coal.cosmotech_api.runner.datasets.DatasetApi", return_value=mock_dataset_api):
@@ -363,12 +351,10 @@ class TestDatasetsFunctions:
                 organization_id=organization_id, workspace_id=workspace_id, dataset_id=dataset_id
             )
             mock_dataset_api.download_dataset_part.assert_called_once_with(
-                    organization_id,
-                    workspace_id,
-                    dataset_id,
-                    dataset_part_id)
+                organization_id, workspace_id, dataset_id, dataset_part_id
+            )
             assert result["type"] == "csm_dataset"
-            assert result["content"] == {'test-dataset-part.txt': 'test file part content in byte format'}
+            assert result["content"] == {"test-dataset-part.txt": "test file part content in byte format"}
             assert result["name"] == "test-dataset"
             assert result["dataset_id"] == "dataset-123"
 

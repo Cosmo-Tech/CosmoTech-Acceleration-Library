@@ -17,7 +17,8 @@ import requests
 
 from cosmotech.coal.utils.semver import semver_of
 from cosmotech_api import DatasetApi, RunnerApi
-if semver_of('cosmotech_api').major < 5:
+
+if semver_of("cosmotech_api").major < 5:
     from cosmotech_api import DatasetTwinGraphQuery
 
     from cosmotech.coal.cosmotech_api.twin_data_layer import (
@@ -35,9 +36,7 @@ if semver_of('cosmotech_api').major < 5:
         TARGET_COLUMN,
     )
 
-pytestmark = pytest.mark.skipif(
-    semver_of('cosmotech_api').major >= 5, reason='not supported under version 5'
-)
+pytestmark = pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported under version 5")
 
 
 class TestCSVSourceFile:

@@ -62,7 +62,9 @@ def download_twingraph_dataset(
         # Query edges
         edges_start = time.time()
         LOGGER.debug(T("coal.services.dataset.twingraph_querying_edges").format(dataset_id=dataset_id))
-        edges_query = cosmotech_api.DatasetTwinGraphQuery(query="MATCH(n)-[r]->(m) RETURN n as src, r as rel, m as dest")
+        edges_query = cosmotech_api.DatasetTwinGraphQuery(
+            query="MATCH(n)-[r]->(m) RETURN n as src, r as rel, m as dest"
+        )
 
         edges = dataset_api.twingraph_query(
             organization_id=organization_id,

@@ -39,9 +39,7 @@ class TestRunnerDatasetsProcess:
         mock_download_dataset.return_value = mock_dataset_info
 
         # Act
-        download_dataset_process(
-            dataset_id, organization_id, workspace_id, read_files, return_dict, error_dict
-        )
+        download_dataset_process(dataset_id, organization_id, workspace_id, read_files, return_dict, error_dict)
 
         # Assert
         mock_download_dataset.assert_called_once_with(
@@ -73,9 +71,7 @@ class TestRunnerDatasetsProcess:
 
         # Act & Assert
         with pytest.raises(ValueError) as excinfo:
-            download_dataset_process(
-                dataset_id, organization_id, workspace_id, read_files, return_dict, error_dict
-            )
+            download_dataset_process(dataset_id, organization_id, workspace_id, read_files, return_dict, error_dict)
 
         # Verify the error was re-raised
         assert str(excinfo.value) == "Failed to download dataset"

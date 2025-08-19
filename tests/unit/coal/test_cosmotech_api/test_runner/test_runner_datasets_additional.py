@@ -24,9 +24,7 @@ class TestDatasetsAdditional:
     """Additional tests for the datasets module to improve coverage."""
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
-    @pytest.mark.skipif(
-        semver_of('cosmotech_api').major >= 5, reason='not supported in version 5'
-    )
+    @pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported in version 5")
     def test_download_dataset_no_connector(self, mock_get_api_client):
         """Test the download_dataset function with a dataset that has no connector."""
         # Arrange
