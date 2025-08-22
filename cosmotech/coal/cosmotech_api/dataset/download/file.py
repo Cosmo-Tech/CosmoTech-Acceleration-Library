@@ -112,7 +112,7 @@ def process_txt(target_file) -> Dict[str, Any]:
     LOGGER.debug(T("coal.services.dataset.processing_text").format(file_name=target_file))
     with open(target_file, "r") as _file:
         current_filename = os.path.basename(target_file)
-        content[current_filename] = "".join(line for line in _file)
+        content[current_filename] = _file.read()
 
         line_count = content[current_filename].count("\n") + 1
         LOGGER.debug(T("coal.services.dataset.text_processed").format(file_name=current_filename, lines=line_count))
