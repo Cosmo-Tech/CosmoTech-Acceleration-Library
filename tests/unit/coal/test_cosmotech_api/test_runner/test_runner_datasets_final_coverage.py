@@ -5,22 +5,11 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import multiprocessing
-import tempfile
-from pathlib import Path
-from unittest.mock import MagicMock, patch, call
-
-import pytest
-from azure.identity import DefaultAzureCredential
-from cosmotech_api import DatasetApi
+from unittest.mock import MagicMock, patch
 
 from cosmotech.coal.cosmotech_api.runner.datasets import (
-    download_dataset,
-    download_datasets_parallel,
     download_datasets_sequential,
     download_datasets,
-    dataset_to_file,
-    get_dataset_ids_from_runner,
 )
 
 
@@ -34,9 +23,6 @@ class TestRunnerDatasetsFinalCoverage:
         organization_id = "org-123"
         workspace_id = "ws-123"
         dataset_ids = ["dataset-1", "dataset-2"]
-
-        # Mock credentials
-        mock_credentials = MagicMock(spec=DefaultAzureCredential)
 
         # Mock download_dataset to return dataset info
         mock_download_dataset.side_effect = [
@@ -53,7 +39,6 @@ class TestRunnerDatasetsFinalCoverage:
                 organization_id=organization_id,
                 workspace_id=workspace_id,
                 dataset_ids=dataset_ids,
-                credentials=mock_credentials,
             )
 
         # Assert
@@ -68,7 +53,6 @@ class TestRunnerDatasetsFinalCoverage:
                 workspace_id=workspace_id,
                 dataset_id=dataset_id,
                 read_files=True,
-                credentials=mock_credentials,
             )
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_datasets_parallel")
@@ -102,7 +86,6 @@ class TestRunnerDatasetsFinalCoverage:
             workspace_id=workspace_id,
             dataset_ids=dataset_ids,
             read_files=True,
-            credentials=None,
         )
         mock_sequential.assert_not_called()
 
@@ -137,6 +120,5 @@ class TestRunnerDatasetsFinalCoverage:
             workspace_id=workspace_id,
             dataset_ids=dataset_ids,
             read_files=True,
-            credentials=None,
         )
         mock_parallel.assert_not_called()

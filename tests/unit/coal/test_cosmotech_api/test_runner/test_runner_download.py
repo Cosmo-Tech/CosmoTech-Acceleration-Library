@@ -5,24 +5,13 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import os
-import pathlib
-import shutil
-import tempfile
-from unittest.mock import MagicMock, patch, call
-
-import pytest
-from azure.identity import DefaultAzureCredential
-from cosmotech_api import RunnerApi, ScenarioApi
-from cosmotech_api.exceptions import ApiException
-
+from unittest.mock import MagicMock, patch
 from cosmotech.coal.cosmotech_api.runner.download import download_runner_data
 
 
 class TestDownloadFunctions:
     """Tests for top-level functions in the download module."""
 
-    @patch("cosmotech.coal.cosmotech_api.runner.download.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.download.get_runner_data")
     @patch("cosmotech.coal.cosmotech_api.runner.download.format_parameters_list")
     @patch("cosmotech.coal.cosmotech_api.runner.download.write_parameters")
@@ -41,7 +30,6 @@ class TestDownloadFunctions:
         mock_write_parameters,
         mock_format_parameters,
         mock_get_runner_data,
-        mock_get_api_client,
     ):
         """Test the download_runner_data function with datasets."""
         # Arrange
@@ -50,11 +38,6 @@ class TestDownloadFunctions:
         runner_id = "runner-123"
         parameter_folder = "/tmp/params"
         dataset_folder = "/tmp/datasets"
-
-        # Mock API client
-        mock_api_client = MagicMock()
-        mock_api_client.__enter__.return_value = mock_api_client
-        mock_get_api_client.return_value = (mock_api_client, "API Key")
 
         # Mock runner data
         mock_runner_data = MagicMock()
@@ -106,7 +89,6 @@ class TestDownloadFunctions:
             dataset_ids=["dataset-1", "dataset-2", "dataset-3"],
             read_files=False,
             parallel=True,
-            credentials=None,
         )
         # The dataset_to_file function is called for each dataset in the dataset_list (2) and for the dataset referenced by a parameter (1)
         assert mock_dataset_to_file.call_count == 3
@@ -117,20 +99,14 @@ class TestDownloadFunctions:
         assert result["datasets"] == mock_datasets
         assert result["parameters"] == {"param1": "dataset-3", "param2": "value1"}
 
-    @patch("cosmotech.coal.cosmotech_api.runner.download.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.download.get_runner_data")
-    def test_download_runner_data_no_parameters(self, mock_get_runner_data, mock_get_api_client):
+    def test_download_runner_data_no_parameters(self, mock_get_runner_data):
         """Test the download_runner_data function with no parameters."""
         # Arrange
         organization_id = "org-123"
         workspace_id = "ws-123"
         runner_id = "runner-123"
         parameter_folder = "/tmp/params"
-
-        # Mock API client
-        mock_api_client = MagicMock()
-        mock_api_client.__enter__.return_value = mock_api_client
-        mock_get_api_client.return_value = (mock_api_client, "API Key")
 
         # Mock runner data with no parameters
         mock_runner_data = MagicMock()
@@ -152,7 +128,6 @@ class TestDownloadFunctions:
         assert result["datasets"] == {}
         assert result["parameters"] == {}
 
-    @patch("cosmotech.coal.cosmotech_api.runner.download.get_api_client")
     @patch("cosmotech.coal.cosmotech_api.runner.download.get_runner_data")
     @patch("cosmotech.coal.cosmotech_api.runner.download.format_parameters_list")
     @patch("cosmotech.coal.cosmotech_api.runner.download.write_parameters")
@@ -161,7 +136,6 @@ class TestDownloadFunctions:
         mock_write_parameters,
         mock_format_parameters,
         mock_get_runner_data,
-        mock_get_api_client,
     ):
         """Test the download_runner_data function without datasets."""
         # Arrange
@@ -169,11 +143,6 @@ class TestDownloadFunctions:
         workspace_id = "ws-123"
         runner_id = "runner-123"
         parameter_folder = "/tmp/params"
-
-        # Mock API client
-        mock_api_client = MagicMock()
-        mock_api_client.__enter__.return_value = mock_api_client
-        mock_get_api_client.return_value = (mock_api_client, "API Key")
 
         # Mock runner data
         mock_runner_data = MagicMock()

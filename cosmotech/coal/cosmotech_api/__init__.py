@@ -17,7 +17,8 @@ from cosmotech.coal.cosmotech_api.parameters import (
 )
 
 from cosmotech.coal.utils.semver import semver_of
-csm_version = semver_of('cosmotech_api')
+
+csm_version = semver_of("cosmotech_api")
 if csm_version.major < 5:
     # Re-export functions from the twin_data_layer module
     from cosmotech.coal.cosmotech_api.twin_data_layer import (
