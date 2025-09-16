@@ -99,6 +99,7 @@ def download_dataset_v5(
         tmp_dataset_dir_path = Path(tmp_dataset_dir)
         for part in dataset.parts:
             part_file_path = tmp_dataset_dir_path / part.source_name
+            part_file_path.parent.mkdir(parents=True, exist_ok=True)
             data_part = dataset_api_instance.download_dataset_part(organization_id, workspace_id, dataset_id, part.id)
             with open(part_file_path, "wb") as binary_file:
                 binary_file.write(data_part)
