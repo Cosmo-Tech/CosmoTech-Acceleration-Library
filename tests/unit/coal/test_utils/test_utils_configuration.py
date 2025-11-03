@@ -17,7 +17,7 @@ class TestUtilsConfiguration:
 
     def test_no_config_file(self):
         c = configuration.Configuration()
-        assert type(c.configuration) is Dotdict
+        assert isinstance(c, Dotdict)
 
     def test_no_config_file_with_env_var(self):
         os.environ['LOG_LEVEL'] = 'test_value'
@@ -25,8 +25,8 @@ class TestUtilsConfiguration:
 
         # assert there no secrets section (must have been replaced
         with pytest.raises(KeyError):
-            c.configuration.secrets
-        assert c.configuration.log_level == 'test_value'
+            c.secrets
+        assert c.log_level == 'test_value'
 
     def test_config_file_with_secrets(self):
 
@@ -37,9 +37,8 @@ class TestUtilsConfiguration:
 
         # assert there no secrets section (must have been replaced
         with pytest.raises(KeyError):
-            c.configuration.secrets
-        print(c.configuration)
-        assert c.configuration.foo.alors == 'la'
+            c.secrets
+        assert c.foo.alors == 'la'
 
 
 class TestUtilsDotdict:

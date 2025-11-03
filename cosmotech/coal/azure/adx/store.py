@@ -26,7 +26,7 @@ from cosmotech.coal.azure.adx.auth import initialize_clients
 from cosmotech.coal.azure.adx.ingestion import monitor_ingestion, handle_failures
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.coal.utils.postgresql import send_pyarrow_table_to_postgresql
+from cosmotech.coal.postgresql.utils import send_pyarrow_table_to_postgresql
 
 
 def send_table_data(

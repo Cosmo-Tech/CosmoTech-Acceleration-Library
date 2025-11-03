@@ -13,11 +13,10 @@ for store operations.
 """
 
 from time import perf_counter
-import pyarrow
 
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.coal.utils.postgresql import send_pyarrow_table_to_postgresql
+from cosmotech.coal.postgresql.utils import send_pyarrow_table_to_postgresql
 from cosmotech.orchestrator.utils.translate import T
 
 
@@ -32,6 +31,7 @@ def dump_store_to_postgresql(
     table_prefix: str = "Cosmotech_",
     replace: bool = True,
     force_encode: bool = False,
+    selected_tables: list[str] = []
 ) -> None:
     """
     Dump Store data to a PostgreSQL database.
@@ -51,6 +51,8 @@ def dump_store_to_postgresql(
     _s = Store(store_location=store_folder)
 
     tables = list(_s.list_tables())
+    if selected_tables:
+        tables = [t for t in tables if t in selected_tables]
     if len(tables):
         LOGGER.info(T("coal.services.database.sending_data").format(table=f"{postgres_db}.{postgres_schema}"))
         total_rows = 0

@@ -10,10 +10,10 @@ from unittest.mock import patch
 import adbc_driver_manager
 import pyarrow as pa
 
-from cosmotech.coal.utils.postgresql import adapt_table_to_schema
-from cosmotech.coal.utils.postgresql import generate_postgresql_full_uri
-from cosmotech.coal.utils.postgresql import get_postgresql_table_schema
-from cosmotech.coal.utils.postgresql import send_pyarrow_table_to_postgresql
+from cosmotech.coal.postgresql.utils import adapt_table_to_schema
+from cosmotech.coal.postgresql.utils import generate_postgresql_full_uri
+from cosmotech.coal.postgresql.utils import get_postgresql_table_schema
+from cosmotech.coal.postgresql.utils import send_pyarrow_table_to_postgresql
 
 
 class TestPostgresqlFunctions:
@@ -249,7 +249,7 @@ class TestPostgresqlFunctions:
         assert result.column(1).null_count == 3
 
     @patch("adbc_driver_postgresql.dbapi.connect")
-    @patch("cosmotech.coal.utils.postgresql.get_postgresql_table_schema")
+    @patch("cosmotech.coal.postgresql.utils.get_postgresql_table_schema")
     def test_send_pyarrow_table_to_postgresql_new_table(self, mock_get_schema, mock_connect):
         """Test the send_pyarrow_table_to_postgresql function with a new table."""
         # Arrange
@@ -309,8 +309,8 @@ class TestPostgresqlFunctions:
         )
 
     @patch("adbc_driver_postgresql.dbapi.connect")
-    @patch("cosmotech.coal.utils.postgresql.get_postgresql_table_schema")
-    @patch("cosmotech.coal.utils.postgresql.adapt_table_to_schema")
+    @patch("cosmotech.coal.postgresql.utils.get_postgresql_table_schema")
+    @patch("cosmotech.coal.postgresql.utils.adapt_table_to_schema")
     def test_send_pyarrow_table_to_postgresql_existing_table_append(
         self, mock_adapt_schema, mock_get_schema, mock_connect
     ):
@@ -382,7 +382,7 @@ class TestPostgresqlFunctions:
         )
 
     @patch("adbc_driver_postgresql.dbapi.connect")
-    @patch("cosmotech.coal.utils.postgresql.get_postgresql_table_schema")
+    @patch("cosmotech.coal.postgresql.utils.get_postgresql_table_schema")
     def test_send_pyarrow_table_to_postgresql_existing_table_replace(self, mock_get_schema, mock_connect):
         """Test the send_pyarrow_table_to_postgresql function with an existing table in replace mode."""
         # Arrange
