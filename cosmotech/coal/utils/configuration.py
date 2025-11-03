@@ -7,25 +7,33 @@ from cosmotech.coal.utils.logger import LOGGER
 class Dotdict(dict):
     """dot.notation access to dictionary attributes"""
     def __setattr__(self, key, val):
-        dd = Dotdict(val) if type(val) is dict else val
+        dd = Dotdict(val) if isinstance(val, dict) else val
         self.__setitem__(key, dd)
 
     __getattr__ = dict.__getitem__
     __delattr__ = dict.__delitem__
 
-    def __init__(self, dct):
+    def __init__(self, dct=dict()):
+
+        def update(data):
+            if isinstance(data, dict):
+                return Dotdict(data)
+            elif isinstance(data, list):
+                return list(update(d for d in data))
+            return data
+
         for k, v in dct.items():
-            self[k] = Dotdict(v) if type(v) is dict else v
+            self[k] = update(v)
 
     def merge(self, d):
         for k, v in d.items():
-            if type(v) is Dotdict and k in self:
+            if isinstance(v, Dotdict) and k in self:
                 self[k].merge(v)
             else:
                 self[k] = v
 
 
-class Configuration():
+class Configuration(Dotdict):
 
     # HARD CODED ENVVAR CONVERSION
     CONVERSION_DICT = {"secrets": {
@@ -90,23 +98,25 @@ class Configuration():
     }}
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         if CONFIG_PATH := os.environ.get('CONFIG_FILE_PATH', default=None):
             with open(CONFIG_PATH, 'rb') as f:
-                self.configuration = Dotdict(tomllib.load(f))
+                super().__init__(tomllib.load(f))
         else:
             LOGGER.info('no configuration file set. setting up default values')
-            self.configuration = Dotdict(self.CONVERSION_DICT)
+            super().__init__(self.CONVERSION_DICT)
 
         # convert value to env
         def env_swap_recusion(dic):
             for k, v in dic.items():
-                if type(v) is Dotdict:
-                    env_swap_recusion(v)
-                elif type(v) is str:
+                if isinstance(v, Dotdict):
+                    dic[k] = env_swap_recusion(v)
+                elif isinstance(v, list):
+                    dic[k] = list(env_swap_recusion(_v) for _v in v)
+                elif isinstance(v, str):
                     dic[k] = os.environ.get(v, v)
-        env_swap_recusion(self.configuration.secrets)
+            return dic
+        self.secrets = env_swap_recusion(self.secrets)
 
         # set secret section back to respective section
-        self.configuration.merge(self.configuration.secrets)
-        del self.configuration.secrets
+        self.merge(self.secrets)
+        del self.secrets
