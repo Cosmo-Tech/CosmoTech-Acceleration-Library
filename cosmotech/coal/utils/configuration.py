@@ -1,6 +1,7 @@
 import os
-import toml
-import configparser
+import tomllib
+
+from cosmotech.coal.utils.logger import LOGGER
 
 
 class Dotdict(dict):
@@ -19,12 +20,12 @@ class Dotdict(dict):
     def merge(self, d):
         for k, v in d.items():
             if type(v) is Dotdict and k in self:
-                v.merge(self[k])
-        self.update(self | d)
+                self[k].merge(v)
+            else:
+                self[k] = v
 
 
-class Configuration(configparser.ConfigParser):
-    CONFIG_PATH = os.environ.get('CONFIG_FILE_PATH', default=None)
+class Configuration():
 
     # HARD CODED ENVVAR CONVERSION
     CONVERSION_DICT = {"secrets": {
@@ -90,9 +91,11 @@ class Configuration(configparser.ConfigParser):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.CONFIG_PATH:
-            self.configuration = Dotdict(toml.load(self.CONFIG_PATH))
+        if CONFIG_PATH := os.environ.get('CONFIG_FILE_PATH', default=None):
+            with open(CONFIG_PATH, 'rb') as f:
+                self.configuration = Dotdict(tomllib.load(f))
         else:
+            LOGGER.info('no configuration file set. setting up default values')
             self.configuration = Dotdict(self.CONVERSION_DICT)
 
         # convert value to env
