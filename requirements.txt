@@ -35,7 +35,7 @@ tqdm~=4.67.1
 
 # Other requirements
 openpyxl~=3.1
-pandas~=2.1
+pandas~=2.3
 python-dateutil~=2.8
 rich~=13.7
 setuptools

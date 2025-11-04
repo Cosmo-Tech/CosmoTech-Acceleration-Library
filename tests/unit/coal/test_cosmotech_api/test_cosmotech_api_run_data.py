@@ -5,16 +5,26 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import json
 import os
 import tempfile
 from csv import DictReader
-from unittest.mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock
+from unittest.mock import patch
 
 import pytest
-from cosmotech_api import SendRunDataRequest, RunDataQuery
 
-from cosmotech.coal.cosmotech_api.run_data import send_csv_to_run_data, send_store_to_run_data, load_csv_from_run_data
+from cosmotech.coal.utils.semver import semver_of
+
+if semver_of("cosmotech_api").major < 5:
+    from cosmotech_api import SendRunDataRequest, RunDataQuery
+
+    from cosmotech.coal.cosmotech_api.run_data import (
+        send_csv_to_run_data,
+        send_store_to_run_data,
+        load_csv_from_run_data,
+    )
+
+pytestmark = pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported under version 5")
 
 
 class TestRunDataFunctions:

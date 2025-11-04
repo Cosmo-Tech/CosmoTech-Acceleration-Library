@@ -31,7 +31,7 @@ def dump_store_to_postgresql(
     table_prefix: str = "Cosmotech_",
     replace: bool = True,
     force_encode: bool = False,
-    selected_tables: list[str] = []
+    selected_tables: list[str] = [],
 ) -> None:
     """
     Dump Store data to a PostgreSQL database.
