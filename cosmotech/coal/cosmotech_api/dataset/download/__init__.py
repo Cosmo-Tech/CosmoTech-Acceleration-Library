@@ -11,9 +11,5 @@ Dataset download submodules.
 
 # Re-export all download functions
 from cosmotech.coal.cosmotech_api.dataset.download.adt import download_adt_dataset
-from cosmotech.coal.cosmotech_api.dataset.download.twingraph import (
-    download_twingraph_dataset,
-    download_legacy_twingraph_dataset,
-)
-from cosmotech.coal.cosmotech_api.dataset.download.file import download_file_dataset
 from cosmotech.coal.cosmotech_api.dataset.download.common import download_dataset_by_id
+from cosmotech.coal.cosmotech_api.dataset.download.file import download_file_dataset

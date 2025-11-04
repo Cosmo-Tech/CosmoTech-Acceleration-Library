@@ -5,21 +5,18 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import multiprocessing
-import tempfile
-from pathlib import Path
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 
 import pytest
 from azure.identity import DefaultAzureCredential
 from cosmotech_api import DatasetApi
 
 from cosmotech.coal.cosmotech_api.runner.datasets import (
+    dataset_to_file,
     download_dataset,
+    download_datasets,
     download_datasets_parallel,
     download_datasets_sequential,
-    download_datasets,
-    dataset_to_file,
     get_dataset_ids_from_runner,
 )
 
@@ -101,26 +98,3 @@ class TestRunnerDatasetsAdditionalCoverage:
         assert "dataset-2" in result
         assert "dataset-3" in result
         assert "not-a-dataset" not in result
-
-    @patch("cosmotech.coal.cosmotech_api.runner.datasets.convert_graph_dataset_to_files")
-    def test_dataset_to_file_with_graph_dataset_and_target_folder(self, mock_convert):
-        """Test the dataset_to_file function with a graph dataset and target folder."""
-        # Arrange
-        dataset_info = {
-            "type": "twincache",  # Graph dataset
-            "content": {"nodes": [], "edges": []},
-            "name": "test-dataset",
-            "folder_path": "/tmp/original",
-            "dataset_id": "dataset-123",
-        }
-        target_folder = "/tmp/target"
-
-        # Mock the conversion function
-        mock_convert.return_value = Path("/tmp/target/converted")
-
-        # Act
-        result = dataset_to_file(dataset_info, target_folder)
-
-        # Assert
-        assert result == "/tmp/target/converted"
-        mock_convert.assert_called_once_with(dataset_info["content"], target_folder)

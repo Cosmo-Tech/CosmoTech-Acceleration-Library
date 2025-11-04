@@ -7,14 +7,14 @@
 
 import csv
 import json
-import os
 import tempfile
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
+
 from cosmotech.coal.cosmotech_api.dataset.utils import sheet_to_header
+from cosmotech.coal.utils.logger import LOGGER
 
 
 def convert_dataset_to_files(dataset_info: Dict[str, Any], target_folder: Optional[Union[str, Path]] = None) -> Path:
@@ -42,7 +42,7 @@ def convert_dataset_to_files(dataset_info: Dict[str, Any], target_folder: Option
         target_folder.mkdir(parents=True, exist_ok=True)
         LOGGER.debug(T("coal.services.dataset.using_folder").format(folder=target_folder))
 
-    if dataset_type in ["adt", "twincache"]:
+    if dataset_type in ["adt"]:
         return convert_graph_dataset_to_files(content, target_folder)
     else:
         return convert_file_dataset_to_files(content, target_folder, dataset_type)

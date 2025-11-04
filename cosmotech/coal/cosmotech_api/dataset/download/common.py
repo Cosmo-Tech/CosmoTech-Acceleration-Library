@@ -7,23 +7,19 @@
 
 import time
 from pathlib import Path
-from typing import Dict, Any, Optional, Union, Tuple
+from typing import Any, Dict, Optional, Tuple, Union
 
+from cosmotech.orchestrator.utils.translate import T
 from cosmotech_api import DatasetApi
 
-from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 
 # Import specific download functions
 # These imports are defined here to avoid circular imports
 # The functions are imported directly from their modules
 from cosmotech.coal.cosmotech_api.dataset.download.adt import download_adt_dataset
-from cosmotech.coal.cosmotech_api.dataset.download.twingraph import (
-    download_twingraph_dataset,
-    download_legacy_twingraph_dataset,
-)
 from cosmotech.coal.cosmotech_api.dataset.download.file import download_file_dataset
+from cosmotech.coal.utils.logger import LOGGER
 
 
 def download_dataset_by_id(
@@ -73,7 +69,6 @@ def download_dataset_by_id(
 
         is_adt = "AZURE_DIGITAL_TWINS_URL" in parameters
         is_storage = "AZURE_STORAGE_CONTAINER_BLOB_PREFIX" in parameters
-        is_legacy_twin_cache = "TWIN_CACHE_NAME" in parameters and dataset.twingraph_id is None
         is_in_workspace_file = (
             False if dataset.tags is None else "workspaceFile" in dataset.tags or "dataset_part" in dataset.tags
         )
@@ -87,16 +82,6 @@ def download_dataset_by_id(
                 target_folder=target_folder,
             )
             dataset_type = "adt"
-
-        elif is_legacy_twin_cache:
-            LOGGER.debug(T("coal.services.dataset.dataset_type_detected").format(type="Legacy TwinGraph"))
-            twin_cache_name = parameters["TWIN_CACHE_NAME"]
-            content, folder = download_legacy_twingraph_dataset(
-                organization_id=organization_id,
-                cache_name=twin_cache_name,
-                target_folder=target_folder,
-            )
-            dataset_type = "twincache"
 
         elif is_storage or is_in_workspace_file:
             if is_storage:
@@ -113,15 +98,6 @@ def download_dataset_by_id(
                 target_folder=target_folder,
             )
             dataset_type = _file_name.split(".")[-1]
-
-        else:
-            LOGGER.debug(T("coal.services.dataset.dataset_type_detected").format(type="TwinGraph"))
-            content, folder = download_twingraph_dataset(
-                organization_id=organization_id,
-                dataset_id=dataset_id,
-                target_folder=target_folder,
-            )
-            dataset_type = "twincache"
 
         download_time = time.time() - download_start
         LOGGER.debug(

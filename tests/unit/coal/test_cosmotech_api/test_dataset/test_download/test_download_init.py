@@ -16,15 +16,11 @@ class TestDownloadInit:
         # Import the module
         from cosmotech.coal.cosmotech_api.dataset.download import (
             download_adt_dataset,
-            download_twingraph_dataset,
-            download_legacy_twingraph_dataset,
-            download_file_dataset,
             download_dataset_by_id,
+            download_file_dataset,
         )
 
         # Verify that the functions are imported correctly
         assert callable(download_adt_dataset)
-        assert callable(download_twingraph_dataset)
-        assert callable(download_legacy_twingraph_dataset)
         assert callable(download_file_dataset)
         assert callable(download_dataset_by_id)

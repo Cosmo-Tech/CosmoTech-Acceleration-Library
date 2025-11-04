@@ -5,71 +5,24 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from pathlib import Path
-from unittest.mock import MagicMock, patch, ANY
+from unittest.mock import MagicMock, patch
 
 import pytest
 from azure.identity import DefaultAzureCredential
 from cosmotech_api import DatasetApi
 
 from cosmotech.coal.cosmotech_api.runner.datasets import (
+    dataset_to_file,
     download_dataset,
+    download_datasets,
     download_datasets_parallel,
     download_datasets_sequential,
-    download_datasets,
-    dataset_to_file,
 )
 from cosmotech.coal.utils.semver import semver_of
 
 
 class TestDatasetsEdgeCases:
     """Tests for edge cases in the datasets module."""
-
-    @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
-    @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_adt_dataset")
-    @pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported in version 5")
-    def test_download_dataset_adt_pass_credentials(self, mock_download_adt, mock_get_api_client):
-        """Test that download_dataset passes credentials to download_adt_dataset."""
-        # Arrange
-        organization_id = "org-123"
-        workspace_id = "ws-123"
-        dataset_id = "dataset-123"
-
-        # Mock API client
-        mock_api_client = MagicMock()
-        mock_api_client.__enter__.return_value = mock_api_client
-        mock_get_api_client.return_value = (mock_api_client, "API Key")
-
-        # Mock dataset API
-        mock_dataset_api = MagicMock(spec=DatasetApi)
-        mock_dataset = MagicMock()
-        mock_dataset.name = "test-dataset"
-        mock_dataset.connector = MagicMock()
-        mock_dataset.connector.parameters_values = {"AZURE_DIGITAL_TWINS_URL": "https://adt.example.com"}
-        mock_dataset_api.find_dataset_by_id.return_value = mock_dataset
-
-        # Mock ADT download
-        mock_content = {"nodes": [], "edges": []}
-        mock_folder_path = Path("/tmp/adt")
-        mock_download_adt.return_value = (mock_content, mock_folder_path)
-
-        # Create a mock credential
-        mock_credential = MagicMock(spec=DefaultAzureCredential)
-
-        with patch("cosmotech.coal.cosmotech_api.runner.datasets.DatasetApi", return_value=mock_dataset_api):
-            # Act
-            result = download_dataset(
-                organization_id=organization_id,
-                workspace_id=workspace_id,
-                dataset_id=dataset_id,
-            )
-
-            # Assert
-            mock_download_adt.assert_called_once_with(
-                adt_address="https://adt.example.com",
-                credentials=ANY,
-            )
-            assert result["type"] == "adt"
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_dataset")
     @patch("multiprocessing.Process")

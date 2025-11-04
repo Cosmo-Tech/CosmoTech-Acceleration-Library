@@ -12,22 +12,20 @@ Dataset handling functions.
 import multiprocessing
 import tempfile
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from azure.identity import DefaultAzureCredential
+from cosmotech.orchestrator.utils.translate import T
 from cosmotech_api.api.dataset_api import DatasetApi
 
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.dataset import (
     convert_graph_dataset_to_files,
     download_adt_dataset,
-    download_twingraph_dataset,
-    download_legacy_twingraph_dataset,
     download_file_dataset,
 )
 from cosmotech.coal.cosmotech_api.dataset.download import file
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 def get_dataset_ids_from_runner(runner_data) -> List[str]:
@@ -147,7 +145,6 @@ def download_dataset_v4(
 
         is_adt = "AZURE_DIGITAL_TWINS_URL" in parameters
         is_storage = "AZURE_STORAGE_CONTAINER_BLOB_PREFIX" in parameters
-        is_legacy_twin_cache = "TWIN_CACHE_NAME" in parameters and dataset.twingraph_id is None
         is_in_workspace_file = (
             False if dataset.tags is None else "workspaceFile" in dataset.tags or "dataset_part" in dataset.tags
         )
@@ -160,19 +157,6 @@ def download_dataset_v4(
             )
             return {
                 "type": "adt",
-                "content": content,
-                "name": dataset.name,
-                "folder_path": str(folder_path),
-                "dataset_id": dataset_id,
-            }
-
-        elif is_legacy_twin_cache:
-            twin_cache_name = parameters["TWIN_CACHE_NAME"]
-            content, folder_path = download_legacy_twingraph_dataset(
-                organization_id=organization_id, cache_name=twin_cache_name
-            )
-            return {
-                "type": "twincache",
                 "content": content,
                 "name": dataset.name,
                 "folder_path": str(folder_path),
@@ -211,16 +195,6 @@ def download_dataset_v4(
                 "folder_path": str(folder_path),
                 "dataset_id": dataset_id,
                 "file_name": _file_name,
-            }
-
-        else:
-            content, folder_path = download_twingraph_dataset(organization_id=organization_id, dataset_id=dataset_id)
-            return {
-                "type": "twincache",
-                "content": content,
-                "name": dataset.name,
-                "folder_path": str(folder_path),
-                "dataset_id": dataset_id,
             }
 
 
@@ -397,7 +371,7 @@ def dataset_to_file(dataset_info: Dict[str, Any], target_folder: Optional[Union[
     dataset_type = dataset_info["type"]
     content = dataset_info["content"]
 
-    if dataset_type in ["adt", "twincache"]:
+    if dataset_type in ["adt"]:
         # Use conversion function
         if target_folder:
             target_folder = convert_graph_dataset_to_files(content, target_folder)

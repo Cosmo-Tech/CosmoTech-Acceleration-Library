@@ -12,65 +12,16 @@ import pytest
 from cosmotech_api import DatasetApi
 
 from cosmotech.coal.cosmotech_api.runner.datasets import (
-    download_dataset,
-    download_datasets_parallel,
-    download_datasets,
     dataset_to_file,
+    download_dataset,
+    download_datasets,
+    download_datasets_parallel,
 )
 from cosmotech.coal.utils.semver import semver_of
 
 
 class TestDatasetsAdditional:
     """Additional tests for the datasets module to improve coverage."""
-
-    @patch("cosmotech.coal.cosmotech_api.runner.datasets.get_api_client")
-    @pytest.mark.skipif(semver_of("cosmotech_api").major >= 5, reason="not supported in version 5")
-    def test_download_dataset_no_connector(self, mock_get_api_client):
-        """Test the download_dataset function with a dataset that has no connector."""
-        # Arrange
-        organization_id = "org-123"
-        workspace_id = "ws-123"
-        dataset_id = "dataset-123"
-
-        # Mock API client
-        mock_api_client = MagicMock()
-        mock_api_client.__enter__.return_value = mock_api_client
-        mock_get_api_client.return_value = (mock_api_client, "API Key")
-
-        # Mock dataset API
-        mock_dataset_api = MagicMock(spec=DatasetApi)
-        mock_dataset = MagicMock()
-        mock_dataset.name = "test-dataset"
-        mock_dataset.connector = None  # No connector
-        mock_dataset.tags = None
-        mock_dataset_api.find_dataset_by_id.return_value = mock_dataset
-
-        # Mock twin graph download
-        with patch("cosmotech.coal.cosmotech_api.runner.datasets.DatasetApi", return_value=mock_dataset_api):
-            with patch(
-                "cosmotech.coal.cosmotech_api.runner.datasets.download_twingraph_dataset"
-            ) as mock_download_twingraph:
-                mock_content = {"nodes": [], "edges": []}
-                mock_folder_path = "/tmp/twingraph"
-                mock_download_twingraph.return_value = (mock_content, mock_folder_path)
-
-                # Act
-                result = download_dataset(
-                    organization_id=organization_id,
-                    workspace_id=workspace_id,
-                    dataset_id=dataset_id,
-                )
-
-                # Assert
-                mock_dataset_api.find_dataset_by_id.assert_called_once_with(
-                    organization_id=organization_id, dataset_id=dataset_id
-                )
-                mock_download_twingraph.assert_called_once_with(organization_id=organization_id, dataset_id=dataset_id)
-                assert result["type"] == "twincache"
-                assert result["content"] == mock_content
-                assert result["name"] == "test-dataset"
-                assert result["folder_path"] == str(mock_folder_path)
-                assert result["dataset_id"] == dataset_id
 
     @patch("cosmotech.coal.cosmotech_api.runner.datasets.download_dataset")
     @patch("multiprocessing.Process")

@@ -5,7 +5,7 @@
 # etc. to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 import pytest
 
@@ -20,15 +20,11 @@ class TestCosmoTechApiDatasetDownload:
 
         # Verify that the module has the expected attributes
         assert hasattr(cosmotech.coal.cosmotech_api.dataset.download, "download_adt_dataset")
-        assert hasattr(cosmotech.coal.cosmotech_api.dataset.download, "download_twingraph_dataset")
-        assert hasattr(cosmotech.coal.cosmotech_api.dataset.download, "download_legacy_twingraph_dataset")
         assert hasattr(cosmotech.coal.cosmotech_api.dataset.download, "download_file_dataset")
         assert hasattr(cosmotech.coal.cosmotech_api.dataset.download, "download_dataset_by_id")
 
         # Verify that the imported functions are callable
         assert callable(cosmotech.coal.cosmotech_api.dataset.download.download_adt_dataset)
-        assert callable(cosmotech.coal.cosmotech_api.dataset.download.download_twingraph_dataset)
-        assert callable(cosmotech.coal.cosmotech_api.dataset.download.download_legacy_twingraph_dataset)
         assert callable(cosmotech.coal.cosmotech_api.dataset.download.download_file_dataset)
         assert callable(cosmotech.coal.cosmotech_api.dataset.download.download_dataset_by_id)
 
@@ -36,28 +32,14 @@ class TestCosmoTechApiDatasetDownload:
         from cosmotech.coal.cosmotech_api.dataset.download.adt import (
             download_adt_dataset as original_download_adt_dataset,
         )
-        from cosmotech.coal.cosmotech_api.dataset.download.twingraph import (
-            download_twingraph_dataset as original_download_twingraph_dataset,
-        )
-        from cosmotech.coal.cosmotech_api.dataset.download.twingraph import (
-            download_legacy_twingraph_dataset as original_download_legacy_twingraph_dataset,
+        from cosmotech.coal.cosmotech_api.dataset.download.common import (
+            download_dataset_by_id as original_download_dataset_by_id,
         )
         from cosmotech.coal.cosmotech_api.dataset.download.file import (
             download_file_dataset as original_download_file_dataset,
         )
-        from cosmotech.coal.cosmotech_api.dataset.download.common import (
-            download_dataset_by_id as original_download_dataset_by_id,
-        )
 
         assert cosmotech.coal.cosmotech_api.dataset.download.download_adt_dataset is original_download_adt_dataset
-        assert (
-            cosmotech.coal.cosmotech_api.dataset.download.download_twingraph_dataset
-            is original_download_twingraph_dataset
-        )
-        assert (
-            cosmotech.coal.cosmotech_api.dataset.download.download_legacy_twingraph_dataset
-            is original_download_legacy_twingraph_dataset
-        )
         assert cosmotech.coal.cosmotech_api.dataset.download.download_file_dataset is original_download_file_dataset
         assert cosmotech.coal.cosmotech_api.dataset.download.download_dataset_by_id is original_download_dataset_by_id
 
@@ -74,36 +56,6 @@ class TestCosmoTechApiDatasetDownload:
 
         # Assert
         mock_download_adt_dataset.assert_called_once_with("org-123", "dataset-123")
-        assert result == ("content", "path")
-
-    @patch("cosmotech.coal.cosmotech_api.dataset.download.download_twingraph_dataset")
-    def test_download_twingraph_dataset(self, mock_download_twingraph_dataset):
-        """Test that download_twingraph_dataset is correctly imported and can be called."""
-        # Arrange
-        mock_download_twingraph_dataset.return_value = ("content", "path")
-
-        # Act
-        from cosmotech.coal.cosmotech_api.dataset.download import download_twingraph_dataset
-
-        result = download_twingraph_dataset("org-123", "dataset-123")
-
-        # Assert
-        mock_download_twingraph_dataset.assert_called_once_with("org-123", "dataset-123")
-        assert result == ("content", "path")
-
-    @patch("cosmotech.coal.cosmotech_api.dataset.download.download_legacy_twingraph_dataset")
-    def test_download_legacy_twingraph_dataset(self, mock_download_legacy_twingraph_dataset):
-        """Test that download_legacy_twingraph_dataset is correctly imported and can be called."""
-        # Arrange
-        mock_download_legacy_twingraph_dataset.return_value = ("content", "path")
-
-        # Act
-        from cosmotech.coal.cosmotech_api.dataset.download import download_legacy_twingraph_dataset
-
-        result = download_legacy_twingraph_dataset("org-123", "cache-123")
-
-        # Assert
-        mock_download_legacy_twingraph_dataset.assert_called_once_with("org-123", "cache-123")
         assert result == ("content", "path")
 
     @patch("cosmotech.coal.cosmotech_api.dataset.download.download_file_dataset")
