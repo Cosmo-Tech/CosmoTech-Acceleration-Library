@@ -15,15 +15,14 @@ including downloading and extracting handlers.
 import pathlib
 from io import BytesIO
 from zipfile import BadZipfile, ZipFile
-from typing import List
 
+from cosmotech.orchestrator.utils.translate import T
 from cosmotech_api.api.solution_api import SolutionApi
 from cosmotech_api.api.workspace_api import Workspace, WorkspaceApi
 from cosmotech_api.exceptions import ServiceException
 
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 def load_run_template_handlers(

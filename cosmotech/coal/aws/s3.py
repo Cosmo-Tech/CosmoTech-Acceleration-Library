@@ -14,12 +14,12 @@ uploading, downloading, and deleting files.
 
 import pathlib
 from io import BytesIO
-from typing import Optional, Dict, Any, List, Iterator
+from typing import Optional
 
 import boto3
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 def create_s3_client(

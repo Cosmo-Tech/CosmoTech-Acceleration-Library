@@ -101,8 +101,8 @@ class Configuration(Dotdict):
     }
 
     def __init__(self, *args, **kwargs):
-        if CONFIG_PATH := os.environ.get("CONFIG_FILE_PATH", default=None):
-            with open(CONFIG_PATH, "rb") as f:
+        if config_path := os.environ.get("CONFIG_FILE_PATH", default=None):
+            with open(config_path, "rb") as f:
                 super().__init__(tomllib.load(f))
         else:
             LOGGER.info("no configuration file set. setting up default values")

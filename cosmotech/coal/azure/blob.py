@@ -12,19 +12,16 @@ This module provides functions for interacting with Azure Blob Storage,
 including uploading data from the Store.
 """
 
-import pathlib
 from io import BytesIO
-from typing import List, Optional
-
-from azure.identity import ClientSecretCredential
-from azure.storage.blob import BlobServiceClient
 
 import pyarrow.csv as pc
 import pyarrow.parquet as pq
+from azure.identity import ClientSecretCredential
+from azure.storage.blob import BlobServiceClient
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 VALID_TYPES = (
     "sqlite",

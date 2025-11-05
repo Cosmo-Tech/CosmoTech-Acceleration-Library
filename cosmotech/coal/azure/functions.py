@@ -4,13 +4,13 @@
 # Any use, reproduction, translation, broadcasting, transmission, distribution,
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
-import azure.functions as func
-from cosmotech.coal.cosmotech_api.runner.download import download_runner_data
-from cosmotech_api.api.runner_api import RunnerApi
-
-import json
 import http
+import json
 import traceback
+
+import azure.functions as func
+
+from cosmotech.coal.cosmotech_api.runner.download import download_runner_data
 
 
 def generate_main(apply_update, parallel=True):
@@ -25,7 +25,10 @@ def generate_main(apply_update, parallel=True):
 
             if runner_id is None or organization_id is None or workspace_id is None:
                 return func.HttpResponse(
-                    body=f"Invalid request: organization-id={organization_id}, workspace-id={workspace_id}, scenario-id={runner_id}",
+                    body=f"Invalid request: "
+                    f"organization-id={organization_id}, "
+                    f"workspace-id={workspace_id}, "
+                    f"scenario-id={runner_id}",
                     status_code=http.HTTPStatus.BAD_REQUEST,
                 )
 

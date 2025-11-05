@@ -13,12 +13,12 @@ This module provides functions for handling parameters in solution templates.
 
 import json
 import os
-import pathlib
 from csv import DictWriter
-from typing import List, Dict, Any
+from typing import Any, Dict, List
+
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 def write_parameters(

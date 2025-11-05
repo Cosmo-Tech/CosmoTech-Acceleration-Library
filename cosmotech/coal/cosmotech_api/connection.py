@@ -6,12 +6,11 @@
 # specifically authorized by written means by Cosmo Tech.
 import os
 import pathlib
-import ssl
 
 import cosmotech_api
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 api_env_keys = {"CSM_API_KEY", "CSM_API_URL"}
 azure_env_keys = {

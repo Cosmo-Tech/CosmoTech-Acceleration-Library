@@ -5,13 +5,13 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from typing import Dict, Any
+from typing import Dict
 
 import pyarrow
 from azure.kusto.data import KustoClient
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 def table_exists(client: KustoClient, database: str, table_name: str) -> bool:
