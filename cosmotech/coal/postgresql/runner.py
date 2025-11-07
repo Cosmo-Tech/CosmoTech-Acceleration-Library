@@ -34,7 +34,7 @@ def send_runner_metadata_to_postgresql(
     postgres_password: str,
     table_prefix: str = "Cosmotech_",
     force_encode: bool = False,
-) -> None:
+) -> str:
     """
     Send runner metadata to a PostgreSQL database.
 
@@ -61,17 +61,16 @@ def send_runner_metadata_to_postgresql(
     _c.postgres.password_encoding = force_encode
     _c.postgres.table_prefix = table_prefix
 
-    send_runner_metadata_to_postgresql_from_conf(
-        _c, organization_id=organization_id, workspace_id=workspace_id, runner_id=runner_id
-    )
+    _c.cosmotech.organization_id = organization_id
+    _c.cosmotech.workspace_id = workspace_id
+    _c.cosmotech.runner_id = runner_id
+
+    return send_runner_metadata_to_postgresql_from_conf(_c)
 
 
 def send_runner_metadata_to_postgresql_from_conf(
     configuration: Configuration,
-    organization_id: str,
-    workspace_id: str,
-    runner_id: str,
-) -> None:
+) -> str:
     """
     Send runner metadata to a PostgreSQL database.
 
@@ -85,7 +84,12 @@ def send_runner_metadata_to_postgresql_from_conf(
 
     # Get runner metadata
     with get_api_client()[0] as api_client:
-        runner = get_runner_metadata(api_client, organization_id, workspace_id, runner_id)
+        runner = get_runner_metadata(
+            api_client,
+            configuration.cosmotech.organization_id,
+            configuration.cosmotech.workspace_id,
+            configuration.cosmotech.runner_id,
+        )
 
     # Connect to PostgreSQL and update runner metadata
     with dbapi.connect(_psql.full_uri, autocommit=True) as conn:
@@ -121,6 +125,7 @@ def send_runner_metadata_to_postgresql_from_conf(
             )
             conn.commit()
             LOGGER.info(T("coal.services.postgresql.metadata_updated"))
+    return runner.get("lastRunId")
 
 
 def remove_runner_metadata_from_postgresql(
@@ -135,7 +140,7 @@ def remove_runner_metadata_from_postgresql(
     postgres_password: str,
     table_prefix: str = "Cosmotech_",
     force_encode: bool = False,
-) -> None:
+) -> str:
     """
     Removes run_id from metadata table that trigger cascade delete on other tables
 
@@ -162,17 +167,16 @@ def remove_runner_metadata_from_postgresql(
     _c.postgres.password_encoding = force_encode
     _c.postgres.table_prefix = table_prefix
 
-    remove_runner_metadata_from_postgresql_from_conf(
-        _c, organization_id=organization_id, workspace_id=workspace_id, runner_id=runner_id
-    )
+    _c.cosmotech.organization_id = organization_id
+    _c.cosmotech.workspace_id = workspace_id
+    _c.cosmotech.runner_id = runner_id
+
+    return remove_runner_metadata_from_postgresql_from_conf(_c)
 
 
 def remove_runner_metadata_from_postgresql_from_conf(
     configuration: Configuration,
-    organization_id: str,
-    workspace_id: str,
-    runner_id: str,
-) -> None:
+) -> str:
     """
     Removes run_id from metadata table that trigger cascade delete on other tables
 
@@ -186,7 +190,12 @@ def remove_runner_metadata_from_postgresql_from_conf(
 
     # Get runner metadata
     with get_api_client()[0] as api_client:
-        runner = get_runner_metadata(api_client, organization_id, workspace_id, runner_id)
+        runner = get_runner_metadata(
+            api_client,
+            configuration.cosmotech.organization_id,
+            configuration.cosmotech.workspace_id,
+            configuration.cosmotech.runner_id,
+        )
 
     # Connect to PostgreSQL and remove runner metadata row
     with dbapi.connect(_psql.full_uri, autocommit=True) as conn:
@@ -198,3 +207,4 @@ def remove_runner_metadata_from_postgresql_from_conf(
             """
             curs.execute(sql_delete_from_metatable)
             conn.commit()
+    return runner.get("lastRunId")
