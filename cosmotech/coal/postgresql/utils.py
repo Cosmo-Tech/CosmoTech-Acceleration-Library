@@ -14,85 +14,161 @@ from adbc_driver_postgresql import dbapi
 from cosmotech.orchestrator.utils.translate import T
 from pyarrow import Table
 
+from cosmotech.coal.utils.configuration import Configuration
 from cosmotech.coal.utils.logger import LOGGER
 
 
-def generate_postgresql_full_uri(
-    postgres_host: str,
-    postgres_port: str,
-    postgres_db: str,
-    postgres_user: str,
-    postgres_password: str,
-    force_encode: bool = False,
-) -> str:
-    # Check if password needs percent encoding (contains special characters)
-    # We don't log anything about the password for security
-    encoded_password = postgres_password
-    if force_encode:
-        encoded_password = quote(postgres_password, safe="")
+class PostgresUtils:
 
-    return (
-        "postgresql://" + f"{postgres_user}"
-        f":{encoded_password}"
-        f"@{postgres_host}"
-        f":{postgres_port}"
-        f"/{postgres_db}"
-    )
+    def __init__(self, configuration: Configuration):
+        self._configuration = configuration.postgres
+        self.table_prefix = (
+            "table_prefix" in configuration.postgres and configuration.postgres.table_prefix
+        ) or "Cosmotech_"
 
+    @property
+    def db_name(self):
+        return self._configuration.db_name
 
-def get_postgresql_table_schema(
-    target_table_name: str,
-    postgres_host: str,
-    postgres_port: str,
-    postgres_db: str,
-    postgres_schema: str,
-    postgres_user: str,
-    postgres_password: str,
-    force_encode: bool = False,
-) -> Optional[pa.Schema]:
-    """
-    Get the schema of an existing PostgreSQL table using SQL queries.
+    @property
+    def db_schema(self):
+        return self._configuration.db_schema
 
-    Args:
-        target_table_name: Name of the table
-        postgres_host: PostgreSQL host
-        postgres_port: PostgreSQL port
-        postgres_db: PostgreSQL database name
-        postgres_schema: PostgreSQL schema name
-        postgres_user: PostgreSQL username
-        postgres_password: PostgreSQL password
+    @property
+    def host_uri(self):
+        return self._configuration.host
 
-    Returns:
-        PyArrow Schema if table exists, None otherwise
-    """
-    LOGGER.debug(
-        T("coal.services.postgresql.getting_schema").format(
-            postgres_schema=postgres_schema, target_table_name=target_table_name
+    @property
+    def host_port(self):
+        return self._configuration.port
+
+    @property
+    def user_name(self):
+        return self._configuration.user_name
+
+    @property
+    def user_password(self):
+        return self._configuration.user_password
+
+    @property
+    def password_encoding(self):
+        return self._configuration.password_encoding
+
+    @property
+    def full_uri(self) -> str:
+        # Check if password needs percent encoding (contains special characters)
+        # We don't log anything about the password for security
+        encoded_password = self.user_password
+        if self.password_encoding:
+            encoded_password = quote(self.user_password, safe="")
+
+        return (
+            "postgresql://" + f"{self.user_name}"
+            f":{encoded_password}"
+            f"@{self.host_uri}"
+            f":{self.host_port}"
+            f"/{self.db_name}"
         )
-    )
 
-    postgresql_full_uri = generate_postgresql_full_uri(
-        postgres_host,
-        postgres_port,
-        postgres_db,
-        postgres_user,
-        postgres_password,
-        force_encode,
-    )
+    def metadata_table_name(self):
+        return f"{self.table_prefix}RunnerMetadata"
 
-    with dbapi.connect(postgresql_full_uri) as conn:
-        try:
-            return conn.adbc_get_table_schema(
-                target_table_name,
-                db_schema_filter=postgres_schema,
+    def get_postgresql_table_schema(self, target_table_name: str) -> Optional[pa.Schema]:
+        """
+        Get the schema of an existing PostgreSQL table using SQL queries.
+
+        Args:
+            target_table_name: Name of the table
+
+        Returns:
+            PyArrow Schema if table exists, None otherwise
+        """
+        LOGGER.debug(
+            T("coal.services.postgresql.getting_schema").format(
+                postgres_schema=self.db_schema, target_table_name=target_table_name
             )
-        except adbc_driver_manager.ProgrammingError:
-            LOGGER.warning(
-                T("coal.services.postgresql.table_not_found").format(
-                    postgres_schema=postgres_schema, target_table_name=target_table_name
+        )
+
+        with dbapi.connect(self.full_uri) as conn:
+            try:
+                return conn.adbc_get_table_schema(
+                    target_table_name,
+                    db_schema_filter=self.db_schema,
                 )
+            except adbc_driver_manager.ProgrammingError:
+                LOGGER.warning(
+                    T("coal.services.postgresql.table_not_found").format(
+                        postgres_schema=self.db_schema, target_table_name=target_table_name
+                    )
+                )
+            return None
+
+    def send_pyarrow_table_to_postgresql(
+        self,
+        data: Table,
+        target_table_name: str,
+        replace: bool,
+    ) -> int:
+        LOGGER.debug(
+            T("coal.services.postgresql.preparing_send").format(
+                postgres_schema=self.db_schema, target_table_name=target_table_name
             )
-        return None
+        )
+        LOGGER.debug(T("coal.services.postgresql.input_rows").format(rows=len(data)))
+
+        # Get existing schema if table exists
+        existing_schema = self.get_postgresql_table_schema(target_table_name)
+
+        if existing_schema is not None:
+            LOGGER.debug(T("coal.services.postgresql.found_existing_table").format(schema=existing_schema))
+            if not replace:
+                LOGGER.debug(T("coal.services.postgresql.adapting_data"))
+                data = adapt_table_to_schema(data, existing_schema)
+            else:
+                LOGGER.debug(T("coal.services.postgresql.replace_mode"))
+        else:
+            LOGGER.debug(T("coal.services.postgresql.no_existing_table"))
+
+        # Proceed with ingestion
+        total = 0
+
+        LOGGER.debug(T("coal.services.postgresql.connecting"))
+        with dbapi.connect(self.full_uri, autocommit=True) as conn:
+            with conn.cursor() as curs:
+                mode = "replace" if replace else "create_append"
+                LOGGER.debug(T("coal.services.postgresql.ingesting_data").format(mode=mode))
+                total += curs.adbc_ingest(target_table_name, data, mode, db_schema_name=self.db_schema)
+
+        LOGGER.debug(T("coal.services.postgresql.ingestion_success").format(rows=total))
+        return total
+
+    def add_fk_constraint(
+        self,
+        from_table: str,
+        from_col: str,
+        to_table: str,
+        to_col: str,
+    ) -> None:
+        # Connect to PostgreSQL and remove runner metadata row
+        with dbapi.connect(self.full_uri, autocommit=True) as conn:
+            with conn.cursor() as curs:
+                sql_add_fk = f"""
+                    ALTER TABLE {self.db_schema}.{from_table}
+                    CONSTRAINT metadata FOREIGN KEY ({from_col}) REFERENCES {to_table}({to_col})
+                """
+                curs.execute(sql_add_fk)
+                conn.commit()
+
+    def is_metadata_exists(self) -> None:
+        with dbapi.connect(self.full_uri, autocommit=True) as conn:
+            try:
+                conn.adbc_get_table_schema(
+                    self.metadata_table_name,
+                    db_schema_filter=self.db_schema,
+                )
+                return True
+            except adbc_driver_manager.ProgrammingError:
+                return False
 
 
 def adapt_table_to_schema(data: pa.Table, target_schema: pa.Schema) -> pa.Table:
@@ -171,66 +247,3 @@ def adapt_table_to_schema(data: pa.Table, target_schema: pa.Schema) -> pa.Table:
 
     LOGGER.debug(T("coal.services.postgresql.final_schema").format(schema=adapted_table.schema))
     return adapted_table
-
-
-def send_pyarrow_table_to_postgresql(
-    data: Table,
-    target_table_name: str,
-    postgres_host: str,
-    postgres_port: str,
-    postgres_db: str,
-    postgres_schema: str,
-    postgres_user: str,
-    postgres_password: str,
-    replace: bool,
-    force_encode: bool = False,
-) -> int:
-    LOGGER.debug(
-        T("coal.services.postgresql.preparing_send").format(
-            postgres_schema=postgres_schema, target_table_name=target_table_name
-        )
-    )
-    LOGGER.debug(T("coal.services.postgresql.input_rows").format(rows=len(data)))
-
-    # Get existing schema if table exists
-    existing_schema = get_postgresql_table_schema(
-        target_table_name,
-        postgres_host,
-        postgres_port,
-        postgres_db,
-        postgres_schema,
-        postgres_user,
-        postgres_password,
-        force_encode,
-    )
-
-    if existing_schema is not None:
-        LOGGER.debug(T("coal.services.postgresql.found_existing_table").format(schema=existing_schema))
-        if not replace:
-            LOGGER.debug(T("coal.services.postgresql.adapting_data"))
-            data = adapt_table_to_schema(data, existing_schema)
-        else:
-            LOGGER.debug(T("coal.services.postgresql.replace_mode"))
-    else:
-        LOGGER.debug(T("coal.services.postgresql.no_existing_table"))
-
-    # Proceed with ingestion
-    total = 0
-    postgresql_full_uri = generate_postgresql_full_uri(
-        postgres_host,
-        postgres_port,
-        postgres_db,
-        postgres_user,
-        postgres_password,
-        force_encode,
-    )
-
-    LOGGER.debug(T("coal.services.postgresql.connecting"))
-    with dbapi.connect(postgresql_full_uri, autocommit=True) as conn:
-        with conn.cursor() as curs:
-            mode = "replace" if replace else "create_append"
-            LOGGER.debug(T("coal.services.postgresql.ingesting_data").format(mode=mode))
-            total += curs.adbc_ingest(target_table_name, data, mode, db_schema_name=postgres_schema)
-
-    LOGGER.debug(T("coal.services.postgresql.ingestion_success").format(rows=total))
-    return total

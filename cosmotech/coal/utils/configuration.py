@@ -69,7 +69,6 @@ class Configuration(Dotdict):
                 "dataset_absolute_path": "CSM_DATASET_ABSOLUTE_PATH",
                 "organization_id": "CSM_ORGANIZATION_ID",
                 "parameters_absolute_path": "CSM_PARAMETERS_ABSOLUTE_PATH",
-                "psql_force_password_encoding": "CSM_PSQL_FORCE_PASSWORD_ENCODING",
                 "run_id": "CSM_RUN_ID",
                 "runner_id": "CSM_RUNNER_ID",
                 "run_template_id": "CSM_RUN_TEMPLATE_ID",
@@ -84,10 +83,11 @@ class Configuration(Dotdict):
             "postgres": {
                 "db_name": "POSTGRES_DB_NAME",
                 "db_schema": "POSTGRES_DB_SCHEMA",
-                "host_port": "POSTGRES_HOST_PORT",
-                "host_uri": "POSTGRES_HOST_URI",
+                "port": "POSTGRES_HOST_PORT",
+                "host": "POSTGRES_HOST_URI",
                 "user_name": "POSTGRES_USER_NAME",
                 "user_password": "POSTGRES_USER_PASSWORD",
+                "password_encoding": "CSM_PSQL_FORCE_PASSWORD_ENCODING",
             },
             "single_store": {
                 "db": "SINGLE_STORE_DB",
@@ -113,10 +113,12 @@ class Configuration(Dotdict):
             for k, v in dic.items():
                 if isinstance(v, Dotdict):
                     dic[k] = env_swap_recusion(v)
+                    # remove value not found
+                    dic[k] = Dotdict({k: v for k, v in dic[k].items() if v is not None})
                 elif isinstance(v, list):
                     dic[k] = list(env_swap_recusion(_v) for _v in v)
                 elif isinstance(v, str):
-                    dic[k] = os.environ.get(v, v)
+                    dic[k] = os.environ.get(v)
             return dic
 
         self.secrets = env_swap_recusion(self.secrets)
