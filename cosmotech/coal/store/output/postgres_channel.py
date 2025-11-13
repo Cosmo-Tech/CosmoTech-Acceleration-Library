@@ -4,11 +4,11 @@ from cosmotech.coal.postgresql.runner import (
     send_runner_metadata_to_postgresql_from_conf,
 )
 from cosmotech.coal.postgresql.store import dump_store_to_postgresql_from_conf
-from cosmotech.coal.store.output.data_interface import DataInterface
+from cosmotech.coal.store.output.channel_interface import ChannelInterface
 from cosmotech.coal.utils.configuration import Configuration
 
 
-class PostgresChannel(DataInterface):
+class PostgresChannel(ChannelInterface):
 
     def __init__(self):
         self.configuration = Configuration()

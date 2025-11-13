@@ -2,14 +2,14 @@ from typing import Optional
 
 from cosmotech.orchestrator.utils.translate import T
 
-from cosmotech.coal.store.output.data_interface import DataInterface
+from cosmotech.coal.store.output.channel_interface import ChannelInterface
 from cosmotech.coal.utils.logger import LOGGER
 
 
-class DataSpliter(DataInterface):
+class ChannelSpliter(ChannelInterface):
     requirement_string: str = "(Requires any working interface)"
     targets = []
-    possible_interfaces = [DataInterface]
+    possible_interfaces = [ChannelInterface]
 
     def __init__(self):
 

@@ -1,8 +1,9 @@
 from typing import Optional
+
 from cosmotech.orchestrator.utils.translate import T
 
 
-class DataInterface:
+class ChannelInterface:
 
     requirement_string: str = T("coal.store.output.data_interface.requirements")
 
