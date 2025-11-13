@@ -44,6 +44,7 @@ class Configuration(Dotdict):
                 "access_key_id": "AWS_ACCESS_KEY_ID",
                 "endpoint_url": "AWS_ENDPOINT_URL",
                 "secret_access_key": "AWS_SECRET_ACCESS_KEY",
+                "bucket_prefix": "CSM_DATA_BUCKET_PREFIX",
             },
             "azure": {
                 "account_name": "AZURE_ACCOUNT_NAME",
@@ -64,7 +65,6 @@ class Configuration(Dotdict):
                 "data_adx_wait_ingestion": "CSM_DATA_ADX_WAIT_INGESTION",
                 "data_blob_prefix": "CSM_DATA_BLOB_PREFIX",
                 "data_bucket_name": "CSM_DATA_BUCKET_NAME",
-                "data_bucket_prefix": "CSM_DATA_BUCKET_PREFIX",
                 "data_prefix": "CSM_DATA_PREFIX",
                 "dataset_absolute_path": "CSM_DATASET_ABSOLUTE_PATH",
                 "organization_id": "CSM_ORGANIZATION_ID",
@@ -108,21 +108,25 @@ class Configuration(Dotdict):
             LOGGER.info("no configuration file set. setting up default values")
             super().__init__(self.CONVERSION_DICT)
 
-        # convert value to env
-        def env_swap_recusion(dic):
-            for k, v in dic.items():
-                if isinstance(v, Dotdict):
-                    dic[k] = env_swap_recusion(v)
-                    # remove value not found
-                    dic[k] = Dotdict({k: v for k, v in dic[k].items() if v is not None})
-                elif isinstance(v, list):
-                    dic[k] = list(env_swap_recusion(_v) for _v in v)
-                elif isinstance(v, str):
-                    dic[k] = os.environ.get(v)
-            return dic
-
-        self.secrets = env_swap_recusion(self.secrets)
+        self.secrets = self._env_swap_recusion(self.secrets)
 
         # set secret section back to respective section
         self.merge(self.secrets)
         del self.secrets
+
+    # convert value to env
+    def _env_swap_recusion(self, dic):
+        for k, v in dic.items():
+            if isinstance(v, Dotdict):
+                dic[k] = self._env_swap_recusion(v)
+                # remove value not found
+                dic[k] = Dotdict({k: v for k, v in dic[k].items() if v is not None})
+            elif isinstance(v, list):
+                dic[k] = list(self._env_swap_recusion(_v) for _v in v)
+            elif isinstance(v, str):
+                dic[k] = os.environ.get(v)
+        return dic
+
+    def merge_in(self, dic):
+        trans_dic = self._env_swap_recusion(dic)
+        self._merge(trans_dic)

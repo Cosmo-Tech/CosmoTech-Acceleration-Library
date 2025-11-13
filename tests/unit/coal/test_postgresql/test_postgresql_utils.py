@@ -11,10 +11,10 @@ import pyarrow as pa
 import pytest
 
 from cosmotech.coal.postgresql.utils import (
-    Configuration,
     PostgresUtils,
     adapt_table_to_schema,
 )
+from cosmotech.coal.utils.configuration import Configuration
 
 
 @pytest.fixture

@@ -22,9 +22,12 @@ class PostgresUtils:
 
     def __init__(self, configuration: Configuration):
         self._configuration = configuration.postgres
-        self.table_prefix = (
-            "table_prefix" in configuration.postgres and configuration.postgres.table_prefix
-        ) or "Cosmotech_"
+
+    @property
+    def table_prefix(self):
+        if "table_prefix" in self._configuration:
+            return self._configuration.table_prefix
+        return "Cosmotech_"
 
     @property
     def db_name(self):

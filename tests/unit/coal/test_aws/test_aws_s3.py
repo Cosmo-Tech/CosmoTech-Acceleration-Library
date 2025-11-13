@@ -7,175 +7,187 @@
 
 import pathlib
 from io import BytesIO
+from unittest.mock import MagicMock, call, patch
 
 import pytest
-from unittest.mock import MagicMock, patch, call
 
-from cosmotech.coal.aws.s3 import (
-    create_s3_client,
-    create_s3_resource,
-    upload_file,
-    upload_folder,
-    download_files,
-    upload_data_stream,
-    delete_objects,
-)
+from cosmotech.coal.aws import S3
+from cosmotech.coal.utils.configuration import Configuration
+
+
+@pytest.fixture
+def base_configuration():
+    _c = Configuration()
+    _c.s3.use_ssl = True
+    _c.s3.endpoint_url = "https://s3.example.com"
+    _c.s3.access_key_id = "test-access-id"
+    _c.s3.secret_access_key = "test-secret-key"
+    _c.s3.bucket_name = "test-bucket"
+    _c.s3.bucket_prefix = "prefix/"
+    return _c
+
+
+@pytest.fixture
+def no_prefix_configuration(base_configuration):
+    del base_configuration.s3.bucket_prefix
+    return base_configuration
 
 
 class TestS3Functions:
     """Tests for top-level functions in the s3 module."""
 
     @patch("boto3.client")
-    def test_create_s3_client(self, mock_boto3_client):
+    def test_create_s3_client(self, mock_boto3_client, base_configuration):
         """Test the create_s3_client function."""
         # Arrange
-        endpoint_url = "https://s3.example.com"
-        access_id = "test-access-id"
-        secret_key = "test-secret-key"
-        use_ssl = True
+        _s3 = S3(base_configuration)
+
         mock_client = MagicMock()
         mock_boto3_client.return_value = mock_client
 
         # Act
-        result = create_s3_client(endpoint_url, access_id, secret_key, use_ssl)
+        result = _s3.client
 
         # Assert
         mock_boto3_client.assert_called_once_with(
             "s3",
-            use_ssl=use_ssl,
-            endpoint_url=endpoint_url,
-            aws_access_key_id=access_id,
-            aws_secret_access_key=secret_key,
+            use_ssl=base_configuration.s3.use_ssl,
+            endpoint_url=base_configuration.s3.endpoint_url,
+            aws_access_key_id=base_configuration.s3.access_key_id,
+            aws_secret_access_key=base_configuration.s3.secret_access_key,
         )
         assert result == mock_client
 
     @patch("boto3.client")
-    def test_create_s3_client_with_ssl_cert(self, mock_boto3_client):
+    def test_create_s3_client_with_ssl_cert(self, mock_boto3_client, base_configuration):
         """Test the create_s3_client function with SSL certificate."""
         # Arrange
-        endpoint_url = "https://s3.example.com"
-        access_id = "test-access-id"
-        secret_key = "test-secret-key"
-        use_ssl = True
-        ssl_cert_bundle = "/path/to/cert.pem"
+        base_configuration.s3.ssl_cert_bundle = "/path/to/cert.pem"
+        _s3 = S3(base_configuration)
+
         mock_client = MagicMock()
         mock_boto3_client.return_value = mock_client
 
         # Act
-        result = create_s3_client(endpoint_url, access_id, secret_key, use_ssl, ssl_cert_bundle)
+        result = _s3.client
 
         # Assert
         mock_boto3_client.assert_called_once_with(
             "s3",
-            use_ssl=use_ssl,
-            endpoint_url=endpoint_url,
-            aws_access_key_id=access_id,
-            aws_secret_access_key=secret_key,
-            verify=ssl_cert_bundle,
+            use_ssl=base_configuration.s3.use_ssl,
+            endpoint_url=base_configuration.s3.endpoint_url,
+            aws_access_key_id=base_configuration.s3.access_key_id,
+            aws_secret_access_key=base_configuration.s3.secret_access_key,
+            verify=base_configuration.s3.ssl_cert_bundle,
         )
         assert result == mock_client
 
     @patch("boto3.resource")
-    def test_create_s3_resource(self, mock_boto3_resource):
+    def test_create_s3_resource(self, mock_boto3_resource, base_configuration):
         """Test the create_s3_resource function."""
         # Arrange
-        endpoint_url = "https://s3.example.com"
-        access_id = "test-access-id"
-        secret_key = "test-secret-key"
-        use_ssl = True
+        _s3 = S3(base_configuration)
+
         mock_resource = MagicMock()
         mock_boto3_resource.return_value = mock_resource
 
         # Act
-        result = create_s3_resource(endpoint_url, access_id, secret_key, use_ssl)
+        result = _s3.resource
 
         # Assert
         mock_boto3_resource.assert_called_once_with(
             "s3",
-            use_ssl=use_ssl,
-            endpoint_url=endpoint_url,
-            aws_access_key_id=access_id,
-            aws_secret_access_key=secret_key,
+            use_ssl=base_configuration.s3.use_ssl,
+            endpoint_url=base_configuration.s3.endpoint_url,
+            aws_access_key_id=base_configuration.s3.access_key_id,
+            aws_secret_access_key=base_configuration.s3.secret_access_key,
         )
         assert result == mock_resource
 
     @patch("boto3.resource")
-    def test_create_s3_resource_with_ssl_cert(self, mock_boto3_resource):
+    def test_create_s3_resource_with_ssl_cert(self, mock_boto3_resource, base_configuration):
         """Test the create_s3_resource function with SSL certificate."""
         # Arrange
-        endpoint_url = "https://s3.example.com"
-        access_id = "test-access-id"
-        secret_key = "test-secret-key"
-        use_ssl = True
-        ssl_cert_bundle = "/path/to/cert.pem"
+        base_configuration.s3.ssl_cert_bundle = "/path/to/cert.pem"
+        _s3 = S3(base_configuration)
+
         mock_resource = MagicMock()
         mock_boto3_resource.return_value = mock_resource
 
         # Act
-        result = create_s3_resource(endpoint_url, access_id, secret_key, use_ssl, ssl_cert_bundle)
+        result = _s3.resource
 
         # Assert
         mock_boto3_resource.assert_called_once_with(
             "s3",
-            use_ssl=use_ssl,
-            endpoint_url=endpoint_url,
-            aws_access_key_id=access_id,
-            aws_secret_access_key=secret_key,
-            verify=ssl_cert_bundle,
+            use_ssl=base_configuration.s3.use_ssl,
+            endpoint_url=base_configuration.s3.endpoint_url,
+            aws_access_key_id=base_configuration.s3.access_key_id,
+            aws_secret_access_key=base_configuration.s3.secret_access_key,
+            verify=base_configuration.s3.ssl_cert_bundle,
         )
         assert result == mock_resource
 
+    @patch("boto3.resource")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_upload_file(self, mock_logger):
+    def test_upload_file(self, mock_logger, mock_boto3_resource, base_configuration):
         """Test the upload_file function."""
         # Arrange
         file_path = pathlib.Path("/path/to/file.txt")
-        bucket_name = "test-bucket"
-        file_prefix = "prefix/"
-        mock_s3_resource = MagicMock()
+        _s3 = S3(base_configuration)
+
+        mock_resource = MagicMock()
+        mock_boto3_resource.return_value = mock_resource
         mock_bucket = MagicMock()
-        mock_s3_resource.Bucket.return_value = mock_bucket
+        mock_resource.Bucket.return_value = mock_bucket
 
         # Act
-        upload_file(file_path, bucket_name, mock_s3_resource, file_prefix)
+        _s3.upload_file(file_path)
 
         # Assert
-        mock_s3_resource.Bucket.assert_called_once_with(bucket_name)
+        mock_resource.Bucket.assert_called_once_with(base_configuration.s3.bucket_name)
         mock_bucket.upload_file.assert_called_once_with(str(file_path), "prefix/file.txt")
         mock_logger.info.assert_called_once()
 
+    @patch("boto3.resource")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_upload_file_no_prefix(self, mock_logger):
+    def test_upload_file_no_prefix(self, mock_logger, mock_boto3_resource, no_prefix_configuration):
         """Test the upload_file function without a prefix."""
         # Arrange
         file_path = pathlib.Path("/path/to/file.txt")
-        bucket_name = "test-bucket"
-        mock_s3_resource = MagicMock()
+        _s3 = S3(no_prefix_configuration)
+
+        mock_resource = MagicMock()
+        mock_boto3_resource.return_value = mock_resource
         mock_bucket = MagicMock()
-        mock_s3_resource.Bucket.return_value = mock_bucket
+        mock_resource.Bucket.return_value = mock_bucket
 
         # Act
-        upload_file(file_path, bucket_name, mock_s3_resource)
+        _s3.upload_file(file_path)
 
         # Assert
-        mock_s3_resource.Bucket.assert_called_once_with(bucket_name)
+        mock_resource.Bucket.assert_called_once_with(no_prefix_configuration.s3.bucket_name)
         mock_bucket.upload_file.assert_called_once_with(str(file_path), "file.txt")
         mock_logger.info.assert_called_once()
 
+    @patch("boto3.resource")
     @patch("pathlib.Path.exists")
     @patch("pathlib.Path.is_dir")
     @patch("pathlib.Path.glob")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_upload_folder(self, mock_logger, mock_glob, mock_is_dir, mock_exists):
+    def test_upload_folder(
+        self, mock_logger, mock_glob, mock_is_dir, mock_exists, mock_boto3_resource, base_configuration
+    ):
         """Test the upload_folder function."""
         # Arrange
         source_folder = "/path/to/folder"
-        bucket_name = "test-bucket"
-        file_prefix = "prefix/"
         recursive = False
-        mock_s3_resource = MagicMock()
+        _s3 = S3(base_configuration)
+
+        mock_resource = MagicMock()
+        mock_boto3_resource.return_value = mock_resource
         mock_bucket = MagicMock()
-        mock_s3_resource.Bucket.return_value = mock_bucket
+        mock_resource.Bucket.return_value = mock_bucket
 
         # Mock Path.exists and Path.is_dir
         mock_exists.return_value = True
@@ -195,13 +207,13 @@ class TestS3Functions:
         mock_glob.return_value = [file1, file2]
 
         # Act
-        upload_folder(source_folder, bucket_name, mock_s3_resource, file_prefix, recursive)
+        _s3.upload_folder(source_folder, recursive)
 
         # Assert
         mock_exists.assert_called_once()
         mock_is_dir.assert_called_once()
         mock_glob.assert_called_once_with("*")  # Non-recursive glob
-        mock_s3_resource.Bucket.assert_called_with(bucket_name)
+        mock_resource.Bucket.assert_called_with(base_configuration.s3.bucket_name)
         assert mock_bucket.upload_file.call_count == 2
         mock_bucket.upload_file.assert_has_calls(
             [
@@ -211,20 +223,24 @@ class TestS3Functions:
         )
         assert mock_logger.info.call_count == 2
 
+    @patch("boto3.resource")
     @patch("pathlib.Path.exists")
     @patch("pathlib.Path.is_dir")
     @patch("pathlib.Path.glob")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_upload_folder_recursive(self, mock_logger, mock_glob, mock_is_dir, mock_exists):
+    def test_upload_folder_recursive(
+        self, mock_logger, mock_glob, mock_is_dir, mock_exists, mock_boto3_resource, base_configuration
+    ):
         """Test the upload_folder function with recursive option."""
         # Arrange
         source_folder = "/path/to/folder"
-        bucket_name = "test-bucket"
-        file_prefix = "prefix/"
         recursive = True
-        mock_s3_resource = MagicMock()
+        _s3 = S3(base_configuration)
+
+        mock_resource = MagicMock()
+        mock_boto3_resource.return_value = mock_resource
         mock_bucket = MagicMock()
-        mock_s3_resource.Bucket.return_value = mock_bucket
+        mock_resource.Bucket.return_value = mock_bucket
 
         # Mock Path.exists and Path.is_dir
         mock_exists.return_value = True
@@ -242,13 +258,13 @@ class TestS3Functions:
         mock_glob.return_value = [file1, file2]
 
         # Act
-        upload_folder(source_folder, bucket_name, mock_s3_resource, file_prefix, recursive)
+        _s3.upload_folder(source_folder, recursive)
 
         # Assert
         mock_exists.assert_called_once()
         mock_is_dir.assert_called_once()
         mock_glob.assert_called_once_with("**/*")  # Recursive glob
-        mock_s3_resource.Bucket.assert_called_with(bucket_name)
+        mock_resource.Bucket.assert_called_with(base_configuration.s3.bucket_name)
         assert mock_bucket.upload_file.call_count == 2
         mock_bucket.upload_file.assert_has_calls(
             [
@@ -258,63 +274,63 @@ class TestS3Functions:
         )
         assert mock_logger.info.call_count == 2
 
+    @patch("boto3.resource")
     @patch("pathlib.Path.exists")
     @patch("pathlib.Path.is_dir")
-    @patch("cosmotech.coal.aws.s3.upload_file")
+    @patch("cosmotech.coal.aws.s3.S3.upload_file")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_upload_folder_single_file(self, mock_logger, mock_upload_file, mock_is_dir, mock_exists):
+    def test_upload_folder_single_file(
+        self, mock_logger, mock_upload_file, mock_is_dir, mock_exists, mock_boto3_resource, base_configuration
+    ):
         """Test the upload_folder function with a file instead of a directory."""
         # Arrange
         source_folder = "/path/to/file.txt"
-        bucket_name = "test-bucket"
-        file_prefix = "prefix/"
         recursive = False
-        mock_s3_resource = MagicMock()
+        _s3 = S3(base_configuration)
 
         # Mock Path.exists and Path.is_dir
         mock_exists.return_value = True
         mock_is_dir.return_value = False
 
         # Act
-        upload_folder(source_folder, bucket_name, mock_s3_resource, file_prefix, recursive)
+        _s3.upload_folder(source_folder, recursive)
 
         # Assert
         mock_exists.assert_called_once()
         mock_is_dir.assert_called_once()
-        mock_upload_file.assert_called_once_with(
-            pathlib.Path(source_folder), bucket_name, mock_s3_resource, file_prefix
-        )
+        mock_upload_file.assert_called_once_with(pathlib.Path(source_folder))
 
     @patch("pathlib.Path.exists")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_upload_folder_not_found(self, mock_logger, mock_exists):
+    def test_upload_folder_not_found(self, mock_logger, mock_exists, base_configuration):
         """Test the upload_folder function with a non-existent folder."""
         # Arrange
         source_folder = "/path/to/nonexistent"
-        bucket_name = "test-bucket"
-        mock_s3_resource = MagicMock()
+        _s3 = S3(base_configuration)
 
         # Mock Path.exists to return False
         mock_exists.return_value = False
 
         # Act & Assert
         with pytest.raises(FileNotFoundError):
-            upload_folder(source_folder, bucket_name, mock_s3_resource)
+            _s3.upload_folder(source_folder)
 
         mock_exists.assert_called_once()
         mock_logger.error.assert_called_once()
 
+    @patch("boto3.resource")
     @patch("pathlib.Path.mkdir")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_download_files(self, mock_logger, mock_mkdir):
+    def test_download_files(self, mock_logger, mock_mkdir, mock_boto3_resource, base_configuration):
         """Test the download_files function."""
         # Arrange
-        target_folder = "/path/to/target"
-        bucket_name = "test-bucket"
-        file_prefix = "prefix/"
-        mock_s3_resource = MagicMock()
+        destination_folder = "/path/to/target"
+        _s3 = S3(base_configuration)
+
+        mock_resource = MagicMock()
+        mock_boto3_resource.return_value = mock_resource
         mock_bucket = MagicMock()
-        mock_s3_resource.Bucket.return_value = mock_bucket
+        mock_resource.Bucket.return_value = mock_bucket
 
         # Mock bucket.objects.filter to return a list of objects
         file1 = MagicMock()
@@ -326,11 +342,11 @@ class TestS3Functions:
         mock_bucket.objects.filter.return_value = [file1, file2]
 
         # Act
-        download_files(target_folder, bucket_name, mock_s3_resource, file_prefix)
+        _s3.download_files(destination_folder)
 
         # Assert
-        mock_s3_resource.Bucket.assert_called_once_with(bucket_name)
-        mock_bucket.objects.filter.assert_called_once_with(Prefix=file_prefix)
+        mock_resource.Bucket.assert_called_once_with(base_configuration.s3.bucket_name)
+        mock_bucket.objects.filter.assert_called_once_with(Prefix=base_configuration.s3.bucket_prefix)
         mock_mkdir.assert_called()
         assert mock_bucket.download_file.call_count == 2
         mock_bucket.download_file.assert_has_calls(
@@ -341,16 +357,19 @@ class TestS3Functions:
         )
         assert mock_logger.info.call_count == 2
 
+    @patch("boto3.resource")
     @patch("pathlib.Path.mkdir")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_download_files_no_prefix(self, mock_logger, mock_mkdir):
+    def test_download_files_no_prefix(self, mock_logger, mock_mkdir, mock_boto3_resource, no_prefix_configuration):
         """Test the download_files function without a prefix."""
         # Arrange
         target_folder = "/path/to/target"
-        bucket_name = "test-bucket"
-        mock_s3_resource = MagicMock()
+        _s3 = S3(no_prefix_configuration)
+
+        mock_resource = MagicMock()
+        mock_boto3_resource.return_value = mock_resource
         mock_bucket = MagicMock()
-        mock_s3_resource.Bucket.return_value = mock_bucket
+        mock_resource.Bucket.return_value = mock_bucket
 
         # Mock bucket.objects.all to return a list of objects
         file1 = MagicMock()
@@ -362,10 +381,10 @@ class TestS3Functions:
         mock_bucket.objects.all.return_value = [file1, file2]
 
         # Act
-        download_files(target_folder, bucket_name, mock_s3_resource)
+        _s3.download_files(target_folder)
 
         # Assert
-        mock_s3_resource.Bucket.assert_called_once_with(bucket_name)
+        mock_resource.Bucket.assert_called_once_with(no_prefix_configuration.s3.bucket_name)
         mock_bucket.objects.all.assert_called_once()
         mock_mkdir.assert_called()
         assert mock_bucket.download_file.call_count == 2
@@ -377,16 +396,21 @@ class TestS3Functions:
         )
         assert mock_logger.info.call_count == 2
 
+    @patch("boto3.resource")
     @patch("pathlib.Path.mkdir")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_download_files_skip_directories(self, mock_logger, mock_mkdir):
+    def test_download_files_skip_directories(
+        self, mock_logger, mock_mkdir, mock_boto3_resource, no_prefix_configuration
+    ):
         """Test the download_files function skips directory objects."""
         # Arrange
         target_folder = "/path/to/target"
-        bucket_name = "test-bucket"
-        mock_s3_resource = MagicMock()
+        _s3 = S3(no_prefix_configuration)
+
+        mock_resource = MagicMock()
+        mock_boto3_resource.return_value = mock_resource
         mock_bucket = MagicMock()
-        mock_s3_resource.Bucket.return_value = mock_bucket
+        mock_resource.Bucket.return_value = mock_bucket
 
         # Mock bucket.objects.all to return a list of objects including a directory
         file1 = MagicMock()
@@ -398,56 +422,67 @@ class TestS3Functions:
         mock_bucket.objects.all.return_value = [file1, directory]
 
         # Act
-        download_files(target_folder, bucket_name, mock_s3_resource)
+        _s3.download_files(target_folder)
 
         # Assert
-        mock_s3_resource.Bucket.assert_called_once_with(bucket_name)
+        mock_resource.Bucket.assert_called_once_with(no_prefix_configuration.s3.bucket_name)
         mock_bucket.objects.all.assert_called_once()
         mock_mkdir.assert_called()
         # Only the file should be downloaded, not the directory
         mock_bucket.download_file.assert_called_once_with("file1.txt", "/path/to/target/file1.txt")
         assert mock_logger.info.call_count == 1
 
+    @patch("boto3.client")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_upload_data_stream(self, mock_logger):
+    def test_upload_data_stream(self, mock_logger, mock_boto3_client, base_configuration):
         """Test the upload_data_stream function."""
         # Arrange
         data_stream = BytesIO(b"test data")
-        bucket_name = "test-bucket"
         file_name = "file.txt"
-        file_prefix = "prefix/"
+        _s3 = S3(base_configuration)
+
         mock_s3_client = MagicMock()
+        mock_boto3_client.return_value = mock_s3_client
 
         # Act
-        upload_data_stream(data_stream, bucket_name, mock_s3_client, file_name, file_prefix)
+        _s3.upload_data_stream(data_stream, file_name)
 
         # Assert
-        mock_s3_client.upload_fileobj.assert_called_once_with(data_stream, bucket_name, "prefix/file.txt")
+        mock_s3_client.upload_fileobj.assert_called_once_with(
+            data_stream, base_configuration.s3.bucket_name, "prefix/file.txt"
+        )
         mock_logger.info.assert_called_once()
 
+    @patch("boto3.client")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_upload_data_stream_no_prefix(self, mock_logger):
+    def test_upload_data_stream_no_prefix(self, mock_logger, mock_boto3_client, no_prefix_configuration):
         """Test the upload_data_stream function without a prefix."""
         # Arrange
         data_stream = BytesIO(b"test data")
-        bucket_name = "test-bucket"
         file_name = "file.txt"
+        _s3 = S3(no_prefix_configuration)
+
         mock_s3_client = MagicMock()
+        mock_boto3_client.return_value = mock_s3_client
 
         # Act
-        upload_data_stream(data_stream, bucket_name, mock_s3_client, file_name)
+        _s3.upload_data_stream(data_stream, file_name)
 
         # Assert
-        mock_s3_client.upload_fileobj.assert_called_once_with(data_stream, bucket_name, "file.txt")
+        mock_s3_client.upload_fileobj.assert_called_once_with(
+            data_stream, no_prefix_configuration.s3.bucket_name, "file.txt"
+        )
         mock_logger.info.assert_called_once()
 
+    @patch("boto3.resource")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_delete_objects(self, mock_logger):
+    def test_delete_objects(self, mock_logger, mock_boto3_resource, base_configuration):
         """Test the delete_objects function."""
         # Arrange
-        bucket_name = "test-bucket"
-        file_prefix = "prefix/"
+        _s3 = S3(base_configuration)
+
         mock_s3_resource = MagicMock()
+        mock_boto3_resource.return_value = mock_s3_resource
         mock_bucket = MagicMock()
         mock_s3_resource.Bucket.return_value = mock_bucket
 
@@ -461,22 +496,25 @@ class TestS3Functions:
         mock_bucket.objects.filter.return_value = [file1, file2]
 
         # Act
-        delete_objects(bucket_name, mock_s3_resource, file_prefix)
+        _s3.delete_objects()
 
         # Assert
-        mock_s3_resource.Bucket.assert_called_once_with(bucket_name)
-        mock_bucket.objects.filter.assert_called_once_with(Prefix=file_prefix)
+        mock_s3_resource.Bucket.assert_called_once_with(base_configuration.s3.bucket_name)
+        mock_bucket.objects.filter.assert_called_once_with(Prefix=base_configuration.s3.bucket_prefix)
         mock_bucket.delete_objects.assert_called_once_with(
             Delete={"Objects": [{"Key": "prefix/file1.txt"}, {"Key": "prefix/file2.txt"}]}
         )
         mock_logger.info.assert_called_once()
 
+    @patch("boto3.resource")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_delete_objects_no_prefix(self, mock_logger):
+    def test_delete_objects_no_prefix(self, mock_logger, mock_boto3_resource, no_prefix_configuration):
         """Test the delete_objects function without a prefix."""
         # Arrange
-        bucket_name = "test-bucket"
+        _s3 = S3(no_prefix_configuration)
+
         mock_s3_resource = MagicMock()
+        mock_boto3_resource.return_value = mock_s3_resource
         mock_bucket = MagicMock()
         mock_s3_resource.Bucket.return_value = mock_bucket
 
@@ -490,22 +528,25 @@ class TestS3Functions:
         mock_bucket.objects.all.return_value = [file1, file2]
 
         # Act
-        delete_objects(bucket_name, mock_s3_resource)
+        _s3.delete_objects()
 
         # Assert
-        mock_s3_resource.Bucket.assert_called_once_with(bucket_name)
+        mock_s3_resource.Bucket.assert_called_once_with(no_prefix_configuration.s3.bucket_name)
         mock_bucket.objects.all.assert_called_once()
         mock_bucket.delete_objects.assert_called_once_with(
             Delete={"Objects": [{"Key": "file1.txt"}, {"Key": "file2.txt"}]}
         )
         mock_logger.info.assert_called_once()
 
+    @patch("boto3.resource")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_delete_objects_empty(self, mock_logger):
+    def test_delete_objects_empty(self, mock_logger, mock_boto3_resource, no_prefix_configuration):
         """Test the delete_objects function with no objects to delete."""
         # Arrange
-        bucket_name = "test-bucket"
+        _s3 = S3(no_prefix_configuration)
+
         mock_s3_resource = MagicMock()
+        mock_boto3_resource.return_value = mock_s3_resource
         mock_bucket = MagicMock()
         mock_s3_resource.Bucket.return_value = mock_bucket
 
@@ -513,21 +554,23 @@ class TestS3Functions:
         mock_bucket.objects.all.return_value = []
 
         # Act
-        delete_objects(bucket_name, mock_s3_resource)
+        _s3.delete_objects()
 
         # Assert
-        mock_s3_resource.Bucket.assert_called_once_with(bucket_name)
+        mock_s3_resource.Bucket.assert_called_once_with(no_prefix_configuration.s3.bucket_name)
         mock_bucket.objects.all.assert_called_once()
         mock_bucket.delete_objects.assert_not_called()
         mock_logger.info.assert_called_once()
 
+    @patch("boto3.resource")
     @patch("cosmotech.coal.aws.s3.LOGGER")
-    def test_delete_objects_skip_prefix(self, mock_logger):
+    def test_delete_objects_skip_prefix(self, mock_logger, mock_boto3_resource, base_configuration):
         """Test the delete_objects function skips the prefix itself."""
         # Arrange
-        bucket_name = "test-bucket"
-        file_prefix = "prefix/"
+        _s3 = S3(base_configuration)
+
         mock_s3_resource = MagicMock()
+        mock_boto3_resource.return_value = mock_s3_resource
         mock_bucket = MagicMock()
         mock_s3_resource.Bucket.return_value = mock_bucket
 
@@ -541,11 +584,11 @@ class TestS3Functions:
         mock_bucket.objects.filter.return_value = [prefix_obj, file1]
 
         # Act
-        delete_objects(bucket_name, mock_s3_resource, file_prefix)
+        _s3.delete_objects()
 
         # Assert
-        mock_s3_resource.Bucket.assert_called_once_with(bucket_name)
-        mock_bucket.objects.filter.assert_called_once_with(Prefix=file_prefix)
+        mock_s3_resource.Bucket.assert_called_once_with(base_configuration.s3.bucket_name)
+        mock_bucket.objects.filter.assert_called_once_with(Prefix=base_configuration.s3.bucket_prefix)
         # Only file1 should be deleted, not the prefix itself
         mock_bucket.delete_objects.assert_called_once_with(Delete={"Objects": [{"Key": "prefix/file1.txt"}]})
         mock_logger.info.assert_called_once()
