@@ -45,6 +45,7 @@ class Configuration(Dotdict):
                 "endpoint_url": "AWS_ENDPOINT_URL",
                 "secret_access_key": "AWS_SECRET_ACCESS_KEY",
                 "bucket_prefix": "CSM_DATA_BUCKET_PREFIX",
+                "output_type": "csv",
             },
             "azure": {
                 "account_name": "AZURE_ACCOUNT_NAME",
@@ -120,7 +121,7 @@ class Configuration(Dotdict):
             if isinstance(v, Dotdict):
                 dic[k] = self._env_swap_recusion(v)
                 # remove value not found
-                dic[k] = Dotdict({k: v for k, v in dic[k].items() if v is not None})
+                dic[k] = {k: v for k, v in dic[k].items() if v is not None}
             elif isinstance(v, list):
                 dic[k] = list(self._env_swap_recusion(_v) for _v in v)
             elif isinstance(v, str):
