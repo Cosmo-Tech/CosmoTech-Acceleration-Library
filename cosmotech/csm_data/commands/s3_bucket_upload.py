@@ -7,9 +7,10 @@
 
 from typing import Optional
 
-from cosmotech.csm_data.utils.click import click
-from cosmotech.csm_data.utils.decorators import web_help, translate_help
 from cosmotech.orchestrator.utils.translate import T
+
+from cosmotech.csm_data.utils.click import click
+from cosmotech.csm_data.utils.decorators import translate_help, web_help
 
 
 @click.command()
@@ -107,22 +108,23 @@ def s3_bucket_upload(
     recursive: bool = False,
 ):
     # Import the functions at the start of the command
-    from cosmotech.coal.aws.s3 import create_s3_resource, upload_folder
+    from cosmotech.coal.aws import S3
+    from cosmotech.coal.utils.configuration import Configuration
 
     # Create S3 resource
-    s3_resource = create_s3_resource(
-        endpoint_url=endpoint_url,
-        access_id=access_id,
-        secret_key=secret_key,
-        use_ssl=use_ssl,
-        ssl_cert_bundle=ssl_cert_bundle,
-    )
+    _c = Configuration()
+    _c.s3.bucket_name = bucket_name
+    _c.s3.endpoint_url = endpoint_url
+    _c.s3.access_key_id = access_id
+    _c.s3.secret_access_key = secret_key
+    _c.s3.bucket_prefix = file_prefix
+    _c.s3.use_ssl = use_ssl
+    _c.s3.ssl_cert_bundle = ssl_cert_bundle
+
+    _s3 = S3(_c)
 
     # Upload files
-    upload_folder(
+    _s3.upload_folder(
         source_folder=source_folder,
-        bucket_name=bucket_name,
-        s3_resource=s3_resource,
-        file_prefix=file_prefix,
         recursive=recursive,
     )
