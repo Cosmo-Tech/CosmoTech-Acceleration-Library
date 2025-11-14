@@ -39,6 +39,7 @@ def dump_store_to_azure(
     client_secret: str,
     output_type: str = "sqlite",
     file_prefix: str = "",
+    selected_tables: list[str] = [],
 ) -> None:
     """
     Dump Store data to Azure Blob Storage.
@@ -87,6 +88,8 @@ def dump_store_to_azure(
             container_client.upload_blob(name=_uploaded_file_name, data=data, overwrite=True)
     else:
         tables = list(_s.list_tables())
+        if selected_tables:
+            tables = [t for t in tables if t in selected_tables]
         for table_name in tables:
             _data_stream = BytesIO()
             _file_name = None
