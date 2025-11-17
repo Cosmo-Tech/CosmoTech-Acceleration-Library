@@ -8,17 +8,26 @@ class Dotdict(dict):
     """dot.notation access to dictionary attributes"""
 
     def __setattr__(self, key, val):
-        dd = Dotdict(val) if isinstance(val, dict) else val
+        dd = Dotdict(val, root=self.root) if isinstance(val, dict) else val
         self.__setitem__(key, dd)
 
-    __getattr__ = dict.__getitem__
+    def __getattr__(self, key):
+        _v = self.__getitem__(key)
+        if isinstance(_v, str) and _v.startswith("$"):
+            _r = self.root
+            for _p in _v[1:].split("."):
+                _r = _r[_p]
+            return _r
+        return _v
+
     __delattr__ = dict.__delitem__
 
-    def __init__(self, dct=dict()):
+    def __init__(self, dct=dict(), root=None):
+        object.__setattr__(self, "root", self if root is None else root)
 
         def update(data):
             if isinstance(data, dict):
-                return Dotdict(data)
+                return Dotdict(data, root=self.root)
             elif isinstance(data, list):
                 return list(update(d for d in data))
             return data
@@ -101,19 +110,21 @@ class Configuration(Dotdict):
         }
     }
 
-    def __init__(self, *args, **kwargs):
-        if config_path := os.environ.get("CONFIG_FILE_PATH", default=None):
+    def __init__(self, dct: dict = None):
+        if dct:
+            super().__init__(dct)
+        elif config_path := os.environ.get("CONFIG_FILE_PATH", default=None):
             with open(config_path, "rb") as f:
                 super().__init__(tomllib.load(f))
         else:
             LOGGER.info("no configuration file set. setting up default values")
             super().__init__(self.CONVERSION_DICT)
 
-        self.secrets = self._env_swap_recusion(self.secrets)
-
-        # set secret section back to respective section
-        self.merge(self.secrets)
-        del self.secrets
+        if "secrets" in self:
+            self.secrets = self._env_swap_recusion(self.secrets)
+            # set secret section back to respective section
+            self.merge(self.secrets)
+            del self.secrets
 
     # convert value to env
     def _env_swap_recusion(self, dic):

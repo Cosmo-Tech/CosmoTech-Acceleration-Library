@@ -49,6 +49,13 @@ class TestUtilsDotdict:
 
         assert dotdict_a.lvl1.lvl2.lvl3 == "here"
 
+    def test_unknow_key_error(self):
+        dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}}
+        dotdict_a = Dotdict(dict_a)
+
+        with pytest.raises(KeyError):
+            dotdict_a.lvl1.lvl2.lvl99
+
     def test_nested_merge(self):
         boulangerie1 = {"pain": {"baguette": 2, "noix": 1}, "croissant": 5}
         boulangerie2 = {"pain": {"baguette": 4, "sesame": 4}, "chocolatine": 5}
@@ -61,3 +68,24 @@ class TestUtilsDotdict:
         print(db1)
         expected = {"pain": {"baguette": 4, "sesame": 4, "noix": 1}, "croissant": 5, "chocolatine": 5}
         assert db1 == expected
+
+    def test_ref(self):
+        dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref": {"ref_lvl3": "$lvl1.lvl2.lvl3"}}
+        dotdict_a = Dotdict(dict_a)
+
+        assert dotdict_a.ref.ref_lvl3 == "here"
+
+    def test_ref_update(self):
+        dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref": {"ref_lvl3": "$lvl1.lvl2.lvl3"}}
+        dotdict_a = Dotdict(dict_a)
+
+        assert dotdict_a.ref.ref_lvl3 == "here"
+        dotdict_a.lvl1.lvl2.lvl3 = "there"
+        assert dotdict_a.ref.ref_lvl3 == "there"
+
+    def test_runknow_ref_key_error(self):
+        dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref_lvl99": "$lvl1.lvl2.lvl99"}
+        dotdict_a = Dotdict(dict_a)
+
+        with pytest.raises(KeyError):
+            dotdict_a.ref_lvl99
