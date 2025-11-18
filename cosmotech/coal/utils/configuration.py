@@ -29,7 +29,7 @@ class Dotdict(dict):
             if isinstance(data, dict):
                 return Dotdict(data, root=self.root)
             elif isinstance(data, list):
-                return list(update(d for d in data))
+                return [update(d) for d in data]
             return data
 
         for k, v in dct.items():

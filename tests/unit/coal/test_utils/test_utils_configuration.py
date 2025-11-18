@@ -69,11 +69,17 @@ class TestUtilsDotdict:
         expected = {"pain": {"baguette": 4, "sesame": 4, "noix": 1}, "croissant": 5, "chocolatine": 5}
         assert db1 == expected
 
-    def test_ref(self):
+    def test_ref_value(self):
         dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref": {"ref_lvl3": "$lvl1.lvl2.lvl3"}}
         dotdict_a = Dotdict(dict_a)
 
         assert dotdict_a.ref.ref_lvl3 == "here"
+
+    def test_ref_dict_lvl(self):
+        dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref": {"ref_lvl2": "$lvl1.lvl2"}}
+        dotdict_a = Dotdict(dict_a)
+
+        assert dotdict_a.ref.ref_lvl2 == {"lvl3": "here"}
 
     def test_ref_update(self):
         dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref": {"ref_lvl3": "$lvl1.lvl2.lvl3"}}
@@ -83,9 +89,30 @@ class TestUtilsDotdict:
         dotdict_a.lvl1.lvl2.lvl3 = "there"
         assert dotdict_a.ref.ref_lvl3 == "there"
 
-    def test_runknow_ref_key_error(self):
+    def test_ref_dict_update(self):
+        dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref": {"ref_lvl2": "$lvl1.lvl2"}}
+        dotdict_a = Dotdict(dict_a)
+
+        assert dotdict_a.ref.ref_lvl2 == {"lvl3": "here"}
+        dotdict_a.lvl1.lvl2.lvl3 = "there"
+        assert dotdict_a.ref.ref_lvl2 == {"lvl3": "there"}
+
+    def test_unknow_ref_key_error(self):
         dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref_lvl99": "$lvl1.lvl2.lvl99"}
         dotdict_a = Dotdict(dict_a)
 
         with pytest.raises(KeyError):
             dotdict_a.ref_lvl99
+
+    def test_ref_in_sub_dict(self):
+        dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref": {"ref_lvl2": "$lvl1.lvl2"}}
+        dotdict_a = Dotdict(dict_a)
+
+        sub_dict = dotdict_a.ref
+        assert sub_dict.ref_lvl2 == {"lvl3": "here"}
+
+    def test_dotdict_sublist_are_dotdict(self):
+        dict_a = {"lvl1": [{"lvl2": {"lvl3": "here"}}, {"ref": {"lvl2": "there"}}]}
+        dotdict_a = Dotdict(dict_a)
+
+        assert isinstance(dotdict_a.lvl1[1], Dotdict)
