@@ -5,8 +5,5 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-"""
-Cosmotech API integration module.
-
-This module provides functions for interacting with the Cosmotech API.
-"""
+from cosmotech.coal.cosmotech_api.objects.connection import Connection
+from cosmotech.coal.cosmotech_api.objects.parameters import Parameters
