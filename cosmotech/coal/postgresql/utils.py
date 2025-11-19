@@ -55,7 +55,9 @@ class PostgresUtils:
 
     @property
     def password_encoding(self):
-        return self._configuration.password_encoding
+        if "password_encoding" in self._configuration:
+            return self._configuration.password_encoding
+        return False
 
     @property
     def full_uri(self) -> str:

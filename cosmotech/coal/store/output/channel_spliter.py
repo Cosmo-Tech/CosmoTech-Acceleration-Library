@@ -2,27 +2,34 @@ from typing import Optional
 
 from cosmotech.orchestrator.utils.translate import T
 
+from cosmotech.coal.store.output.aws_channel import AwsChannel
+from cosmotech.coal.store.output.az_storage_channel import AzureStorageChannel
 from cosmotech.coal.store.output.channel_interface import ChannelInterface
+from cosmotech.coal.store.output.postgres_channel import PostgresChannel
+from cosmotech.coal.utils.configuration import Configuration
 from cosmotech.coal.utils.logger import LOGGER
 
 
 class ChannelSpliter(ChannelInterface):
     requirement_string: str = "(Requires any working interface)"
     targets = []
-    possible_interfaces = [ChannelInterface]
+    available_interfaces: dict[str, ChannelInterface] = {
+        "s3": AwsChannel,
+        "az_storage": AzureStorageChannel,
+        "postgres": PostgresChannel,
+    }
 
-    def __init__(self):
-
-        for interface_class in self.possible_interfaces:
-
-            try:
-                _i = interface_class()
-                if _i.is_available():
-                    self.targets.append(_i)
-            except Exception:
+    def __init__(self, configuration: Configuration):
+        self.configuration = configuration
+        for output in self.configuration.outputs:
+            channel = self.available_interfaces[output.type]
+            _i = channel(output.conf)
+            if _i.is_available():
+                self.targets.append(_i)
+            else:
                 LOGGER.warning(
                     T("coal.store.output.split.requirements").format(
-                        interface_name=interface_class.__name__, requirements=interface_class.requirement_string
+                        interface_name=channel.__name__, requirements=channel.requirement_string
                     )
                 )
         if not self.targets:

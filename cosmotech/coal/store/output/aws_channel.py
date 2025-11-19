@@ -13,14 +13,21 @@ from cosmotech.coal.utils.logger import LOGGER
 
 
 class AwsChannel(ChannelInterface):
+    required_keys = {
+        "cosmotech": [
+            "dataset_absolute_path",
+        ],
+        "s3": ["access_key_id", "endpoint_url", "secret_access_key"],
+    }
+    requirement_string = required_keys
 
-    def __init__(self):
-        self.configuration = Configuration()
+    def __init__(self, dct: dict = None):
+        self.configuration = Configuration(dct)
         self._s3 = S3(self.configuration)
 
     def send(self, tables_filter: Optional[list[str]] = None) -> bool:
 
-        _s = Store(store_location=self.configuration.parameters_absolute_path)
+        _s = Store(store_location=self.configuration.cosmotech.parameters_absolute_path)
 
         if self._s3.output_type not in ("sqlite", "csv", "parquet"):
             LOGGER.error(T("coal.common.errors.data_invalid_output_type").format(output_type=self._s3.output_type))
@@ -61,3 +68,6 @@ class AwsChannel(ChannelInterface):
                     data_stream=_data_stream,
                     file_name=_file_name,
                 )
+
+    def delete(self):
+        self._s3.delete_objects()
