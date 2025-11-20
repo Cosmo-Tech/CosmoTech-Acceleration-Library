@@ -62,6 +62,12 @@ class S3:
         return self._configuration.secret_access_key
 
     @property
+    def output_type(self):
+        if "output_type" in self._configuration:
+            return self._configuration.output_type
+        return "csv"
+
+    @property
     def client(self) -> boto3.client:
         boto3_parameters = {
             "use_ssl": self.use_ssl,
