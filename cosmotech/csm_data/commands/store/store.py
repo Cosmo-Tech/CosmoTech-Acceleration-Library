@@ -14,9 +14,10 @@ from cosmotech.csm_data.commands.store.load_csv_folder import load_csv_folder
 from cosmotech.csm_data.commands.store.load_from_singlestore import (
     load_from_singlestore_command,
 )
+from cosmotech.csm_data.commands.store.output import output
 from cosmotech.csm_data.commands.store.reset import reset
 from cosmotech.csm_data.utils.click import click
-from cosmotech.csm_data.utils.decorators import web_help, translate_help
+from cosmotech.csm_data.utils.decorators import translate_help, web_help
 
 
 @click.group()
@@ -34,3 +35,4 @@ store.add_command(load_from_singlestore_command, "load-from-singlestore")
 store.add_command(dump_to_postgresql, "dump-to-postgresql")
 store.add_command(dump_to_s3, "dump-to-s3")
 store.add_command(dump_to_azure, "dump-to-azure")
+store.add_command(output, "output")

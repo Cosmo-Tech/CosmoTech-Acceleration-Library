@@ -1,0 +1,7 @@
+description: |
+  Dump simulation from the coal store to the configured output.
+
+  This output is base on the configuration. Default dconfiguration will try to output in postgres.
+
+parameters:
+  filter: names of the tables to output
