@@ -162,3 +162,6 @@ class Configuration(Dotdict):
     def merge_in(self, dic):
         trans_dic = self._env_swap_recusion(dic)
         self._merge(trans_dic)
+
+
+ENVIRONMENT_CONFIGURATION = Configuration()

@@ -6,10 +6,8 @@
 # specifically authorized by written means by Cosmo Tech.
 
 import pytest
-from unittest.mock import MagicMock, patch
-from datetime import datetime
 
-from cosmotech.coal.azure.adx.utils import type_mapping
+from cosmotech.coal.azure.adx.utils import create_column_mapping, type_mapping
 
 
 class TestUtilsFunctions:
@@ -110,3 +108,84 @@ class TestUtilsFunctions:
 
         # Assert
         assert result == "string"
+
+    def test_create_column_mapping_basic(self):
+        """Test create_column_mapping with a basic PyArrow table."""
+        # Arrange
+        import pyarrow as pa
+
+        data = pa.table(
+            {
+                "id": ["id-1", "id-2", "id-3"],
+                "name": ["Alice", "Bob", "Charlie"],
+                "value": [1.5, 2.5, 3.5],
+                "count": [10, 20, 30],
+            }
+        )
+
+        # Act
+        result = create_column_mapping(data)
+
+        # Assert
+        assert result["id"] == "string"
+        assert result["name"] == "string"
+        assert result["value"] == "real"
+        assert result["count"] == "long"
+
+    def test_create_column_mapping_with_datetime(self):
+        """Test create_column_mapping with datetime strings."""
+        # Arrange
+        import pyarrow as pa
+
+        data = pa.table(
+            {"timestamp": ["2023-01-01T12:00:00Z", "2023-01-02T12:00:00Z"], "date": ["2023-01-01", "2023-01-02"]}
+        )
+
+        # Act
+        result = create_column_mapping(data)
+
+        # Assert
+        assert result["timestamp"] == "datetime"
+        assert result["date"] == "datetime"
+
+    def test_create_column_mapping_with_nulls(self):
+        """Test create_column_mapping with columns containing null values."""
+        # Arrange
+        import pyarrow as pa
+
+        data = pa.table({"id": ["id-1", "id-2", "id-3"], "nullable_column": [None, None, None]})
+
+        # Act
+        result = create_column_mapping(data)
+
+        # Assert
+        assert result["id"] == "string"
+        assert result["nullable_column"] == "string"  # Defaults to string when all values are None
+
+    def test_create_column_mapping_with_mixed_nulls(self):
+        """Test create_column_mapping with columns containing some null values."""
+        # Arrange
+        import pyarrow as pa
+
+        data = pa.table({"id": ["id-1", "id-2", "id-3"], "value": [None, 2.5, 3.5]})
+
+        # Act
+        result = create_column_mapping(data)
+
+        # Assert
+        assert result["id"] == "string"
+        assert result["value"] == "real"  # Uses first non-null value
+
+    def test_create_column_mapping_simulation_run(self):
+        """Test create_column_mapping with SimulationRun column."""
+        # Arrange
+        import pyarrow as pa
+
+        data = pa.table({"SimulationRun": ["abc-123", "def-456", "ghi-789"], "value": [1, 2, 3]})
+
+        # Act
+        result = create_column_mapping(data)
+
+        # Assert
+        assert result["SimulationRun"] == "guid"
+        assert result["value"] == "long"

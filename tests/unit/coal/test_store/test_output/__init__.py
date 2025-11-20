@@ -4,9 +4,3 @@
 # Any use, reproduction, translation, broadcasting, transmission, distribution,
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
-
-"""
-Cosmotech API integration module.
-
-This module provides functions for interacting with the Cosmotech API.
-"""
