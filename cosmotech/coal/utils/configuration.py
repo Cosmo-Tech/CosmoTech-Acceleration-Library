@@ -47,6 +47,27 @@ class Configuration(Dotdict):
 
     # HARD CODED ENVVAR CONVERSION
     CONVERSION_DICT = {
+        "outputs": [
+            {
+                "type": "postgres",
+                "conf": {
+                    "cosmotech": {
+                        "dataset_absolute_path": "$cosmotech.dataset_absolute_path",
+                        "organization_id": "$cosmotech.organization_id",
+                        "workspace_id": "$cosmotech.workspace_id",
+                        "runner_id": "$cosmotech.runner_id",
+                    },
+                    "postgres": {
+                        "host": "$postgres.host",
+                        "post": "$postgres.post",
+                        "db_name": "$postgres.db_name",
+                        "db_schema": "$postgres.db_schema",
+                        "user_name": "$postgres.user_name",
+                        "user_password": "$postgres.user_password",
+                    },
+                },
+            }
+        ],
         "secrets": {
             "log_level": "LOG_LEVEL",
             "s3": {
@@ -54,7 +75,6 @@ class Configuration(Dotdict):
                 "endpoint_url": "AWS_ENDPOINT_URL",
                 "secret_access_key": "AWS_SECRET_ACCESS_KEY",
                 "bucket_prefix": "CSM_DATA_BUCKET_PREFIX",
-                "output_type": "csv",
             },
             "azure": {
                 "account_name": "AZURE_ACCOUNT_NAME",
@@ -107,7 +127,7 @@ class Configuration(Dotdict):
                 "tables": "SINGLE_STORE_TABLES",
                 "username": "SINGLE_STORE_USERNAME",
             },
-        }
+        },
     }
 
     def __init__(self, dct: dict = None):
