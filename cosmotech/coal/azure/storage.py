@@ -15,9 +15,9 @@ uploading files to blob storage.
 import pathlib
 
 from azure.storage.blob import ContainerClient
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 def upload_file(
@@ -65,10 +65,10 @@ def upload_folder(
         raise FileNotFoundError(T("coal.common.file_operations.not_found").format(source_folder=source_folder))
 
     if source_path.is_dir():
-        _source_name = str(source_path)
+        # _source_name = str(source_path)
         for _file_path in source_path.glob("**/*" if recursive else "*"):
             if _file_path.is_file():
-                _file_name = str(_file_path).removeprefix(_source_name).removeprefix("/")
+                # _file_name = str(_file_path).removeprefix(_source_name).removeprefix("/")
                 upload_file(_file_path, blob_name, az_storage_sas_url, file_prefix)
     else:
         upload_file(source_path, blob_name, az_storage_sas_url, file_prefix)

@@ -1,1 +1,1 @@
-CosmoTech_Acceleration_Library[doc,extra,test,dev]
+CosmoTech_Acceleration_Library[doc,test,dev]

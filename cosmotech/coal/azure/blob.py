@@ -12,19 +12,16 @@ This module provides functions for interacting with Azure Blob Storage,
 including uploading data from the Store.
 """
 
-import pathlib
 from io import BytesIO
-from typing import List, Optional
-
-from azure.identity import ClientSecretCredential
-from azure.storage.blob import BlobServiceClient
 
 import pyarrow.csv as pc
 import pyarrow.parquet as pq
+from azure.identity import ClientSecretCredential
+from azure.storage.blob import BlobServiceClient
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 VALID_TYPES = (
     "sqlite",
@@ -42,6 +39,7 @@ def dump_store_to_azure(
     client_secret: str,
     output_type: str = "sqlite",
     file_prefix: str = "",
+    selected_tables: list[str] = [],
 ) -> None:
     """
     Dump Store data to Azure Blob Storage.
@@ -90,6 +88,8 @@ def dump_store_to_azure(
             container_client.upload_blob(name=_uploaded_file_name, data=data, overwrite=True)
     else:
         tables = list(_s.list_tables())
+        if selected_tables:
+            tables = [t for t in tables if t in selected_tables]
         for table_name in tables:
             _data_stream = BytesIO()
             _file_name = None

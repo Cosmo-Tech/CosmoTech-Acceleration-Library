@@ -7,26 +7,22 @@
 
 import os
 import tempfile
+import time
 import uuid
-from typing import Optional, List, Dict, Tuple, Union, Any
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import pyarrow
 import pyarrow.csv as pc
-import time
 from azure.kusto.data import KustoClient
 from azure.kusto.data.data_format import DataFormat
-from azure.kusto.ingest import IngestionProperties
-from azure.kusto.ingest import QueuedIngestClient
-from azure.kusto.ingest import ReportLevel
+from azure.kusto.ingest import IngestionProperties, QueuedIngestClient, ReportLevel
 from cosmotech.orchestrator.utils.translate import T
-from time import perf_counter
 
-from cosmotech.coal.azure.adx.tables import check_and_create_table, _drop_by_tag
 from cosmotech.coal.azure.adx.auth import initialize_clients
-from cosmotech.coal.azure.adx.ingestion import monitor_ingestion, handle_failures
+from cosmotech.coal.azure.adx.ingestion import handle_failures, monitor_ingestion
+from cosmotech.coal.azure.adx.tables import _drop_by_tag, check_and_create_table
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.coal.utils.postgresql import send_pyarrow_table_to_postgresql
 
 
 def send_table_data(
@@ -176,80 +172,3 @@ def send_store_to_adx(
         LOGGER.warning(T("coal.services.adx.dropping_data").format(operation_tag=operation_tag))
         _drop_by_tag(kusto_client, database, operation_tag)
         raise e
-
-
-def dump_store_to_adx(
-    store_folder: str,
-    postgres_host: str,
-    postgres_port: int,
-    postgres_db: str,
-    postgres_schema: str,
-    postgres_user: str,
-    postgres_password: str,
-    table_prefix: str = "Cosmotech_",
-    replace: bool = True,
-) -> None:
-    """
-    Dump Store data to an Azure Data Explorer database.
-
-    Args:
-        store_folder: Folder containing the Store
-        postgres_host: PostgreSQL host
-        postgres_port: PostgreSQL port
-        postgres_db: PostgreSQL database name
-        postgres_schema: PostgreSQL schema
-        postgres_user: PostgreSQL username
-        postgres_password: PostgreSQL password
-        table_prefix: Table prefix
-        replace: Whether to replace existing tables
-    """
-    _s = Store(store_location=store_folder)
-
-    tables = list(_s.list_tables())
-    if len(tables):
-        LOGGER.info(T("coal.services.database.sending_data").format(table=f"{postgres_db}.{postgres_schema}"))
-        total_rows = 0
-        _process_start = perf_counter()
-        for table_name in tables:
-            _s_time = perf_counter()
-            target_table_name = f"{table_prefix}{table_name}"
-            LOGGER.info(T("coal.services.database.table_entry").format(table=target_table_name))
-            data = _s.get_table(table_name)
-            if not len(data):
-                LOGGER.info(T("coal.services.database.no_rows"))
-                continue
-            _dl_time = perf_counter()
-            rows = send_pyarrow_table_to_postgresql(
-                data,
-                target_table_name,
-                postgres_host,
-                postgres_port,
-                postgres_db,
-                postgres_schema,
-                postgres_user,
-                postgres_password,
-                replace,
-            )
-            total_rows += rows
-            _up_time = perf_counter()
-            LOGGER.info(T("coal.services.database.row_count").format(count=rows))
-            LOGGER.debug(
-                T("coal.common.timing.operation_completed").format(
-                    operation="Load from datastore", time=f"{_dl_time - _s_time:0.3}"
-                )
-            )
-            LOGGER.debug(
-                T("coal.common.timing.operation_completed").format(
-                    operation="Send to postgresql", time=f"{_up_time - _dl_time:0.3}"
-                )
-            )
-        _process_end = perf_counter()
-        LOGGER.info(
-            T("coal.services.database.rows_fetched").format(
-                table="all tables",
-                count=total_rows,
-                time=f"{_process_end - _process_start:0.3}",
-            )
-        )
-    else:
-        LOGGER.info(T("coal.services.database.store_empty"))

@@ -1,0 +1,6 @@
+send:
+  error: "Class {interface_name} was not able to send data"
+delete:
+  error: "Class {interface_name} was not able to delete data"
+requirements: "Class {interface_name} has to following requirements : {requirements}"
+no_targets: "No valid interface was found"

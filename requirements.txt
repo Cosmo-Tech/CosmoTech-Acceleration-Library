@@ -10,7 +10,7 @@ tenacity~=8.3.0
 python-keycloak~=4.7.3
 
 # Cosmotech specific requirements
-cosmotech-api>=3.2
+cosmotech-api~=5.0.0rc1
 
 
 # Commands requirements
@@ -35,7 +35,7 @@ tqdm~=4.67.1
 
 # Other requirements
 openpyxl~=3.1
-pandas~=2.1
+pandas~=2.3
 python-dateutil~=2.8
 rich~=13.7
 setuptools
