@@ -35,20 +35,6 @@ adt_twins_found: "Found {count} digital twins"
 adt_querying_relations: "Querying relationships"
 adt_relations_found: "Found {count} relationships"
 
-# TwinGraph specific
-twingraph_downloading: "Downloading TwinGraph dataset (organization: {organization_id}, dataset: {dataset_id})"
-twingraph_querying_nodes: "Querying TwinGraph nodes for dataset {dataset_id}"
-twingraph_nodes_found: "Found {count} nodes in TwinGraph"
-twingraph_querying_edges: "Querying TwinGraph edges for dataset {dataset_id}"
-twingraph_edges_found: "Found {count} edges in TwinGraph"
-
-# Legacy TwinGraph specific
-legacy_twingraph_downloading: "Downloading legacy TwinGraph dataset (organization: {organization_id}, cache: {cache_name})"
-legacy_twingraph_querying_nodes: "Querying legacy TwinGraph nodes for cache {cache_name}"
-legacy_twingraph_nodes_found: "Found {count} nodes in legacy TwinGraph"
-legacy_twingraph_querying_relations: "Querying legacy TwinGraph relationships for cache {cache_name}"
-legacy_twingraph_relations_found: "Found {count} relationships in legacy TwinGraph"
-
 # File specific
 file_downloading: "Downloading file dataset (organization: {organization_id}, workspace: {workspace_id}, file: {file_name})"
 listing_workspace_files: "Listing workspace files"
@@ -66,3 +52,7 @@ processing_json: "Processing JSON file: {file_name}"
 json_processed: "Processed JSON file {file_name} with {items} items"
 processing_text: "Processing text file: {file_name}"
 text_processed: "Processed text file {file_name} with {lines} lines"
+
+# Dataset API operations
+part_downloaded: "Downloaded part {part_name} to {file_path}"
+dataset_created: "Created dataset {dataset_id}"
