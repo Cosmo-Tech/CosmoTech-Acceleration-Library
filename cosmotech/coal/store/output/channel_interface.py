@@ -14,7 +14,10 @@ class ChannelInterface:
         raise NotImplementedError()
 
     def is_available(self) -> bool:
-        return all(
-            all(key in self.configuration[section] for key in self.required_keys[section])
-            for section in self.required_keys.keys()
-        )
+        try:
+            return all(
+                all(key in self.configuration[section] for key in self.required_keys[section])
+                for section in self.required_keys.keys()
+            )
+        except KeyError:
+            return False

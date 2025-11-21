@@ -14,210 +14,244 @@ from cosmotech.coal.store.output.aws_channel import AwsChannel
 
 
 class TestAwsChannel:
-    """Tests for AwsChannel class."""
+    """Tests for the AwsChannel class."""
 
-    @pytest.fixture
-    def mock_configuration(self):
-        """Create a mock Configuration."""
-        mock_config = MagicMock()
-        mock_config.parameters_absolute_path = "/test/path"
-        mock_config.s3.bucket_prefix = "test-prefix/"
-        return mock_config
-
-    @pytest.fixture
-    def mock_s3(self):
-        """Create a mock S3 client."""
-        mock = MagicMock()
-        mock.output_type = "csv"
-        return mock
-
-    @pytest.fixture
-    def mock_store(self):
-        """Create a mock Store."""
-        mock = MagicMock()
-        mock._database_path = "/test/db.sqlite"
-        mock.list_tables.return_value = ["table1", "table2"]
-
-        # Create sample table data
-        sample_data = pa.table({"id": ["1", "2", "3"], "value": [10, 20, 30]})
-        mock.get_table.return_value = sample_data
-        return mock
-
-    @patch("cosmotech.coal.store.output.aws_channel.Configuration")
-    @patch("cosmotech.coal.store.output.aws_channel.S3")
-    def test_init(self, mock_s3_class, mock_config_class):
-        """Test AwsChannel initialization."""
+    def test_init_with_configuration(self):
+        """Test AwsChannel initialization with configuration."""
         # Arrange
-        mock_config = MagicMock()
-        mock_config_class.return_value = mock_config
-        mock_s3 = MagicMock()
-        mock_s3_class.return_value = mock_s3
+        config = {
+            "cosmotech": {"dataset_absolute_path": "/path/to/dataset", "parameters_absolute_path": "/path/to/params"},
+            "s3": {"access_key_id": "test_key", "endpoint_url": "http://test.url", "secret_access_key": "test_secret"},
+        }
 
         # Act
-        channel = AwsChannel()
+        with patch("cosmotech.coal.store.output.aws_channel.S3"):
+            channel = AwsChannel(config)
 
         # Assert
-        assert channel.configuration == mock_config
-        assert channel._s3 == mock_s3
-        mock_config_class.assert_called_once()
-        mock_s3_class.assert_called_once_with(mock_config)
+        assert channel.configuration is not None
 
-    @patch("cosmotech.coal.store.output.aws_channel.Configuration")
-    @patch("cosmotech.coal.store.output.aws_channel.S3")
+    def test_required_keys(self):
+        """Test that required_keys are properly defined."""
+        # Assert
+        assert "cosmotech" in AwsChannel.required_keys
+        assert "s3" in AwsChannel.required_keys
+        assert "dataset_absolute_path" in AwsChannel.required_keys["cosmotech"]
+        assert "access_key_id" in AwsChannel.required_keys["s3"]
+        assert "endpoint_url" in AwsChannel.required_keys["s3"]
+        assert "secret_access_key" in AwsChannel.required_keys["s3"]
+
     @patch("cosmotech.coal.store.output.aws_channel.Store")
-    def test_send_sqlite(self, mock_store_class, mock_s3_class, mock_config_class, mock_store):
-        """Test send method with sqlite output type."""
+    @patch("cosmotech.coal.store.output.aws_channel.S3")
+    def test_send_sqlite(self, mock_s3_class, mock_store_class):
+        """Test sending data as SQLite database."""
         # Arrange
-        mock_config = MagicMock()
-        mock_config.parameters_absolute_path = "/test/path"
-        mock_config.s3.bucket_prefix = "test-prefix/"
-        mock_config_class.return_value = mock_config
+        config = {
+            "cosmotech": {"dataset_absolute_path": "/path/to/dataset", "parameters_absolute_path": "/path/to/params"},
+            "s3": {
+                "access_key_id": "test_key",
+                "endpoint_url": "http://test.url",
+                "secret_access_key": "test_secret",
+                "bucket_prefix": "prefix/",
+            },
+        }
 
         mock_s3 = MagicMock()
         mock_s3.output_type = "sqlite"
         mock_s3_class.return_value = mock_s3
 
-        mock_store._database_path = "/test/db.sqlite"
+        mock_store = MagicMock()
+        mock_store._database_path = "/path/to/db.sqlite"
         mock_store_class.return_value = mock_store
 
-        channel = AwsChannel()
+        channel = AwsChannel(config)
 
         # Act
         channel.send()
 
         # Assert
-        mock_s3.upload_file.assert_called_once_with("/test/db.sqlite", "test-prefix/db.sqlite")
+        mock_s3.upload_file.assert_called_once_with("/path/to/db.sqlite", "prefix/db.sqlite")
 
-    @patch("cosmotech.coal.store.output.aws_channel.Configuration")
-    @patch("cosmotech.coal.store.output.aws_channel.S3")
     @patch("cosmotech.coal.store.output.aws_channel.Store")
-    def test_send_csv(self, mock_store_class, mock_s3_class, mock_config_class, mock_store):
-        """Test send method with csv output type."""
+    @patch("cosmotech.coal.store.output.aws_channel.S3")
+    @patch("cosmotech.coal.store.output.aws_channel.pc.write_csv")
+    def test_send_csv(self, mock_write_csv, mock_s3_class, mock_store_class):
+        """Test sending data as CSV files."""
         # Arrange
-        mock_config = MagicMock()
-        mock_config.parameters_absolute_path = "/test/path"
-        mock_config_class.return_value = mock_config
+        config = {
+            "cosmotech": {"dataset_absolute_path": "/path/to/dataset", "parameters_absolute_path": "/path/to/params"},
+            "s3": {
+                "access_key_id": "test_key",
+                "endpoint_url": "http://test.url",
+                "secret_access_key": "test_secret",
+                "bucket_prefix": "prefix/",
+            },
+        }
 
         mock_s3 = MagicMock()
         mock_s3.output_type = "csv"
         mock_s3_class.return_value = mock_s3
 
+        mock_store = MagicMock()
+        mock_table = pa.Table.from_arrays([pa.array([1, 2, 3])], names=["col1"])
+        mock_store.list_tables.return_value = ["table1", "table2"]
+        mock_store.get_table.return_value = mock_table
         mock_store_class.return_value = mock_store
 
-        channel = AwsChannel()
+        channel = AwsChannel(config)
 
         # Act
         channel.send()
 
         # Assert
-        assert mock_s3.upload_data_stream.call_count == 2  # Two tables
-        # Check that CSV files were created
-        calls = mock_s3.upload_data_stream.call_args_list
-        assert "table1.csv" in str(calls[0])
-        assert "table2.csv" in str(calls[1])
+        assert mock_s3.upload_data_stream.call_count == 2
+        assert mock_write_csv.call_count == 2
 
-    @patch("cosmotech.coal.store.output.aws_channel.Configuration")
-    @patch("cosmotech.coal.store.output.aws_channel.S3")
     @patch("cosmotech.coal.store.output.aws_channel.Store")
-    def test_send_parquet(self, mock_store_class, mock_s3_class, mock_config_class, mock_store):
-        """Test send method with parquet output type."""
+    @patch("cosmotech.coal.store.output.aws_channel.S3")
+    @patch("cosmotech.coal.store.output.aws_channel.pq.write_table")
+    def test_send_parquet(self, mock_write_parquet, mock_s3_class, mock_store_class):
+        """Test sending data as Parquet files."""
         # Arrange
-        mock_config = MagicMock()
-        mock_config.parameters_absolute_path = "/test/path"
-        mock_config_class.return_value = mock_config
+        config = {
+            "cosmotech": {"dataset_absolute_path": "/path/to/dataset", "parameters_absolute_path": "/path/to/params"},
+            "s3": {
+                "access_key_id": "test_key",
+                "endpoint_url": "http://test.url",
+                "secret_access_key": "test_secret",
+                "bucket_prefix": "prefix/",
+            },
+        }
 
         mock_s3 = MagicMock()
         mock_s3.output_type = "parquet"
         mock_s3_class.return_value = mock_s3
 
+        mock_store = MagicMock()
+        mock_table = pa.Table.from_arrays([pa.array([1, 2, 3])], names=["col1"])
+        mock_store.list_tables.return_value = ["table1"]
+        mock_store.get_table.return_value = mock_table
         mock_store_class.return_value = mock_store
 
-        channel = AwsChannel()
+        channel = AwsChannel(config)
 
         # Act
         channel.send()
 
         # Assert
-        assert mock_s3.upload_data_stream.call_count == 2  # Two tables
-        # Check that Parquet files were created
-        calls = mock_s3.upload_data_stream.call_args_list
-        assert "table1.parquet" in str(calls[0])
-        assert "table2.parquet" in str(calls[1])
+        mock_s3.upload_data_stream.assert_called_once()
+        mock_write_parquet.assert_called_once()
 
-    @patch("cosmotech.coal.store.output.aws_channel.Configuration")
-    @patch("cosmotech.coal.store.output.aws_channel.S3")
     @patch("cosmotech.coal.store.output.aws_channel.Store")
-    def test_send_with_filter(self, mock_store_class, mock_s3_class, mock_config_class, mock_store):
-        """Test send method with tables filter."""
-        # Arrange
-        mock_config = MagicMock()
-        mock_config.parameters_absolute_path = "/test/path"
-        mock_config_class.return_value = mock_config
-
-        mock_s3 = MagicMock()
-        mock_s3.output_type = "csv"
-        mock_s3_class.return_value = mock_s3
-
-        mock_store_class.return_value = mock_store
-
-        channel = AwsChannel()
-
-        # Act
-        channel.send(tables_filter=["table1"])
-
-        # Assert
-        assert mock_s3.upload_data_stream.call_count == 1  # Only table1
-        calls = mock_s3.upload_data_stream.call_args_list
-        assert "table1.csv" in str(calls[0])
-
-    @patch("cosmotech.coal.store.output.aws_channel.Configuration")
     @patch("cosmotech.coal.store.output.aws_channel.S3")
-    @patch("cosmotech.coal.store.output.aws_channel.Store")
-    def test_send_empty_table_skipped(self, mock_store_class, mock_s3_class, mock_config_class):
-        """Test send method skips empty tables."""
+    def test_send_with_tables_filter(self, mock_s3_class, mock_store_class):
+        """Test sending data with table filter."""
         # Arrange
-        mock_config = MagicMock()
-        mock_config.parameters_absolute_path = "/test/path"
-        mock_config_class.return_value = mock_config
+        config = {
+            "cosmotech": {"dataset_absolute_path": "/path/to/dataset", "parameters_absolute_path": "/path/to/params"},
+            "s3": {
+                "access_key_id": "test_key",
+                "endpoint_url": "http://test.url",
+                "secret_access_key": "test_secret",
+                "bucket_prefix": "prefix/",
+            },
+        }
 
         mock_s3 = MagicMock()
         mock_s3.output_type = "csv"
         mock_s3_class.return_value = mock_s3
 
         mock_store = MagicMock()
-        mock_store.list_tables.return_value = ["empty_table"]
-        # Create empty table
-        empty_table = pa.table({"id": []})
-        mock_store.get_table.return_value = empty_table
+        mock_table = pa.Table.from_arrays([pa.array([1, 2, 3])], names=["col1"])
+        mock_store.list_tables.return_value = ["table1", "table2", "table3"]
+        mock_store.get_table.return_value = mock_table
         mock_store_class.return_value = mock_store
 
-        channel = AwsChannel()
+        channel = AwsChannel(config)
+
+        # Act
+        channel.send(tables_filter=["table1", "table3"])
+
+        # Assert
+        # Should only process table1 and table3
+        assert mock_store.get_table.call_count == 2
+        mock_store.get_table.assert_any_call("table1")
+        mock_store.get_table.assert_any_call("table3")
+
+    @patch("cosmotech.coal.store.output.aws_channel.Store")
+    @patch("cosmotech.coal.store.output.aws_channel.S3")
+    def test_send_empty_table(self, mock_s3_class, mock_store_class):
+        """Test sending data with empty table."""
+        # Arrange
+        config = {
+            "cosmotech": {"dataset_absolute_path": "/path/to/dataset", "parameters_absolute_path": "/path/to/params"},
+            "s3": {
+                "access_key_id": "test_key",
+                "endpoint_url": "http://test.url",
+                "secret_access_key": "test_secret",
+                "bucket_prefix": "prefix/",
+            },
+        }
+
+        mock_s3 = MagicMock()
+        mock_s3.output_type = "csv"
+        mock_s3_class.return_value = mock_s3
+
+        mock_store = MagicMock()
+        # Empty table
+        mock_table = pa.Table.from_arrays([pa.array([])], names=["col1"])
+        mock_store.list_tables.return_value = ["empty_table"]
+        mock_store.get_table.return_value = mock_table
+        mock_store_class.return_value = mock_store
+
+        channel = AwsChannel(config)
 
         # Act
         channel.send()
 
         # Assert
+        # Should not upload empty table
         mock_s3.upload_data_stream.assert_not_called()
 
-    @patch("cosmotech.coal.store.output.aws_channel.Configuration")
-    @patch("cosmotech.coal.store.output.aws_channel.S3")
     @patch("cosmotech.coal.store.output.aws_channel.Store")
-    def test_send_invalid_output_type(self, mock_store_class, mock_s3_class, mock_config_class):
-        """Test send method raises error for invalid output type."""
+    @patch("cosmotech.coal.store.output.aws_channel.S3")
+    def test_send_invalid_output_type(self, mock_s3_class, mock_store_class):
+        """Test sending data with invalid output type."""
         # Arrange
-        mock_config = MagicMock()
-        mock_config.parameters_absolute_path = "/test/path"
-        mock_config_class.return_value = mock_config
+        config = {
+            "cosmotech": {"dataset_absolute_path": "/path/to/dataset", "parameters_absolute_path": "/path/to/params"},
+            "s3": {"access_key_id": "test_key", "endpoint_url": "http://test.url", "secret_access_key": "test_secret"},
+        }
 
         mock_s3 = MagicMock()
-        mock_s3.output_type = "invalid"
+        mock_s3.output_type = "invalid_type"
         mock_s3_class.return_value = mock_s3
 
         mock_store = MagicMock()
         mock_store_class.return_value = mock_store
 
-        channel = AwsChannel()
+        channel = AwsChannel(config)
 
         # Act & Assert
         with pytest.raises(ValueError):
             channel.send()
+
+    @patch("cosmotech.coal.store.output.aws_channel.S3")
+    def test_delete(self, mock_s3_class):
+        """Test delete method."""
+        # Arrange
+        config = {
+            "cosmotech": {"dataset_absolute_path": "/path/to/dataset", "parameters_absolute_path": "/path/to/params"},
+            "s3": {"access_key_id": "test_key", "endpoint_url": "http://test.url", "secret_access_key": "test_secret"},
+        }
+
+        mock_s3 = MagicMock()
+        mock_s3_class.return_value = mock_s3
+
+        channel = AwsChannel(config)
+
+        # Act
+        channel.delete()
+
+        # Assert
+        mock_s3.delete_objects.assert_called_once()

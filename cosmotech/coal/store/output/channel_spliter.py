@@ -21,6 +21,7 @@ class ChannelSpliter(ChannelInterface):
 
     def __init__(self, configuration: Configuration):
         self.configuration = configuration
+        self.targets = []
         for output in self.configuration.outputs:
             channel = self.available_interfaces[output.type]
             _i = channel(output.conf)
@@ -29,7 +30,7 @@ class ChannelSpliter(ChannelInterface):
             else:
                 LOGGER.warning(
                     T("coal.store.output.split.requirements").format(
-                        interface_name=channel.__name__, requirements=channel.requirement_string
+                        interface_name=channel.__class__.__name__, requirements=channel.requirement_string
                     )
                 )
         if not self.targets:
@@ -39,7 +40,7 @@ class ChannelSpliter(ChannelInterface):
         any_ok = False
         for i in self.targets:
             try:
-                any_ok = any_ok or i.send(filter=filter)
+                any_ok = i.send(filter=filter) or any_ok
             except Exception:
                 LOGGER.error(T("coal.store.output.split.send.error").format(interface_name=i.__class__.__name__))
         return any_ok
@@ -48,7 +49,7 @@ class ChannelSpliter(ChannelInterface):
         any_ok = False
         for i in self.targets:
             try:
-                any_ok = any_ok or i.delete()
+                any_ok = i.delete() or any_ok
             except Exception:
                 LOGGER.error(T("coal.store.output.split.delete.error").format(interface_name=i.__class__.__name__))
         return any_ok
