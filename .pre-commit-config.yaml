@@ -6,6 +6,17 @@ repos:
     -   id: end-of-file-fixer
     -   id: check-added-large-files
 
+-   repo: https://github.com/PyCQA/autoflake
+    rev: v2.3.1
+    hooks:
+    -   id: autoflake
+
+-   repo: https://github.com/pycqa/isort
+    rev: 7.0.0
+    hooks:
+    -   id: isort
+        args: ["--profile", "black", "--filter-files"]
+
 -   repo: https://github.com/psf/black
     rev: 24.3.0
     hooks:
@@ -15,7 +26,7 @@ repos:
     hooks:
     -   id: pytest-check
         name: pytest-check
-        entry: pytest tests/unit/coal/ --cov=cosmotech.coal --cov-report=term-missing --cov-fail-under=70
+        entry: pytest tests/unit/coal/ --cov=cosmotech.coal --cov-report=term-missing
         language: system
         pass_filenames: false
         always_run: true

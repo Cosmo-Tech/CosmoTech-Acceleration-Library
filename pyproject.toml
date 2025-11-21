@@ -19,6 +19,9 @@ requires = ["setuptools", "wheel"]
 pythonpath = ["."]
 addopts = "--cov-report term-missing:skip-covered --cov=cosmotech.coal"
 
+[tool.isort]
+profile = "black"
+
 [tool.black]
 line-length = 120
 target-version = ["py311"]
@@ -45,7 +48,7 @@ package-data."*" = [
     "requirements.txt",
     "requirements.doc.txt",
     "requirements.test.txt",
-    "requirements.extra.txt"
+    "requirements.dev.txt"
 ]
 zip-safe = false
 
@@ -61,7 +64,5 @@ version.attr = "cosmotech.coal.__version__"
 dependencies.file = "requirements.txt"
 optional-dependencies.doc.file = "requirements.doc.txt"
 optional-dependencies.test.file = "requirements.test.txt"
-optional-dependencies.extra.file = "requirements.extra.txt"
 optional-dependencies.dev.file = "requirements.dev.txt"
 optional-dependencies.all.file = "requirements.all.txt"
-optional-dependencies.past.file = "requirements.past.txt"

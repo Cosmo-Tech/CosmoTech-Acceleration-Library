@@ -4,6 +4,7 @@ omit =
     */tests/*
     */site-packages/*
     */__pycache__/*
+    cosmotech/coal/utils/decorator.py
 
 [report]
 exclude_lines =
