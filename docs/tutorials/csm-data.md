@@ -76,21 +76,6 @@ This command:
 
 !!! tip "Common Use Case"
     This command is particularly useful in container environments where you need to initialize your simulation with data from the platform. The environment variables are typically set by the platform when launching the container.
-
-#### Twin Data Layer Operations
-
-```bash title="Load files to Twin Data Layer" linenums="1"
---8<-- 'tutorial/csm-data/tdl_load_files.bash'
-```
-
-```bash title="Send files to Twin Data Layer" linenums="1"
---8<-- 'tutorial/csm-data/tdl_send_files.bash'
-```
-
-These commands facilitate working with the Twin Data Layer, allowing you to:
-- Load data from the Twin Data Layer to local files
-- Send local files to the Twin Data Layer
-
 ### Storage Commands
 
 The `s3-bucket-*` commands provide a simple interface for working with S3-compatible storage:
