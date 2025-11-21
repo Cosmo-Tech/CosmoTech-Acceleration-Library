@@ -21,7 +21,7 @@ from cosmotech.csm_data.utils.decorators import translate_help, web_help
 )
 @web_help("csm-data/store/output")
 @translate_help("csm_data.commands.store.output.description")
-def dump_to_azure(
+def output(
     filter,
 ):
     # Import the function at the start of the command

@@ -5,7 +5,6 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from cosmotech.csm_data.commands.api.rds_send_store import rds_send_store
 from cosmotech.csm_data.commands.store.dump_to_azure import dump_to_azure
 from cosmotech.csm_data.commands.store.dump_to_postgresql import dump_to_postgresql
 from cosmotech.csm_data.commands.store.dump_to_s3 import dump_to_s3
@@ -27,7 +26,6 @@ def store():
     pass
 
 
-store.add_command(rds_send_store, "rds-send-store")
 store.add_command(reset, "reset")
 store.add_command(list_tables, "list-tables")
 store.add_command(load_csv_folder, "load-csv-folder")
