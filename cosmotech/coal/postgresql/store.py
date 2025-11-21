@@ -13,12 +13,13 @@ for store operations.
 """
 
 from time import perf_counter
-import pyarrow
 
-from cosmotech.coal.store.store import Store
-from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.coal.utils.postgresql import send_pyarrow_table_to_postgresql
 from cosmotech.orchestrator.utils.translate import T
+
+from cosmotech.coal.postgresql.utils import PostgresUtils
+from cosmotech.coal.store.store import Store
+from cosmotech.coal.utils.configuration import Configuration
+from cosmotech.coal.utils.logger import LOGGER
 
 
 def dump_store_to_postgresql(
@@ -32,6 +33,8 @@ def dump_store_to_postgresql(
     table_prefix: str = "Cosmotech_",
     replace: bool = True,
     force_encode: bool = False,
+    selected_tables: list[str] = [],
+    fk_id: str = None,
 ) -> None:
     """
     Dump Store data to a PostgreSQL database.
@@ -46,36 +49,79 @@ def dump_store_to_postgresql(
         postgres_password: PostgreSQL password
         table_prefix: Table prefix
         replace: Whether to replace existing tables
-        force_encode: force password encoding
+        force_encode: force password encoding to percent encoding
+        selected_tables: list of tables to send
+        fk_id: foreign key id to add to all table on all rows
     """
+    _c = Configuration()
+    _c.postgres.host = postgres_host
+    _c.postgres.port = postgres_port
+    _c.postgres.db_name = postgres_db
+    _c.postgres.db_schema = postgres_schema
+    _c.postgres.user_name = postgres_user
+    _c.postgres.user_password = postgres_password
+    _c.postgres.password_encoding = force_encode
+    _c.postgres.table_prefix = table_prefix
+
+    dump_store_to_postgresql_from_conf(
+        configuration=_c, store_folder=store_folder, replace=replace, selected_tables=selected_tables, fk_id=fk_id
+    )
+
+
+def dump_store_to_postgresql_from_conf(
+    configuration: Configuration,
+    store_folder: str,
+    replace: bool = True,
+    selected_tables: list[str] = [],
+    fk_id: str = None,
+) -> None:
+    """
+    Dump Store data to a PostgreSQL database.
+
+    Args:
+        configuration: coal Configuration
+        store_folder: Folder containing the Store
+        replace: Whether to replace existing tables
+        selected_tables: list of tables to send
+        fk_id: foreign key id to add to all table on all rows
+    """
+    _psql = PostgresUtils(configuration)
+    print(_psql.send_pyarrow_table_to_postgresql)
     _s = Store(store_location=store_folder)
 
     tables = list(_s.list_tables())
+    if selected_tables:
+        tables = [t for t in tables if t in selected_tables]
     if len(tables):
-        LOGGER.info(T("coal.services.database.sending_data").format(table=f"{postgres_db}.{postgres_schema}"))
+        LOGGER.info(T("coal.services.database.sending_data").format(table=f"{_psql.db_name}.{_psql.db_schema}"))
         total_rows = 0
         _process_start = perf_counter()
         for table_name in tables:
             _s_time = perf_counter()
-            target_table_name = f"{table_prefix}{table_name}"
+            target_table_name = f"{_psql.table_prefix}{table_name}"
             LOGGER.info(T("coal.services.database.table_entry").format(table=target_table_name))
+            if fk_id:
+                _s.execute_query(
+                    f"""
+                    ALTER TABLE {_psql.table_prefix}{table_name}
+                    ADD run_id TEXT NOT NULL
+                    DEFAULT ({fk_id})
+                    """
+                )
             data = _s.get_table(table_name)
             if not len(data):
                 LOGGER.info(T("coal.services.database.no_rows"))
                 continue
             _dl_time = perf_counter()
-            rows = send_pyarrow_table_to_postgresql(
+            rows = _psql.send_pyarrow_table_to_postgresql(
                 data,
                 target_table_name,
-                postgres_host,
-                postgres_port,
-                postgres_db,
-                postgres_schema,
-                postgres_user,
-                postgres_password,
                 replace,
-                force_encode,
             )
+            if fk_id and _psql.is_metadata_exists():
+                metadata_table = f"{_psql.table_prefix}RunnerMetadata"
+                _psql.add_fk_constraint(table_name, "run_id", metadata_table, "last_run_id")
+
             total_rows += rows
             _up_time = perf_counter()
             LOGGER.info(T("coal.services.database.row_count").format(count=rows))
