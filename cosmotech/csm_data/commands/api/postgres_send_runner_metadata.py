@@ -5,9 +5,10 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from cosmotech.csm_data.utils.click import click
-from cosmotech.csm_data.utils.decorators import web_help, translate_help
 from cosmotech.orchestrator.utils.translate import T
+
+from cosmotech.csm_data.utils.click import click
+from cosmotech.csm_data.utils.decorators import translate_help, web_help
 
 
 @click.command()
@@ -93,7 +94,7 @@ from cosmotech.orchestrator.utils.translate import T
 @click.option(
     "--encode-password/--no-encode-password",
     "force_encode",
-    help=T("csm_data.commands.store.postgres_send_runner_metadata.parameters.encode_password"),
+    help=T("csm_data.commands.api.postgres_send_runner_metadata.parameters.encode_password"),
     envvar="CSM_PSQL_FORCE_PASSWORD_ENCODING",
     show_envvar=True,
     default=True,
@@ -115,17 +116,20 @@ def postgres_send_runner_metadata(
 ):
     # Import the function at the start of the command
     from cosmotech.coal.postgresql import send_runner_metadata_to_postgresql
+    from cosmotech.coal.utils.configuration import Configuration
 
-    send_runner_metadata_to_postgresql(
-        organization_id=organization_id,
-        workspace_id=workspace_id,
-        runner_id=runner_id,
-        table_prefix=table_prefix,
-        postgres_host=postgres_host,
-        postgres_port=postgres_port,
-        postgres_db=postgres_db,
-        postgres_schema=postgres_schema,
-        postgres_user=postgres_user,
-        postgres_password=postgres_password,
-        force_encode=force_encode,
-    )
+    _c = Configuration()
+    _c.postgres.host = postgres_host
+    _c.postgres.port = postgres_port
+    _c.postgres.db_name = postgres_db
+    _c.postgres.db_schema = postgres_schema
+    _c.postgres.user_name = postgres_user
+    _c.postgres.user_password = postgres_password
+    _c.postgres.password_encoding = force_encode
+    _c.postgres.table_prefix = table_prefix
+
+    _c.cosmotech.organization_id = organization_id
+    _c.cosmotech.workspace_id = workspace_id
+    _c.cosmotech.runner_id = runner_id
+
+    send_runner_metadata_to_postgresql(_c)

@@ -5,10 +5,10 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from cosmotech.csm_data.utils.click import click
-from cosmotech.csm_data.utils.decorators import require_env
-from cosmotech.csm_data.utils.decorators import web_help, translate_help
 from cosmotech.orchestrator.utils.translate import T
+
+from cosmotech.csm_data.utils.click import click
+from cosmotech.csm_data.utils.decorators import require_env, translate_help, web_help
 
 
 @click.command()
@@ -52,38 +52,6 @@ from cosmotech.orchestrator.utils.translate import T
     help=T("csm_data.commands.api.run_load_data.parameters.parameters_absolute_path"),
     required=True,
 )
-@click.option(
-    "--write-json/--no-write-json",
-    envvar="WRITE_JSON",
-    show_envvar=True,
-    default=True,
-    show_default=True,
-    help=T("csm_data.commands.api.run_load_data.parameters.write_json"),
-)
-@click.option(
-    "--write-csv/--no-write-csv",
-    envvar="WRITE_CSV",
-    show_envvar=True,
-    default=False,
-    show_default=True,
-    help=T("csm_data.commands.api.run_load_data.parameters.write_csv"),
-)
-@click.option(
-    "--fetch-dataset/--no-fetch-dataset",
-    envvar="FETCH_DATASET",
-    show_envvar=True,
-    default=True,
-    show_default=True,
-    help=T("csm_data.commands.api.run_load_data.parameters.fetch_dataset"),
-)
-@click.option(
-    "--parallel/--no-parallel",
-    envvar="FETCH_DATASETS_IN_PARALLEL",
-    show_envvar=True,
-    default=True,
-    show_default=True,
-    help=T("csm_data.commands.api.run_load_data.parameters.parallel"),
-)
 @require_env("CSM_API_SCOPE", "The identification scope of a Cosmotech API")
 @require_env("CSM_API_URL", "The URL to a Cosmotech API")
 @web_help("csm-data/api/run-load-data")
@@ -94,25 +62,18 @@ def run_load_data(
     organization_id: str,
     dataset_absolute_path: str,
     parameters_absolute_path: str,
-    write_json: bool,
-    write_csv: bool,
-    fetch_dataset: bool,
-    parallel: bool,
 ):
     # Import the function at the start of the command
-    from cosmotech.coal.cosmotech_api.runner.download import download_runner_data
+    from cosmotech.coal.cosmotech_api.apis.runner import RunnerApi
 
-    return download_runner_data(
+    _r = RunnerApi()
+
+    return _r.download_runner_data(
         organization_id=organization_id,
         workspace_id=workspace_id,
         runner_id=runner_id,
         parameter_folder=parameters_absolute_path,
         dataset_folder=dataset_absolute_path,
-        read_files=False,
-        parallel=parallel,
-        write_json=write_json,
-        write_csv=write_csv,
-        fetch_dataset=fetch_dataset,
     )
 
 

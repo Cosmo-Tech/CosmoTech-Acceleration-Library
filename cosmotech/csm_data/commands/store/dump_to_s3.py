@@ -7,9 +7,10 @@
 
 from typing import Optional
 
-from cosmotech.csm_data.utils.click import click
-from cosmotech.csm_data.utils.decorators import web_help, translate_help
 from cosmotech.orchestrator.utils.translate import T
+
+from cosmotech.csm_data.utils.click import click
+from cosmotech.csm_data.utils.decorators import translate_help, web_help
 
 VALID_TYPES = (
     "sqlite",
@@ -113,10 +114,13 @@ def dump_to_s3(
 ):
     # Import the modules and functions at the start of the command
     from io import BytesIO
+
     import pyarrow.csv as pc
     import pyarrow.parquet as pq
-    from cosmotech.coal.aws import create_s3_client, upload_data_stream
+
+    from cosmotech.coal.aws import S3
     from cosmotech.coal.store.store import Store
+    from cosmotech.coal.utils.configuration import Configuration
     from cosmotech.coal.utils.logger import LOGGER
 
     _s = Store(store_location=store_folder)
@@ -125,14 +129,15 @@ def dump_to_s3(
         LOGGER.error(T("coal.common.errors.data_invalid_output_type").format(output_type=output_type))
         raise ValueError(T("coal.common.errors.data_invalid_output_type").format(output_type=output_type))
 
-    # Create S3 client
-    s3_client = create_s3_client(
-        endpoint_url=endpoint_url,
-        access_id=access_id,
-        secret_key=secret_key,
-        use_ssl=use_ssl,
-        ssl_cert_bundle=ssl_cert_bundle,
-    )
+    _configuration = Configuration()
+    _configuration.s3.bucket_name = bucket_name
+    _configuration.s3.endpoint_url = endpoint_url
+    _configuration.s3.access_key_id = access_id
+    _configuration.s3.secret_access_key = secret_key
+    _configuration.s3.bucket_prefix_prefix = file_prefix
+    _configuration.s3.use_ssl = use_ssl
+    _configuration.s3.ssl_cert_bundle = ssl_cert_bundle
+    _s3 = S3(_configuration)
 
     if output_type == "sqlite":
         _file_path = _s._database_path
@@ -141,7 +146,7 @@ def dump_to_s3(
         LOGGER.info(
             T("coal.common.data_transfer.file_sent").format(file_path=_file_path, uploaded_name=_uploaded_file_name)
         )
-        s3_client.upload_file(_file_path, bucket_name, _uploaded_file_name)
+        _s3.upload_file(_file_path, _uploaded_file_name)
     else:
         tables = list(_s.list_tables())
         for table_name in tables:
@@ -160,10 +165,7 @@ def dump_to_s3(
             LOGGER.info(
                 T("coal.common.data_transfer.sending_table").format(table_name=table_name, output_type=output_type)
             )
-            upload_data_stream(
+            _s3.upload_data_stream(
                 data_stream=_data_stream,
-                bucket_name=bucket_name,
-                s3_client=s3_client,
                 file_name=_file_name,
-                file_prefix=file_prefix,
             )

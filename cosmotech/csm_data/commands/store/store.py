@@ -5,7 +5,6 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from cosmotech.csm_data.commands.api.rds_send_store import rds_send_store
 from cosmotech.csm_data.commands.store.dump_to_azure import dump_to_azure
 from cosmotech.csm_data.commands.store.dump_to_postgresql import dump_to_postgresql
 from cosmotech.csm_data.commands.store.dump_to_s3 import dump_to_s3
@@ -14,9 +13,10 @@ from cosmotech.csm_data.commands.store.load_csv_folder import load_csv_folder
 from cosmotech.csm_data.commands.store.load_from_singlestore import (
     load_from_singlestore_command,
 )
+from cosmotech.csm_data.commands.store.output import output
 from cosmotech.csm_data.commands.store.reset import reset
 from cosmotech.csm_data.utils.click import click
-from cosmotech.csm_data.utils.decorators import web_help, translate_help
+from cosmotech.csm_data.utils.decorators import translate_help, web_help
 
 
 @click.group()
@@ -26,7 +26,6 @@ def store():
     pass
 
 
-store.add_command(rds_send_store, "rds-send-store")
 store.add_command(reset, "reset")
 store.add_command(list_tables, "list-tables")
 store.add_command(load_csv_folder, "load-csv-folder")
@@ -34,3 +33,4 @@ store.add_command(load_from_singlestore_command, "load-from-singlestore")
 store.add_command(dump_to_postgresql, "dump-to-postgresql")
 store.add_command(dump_to_s3, "dump-to-s3")
 store.add_command(dump_to_azure, "dump-to-azure")
+store.add_command(output, "output")
