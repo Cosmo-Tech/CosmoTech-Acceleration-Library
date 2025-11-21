@@ -20,7 +20,6 @@ from cosmotech.coal.utils.logger import LOGGER
 
 class PostgresUtils:
 
-
     def __init__(self, configuration: Configuration):
         self._configuration = configuration.postgres
 
