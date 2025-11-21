@@ -1,9 +1,9 @@
 import time
-
 from functools import wraps
 
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
+
+from cosmotech.coal.utils.logger import LOGGER
 
 
 def timed(operation, debug=False):
@@ -13,11 +13,8 @@ def timed(operation, debug=False):
             process_start = time.time()
             r = func(*args, **kwargs)
             process_time = time.time() - process_start
-            msg = T("coal.common.timing.operation_completed").format(operation=operation, time=process_time)
-            if debug:
-                LOGGER.debug(msg)
-            else:
-                LOGGER.info(msg)
+            log_function = LOGGER.debug if debug else LOGGER.info
+            log_function(T("coal.common.timing.operation_completed").format(operation=operation, time=process_time))
             return r
 
         return wrapper
