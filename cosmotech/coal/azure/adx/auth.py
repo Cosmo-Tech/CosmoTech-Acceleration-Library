@@ -6,13 +6,13 @@
 # specifically authorized by written means by Cosmo Tech.
 
 import os
-from typing import Union, Optional, Tuple
+from typing import Optional, Tuple
 
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.ingest import QueuedIngestClient
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 def create_kusto_client(

@@ -13,25 +13,24 @@ This module provides functions for ingesting runner data into Azure Data Explore
 
 import pathlib
 import time
-from collections import defaultdict
-from typing import Dict, Any, List, Tuple, Optional
+from typing import Any, Dict
 
 from azure.kusto.data.response import KustoResponseDataSet
-from azure.kusto.ingest import ColumnMapping
-from azure.kusto.ingest import FileDescriptor
-from azure.kusto.ingest import IngestionMappingKind
-from azure.kusto.ingest import IngestionProperties
-from azure.kusto.ingest import IngestionResult
-from azure.kusto.ingest import ReportLevel
-
-from azure.kusto.data import KustoClient
-from azure.kusto.ingest import QueuedIngestClient
+from azure.kusto.ingest import (
+    ColumnMapping,
+    FileDescriptor,
+    IngestionMappingKind,
+    IngestionProperties,
+    IngestionResult,
+    QueuedIngestClient,
+    ReportLevel,
+)
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.azure.adx.auth import initialize_clients
-from cosmotech.coal.azure.adx.query import run_query, run_command_query
-from cosmotech.coal.azure.adx.ingestion import check_ingestion_status, IngestionStatus
+from cosmotech.coal.azure.adx.ingestion import IngestionStatus, check_ingestion_status
+from cosmotech.coal.azure.adx.query import run_query
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 def prepare_csv_content(folder_path: str) -> Dict[str, Dict[str, Any]]:
