@@ -6,6 +6,7 @@
 # specifically authorized by written means by Cosmo Tech.
 from typing import Any, Optional
 
+from cosmotech.orchestrator.utils.translate import T
 from cosmotech_api import RunApi as BaseRunApi
 
 from cosmotech.coal.cosmotech_api.objects.connection import Connection
@@ -22,7 +23,7 @@ class RunApi(BaseRunApi, Connection):
         Connection.__init__(self, configuration)
         BaseRunApi.__init__(self, self.api_client)
 
-        LOGGER.debug("Initialized RunApi")
+        LOGGER.debug(T("coal.cosmotech_api.initialization.run_api_initialized"))
 
     def get_run_metadata(
         self,

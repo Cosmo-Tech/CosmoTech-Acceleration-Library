@@ -94,7 +94,7 @@ from cosmotech.csm_data.utils.decorators import translate_help, web_help
 @click.option(
     "--encode-password/--no-encode-password",
     "force_encode",
-    help=T("csm_data.commands.store.postgres_send_runner_metadata.parameters.encode_password"),
+    help=T("csm_data.commands.api.postgres_send_runner_metadata.parameters.encode_password"),
     envvar="CSM_PSQL_FORCE_PASSWORD_ENCODING",
     show_envvar=True,
     default=True,

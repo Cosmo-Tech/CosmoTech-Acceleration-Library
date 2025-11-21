@@ -24,7 +24,7 @@ class WorkspaceApi(BaseWorkspaceApi, Connection):
         Connection.__init__(self, configuration)
         BaseWorkspaceApi.__init__(self, self.api_client)
 
-        LOGGER.debug("Initialized WorkspaceApi")
+        LOGGER.debug(T("coal.cosmotech_api.initialization.workspace_api_initialized"))
 
     def list_filtered_workspace_files(
         self,

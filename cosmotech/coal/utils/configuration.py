@@ -1,6 +1,8 @@
 import os
 import tomllib
 
+from cosmotech.orchestrator.utils.translate import T
+
 from cosmotech.coal.utils.logger import LOGGER
 
 
@@ -137,7 +139,7 @@ class Configuration(Dotdict):
             with open(config_path, "rb") as f:
                 super().__init__(tomllib.load(f))
         else:
-            LOGGER.info("no configuration file set. setting up default values")
+            LOGGER.info(T("coal.utils.configuration.no_config_file"))
             super().__init__(self.CONVERSION_DICT)
 
         if "secrets" in self:

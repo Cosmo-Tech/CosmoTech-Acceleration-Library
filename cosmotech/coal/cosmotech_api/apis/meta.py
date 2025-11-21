@@ -4,6 +4,7 @@
 # Any use, reproduction, translation, broadcasting, transmission, distribution,
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
+from cosmotech.orchestrator.utils.translate import T
 from cosmotech_api import MetaApi as BaseMetaApi
 
 from cosmotech.coal.cosmotech_api.objects.connection import Connection
@@ -21,4 +22,4 @@ class MetaApi(BaseMetaApi, Connection):
 
         BaseMetaApi.__init__(self, self.api_client)
 
-        LOGGER.debug("Initialized MetaApi")
+        LOGGER.debug(T("coal.cosmotech_api.initialization.meta_api_initialized"))

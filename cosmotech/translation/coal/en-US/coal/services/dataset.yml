@@ -52,3 +52,7 @@ processing_json: "Processing JSON file: {file_name}"
 json_processed: "Processed JSON file {file_name} with {items} items"
 processing_text: "Processing text file: {file_name}"
 text_processed: "Processed text file {file_name} with {lines} lines"
+
+# Dataset API operations
+part_downloaded: "Downloaded part {part_name} to {file_path}"
+dataset_created: "Created dataset {dataset_id}"

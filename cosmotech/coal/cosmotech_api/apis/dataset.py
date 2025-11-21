@@ -7,6 +7,7 @@
 from pathlib import Path
 from typing import Optional, Union
 
+from cosmotech.orchestrator.utils.translate import T
 from cosmotech_api import (
     Dataset,
 )
@@ -31,7 +32,7 @@ class DatasetApi(BaseDatasetApi, Connection):
         Connection.__init__(self, configuration)
         BaseDatasetApi.__init__(self, self.api_client)
 
-        LOGGER.debug("Initialized DatasetApi")
+        LOGGER.debug(T("coal.cosmotech_api.initialization.dataset_api_initialized"))
 
     def download_dataset(self, dataset_id) -> Dataset:
         dataset = self.get_dataset(
@@ -53,7 +54,9 @@ class DatasetApi(BaseDatasetApi, Connection):
             )
             with open(part_file_path, "wb") as binary_file:
                 binary_file.write(data_part)
-            LOGGER.debug(f"Downloaded part {part.source_name} to {part_file_path}")
+            LOGGER.debug(
+                T("coal.services.dataset.part_downloaded").format(part_name=part.source_name, file_path=part_file_path)
+            )
         return dataset
 
     @staticmethod
@@ -96,5 +99,5 @@ class DatasetApi(BaseDatasetApi, Connection):
             files=list((_p[0], _p[1].open("rb").read()) for _p in _parts),
         )
 
-        LOGGER.info(f"Created dataset {d_ret.id}")
+        LOGGER.info(T("coal.services.dataset.dataset_created").format(dataset_id=d_ret.id))
         return d_ret

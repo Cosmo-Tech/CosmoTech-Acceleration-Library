@@ -25,7 +25,7 @@ class RunnerApi(BaseRunnerApi, Connection):
         Connection.__init__(self, configuration)
         BaseRunnerApi.__init__(self, self.api_client)
 
-        LOGGER.debug("Initialized RunnerApi")
+        LOGGER.debug(T("coal.cosmotech_api.initialization.runner_api_initialized"))
 
     def get_runner_metadata(
         self,
