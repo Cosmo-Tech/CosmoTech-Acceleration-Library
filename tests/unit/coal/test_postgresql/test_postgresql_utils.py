@@ -4,85 +4,82 @@
 # Any use, reproduction, translation, broadcasting, transmission, distribution,
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
-from unittest.mock import MagicMock
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import adbc_driver_manager
 import pyarrow as pa
+import pytest
 
-from cosmotech.coal.utils.postgresql import adapt_table_to_schema
-from cosmotech.coal.utils.postgresql import generate_postgresql_full_uri
-from cosmotech.coal.utils.postgresql import get_postgresql_table_schema
-from cosmotech.coal.utils.postgresql import send_pyarrow_table_to_postgresql
+from cosmotech.coal.postgresql.utils import (
+    PostgresUtils,
+    adapt_table_to_schema,
+)
+from cosmotech.coal.utils.configuration import Configuration
+
+
+@pytest.fixture
+def base_configuration():
+    _c = Configuration()
+    _c.postgres.host = "localhost"
+    _c.postgres.port = "5432"
+    _c.postgres.db_name = "testdb"
+    _c.postgres.db_schema = "dbschema"
+    _c.postgres.user_name = "user"
+    _c.postgres.user_password = "password"
+    _c.postgres.password_encoding = False
+    return _c
+
+
+@pytest.fixture
+def base_configuration_encode(base_configuration):
+    _c = base_configuration
+    _c.postgres.user_password = "pass@word!"
+    _c.postgres.password_encoding = True
+    return _c
 
 
 class TestPostgresqlFunctions:
     """Tests for top-level functions in the postgresql module."""
 
-    def test_generate_postgresql_full_uri(self):
+    def test_generate_postgresql_full_uri(self, base_configuration):
         """Test the generate_postgresql_full_uri function."""
         # Arrange
-        postgres_host = "localhost"
-        postgres_port = "5432"
-        postgres_db = "testdb"
-        postgres_user = "user"
-        postgres_password = "password"
+        _psql = PostgresUtils(base_configuration)
 
         # Act
-        result = generate_postgresql_full_uri(
-            postgres_host, postgres_port, postgres_db, postgres_user, postgres_password
-        )
+        result = _psql.full_uri
 
         # Assert
         assert result == "postgresql://user:password@localhost:5432/testdb"
 
-    def test_generate_postgresql_full_uri_with_special_chars(self):
+    def test_generate_postgresql_full_uri_with_special_chars(self, base_configuration_encode):
         """Test the generate_postgresql_full_uri function with special characters in password."""
         # Arrange
-        postgres_host = "localhost"
-        postgres_port = "5432"
-        postgres_db = "testdb"
-        postgres_user = "user"
-        postgres_password = "pass@word!"
-        force_encode = True
+        _psql = PostgresUtils(base_configuration_encode)
 
         # Act
-        result = generate_postgresql_full_uri(
-            postgres_host, postgres_port, postgres_db, postgres_user, postgres_password, force_encode
-        )
+        result = _psql.full_uri
 
         # Assert
         assert result == "postgresql://user:pass%40word%21@localhost:5432/testdb"
 
-    def test_generate_postgresql_full_uri_with_special_chars_no_encode(self):
+    def test_generate_postgresql_full_uri_with_special_chars_no_encode(self, base_configuration_encode):
         """Test the generate_postgresql_full_uri function with special characters in password."""
         # Arrange
-        postgres_host = "localhost"
-        postgres_port = "5432"
-        postgres_db = "testdb"
-        postgres_user = "user"
-        postgres_password = "pass@word!"
-        force_encode = False
+        base_configuration_encode.postgres.password_encoding = False
+        _psql = PostgresUtils(base_configuration_encode)
 
         # Act
-        result = generate_postgresql_full_uri(
-            postgres_host, postgres_port, postgres_db, postgres_user, postgres_password, force_encode
-        )
-
+        result = _psql.full_uri
         # Assert
         assert result == "postgresql://user:pass@word!@localhost:5432/testdb"
 
     @patch("adbc_driver_postgresql.dbapi.connect")
-    def test_get_postgresql_table_schema_found(self, mock_connect):
+    def test_get_postgresql_table_schema_found(self, mock_connect, base_configuration):
         """Test the get_postgresql_table_schema function when table is found."""
         # Arrange
         target_table_name = "test_table"
-        postgres_host = "localhost"
-        postgres_port = "5432"
-        postgres_db = "testdb"
-        postgres_schema = "public"
-        postgres_user = "user"
-        postgres_password = "password"
+        _psql = PostgresUtils(base_configuration)
 
         # Mock connection and cursor
         mock_conn = MagicMock()
@@ -93,34 +90,22 @@ class TestPostgresqlFunctions:
         mock_conn.adbc_get_table_schema.return_value = expected_schema
 
         # Act
-        result = get_postgresql_table_schema(
-            target_table_name,
-            postgres_host,
-            postgres_port,
-            postgres_db,
-            postgres_schema,
-            postgres_user,
-            postgres_password,
-        )
+        result = _psql.get_postgresql_table_schema(target_table_name)
 
         # Assert
         assert result == expected_schema
         mock_conn.adbc_get_table_schema.assert_called_once_with(
             target_table_name,
-            db_schema_filter=postgres_schema,
+            db_schema_filter=_psql.db_schema,
         )
 
     @patch("adbc_driver_postgresql.dbapi.connect")
-    def test_get_postgresql_table_schema_not_found(self, mock_connect):
+    def test_get_postgresql_table_schema_not_found(self, mock_connect, base_configuration):
         """Test the get_postgresql_table_schema function when table is not found."""
         # Arrange
         target_table_name = "test_table"
-        postgres_host = "localhost"
-        postgres_port = "5432"
-        postgres_db = "testdb"
-        postgres_schema = "public"
-        postgres_user = "user"
-        postgres_password = "password"
+        _psql = PostgresUtils(base_configuration)
+        print(base_configuration.postgres)
 
         # Mock connection and cursor
         mock_conn = MagicMock()
@@ -131,21 +116,15 @@ class TestPostgresqlFunctions:
         )
 
         # Act
-        result = get_postgresql_table_schema(
+        result = _psql.get_postgresql_table_schema(
             target_table_name,
-            postgres_host,
-            postgres_port,
-            postgres_db,
-            postgres_schema,
-            postgres_user,
-            postgres_password,
         )
 
         # Assert
         assert result is None
         mock_conn.adbc_get_table_schema.assert_called_once_with(
             target_table_name,
-            db_schema_filter=postgres_schema,
+            db_schema_filter=_psql.db_schema,
         )
 
     def test_adapt_table_to_schema_same_schema(self):
@@ -249,25 +228,16 @@ class TestPostgresqlFunctions:
         assert result.column(1).null_count == 3
 
     @patch("adbc_driver_postgresql.dbapi.connect")
-    @patch("cosmotech.coal.utils.postgresql.get_postgresql_table_schema")
-    def test_send_pyarrow_table_to_postgresql_new_table(self, mock_get_schema, mock_connect):
+    def test_send_pyarrow_table_to_postgresql_new_table(self, mock_connect, base_configuration):
         """Test the send_pyarrow_table_to_postgresql function with a new table."""
         # Arrange
         schema = pa.schema([pa.field("id", pa.int64()), pa.field("name", pa.string())])
         data = pa.Table.from_arrays([pa.array([1, 2, 3]), pa.array(["a", "b", "c"])], schema=schema)
 
-        target_table_name = "test_table"
-        postgres_host = "localhost"
-        postgres_port = "5432"
-        postgres_db = "testdb"
-        postgres_schema = "public"
-        postgres_user = "user"
-        postgres_password = "password"
-        replace = False
-        force_encode = True
+        _psql = PostgresUtils(base_configuration)
 
-        # Mock get_postgresql_table_schema to return None (table doesn't exist)
-        mock_get_schema.return_value = None
+        target_table_name = "test_table"
+        replace = False
 
         # Mock connection and cursor
         mock_conn = MagicMock()
@@ -275,65 +245,51 @@ class TestPostgresqlFunctions:
         mock_connect.return_value.__enter__.return_value = mock_conn
         mock_conn.cursor.return_value.__enter__.return_value = mock_cursor
 
+        # Mock get_table_schema result to return None (table doesn't exist)
+        mock_conn.adbc_get_table_schema.return_value = None
+
         # Mock adbc_ingest to return row count
         mock_cursor.adbc_ingest.return_value = 3
 
         # Act
-        result = send_pyarrow_table_to_postgresql(
-            data,
-            target_table_name,
-            postgres_host,
-            postgres_port,
-            postgres_db,
-            postgres_schema,
-            postgres_user,
-            postgres_password,
-            replace,
-            force_encode,
-        )
+        result = _psql.send_pyarrow_table_to_postgresql(data, target_table_name, replace)
 
         # Assert
         assert result == 3
-        mock_get_schema.assert_called_once_with(
+        mock_conn.adbc_get_table_schema.assert_called_once_with(
             target_table_name,
-            postgres_host,
-            postgres_port,
-            postgres_db,
-            postgres_schema,
-            postgres_user,
-            postgres_password,
-            force_encode,
+            db_schema_filter=_psql.db_schema,
         )
         mock_cursor.adbc_ingest.assert_called_once_with(
-            target_table_name, data, "create_append", db_schema_name=postgres_schema
+            target_table_name, data, "create_append", db_schema_name=_psql.db_schema
         )
 
     @patch("adbc_driver_postgresql.dbapi.connect")
-    @patch("cosmotech.coal.utils.postgresql.get_postgresql_table_schema")
-    @patch("cosmotech.coal.utils.postgresql.adapt_table_to_schema")
+    @patch("cosmotech.coal.postgresql.utils.adapt_table_to_schema")
     def test_send_pyarrow_table_to_postgresql_existing_table_append(
-        self, mock_adapt_schema, mock_get_schema, mock_connect
+        self, mock_adapt_schema, mock_connect, base_configuration
     ):
         """Test the send_pyarrow_table_to_postgresql function with an existing table in append mode."""
         # Arrange
         schema = pa.schema([pa.field("id", pa.int64()), pa.field("name", pa.string())])
         data = pa.Table.from_arrays([pa.array([1, 2, 3]), pa.array(["a", "b", "c"])], schema=schema)
 
+        _psql = PostgresUtils(base_configuration)
+
         target_table_name = "test_table"
-        postgres_host = "localhost"
-        postgres_port = "5432"
-        postgres_db = "testdb"
-        postgres_schema = "public"
-        postgres_user = "user"
-        postgres_password = "password"
         replace = False
-        force_encode = True
+
+        # Mock connection and cursor
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_connect.return_value.__enter__.return_value = mock_conn
+        mock_conn.cursor.return_value.__enter__.return_value = mock_cursor
 
         # Mock get_postgresql_table_schema to return a schema (table exists)
         existing_schema = pa.schema(
             [pa.field("id", pa.int64()), pa.field("name", pa.string()), pa.field("extra", pa.float64())]
         )
-        mock_get_schema.return_value = existing_schema
+        mock_conn.adbc_get_table_schema.return_value = existing_schema
 
         # Mock adapt_table_to_schema to return adapted data
         adapted_data = pa.Table.from_arrays(
@@ -341,69 +297,38 @@ class TestPostgresqlFunctions:
         )
         mock_adapt_schema.return_value = adapted_data
 
-        # Mock connection and cursor
-        mock_conn = MagicMock()
-        mock_cursor = MagicMock()
-        mock_connect.return_value.__enter__.return_value = mock_conn
-        mock_conn.cursor.return_value.__enter__.return_value = mock_cursor
-
         # Mock adbc_ingest to return row count
         mock_cursor.adbc_ingest.return_value = 3
 
         # Act
-        result = send_pyarrow_table_to_postgresql(
+        result = _psql.send_pyarrow_table_to_postgresql(
             data,
             target_table_name,
-            postgres_host,
-            postgres_port,
-            postgres_db,
-            postgres_schema,
-            postgres_user,
-            postgres_password,
             replace,
-            force_encode,
         )
 
         # Assert
         assert result == 3
-        mock_get_schema.assert_called_once_with(
+        mock_conn.adbc_get_table_schema.assert_called_once_with(
             target_table_name,
-            postgres_host,
-            postgres_port,
-            postgres_db,
-            postgres_schema,
-            postgres_user,
-            postgres_password,
-            force_encode,
+            db_schema_filter=_psql.db_schema,
         )
         mock_adapt_schema.assert_called_once_with(data, existing_schema)
         mock_cursor.adbc_ingest.assert_called_once_with(
-            target_table_name, adapted_data, "create_append", db_schema_name=postgres_schema
+            target_table_name, adapted_data, "create_append", db_schema_name=_psql.db_schema
         )
 
     @patch("adbc_driver_postgresql.dbapi.connect")
-    @patch("cosmotech.coal.utils.postgresql.get_postgresql_table_schema")
-    def test_send_pyarrow_table_to_postgresql_existing_table_replace(self, mock_get_schema, mock_connect):
+    def test_send_pyarrow_table_to_postgresql_existing_table_replace(self, mock_connect, base_configuration):
         """Test the send_pyarrow_table_to_postgresql function with an existing table in replace mode."""
         # Arrange
         schema = pa.schema([pa.field("id", pa.int64()), pa.field("name", pa.string())])
         data = pa.Table.from_arrays([pa.array([1, 2, 3]), pa.array(["a", "b", "c"])], schema=schema)
 
-        target_table_name = "test_table"
-        postgres_host = "localhost"
-        postgres_port = "5432"
-        postgres_db = "testdb"
-        postgres_schema = "public"
-        postgres_user = "user"
-        postgres_password = "password"
-        replace = True
-        force_encode = True
+        _psql = PostgresUtils(base_configuration)
 
-        # Mock get_postgresql_table_schema to return a schema (table exists)
-        existing_schema = pa.schema(
-            [pa.field("id", pa.int64()), pa.field("name", pa.string()), pa.field("extra", pa.float64())]
-        )
-        mock_get_schema.return_value = existing_schema
+        target_table_name = "test_table"
+        replace = True
 
         # Mock connection and cursor
         mock_conn = MagicMock()
@@ -411,35 +336,25 @@ class TestPostgresqlFunctions:
         mock_connect.return_value.__enter__.return_value = mock_conn
         mock_conn.cursor.return_value.__enter__.return_value = mock_cursor
 
+        # Mock get_postgresql_table_schema to return a schema (table exists)
+        existing_schema = pa.schema(
+            [pa.field("id", pa.int64()), pa.field("name", pa.string()), pa.field("extra", pa.float64())]
+        )
+        mock_conn.adbc_get_table_schema.return_value = existing_schema
+
         # Mock adbc_ingest to return row count
         mock_cursor.adbc_ingest.return_value = 3
 
         # Act
-        result = send_pyarrow_table_to_postgresql(
+        result = _psql.send_pyarrow_table_to_postgresql(
             data,
             target_table_name,
-            postgres_host,
-            postgres_port,
-            postgres_db,
-            postgres_schema,
-            postgres_user,
-            postgres_password,
             replace,
-            force_encode,
         )
 
         # Assert
         assert result == 3
-        mock_get_schema.assert_called_once_with(
-            target_table_name,
-            postgres_host,
-            postgres_port,
-            postgres_db,
-            postgres_schema,
-            postgres_user,
-            postgres_password,
-            force_encode,
-        )
+        mock_conn.adbc_get_table_schema.assert_called_once_with(target_table_name, db_schema_filter=_psql.db_schema)
         mock_cursor.adbc_ingest.assert_called_once_with(
-            target_table_name, data, "replace", db_schema_name=postgres_schema
+            target_table_name, data, "replace", db_schema_name=_psql.db_schema
         )
