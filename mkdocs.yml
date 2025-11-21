@@ -94,16 +94,6 @@ plugins:
   - search:
       lang:
         - en
-  - mkdocstrings:
-      default_handler: python
-      handlers:
-        python:
-          options:
-            docstring_style: sphinx
-            line_length: 120
-            show_root_heading: true
-            show_source: true
-            heading_level: 2
   - gen-files:
       scripts:
 #        - docs/scripts/generate_references.py
