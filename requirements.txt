@@ -1,37 +1,37 @@
 # Azure connection requirements
-azure-functions~=1.20.0
-azure-digitaltwins-core~=1.2.0
-azure-identity~=1.16.1
-azure-kusto-data~=4.4.1
-azure-kusto-ingest~=4.4.1
-tenacity~=8.3.0
+azure-functions~=1.20
+azure-digitaltwins-core~=1.2
+azure-identity~=1.16
+azure-kusto-data~=4.4
+azure-kusto-ingest~=4.4
+tenacity~=9.1
 
 # Keycloak connection
-python-keycloak~=4.7.3
+python-keycloak~=5.8
 
 # Cosmotech specific requirements
 cosmotech-api~=5.0.0rc1
 
 
 # Commands requirements
-boto3~=1.35.19
-requests~=2.32.3
-singlestoredb~=1.10.0
+boto3~=1.41
+requests~=2.32
+singlestoredb~=1.16
 
 # Orchestrator templates requirements
 cosmotech-run-orchestrator~=2.0.0
 
 # Data store requirements
-pyarrow~=20.0.0
-adbc-driver-manager~=1.7.0
-adbc-driver-sqlite~=1.7.0
-adbc-driver-postgresql~=1.7.0
+pyarrow~=22.0
+adbc-driver-manager~=1.7
+adbc-driver-sqlite~=1.7
+adbc-driver-postgresql~=1.7
 
 # CLI requirements
-click~=8.1.7
-rich-click~=1.7.3
-click-log~=0.4.0
-tqdm~=4.67.1
+click~=8.1
+rich-click~=1.7
+click-log~=0.4
+tqdm~=4.67
 
 # Other requirements
 openpyxl~=3.1
