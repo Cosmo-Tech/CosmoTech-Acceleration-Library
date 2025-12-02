@@ -25,7 +25,7 @@ class AwsChannel(ChannelInterface):
         self.configuration = Configuration(dct)
         self._s3 = S3(self.configuration)
 
-    def send(self, tables_filter: Optional[list[str]] = None) -> bool:
+    def send(self, filter: Optional[list[str]] = None) -> bool:
 
         _s = Store(store_location=self.configuration.cosmotech.parameters_absolute_path)
 
@@ -43,8 +43,8 @@ class AwsChannel(ChannelInterface):
             self._s3.upload_file(_file_path, _uploaded_file_name)
         else:
             tables = list(_s.list_tables())
-            if tables_filter:
-                tables = [t for t in tables if t in tables_filter]
+            if filter:
+                tables = [t for t in tables if t in filter]
 
             for table_name in tables:
                 _data_stream = BytesIO()

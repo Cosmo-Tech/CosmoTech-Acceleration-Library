@@ -107,7 +107,7 @@ class TestAzureStorageChannel:
         tables_filter = ["table1", "table2"]
 
         # Act
-        channel.send(tables_filter=tables_filter)
+        channel.send(filter=tables_filter)
 
         # Assert
         mock_dump.assert_called_once_with(

@@ -26,12 +26,12 @@ class PostgresChannel(ChannelInterface):
     def __init__(self, dct: Dotdict = None):
         self.configuration = Configuration(dct)
 
-    def send(self, tables_filter: Optional[list[str]] = None) -> bool:
+    def send(self, filter: Optional[list[str]] = None) -> bool:
         run_id = send_runner_metadata_to_postgresql(self.configuration)
         dump_store_to_postgresql_from_conf(
             self.configuration,
             store_folder=self.configuration.cosmotech.dataset_absolute_path,
-            selected_tables=tables_filter,
+            selected_tables=filter,
             fk_id=run_id,
         )
 

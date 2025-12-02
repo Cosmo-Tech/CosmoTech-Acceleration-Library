@@ -170,7 +170,7 @@ class TestAwsChannel:
         channel = AwsChannel(config)
 
         # Act
-        channel.send(tables_filter=["table1", "table3"])
+        channel.send(filter=["table1", "table3"])
 
         # Assert
         # Should only process table1 and table3

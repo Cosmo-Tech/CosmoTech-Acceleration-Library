@@ -25,7 +25,7 @@ class AzureStorageChannel(ChannelInterface):
     def __init__(self, dct: Dotdict = None):
         self.configuration = Configuration(dct)
 
-    def send(self, tables_filter: Optional[list[str]] = None) -> bool:
+    def send(self, filter: Optional[list[str]] = None) -> bool:
         dump_store_to_azure(
             store_folder=self.configuration.cosmotech.dataset_absolute_path,
             account_name=self.configuration.azure.account_name,
@@ -35,7 +35,7 @@ class AzureStorageChannel(ChannelInterface):
             client_secret=self.configuration.azure.client_secret,
             output_type=self.configuration.azure.output_type,
             file_prefix=self.configuration.azure.file_prefix,
-            selected_tables=tables_filter,
+            selected_tables=filter,
         )
 
     def delete(self):

@@ -122,7 +122,7 @@ class TestPostgresChannel:
         tables_filter = ["table1", "table2", "table3"]
 
         # Act
-        channel.send(tables_filter=tables_filter)
+        channel.send(filter=tables_filter)
 
         # Assert
         mock_send_metadata.assert_called_once()
