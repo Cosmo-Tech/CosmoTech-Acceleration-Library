@@ -86,7 +86,6 @@ def dump_store_to_postgresql_from_conf(
         fk_id: foreign key id to add to all table on all rows
     """
     _psql = PostgresUtils(configuration)
-    print(_psql.send_pyarrow_table_to_postgresql)
     _s = Store(store_location=store_folder)
 
     tables = list(_s.list_tables())
@@ -103,9 +102,9 @@ def dump_store_to_postgresql_from_conf(
             if fk_id:
                 _s.execute_query(
                     f"""
-                    ALTER TABLE {_psql.table_prefix}{table_name}
-                    ADD run_id TEXT NOT NULL
-                    DEFAULT ({fk_id})
+                    ALTER TABLE {table_name}
+                    ADD csm_run_id TEXT NOT NULL
+                    DEFAULT ('{fk_id})
                     """
                 )
             data = _s.get_table(table_name)
@@ -120,7 +119,7 @@ def dump_store_to_postgresql_from_conf(
             )
             if fk_id and _psql.is_metadata_exists():
                 metadata_table = f"{_psql.table_prefix}RunnerMetadata"
-                _psql.add_fk_constraint(table_name, "run_id", metadata_table, "last_run_id")
+                _psql.add_fk_constraint(table_name, "csm_run_id", metadata_table, "last_csm_run_id")
 
             total_rows += rows
             _up_time = perf_counter()

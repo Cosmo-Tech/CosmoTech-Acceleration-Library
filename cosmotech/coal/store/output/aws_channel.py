@@ -8,7 +8,7 @@ from cosmotech.orchestrator.utils.translate import T
 from cosmotech.coal.aws import S3
 from cosmotech.coal.store.output.channel_interface import ChannelInterface
 from cosmotech.coal.store.store import Store
-from cosmotech.coal.utils.configuration import Configuration
+from cosmotech.coal.utils.configuration import Configuration, Dotdict
 from cosmotech.coal.utils.logger import LOGGER
 
 
@@ -21,7 +21,7 @@ class AwsChannel(ChannelInterface):
     }
     requirement_string = required_keys
 
-    def __init__(self, dct: dict = None):
+    def __init__(self, dct: Dotdict = None):
         self.configuration = Configuration(dct)
         self._s3 = S3(self.configuration)
 

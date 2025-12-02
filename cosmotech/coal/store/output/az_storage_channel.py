@@ -2,7 +2,7 @@ from typing import Optional
 
 from cosmotech.coal.azure.blob import dump_store_to_azure
 from cosmotech.coal.store.output.channel_interface import ChannelInterface
-from cosmotech.coal.utils.configuration import Configuration
+from cosmotech.coal.utils.configuration import Configuration, Dotdict
 
 
 class AzureStorageChannel(ChannelInterface):
@@ -22,7 +22,7 @@ class AzureStorageChannel(ChannelInterface):
     }
     requirement_string = required_keys
 
-    def __init__(self, dct: dict = None):
+    def __init__(self, dct: Dotdict = None):
         self.configuration = Configuration(dct)
 
     def send(self, tables_filter: Optional[list[str]] = None) -> bool:
