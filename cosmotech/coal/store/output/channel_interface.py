@@ -21,3 +21,11 @@ class ChannelInterface:
             )
         except KeyError:
             return False
+
+
+class MissingChannelConfigError(Exception):
+    def __init__(self, interface_class):
+        self.message = T("coal.store.output.split.requirements").format(
+            interface_name=interface_class.__class__.__name__, requirements=interface_class.requirement_string
+        )
+        super().__init__(self.message)

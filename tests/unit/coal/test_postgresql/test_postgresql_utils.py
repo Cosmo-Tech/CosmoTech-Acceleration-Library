@@ -19,14 +19,19 @@ from cosmotech.coal.utils.configuration import Configuration
 
 @pytest.fixture
 def base_configuration():
-    _c = Configuration()
-    _c.postgres.host = "localhost"
-    _c.postgres.port = "5432"
-    _c.postgres.db_name = "testdb"
-    _c.postgres.db_schema = "dbschema"
-    _c.postgres.user_name = "user"
-    _c.postgres.user_password = "password"
-    _c.postgres.password_encoding = False
+    _c = Configuration(
+        {
+            "postgres": {
+                "host": "localhost",
+                "port": "5432",
+                "db_name": "testdb",
+                "db_schema": "dbschema",
+                "user_name": "user",
+                "user_password": "password",
+                "password_encoding": False,
+            }
+        }
+    )
     return _c
 
 

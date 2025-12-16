@@ -10,7 +10,7 @@ from unittest.mock import MagicMock, call, patch
 import pyarrow as pa
 
 from cosmotech.coal.postgresql.store import dump_store_to_postgresql
-from cosmotech.coal.postgresql.utils import Configuration, PostgresUtils
+from cosmotech.coal.postgresql.utils import Configuration
 
 
 class TestStoreFunctions:
@@ -45,6 +45,24 @@ class TestStoreFunctions:
         table_prefix = "Test_"
         replace = True
 
+        _config = Configuration(
+            {
+                "coal": {
+                    "store": store_folder,
+                },
+                "postgres": {
+                    "host": postgres_host,
+                    "port": postgres_port,
+                    "db_name": postgres_db,
+                    "db_schema": postgres_schema,
+                    "user_name": postgres_user,
+                    "user_password": postgres_password,
+                    "password_encoding": False,
+                    "table_prefix": table_prefix,
+                },
+            }
+        )
+
         # Act
         dump_store_to_postgresql(
             store_folder,
@@ -60,7 +78,7 @@ class TestStoreFunctions:
 
         # Assert
         # Check that Store was initialized with the correct parameters
-        mock_store_class.assert_called_once_with(store_location=store_folder)
+        mock_store_class.assert_called_once_with(configuration=_config)
 
         # Check that list_tables was called
         mock_store_instance.list_tables.assert_called_once()
@@ -106,6 +124,24 @@ class TestStoreFunctions:
         postgres_user = "user"
         postgres_password = "password"
 
+        _config = Configuration(
+            {
+                "coal": {
+                    "store": store_folder,
+                },
+                "postgres": {
+                    "host": postgres_host,
+                    "port": postgres_port,
+                    "db_name": postgres_db,
+                    "db_schema": postgres_schema,
+                    "user_name": postgres_user,
+                    "user_password": postgres_password,
+                    "password_encoding": False,
+                    "table_prefix": "Cosmotech_",
+                },
+            }
+        )
+
         # Act
         dump_store_to_postgresql(
             store_folder, postgres_host, postgres_port, postgres_db, postgres_schema, postgres_user, postgres_password
@@ -113,7 +149,7 @@ class TestStoreFunctions:
 
         # Assert
         # Check that Store was initialized with the correct parameters
-        mock_store_class.assert_called_once_with(store_location=store_folder)
+        mock_store_class.assert_called_once_with(configuration=_config)
 
         # Check that list_tables was called
         mock_store_instance.list_tables.assert_called_once()
@@ -150,6 +186,24 @@ class TestStoreFunctions:
         postgres_password = "password"
         table_prefix = "Test_"
 
+        _config = Configuration(
+            {
+                "coal": {
+                    "store": store_folder,
+                },
+                "postgres": {
+                    "host": postgres_host,
+                    "port": postgres_port,
+                    "db_name": postgres_db,
+                    "db_schema": postgres_schema,
+                    "user_name": postgres_user,
+                    "user_password": postgres_password,
+                    "password_encoding": False,
+                    "table_prefix": table_prefix,
+                },
+            }
+        )
+
         # Act
         dump_store_to_postgresql(
             store_folder,
@@ -164,7 +218,7 @@ class TestStoreFunctions:
 
         # Assert
         # Check that Store was initialized with the correct parameters
-        mock_store_class.assert_called_once_with(store_location=store_folder)
+        mock_store_class.assert_called_once_with(configuration=_config)
 
         # Check that list_tables was called
         mock_store_instance.list_tables.assert_called_once()

@@ -15,6 +15,14 @@ from cosmotech.coal.utils.configuration import Dotdict
 
 class TestUtilsConfiguration:
 
+    @pytest.fixture(autouse=True)
+    def reset_environ(self):
+        if "CONFIG_FILE_PATH" in os.environ:
+            os.environ.pop("CONFIG_FILE_PATH")
+        if "LOG_LEVEL" in os.environ:
+            os.environ.pop("LOG_LEVEL")
+        yield
+
     def test_no_config_file(self):
         c = configuration.Configuration()
         assert isinstance(c, Dotdict)
@@ -29,7 +37,6 @@ class TestUtilsConfiguration:
         assert c.log_level == "test_value"
 
     def test_config_file_with_secrets(self):
-
         os.environ["CONFIG_FILE_PATH"] = os.path.abspath(os.path.join(os.path.dirname(__file__), "conf.ini"))
         os.environ["faismoinlmalin"] = "la"
 
@@ -39,6 +46,36 @@ class TestUtilsConfiguration:
         with pytest.raises(KeyError):
             c.secrets
         assert c.foo.alors == "la"
+
+    def test_config_file_with_ref(self):
+        os.environ["CONFIG_FILE_PATH"] = os.path.abspath(os.path.join(os.path.dirname(__file__), "conf.ini"))
+        c = configuration.Configuration()
+        c.section.ref = "$section.sub.TEST"
+
+        assert c.section.ref == c.section.sub.TEST
+
+    def test_safe_get(self):
+        os.environ["LOG_LEVEL"] = "test_value"
+        c = configuration.Configuration()
+
+        assert c.safe_get("log_level") == "test_value"
+
+    def test_safe_get_none_dict(self):
+        os.environ["LOG_LEVEL"] = "test_value"
+        c = configuration.Configuration()
+
+        assert c.safe_get("log_level.test") is None
+
+    def test_safe_get_sub_section(self):
+        os.environ["CONFIG_FILE_PATH"] = os.path.abspath(os.path.join(os.path.dirname(__file__), "conf.ini"))
+        c = configuration.Configuration()
+
+        assert c.safe_get("DEFAULT.A.test") == 1
+
+    def test_safe_get_default_value(self):
+        c = configuration.Configuration()
+
+        assert c.safe_get("log_level", "thats_a_no") == "thats_a_no"
 
 
 class TestUtilsDotdict:
@@ -101,8 +138,7 @@ class TestUtilsDotdict:
         dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref_lvl99": "$lvl1.lvl2.lvl99"}
         dotdict_a = Dotdict(dict_a)
 
-        with pytest.raises(KeyError):
-            dotdict_a.ref_lvl99
+        assert dotdict_a.ref_lvl99 is None
 
     def test_ref_in_sub_dict(self):
         dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref": {"ref_lvl2": "$lvl1.lvl2"}}

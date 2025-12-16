@@ -17,9 +17,13 @@ class Dotdict(dict):
         _v = self.__getitem__(key)
         if isinstance(_v, str) and _v.startswith("$"):
             _r = self.root
-            for _p in _v[1:].split("."):
-                _r = _r[_p]
-            return _r
+            try:
+                for _p in _v[1:].split("."):
+                    _r = _r.get(_p, None)
+                return _r
+            except (KeyError, AttributeError):
+                LOGGER.warning("dotdict Ref {_v} doesn't exist")
+                return None
         return _v
 
     __delattr__ = dict.__delitem__
@@ -42,41 +46,48 @@ class Dotdict(dict):
             if isinstance(v, Dotdict) and k in self:
                 self[k].merge(v)
             else:
-                self[k] = v
+                # this trigger dict to dotdict conversion at merge
+                self.__setattr__(k, v)
 
 
 class Configuration(Dotdict):
-
+    # Env var set by the cosmotech api at runtime
+    API_ENV_DICT = {
+        "secrets": {
+            "cosmotech": {
+                "twin_cache": {
+                    "host": "TWIN_CACHE_HOST",
+                    "port": "TWIN_CACHE_PORT",
+                    "password": "TWIN_CACHE_PASSWORD",
+                    "username": "TWIN_CACHE_USERNAME",
+                },
+                "idp": {
+                    "tenant_id": "IDP_TENANT_ID",
+                    "client_id": "IDP_CLIENT_ID",
+                    "client_secret": "IDP_CLIENT_SECRET",
+                },
+                "api": {"url": "CSM_API_URL", "scope": "CSM_API_SCOPE"},
+                "dataset_absolute_path": "CSM_DATASET_ABSOLUTE_PATH",
+                "parameters_absolute_path": "CSM_PARAMETERS_ABSOLUTE_PATH",
+                "organization_id": "CSM_ORGANIZATION_ID",
+                "workspace_id": "CSM_WORKSPACE_ID",
+                "runner_id": "CSM_RUNNER_ID",
+                "run_id": "CSM_RUN_ID",
+                "run_template_id": "CSM_RUN_TEMPLATE_ID",
+            }
+        }
+    }
     # HARD CODED ENVVAR CONVERSION
     CONVERSION_DICT = {
-        "outputs": [
-            {
-                "type": "postgres",
-                "conf": {
-                    "cosmotech": {
-                        "dataset_absolute_path": "$cosmotech.dataset_absolute_path",
-                        "organization_id": "$cosmotech.organization_id",
-                        "workspace_id": "$cosmotech.workspace_id",
-                        "runner_id": "$cosmotech.runner_id",
-                    },
-                    "postgres": {
-                        "host": "$postgres.host",
-                        "post": "$postgres.post",
-                        "db_name": "$postgres.db_name",
-                        "db_schema": "$postgres.db_schema",
-                        "user_name": "$postgres.user_name",
-                        "user_password": "$postgres.user_password",
-                    },
-                },
-            }
-        ],
         "secrets": {
             "log_level": "LOG_LEVEL",
             "s3": {
                 "access_key_id": "AWS_ACCESS_KEY_ID",
                 "endpoint_url": "AWS_ENDPOINT_URL",
                 "secret_access_key": "AWS_SECRET_ACCESS_KEY",
+                "bucket_name": "CSM_DATA_BUCKET_NAME",
                 "bucket_prefix": "CSM_DATA_BUCKET_PREFIX",
+                "ca_bundle": "CSM_S3_CA_BUNDLE",
             },
             "azure": {
                 "account_name": "AZURE_ACCOUNT_NAME",
@@ -87,30 +98,16 @@ class Configuration(Dotdict):
                 "data_explorer_resource_ingest_uri": "AZURE_DATA_EXPLORER_RESOURCE_INGEST_URI",
                 "data_explorer_resource_uri": "AZURE_DATA_EXPLORER_RESOURCE_URI",
                 "storage_blob_name": "AZURE_STORAGE_BLOB_NAME",
+                "data_blob_prefix": "CSM_DATA_BLOB_PREFIX",
+                "data_prefix": "CSM_DATA_PREFIX",
                 "storage_sas_url": "AZURE_STORAGE_SAS_URL",
                 "tenant_id": "AZURE_TENANT_ID",
             },
             "cosmotech": {
-                "api_url": "CSM_API_URL",
-                "container_mode": "CSM_CONTAINER_MODE",
                 "data_adx_tag": "CSM_DATA_ADX_TAG",
                 "data_adx_wait_ingestion": "CSM_DATA_ADX_WAIT_INGESTION",
-                "data_blob_prefix": "CSM_DATA_BLOB_PREFIX",
-                "data_bucket_name": "CSM_DATA_BUCKET_NAME",
-                "data_prefix": "CSM_DATA_PREFIX",
-                "dataset_absolute_path": "CSM_DATASET_ABSOLUTE_PATH",
-                "organization_id": "CSM_ORGANIZATION_ID",
-                "parameters_absolute_path": "CSM_PARAMETERS_ABSOLUTE_PATH",
-                "run_id": "CSM_RUN_ID",
-                "runner_id": "CSM_RUNNER_ID",
-                "run_template_id": "CSM_RUN_TEMPLATE_ID",
-                "s3_ca_bundle": "CSM_S3_CA_BUNDLE",
-                "scenario_id": "CSM_SCENARIO_ID",
                 "send_datawarehouse_datasets": "CSM_SEND_DATAWAREHOUSE_DATASETS",
                 "send_datawarehouse_parameters": "CSM_SEND_DATAWAREHOUSE_PARAMETERS",
-                "workspace_id": "CSM_WORKSPACE_ID",
-                "fetch_dataset": "FETCH_DATASET",
-                "fetch_datasets_in_parallel": "FETCH_DATASETS_IN_PARALLEL",
             },
             "postgres": {
                 "db_name": "POSTGRES_DB_NAME",
@@ -132,15 +129,27 @@ class Configuration(Dotdict):
         },
     }
 
+    # HARD CODED configmap mount path set in K8s simulation pod by API run function
+    K8S_CONFIG = "/mnt/coal/coal-config.toml"
+
     def __init__(self, dct: dict = None):
         if dct:
             super().__init__(dct)
         elif config_path := os.environ.get("CONFIG_FILE_PATH", default=None):
-            with open(config_path, "rb") as f:
-                super().__init__(tomllib.load(f))
+            with open(config_path, "rb") as config:
+                super().__init__(tomllib.load(config))
+        elif os.path.isfile(self.K8S_CONFIG):
+            with open(self.K8S_CONFIG) as config:
+                super().__init__(tomllib.load(config))
         else:
             LOGGER.info(T("coal.utils.configuration.no_config_file"))
             super().__init__(self.CONVERSION_DICT)
+
+        # add coal.store default value if ont define
+        if self.safe_get("coal.store") is None:
+            self.merge({"coal": {"store": "$cosmotech.parameters_absolute_path"}})
+        # add envvar set by the API
+        self.merge(Dotdict(self.API_ENV_DICT))
 
         if "secrets" in self:
             self.secrets = self._env_swap_recusion(self.secrets)
@@ -153,17 +162,28 @@ class Configuration(Dotdict):
         for k, v in dic.items():
             if isinstance(v, Dotdict):
                 dic[k] = self._env_swap_recusion(v)
-                # remove value not found
                 dic[k] = {k: v for k, v in dic[k].items() if v is not None}
             elif isinstance(v, list):
                 dic[k] = list(self._env_swap_recusion(_v) for _v in v)
             elif isinstance(v, str):
                 dic[k] = os.environ.get(v)
+        # remove value not found
+        dic = {k: v for k, v in dic.items() if v}
         return dic
 
     def merge_in(self, dic):
         trans_dic = self._env_swap_recusion(dic)
-        self._merge(trans_dic)
+        self.merge(trans_dic)
+
+    def safe_get(self, key, default=None):
+        try:
+            _r = self
+            for _k in key.split("."):
+                _r = _r.get(_k, default)
+            return _r
+        except (KeyError, AttributeError) as err:
+            LOGGER.warning(err)
+            return default
 
 
 ENVIRONMENT_CONFIGURATION = Configuration()

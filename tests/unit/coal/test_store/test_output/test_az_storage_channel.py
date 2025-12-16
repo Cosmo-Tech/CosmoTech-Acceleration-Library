@@ -10,16 +10,15 @@ from unittest.mock import patch
 import pytest
 
 from cosmotech.coal.store.output.az_storage_channel import AzureStorageChannel
+from cosmotech.coal.utils.configuration import Configuration
 
 
-class TestAzureStorageChannel:
-    """Tests for the AzureStorageChannel class."""
-
-    def test_init_with_configuration(self):
-        """Test AzureStorageChannel initialization with configuration."""
-        # Arrange
-        config = {
-            "cosmotech": {"dataset_absolute_path": "/path/to/dataset"},
+@pytest.fixture
+def base_azure_storage_config():
+    return Configuration(
+        {
+            "coal": {"store": "$cosmotech.parameters_absolute_path"},
+            "cosmotech": {"dataset_absolute_path": "/path/to/dataset", "parameters_absolute_path": "/path/to/params"},
             "azure": {
                 "account_name": "test_account",
                 "container_name": "test_container",
@@ -30,9 +29,16 @@ class TestAzureStorageChannel:
                 "file_prefix": "prefix_",
             },
         }
+    )
 
+
+class TestAzureStorageChannel:
+    """Tests for the AzureStorageChannel class."""
+
+    def test_init_with_configuration(self, base_azure_storage_config):
+        """Test AzureStorageChannel initialization with configuration."""
         # Act
-        channel = AzureStorageChannel(config)
+        channel = AzureStorageChannel(base_azure_storage_config)
 
         # Assert
         assert channel.configuration is not None
@@ -40,9 +46,9 @@ class TestAzureStorageChannel:
     def test_required_keys(self):
         """Test that required_keys are properly defined."""
         # Assert
-        assert "cosmotech" in AzureStorageChannel.required_keys
+        assert "coal" in AzureStorageChannel.required_keys
+        assert "store" in AzureStorageChannel.required_keys["coal"]
         assert "azure" in AzureStorageChannel.required_keys
-        assert "dataset_absolute_path" in AzureStorageChannel.required_keys["cosmotech"]
         assert "account_name" in AzureStorageChannel.required_keys["azure"]
         assert "container_name" in AzureStorageChannel.required_keys["azure"]
         assert "tenant_id" in AzureStorageChannel.required_keys["azure"]
@@ -52,58 +58,25 @@ class TestAzureStorageChannel:
         assert "file_prefix" in AzureStorageChannel.required_keys["azure"]
 
     @patch("cosmotech.coal.store.output.az_storage_channel.dump_store_to_azure")
-    def test_send_without_filter(self, mock_dump):
+    @patch("cosmotech.coal.azure.blob.Store")
+    @patch("cosmotech.coal.azure.blob.ClientSecretCredential")
+    def test_send_without_filter(self, mock_client_secret, mock_store, mock_dump, base_azure_storage_config):
         """Test sending data without table filter."""
-        # Arrange
-        config = {
-            "cosmotech": {"dataset_absolute_path": "/path/to/dataset"},
-            "azure": {
-                "account_name": "test_account",
-                "container_name": "test_container",
-                "tenant_id": "test_tenant",
-                "client_id": "test_client",
-                "client_secret": "test_secret",
-                "output_type": "csv",
-                "file_prefix": "prefix_",
-            },
-        }
-
-        channel = AzureStorageChannel(config)
+        channel = AzureStorageChannel(base_azure_storage_config)
 
         # Act
         channel.send()
 
         # Assert
-        mock_dump.assert_called_once_with(
-            store_folder="/path/to/dataset",
-            account_name="test_account",
-            container_name="test_container",
-            tenant_id="test_tenant",
-            client_id="test_client",
-            client_secret="test_secret",
-            output_type="csv",
-            file_prefix="prefix_",
-            selected_tables=None,
-        )
+        mock_dump.assert_called_once_with(base_azure_storage_config, selected_tables=None)
 
     @patch("cosmotech.coal.store.output.az_storage_channel.dump_store_to_azure")
-    def test_send_with_filter(self, mock_dump):
+    @patch("cosmotech.coal.azure.blob.Store")
+    @patch("cosmotech.coal.azure.blob.ClientSecretCredential")
+    def test_send_with_filter(self, mock_client_secret, mock_store, mock_dump, base_azure_storage_config):
         """Test sending data with table filter."""
-        # Arrange
-        config = {
-            "cosmotech": {"dataset_absolute_path": "/path/to/dataset"},
-            "azure": {
-                "account_name": "test_account",
-                "container_name": "test_container",
-                "tenant_id": "test_tenant",
-                "client_id": "test_client",
-                "client_secret": "test_secret",
-                "output_type": "parquet",
-                "file_prefix": "data_",
-            },
-        }
 
-        channel = AzureStorageChannel(config)
+        channel = AzureStorageChannel(base_azure_storage_config)
         tables_filter = ["table1", "table2"]
 
         # Act
@@ -111,34 +84,13 @@ class TestAzureStorageChannel:
 
         # Assert
         mock_dump.assert_called_once_with(
-            store_folder="/path/to/dataset",
-            account_name="test_account",
-            container_name="test_container",
-            tenant_id="test_tenant",
-            client_id="test_client",
-            client_secret="test_secret",
-            output_type="parquet",
-            file_prefix="data_",
+            base_azure_storage_config,
             selected_tables=["table1", "table2"],
         )
 
-    def test_delete(self):
+    def test_delete(self, base_azure_storage_config):
         """Test delete method (should do nothing)."""
-        # Arrange
-        config = {
-            "cosmotech": {"dataset_absolute_path": "/path/to/dataset"},
-            "azure": {
-                "account_name": "test_account",
-                "container_name": "test_container",
-                "tenant_id": "test_tenant",
-                "client_id": "test_client",
-                "client_secret": "test_secret",
-                "output_type": "csv",
-                "file_prefix": "prefix_",
-            },
-        }
-
-        channel = AzureStorageChannel(config)
+        channel = AzureStorageChannel(base_azure_storage_config)
 
         # Act
         result = channel.delete()

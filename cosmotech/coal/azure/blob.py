@@ -21,6 +21,7 @@ from azure.storage.blob import BlobServiceClient
 from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.store.store import Store
+from cosmotech.coal.utils.configuration import Configuration
 from cosmotech.coal.utils.logger import LOGGER
 
 VALID_TYPES = (
@@ -31,42 +32,35 @@ VALID_TYPES = (
 
 
 def dump_store_to_azure(
-    store_folder: str,
-    account_name: str,
-    container_name: str,
-    tenant_id: str,
-    client_id: str,
-    client_secret: str,
-    output_type: str = "sqlite",
-    file_prefix: str = "",
+    configuration: Configuration = Configuration(),
     selected_tables: list[str] = [],
 ) -> None:
     """
     Dump Store data to Azure Blob Storage.
 
     Args:
-        store_folder: Folder containing the Store
-        account_name: Azure Storage account name
-        container_name: Azure Storage container name
-        tenant_id: Azure tenant ID
-        client_id: Azure client ID
-        client_secret: Azure client secret
-        output_type: Output file type (sqlite, csv, or parquet)
-        file_prefix: Prefix for uploaded files
+        configuration: Configuration utils class
+        selected_tables: List of tables name
 
     Raises:
         ValueError: If the output type is invalid
     """
-    _s = Store(store_location=store_folder)
+    _s = Store(configuration=configuration)
+    output_type = configuration.safe_get("azure.output_type", default="sqlite")
+    file_prefix = configuration.safe_get("azure.file_prefix", default="")
 
     if output_type not in VALID_TYPES:
         LOGGER.error(T("coal.common.validation.invalid_output_type").format(output_type=output_type))
         raise ValueError(T("coal.common.validation.invalid_output_type").format(output_type=output_type))
 
     container_client = BlobServiceClient(
-        account_url=f"https://{account_name}.blob.core.windows.net/",
-        credential=ClientSecretCredential(tenant_id=tenant_id, client_id=client_id, client_secret=client_secret),
-    ).get_container_client(container_name)
+        account_url=f"https://{configuration.azure.account_name}.blob.core.windows.net/",
+        credential=ClientSecretCredential(
+            tenant_id=configuration.azure.tenant_id,
+            client_id=configuration.azure.client_id,
+            client_secret=configuration.azure.client_secret,
+        ),
+    ).get_container_client(configuration.azure.container_name)
 
     def data_upload(data_stream: BytesIO, file_name: str):
         uploaded_file_name = file_prefix + file_name
