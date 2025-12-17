@@ -15,7 +15,7 @@ class PostgresChannel(ChannelInterface):
         "cosmotech": ["organization_id", "workspace_id", "runner_id"],
         "postgres": [
             "host",
-            "post",
+            "port",
             "db_name",
             "db_schema",
             "user_name",
@@ -23,9 +23,6 @@ class PostgresChannel(ChannelInterface):
         ],
     }
     requirement_string = required_keys
-
-    def __init__(self, dct: Dotdict = None):
-        self.configuration = Configuration(dct)
 
     def send(self, filter: Optional[list[str]] = None) -> bool:
         run_id = send_runner_metadata_to_postgresql(self.configuration)

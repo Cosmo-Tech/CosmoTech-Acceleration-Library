@@ -43,7 +43,7 @@ class Dotdict(dict):
             return data
 
         for k, v in dct.items():
-            self[k] = update(v)
+            self.__setattr__(k, update(v))
 
     def merge(self, d):
         for k, v in d.items():
@@ -138,7 +138,9 @@ class Configuration(Dotdict):
     K8S_CONFIG = "/mnt/coal/coal-config.toml"
 
     def __init__(self, dct: dict = None):
-        if dct:
+        if isinstance(dct, Dotdict):
+            super().__init__(dct, root=dct.root)
+        elif isinstance(dct, dict):
             super().__init__(dct)
         elif config_path := os.environ.get("CONFIG_FILE_PATH", default=None):
             with open(config_path, "rb") as config:
@@ -150,9 +152,6 @@ class Configuration(Dotdict):
             LOGGER.info(T("coal.utils.configuration.no_config_file"))
             super().__init__(self.CONVERSION_DICT)
 
-        # add coal.store default value if ont define
-        if self.safe_get("coal.store") is None:
-            self.merge({"coal": {"store": "$cosmotech.parameters_absolute_path"}})
         # add envvar set by the API
         self.merge(Dotdict(self.API_ENV_DICT))
 
@@ -161,6 +160,10 @@ class Configuration(Dotdict):
             # set secret section back to respective section
             self.merge(self.secrets)
             del self.secrets
+
+        # add coal.store default value if ont define
+        if self.safe_get("coal.store") is None:
+            self.merge({"coal": {"store": "$cosmotech.parameters_absolute_path"}})
 
     # convert value to env
     def _env_swap_recusion(self, dic):
