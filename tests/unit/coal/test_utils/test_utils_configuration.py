@@ -10,7 +10,7 @@ import os
 import pytest
 
 from cosmotech.coal.utils import configuration
-from cosmotech.coal.utils.configuration import Dotdict
+from cosmotech.coal.utils.configuration import Dotdict, ReferenceKeyError
 
 
 class TestUtilsConfiguration:
@@ -102,7 +102,6 @@ class TestUtilsDotdict:
 
         db1.merge(db2)
 
-        print(db1)
         expected = {"pain": {"baguette": 4, "sesame": 4, "noix": 1}, "croissant": 5, "chocolatine": 5}
         assert db1 == expected
 
@@ -111,6 +110,16 @@ class TestUtilsDotdict:
         dotdict_a = Dotdict(dict_a)
 
         assert dotdict_a.ref.ref_lvl3 == "here"
+
+    def test_nested_ref_value(self):
+        dict_a = {
+            "lvl1": {"lvl2": {"lvl3": "here"}},
+            "ref": {"ref_lvl3": "$lvl1.lvl2.lvl3", "ref_ref": "$ref.ref_lvl3"},
+        }
+
+        dotdict_a = Dotdict(dict_a)
+
+        assert dotdict_a.ref.ref_ref == "here"
 
     def test_ref_dict_lvl(self):
         dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref": {"ref_lvl2": "$lvl1.lvl2"}}
@@ -134,11 +143,12 @@ class TestUtilsDotdict:
         dotdict_a.lvl1.lvl2.lvl3 = "there"
         assert dotdict_a.ref.ref_lvl2 == {"lvl3": "there"}
 
-    def test_unknow_ref_key_error(self):
+    def test_unknown_ref_key_error(self):
         dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref_lvl99": "$lvl1.lvl2.lvl99"}
         dotdict_a = Dotdict(dict_a)
 
-        assert dotdict_a.ref_lvl99 is None
+        with pytest.raises(ReferenceKeyError):
+            dotdict_a.ref_lvl99
 
     def test_ref_in_sub_dict(self):
         dict_a = {"lvl1": {"lvl2": {"lvl3": "here"}}, "ref": {"ref_lvl2": "$lvl1.lvl2"}}

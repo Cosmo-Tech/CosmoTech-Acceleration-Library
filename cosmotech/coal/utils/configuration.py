@@ -6,6 +6,10 @@ from cosmotech.orchestrator.utils.translate import T
 from cosmotech.coal.utils.logger import LOGGER
 
 
+class ReferenceKeyError(KeyError):
+    pass
+
+
 class Dotdict(dict):
     """dot.notation access to dictionary attributes"""
 
@@ -19,11 +23,11 @@ class Dotdict(dict):
             _r = self.root
             try:
                 for _p in _v[1:].split("."):
-                    _r = _r.get(_p, None)
+                    _r = _r.__getattr__(_p)
                 return _r
             except (KeyError, AttributeError):
                 LOGGER.warning("dotdict Ref {_v} doesn't exist")
-                return None
+                raise ReferenceKeyError(_v)
         return _v
 
     __delattr__ = dict.__delitem__
@@ -62,6 +66,7 @@ class Configuration(Dotdict):
                     "username": "TWIN_CACHE_USERNAME",
                 },
                 "idp": {
+                    "base_url": "IDP_BASE_URL",
                     "tenant_id": "IDP_TENANT_ID",
                     "client_id": "IDP_CLIENT_ID",
                     "client_secret": "IDP_CLIENT_SECRET",
@@ -139,7 +144,7 @@ class Configuration(Dotdict):
             with open(config_path, "rb") as config:
                 super().__init__(tomllib.load(config))
         elif os.path.isfile(self.K8S_CONFIG):
-            with open(self.K8S_CONFIG) as config:
+            with open(self.K8S_CONFIG, "rb") as config:
                 super().__init__(tomllib.load(config))
         else:
             LOGGER.info(T("coal.utils.configuration.no_config_file"))
@@ -179,7 +184,7 @@ class Configuration(Dotdict):
         try:
             _r = self
             for _k in key.split("."):
-                _r = _r.get(_k, default)
+                _r = _r.__getattr__(_k)
             return _r
         except (KeyError, AttributeError) as err:
             LOGGER.warning(err)
