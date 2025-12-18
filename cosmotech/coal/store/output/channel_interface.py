@@ -2,8 +2,7 @@ from typing import Optional
 
 from cosmotech.orchestrator.utils.translate import T
 
-from cosmotech.coal.utils.configuration import Configuration
-from cosmotech.coal.utils.configuration import Dotdict
+from cosmotech.coal.utils.configuration import Configuration, Dotdict
 
 
 class ChannelInterface:

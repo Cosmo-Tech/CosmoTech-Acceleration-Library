@@ -5,22 +5,20 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import os
-import tempfile
+from unittest.mock import MagicMock, call, patch
+
 import pytest
-from unittest.mock import MagicMock, patch, call, mock_open
-
+from azure.kusto.data import KustoClient
 from azure.kusto.data.response import KustoResponseDataSet
+from azure.kusto.ingest import QueuedIngestClient
 
+from cosmotech.coal.azure.adx.ingestion import IngestionStatus
 from cosmotech.coal.azure.adx.runner import (
-    prepare_csv_content,
     construct_create_query,
     insert_csv_files,
+    prepare_csv_content,
     send_runner_data,
 )
-from azure.kusto.data import KustoClient
-from azure.kusto.ingest import QueuedIngestClient
-from cosmotech.coal.azure.adx.ingestion import IngestionStatus
 
 
 class TestRunnerFunctions:

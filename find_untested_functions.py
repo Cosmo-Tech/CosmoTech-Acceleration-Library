@@ -3,11 +3,11 @@
 Script to find functions in cosmotech/coal/ that don't have corresponding tests.
 """
 
-import os
 import ast
+import os
 import re
-from pathlib import Path
 from collections import defaultdict
+from pathlib import Path
 
 
 def get_functions_from_file(file_path):

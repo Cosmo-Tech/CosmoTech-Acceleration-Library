@@ -1,6 +1,10 @@
 import pandas as pd
+
+from cosmotech.coal.store.pandas import (
+    convert_store_table_to_dataframe,
+    store_dataframe,
+)
 from cosmotech.coal.store.store import Store
-from cosmotech.coal.store.pandas import store_dataframe, convert_store_table_to_dataframe
 
 # Initialize the store
 store = Store(reset=True)

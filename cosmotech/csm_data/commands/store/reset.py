@@ -7,8 +7,7 @@
 from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.csm_data.utils.click import click
-from cosmotech.csm_data.utils.decorators import translate_help
-from cosmotech.csm_data.utils.decorators import web_help
+from cosmotech.csm_data.utils.decorators import translate_help, web_help
 
 
 @click.command()
@@ -26,8 +25,8 @@ from cosmotech.csm_data.utils.decorators import web_help
 def reset(store_folder):
     # Import the modules and functions at the start of the command
     from cosmotech.coal.store.store import Store
-    from cosmotech.coal.utils.logger import LOGGER
     from cosmotech.coal.utils.configuration import Configuration
+    from cosmotech.coal.utils.logger import LOGGER
 
     _conf = Configuration()
 

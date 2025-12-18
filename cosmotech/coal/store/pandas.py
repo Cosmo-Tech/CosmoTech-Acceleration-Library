@@ -5,10 +5,10 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
+import pandas as pd
 import pyarrow
 
 from cosmotech.coal.store.store import Store
-import pandas as pd
 
 
 def store_dataframe(

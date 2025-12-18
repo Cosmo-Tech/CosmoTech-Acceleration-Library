@@ -5,14 +5,17 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import os
-import pytest
 from unittest.mock import MagicMock, patch
 
+import pytest
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.ingest import QueuedIngestClient
 
-from cosmotech.coal.azure.adx.auth import create_kusto_client, create_ingest_client, get_cluster_urls
+from cosmotech.coal.azure.adx.auth import (
+    create_ingest_client,
+    create_kusto_client,
+    get_cluster_urls,
+)
 
 
 class TestAuthFunctions:

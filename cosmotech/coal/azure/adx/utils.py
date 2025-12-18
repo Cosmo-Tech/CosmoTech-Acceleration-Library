@@ -5,13 +5,13 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import dateutil.parser
 from typing import Any, Dict
 
+import dateutil.parser
 import pyarrow
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 def create_column_mapping(data: pyarrow.Table) -> Dict[str, str]:

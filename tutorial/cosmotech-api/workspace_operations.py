@@ -1,10 +1,11 @@
 # Example: Working with workspaces in the CosmoTech API
 import os
 import pathlib
+
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.workspace import (
-    list_workspace_files,
     download_workspace_file,
+    list_workspace_files,
     upload_workspace_file,
 )
 from cosmotech.coal.utils.logger import LOGGER
