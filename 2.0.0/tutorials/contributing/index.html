@@ -2228,12 +2228,13 @@ touch<span class="w"> </span>cosmotech/coal/mongodb/store.py
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">perf_counter</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyarrow</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pymongo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.orchestrator.utils.translate</span><span class="w"> </span><span class="kn">import</span> <span class="n">T</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.orchestrator.utils.translate</span><span class="w"> </span><span class="kn">import</span> <span class="n">T</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">send_pyarrow_table_to_mongodb</span><span class="p">(</span>
@@ -2372,9 +2373,10 @@ touch<span class="w"> </span>cosmotech/coal/mongodb/store.py
 <span class="c1"># etc., to any person is prohibited unless it has been previously and</span>
 <span class="c1"># specifically authorized by written means by Cosmo Tech.</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.utils.click</span><span class="w"> </span><span class="kn">import</span> <span class="n">click</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.utils.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">web_help</span><span class="p">,</span> <span class="n">translate_help</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.orchestrator.utils.translate</span><span class="w"> </span><span class="kn">import</span> <span class="n">T</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.utils.click</span><span class="w"> </span><span class="kn">import</span> <span class="n">click</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.utils.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">translate_help</span><span class="p">,</span> <span class="n">web_help</span>
 
 
 <span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
@@ -2446,12 +2448,16 @@ touch<span class="w"> </span>cosmotech/coal/mongodb/store.py
 <span class="c1"># specifically authorized by written means by Cosmo Tech.</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.commands.store.dump_to_azure</span><span class="w"> </span><span class="kn">import</span> <span class="n">dump_to_azure</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.commands.store.dump_to_mongodb</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">dump_to_mongodb</span><span class="p">,</span>  <span class="c1"># Add this line</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.commands.store.dump_to_postgresql</span><span class="w"> </span><span class="kn">import</span> <span class="n">dump_to_postgresql</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.commands.store.dump_to_s3</span><span class="w"> </span><span class="kn">import</span> <span class="n">dump_to_s3</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.commands.store.dump_to_mongodb</span><span class="w"> </span><span class="kn">import</span> <span class="n">dump_to_mongodb</span>  <span class="c1"># Add this line</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.commands.store.list_tables</span><span class="w"> </span><span class="kn">import</span> <span class="n">list_tables</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.commands.store.load_csv_folder</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_csv_folder</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.commands.store.load_from_singlestore</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_from_singlestore</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.commands.store.load_from_singlestore</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">load_from_singlestore</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.commands.store.reset</span><span class="w"> </span><span class="kn">import</span> <span class="n">reset</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.csm_data.commands.store.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">store</span>
 
@@ -2520,14 +2526,16 @@ touch<span class="w"> </span>tests/unit/coal/mongodb/test_store.py
 <span class="c1"># etc., to any person is prohibited unless it has been previously and</span>
 <span class="c1"># specifically authorized by written means by Cosmo Tech.</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">patch</span><span class="p">,</span> <span class="n">MagicMock</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagicMock</span><span class="p">,</span> <span class="n">patch</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyarrow</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.mongodb.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">send_pyarrow_table_to_mongodb</span><span class="p">,</span> <span class="n">dump_store_to_mongodb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.mongodb.store</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">dump_store_to_mongodb</span><span class="p">,</span>
+    <span class="n">send_pyarrow_table_to_mongodb</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
 
 

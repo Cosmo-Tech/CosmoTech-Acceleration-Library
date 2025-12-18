@@ -2,114 +2,114 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/dependencies/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/pull_request/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/adx-send-data/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/adx-send-runnerdata/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/az-storage-upload/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/s3-bucket-delete/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/s3-bucket-download/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/s3-bucket-upload/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/api/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/api/postgres-send-runner-metadata/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/api/run-load-data/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/api/wsf-load-file/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/api/wsf-send-file/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/store/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/store/dump-to-azure/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/store/dump-to-postgresql/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/store/dump-to-s3/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/store/list-tables/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/store/load-csv-folder/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/store/load-from-singlestore/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/csm-data/store/reset/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/tutorials/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/tutorials/contributing/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/tutorials/cosmotech-api/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/tutorials/csm-data/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
     <url>
          <loc>https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.0.0/tutorials/datastore/</loc>
-         <lastmod>2025-12-02</lastmod>
+         <lastmod>2025-12-18</lastmod>
     </url>
 </urlset>

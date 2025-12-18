@@ -2102,8 +2102,10 @@
 <span class="normal">60</span>
 <span class="normal">61</span>
 <span class="normal">62</span>
-<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Setting up connections to the CosmoTech API</span>
+<span class="normal">63</span>
+<span class="normal">64</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Setting up connections to the CosmoTech API</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_api_client</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
 
@@ -2266,13 +2268,15 @@
 <span class="normal">64</span>
 <span class="normal">65</span>
 <span class="normal">66</span>
-<span class="normal">67</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with workspaces in the CosmoTech API</span>
+<span class="normal">67</span>
+<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with workspaces in the CosmoTech API</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_api_client</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.workspace</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">list_workspace_files</span><span class="p">,</span>
     <span class="n">download_workspace_file</span><span class="p">,</span>
+    <span class="n">list_workspace_files</span><span class="p">,</span>
     <span class="n">upload_workspace_file</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
@@ -2342,10 +2346,10 @@
 <h3 id="downloading-files">Downloading Files<a class="headerlink" href="#downloading-files" title="Permanent link">&para;</a></h3>
 <p>The <code>download_workspace_file</code> function downloads a file from the workspace to a local directory:</p>
 <div class="highlight"><pre><span></span><code><span class="n">downloaded_file</span> <span class="o">=</span> <span class="n">download_workspace_file</span><span class="p">(</span>
-    <span class="n">api_client</span><span class="p">,</span> 
-    <span class="n">organization_id</span><span class="p">,</span> 
-    <span class="n">workspace_id</span><span class="p">,</span> 
-    <span class="n">file_to_download</span><span class="p">,</span> 
+    <span class="n">api_client</span><span class="p">,</span>
+    <span class="n">organization_id</span><span class="p">,</span>
+    <span class="n">workspace_id</span><span class="p">,</span>
+    <span class="n">file_to_download</span><span class="p">,</span>
     <span class="n">target_directory</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -2514,13 +2518,17 @@
 <span class="normal">137</span>
 <span class="normal">138</span>
 <span class="normal">139</span>
-<span class="normal">140</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with the Twin Data Layer in the CosmoTech API</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with the Twin Data Layer in the CosmoTech API</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech_api.api.twin_graph_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">TwinGraphApi</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_api_client</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.twin_data_layer</span><span class="w"> </span><span class="kn">import</span> <span class="n">CSVSourceFile</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech_api.api.twin_graph_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">TwinGraphApi</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
 
 <span class="c1"># Set up environment variables for authentication</span>
@@ -2796,15 +2804,17 @@
 <span class="normal">105</span>
 <span class="normal">106</span>
 <span class="normal">107</span>
-<span class="normal">108</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with runners and runs in the CosmoTech API</span>
+<span class="normal">108</span>
+<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with runners and runs in the CosmoTech API</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_api_client</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.runner</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">download_datasets</span><span class="p">,</span>
+    <span class="n">download_runner_data</span><span class="p">,</span>
     <span class="n">get_runner_data</span><span class="p">,</span>
     <span class="n">get_runner_parameters</span><span class="p">,</span>
-    <span class="n">download_runner_data</span><span class="p">,</span>
-    <span class="n">download_datasets</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
 
@@ -3186,24 +3196,28 @@
 <span class="normal">243</span>
 <span class="normal">244</span>
 <span class="normal">245</span>
-<span class="normal">246</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Complete workflow using the CosmoTech API</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Complete workflow using the CosmoTech API</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech_api.api.dataset_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatasetApi</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech_api.api.twin_graph_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">TwinGraphApi</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_api_client</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.runner</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">get_runner_data</span><span class="p">,</span>
     <span class="n">download_runner_data</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.workspace</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">list_workspace_files</span><span class="p">,</span>
-    <span class="n">download_workspace_file</span><span class="p">,</span>
-    <span class="n">upload_workspace_file</span><span class="p">,</span>
+    <span class="n">get_runner_data</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.twin_data_layer</span><span class="w"> </span><span class="kn">import</span> <span class="n">CSVSourceFile</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech_api.api.twin_graph_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">TwinGraphApi</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech_api.api.dataset_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatasetApi</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.workspace</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">download_workspace_file</span><span class="p">,</span>
+    <span class="n">list_workspace_files</span><span class="p">,</span>
+    <span class="n">upload_workspace_file</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
 
 <span class="c1"># Set up environment variables for authentication</span>
