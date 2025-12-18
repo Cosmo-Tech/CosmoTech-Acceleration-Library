@@ -56,3 +56,9 @@ text_processed: "Processed text file {file_name} with {lines} lines"
 # Dataset API operations
 part_downloaded: "Downloaded part {part_name} to {file_path}"
 dataset_created: "Created dataset {dataset_id}"
+
+# Dataset parts operations
+part_uploaded: "Uploaded part {part_name}"
+part_replaced: "Replaced existing part {part_name}"
+part_skipped: "Skipped existing part {part_name} (use replace_existing=True to overwrite)"
+parts_uploaded: "Successfully uploaded parts to dataset {dataset_id}"
