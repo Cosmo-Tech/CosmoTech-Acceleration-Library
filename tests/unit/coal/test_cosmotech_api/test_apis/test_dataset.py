@@ -236,3 +236,276 @@ class TestDatasetApi:
         call_args = api.create_dataset.call_args
         # Verify the request has an empty parts list
         assert len(call_args[0][2].parts) == 0
+
+    @patch.dict(os.environ, {"CSM_API_KEY": "test-api-key", "CSM_API_URL": "https://api.example.com"}, clear=True)
+    @patch("cosmotech_api.ApiClient")
+    @patch("cosmotech_api.Configuration")
+    def test_upload_dataset_with_tags(self, mock_cosmotech_config, mock_api_client):
+        """Test uploading a dataset with tags."""
+        mock_config = MagicMock()
+        mock_config.cosmotech.organization_id = "org-123"
+        mock_config.cosmotech.workspace_id = "ws-456"
+
+        mock_client_instance = MagicMock()
+        mock_api_client.return_value = mock_client_instance
+        mock_configuration_instance = MagicMock()
+        mock_cosmotech_config.return_value = mock_configuration_instance
+
+        mock_dataset = MagicMock(spec=Dataset)
+        mock_dataset.id = "new-dataset-123"
+
+        api = DatasetApi(configuration=mock_config)
+        api.create_dataset = MagicMock(return_value=mock_dataset)
+
+        result = api.upload_dataset("Test Dataset", tags=["tag1", "tag2"])
+
+        assert result == mock_dataset
+        api.create_dataset.assert_called_once()
+        call_args = api.create_dataset.call_args
+        request = call_args[0][2]
+        assert request.tags == ["tag1", "tag2"]
+
+    @patch.dict(os.environ, {"CSM_API_KEY": "test-api-key", "CSM_API_URL": "https://api.example.com"}, clear=True)
+    @patch("cosmotech_api.ApiClient")
+    @patch("cosmotech_api.Configuration")
+    def test_upload_dataset_with_additional_data(self, mock_cosmotech_config, mock_api_client):
+        """Test uploading a dataset with additional_data."""
+        mock_config = MagicMock()
+        mock_config.cosmotech.organization_id = "org-123"
+        mock_config.cosmotech.workspace_id = "ws-456"
+
+        mock_client_instance = MagicMock()
+        mock_api_client.return_value = mock_client_instance
+        mock_configuration_instance = MagicMock()
+        mock_cosmotech_config.return_value = mock_configuration_instance
+
+        mock_dataset = MagicMock(spec=Dataset)
+        mock_dataset.id = "new-dataset-123"
+
+        api = DatasetApi(configuration=mock_config)
+        api.create_dataset = MagicMock(return_value=mock_dataset)
+
+        result = api.upload_dataset("Test Dataset", additional_data={"key": "value", "nested": {"a": 1}})
+
+        assert result == mock_dataset
+        api.create_dataset.assert_called_once()
+        call_args = api.create_dataset.call_args
+        request = call_args[0][2]
+        assert request.additional_data == {"key": "value", "nested": {"a": 1}}
+
+    @patch.dict(os.environ, {"CSM_API_KEY": "test-api-key", "CSM_API_URL": "https://api.example.com"}, clear=True)
+    @patch("cosmotech_api.ApiClient")
+    @patch("cosmotech_api.Configuration")
+    def test_upload_dataset_with_tags_and_additional_data(self, mock_cosmotech_config, mock_api_client):
+        """Test uploading a dataset with both tags and additional_data."""
+        mock_config = MagicMock()
+        mock_config.cosmotech.organization_id = "org-123"
+        mock_config.cosmotech.workspace_id = "ws-456"
+
+        mock_client_instance = MagicMock()
+        mock_api_client.return_value = mock_client_instance
+        mock_configuration_instance = MagicMock()
+        mock_cosmotech_config.return_value = mock_configuration_instance
+
+        mock_dataset = MagicMock(spec=Dataset)
+        mock_dataset.id = "new-dataset-123"
+
+        api = DatasetApi(configuration=mock_config)
+        api.create_dataset = MagicMock(return_value=mock_dataset)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            file1 = Path(tmpdir) / "file1.csv"
+            file1.write_text("data1")
+
+            result = api.upload_dataset(
+                "Test Dataset",
+                as_files=[str(file1)],
+                tags=["tag1", "tag2"],
+                additional_data={"key": "value"},
+            )
+
+            assert result == mock_dataset
+            api.create_dataset.assert_called_once()
+            call_args = api.create_dataset.call_args
+            request = call_args[0][2]
+            assert request.tags == ["tag1", "tag2"]
+            assert request.additional_data == {"key": "value"}
+            assert len(request.parts) == 1
+
+    @patch.dict(os.environ, {"CSM_API_KEY": "test-api-key", "CSM_API_URL": "https://api.example.com"}, clear=True)
+    @patch("cosmotech_api.ApiClient")
+    @patch("cosmotech_api.Configuration")
+    def test_upload_dataset_parts_new_parts(self, mock_cosmotech_config, mock_api_client):
+        """Test uploading new parts to an existing dataset."""
+        mock_config = MagicMock()
+        mock_config.cosmotech.organization_id = "org-123"
+        mock_config.cosmotech.workspace_id = "ws-456"
+
+        mock_client_instance = MagicMock()
+        mock_api_client.return_value = mock_client_instance
+        mock_configuration_instance = MagicMock()
+        mock_cosmotech_config.return_value = mock_configuration_instance
+
+        # Mock existing dataset with no parts
+        mock_dataset = MagicMock(spec=Dataset)
+        mock_dataset.id = "existing-dataset-123"
+        mock_dataset.parts = []
+
+        api = DatasetApi(configuration=mock_config)
+        api.get_dataset = MagicMock(return_value=mock_dataset)
+        api.create_dataset_part = MagicMock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            file1 = Path(tmpdir) / "file1.csv"
+            file1.write_text("data1")
+
+            result = api.upload_dataset_parts("existing-dataset-123", as_files=[str(file1)])
+
+            assert api.create_dataset_part.called
+            assert api.get_dataset.call_count == 2  # Called at start and end
+
+    @patch.dict(os.environ, {"CSM_API_KEY": "test-api-key", "CSM_API_URL": "https://api.example.com"}, clear=True)
+    @patch("cosmotech_api.ApiClient")
+    @patch("cosmotech_api.Configuration")
+    def test_upload_dataset_parts_skip_existing(self, mock_cosmotech_config, mock_api_client):
+        """Test skipping existing parts when replace_existing=False."""
+        mock_config = MagicMock()
+        mock_config.cosmotech.organization_id = "org-123"
+        mock_config.cosmotech.workspace_id = "ws-456"
+
+        mock_client_instance = MagicMock()
+        mock_api_client.return_value = mock_client_instance
+        mock_configuration_instance = MagicMock()
+        mock_cosmotech_config.return_value = mock_configuration_instance
+
+        # Mock existing dataset with one existing part
+        mock_existing_part = MagicMock()
+        mock_existing_part.source_name = "file1.csv"
+        mock_existing_part.id = "part-1"
+        mock_dataset = MagicMock(spec=Dataset)
+        mock_dataset.id = "existing-dataset-123"
+        mock_dataset.parts = [mock_existing_part]
+
+        api = DatasetApi(configuration=mock_config)
+        api.get_dataset = MagicMock(return_value=mock_dataset)
+        api.create_dataset_part = MagicMock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            file1 = Path(tmpdir) / "file1.csv"
+            file1.write_text("data1")
+
+            result = api.upload_dataset_parts("existing-dataset-123", as_files=[str(file1)])
+
+            # Part should be skipped, not created
+            api.create_dataset_part.assert_not_called()
+
+    @patch.dict(os.environ, {"CSM_API_KEY": "test-api-key", "CSM_API_URL": "https://api.example.com"}, clear=True)
+    @patch("cosmotech_api.ApiClient")
+    @patch("cosmotech_api.Configuration")
+    def test_upload_dataset_parts_replace_existing(self, mock_cosmotech_config, mock_api_client):
+        """Test replacing existing parts when replace_existing=True."""
+        mock_config = MagicMock()
+        mock_config.cosmotech.organization_id = "org-123"
+        mock_config.cosmotech.workspace_id = "ws-456"
+
+        mock_client_instance = MagicMock()
+        mock_api_client.return_value = mock_client_instance
+        mock_configuration_instance = MagicMock()
+        mock_cosmotech_config.return_value = mock_configuration_instance
+
+        # Mock existing dataset with one existing part
+        mock_existing_part = MagicMock()
+        mock_existing_part.source_name = "file1.csv"
+        mock_existing_part.id = "part-1"
+        mock_dataset = MagicMock(spec=Dataset)
+        mock_dataset.id = "existing-dataset-123"
+        mock_dataset.parts = [mock_existing_part]
+
+        api = DatasetApi(configuration=mock_config)
+        api.get_dataset = MagicMock(return_value=mock_dataset)
+        api.create_dataset_part = MagicMock()
+        api.delete_dataset_part = MagicMock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            file1 = Path(tmpdir) / "file1.csv"
+            file1.write_text("data1")
+
+            result = api.upload_dataset_parts("existing-dataset-123", as_files=[str(file1)], replace_existing=True)
+
+            # Part should be deleted and then created
+            api.delete_dataset_part.assert_called_once()
+            api.create_dataset_part.assert_called_once()
+
+    @patch.dict(os.environ, {"CSM_API_KEY": "test-api-key", "CSM_API_URL": "https://api.example.com"}, clear=True)
+    @patch("cosmotech_api.ApiClient")
+    @patch("cosmotech_api.Configuration")
+    def test_upload_dataset_parts_mixed(self, mock_cosmotech_config, mock_api_client):
+        """Test uploading parts with some existing and some new."""
+        mock_config = MagicMock()
+        mock_config.cosmotech.organization_id = "org-123"
+        mock_config.cosmotech.workspace_id = "ws-456"
+
+        mock_client_instance = MagicMock()
+        mock_api_client.return_value = mock_client_instance
+        mock_configuration_instance = MagicMock()
+        mock_cosmotech_config.return_value = mock_configuration_instance
+
+        # Mock existing dataset with one existing part
+        mock_existing_part = MagicMock()
+        mock_existing_part.source_name = "file1.csv"
+        mock_existing_part.id = "part-1"
+        mock_dataset = MagicMock(spec=Dataset)
+        mock_dataset.id = "existing-dataset-123"
+        mock_dataset.parts = [mock_existing_part]
+
+        api = DatasetApi(configuration=mock_config)
+        api.get_dataset = MagicMock(return_value=mock_dataset)
+        api.create_dataset_part = MagicMock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Existing file (should be skipped)
+            file1 = Path(tmpdir) / "file1.csv"
+            file1.write_text("data1")
+            # New file (should be created)
+            file2 = Path(tmpdir) / "file2.csv"
+            file2.write_text("data2")
+
+            result = api.upload_dataset_parts("existing-dataset-123", as_files=[str(file1), str(file2)])
+
+            # Only the new file should be created
+            assert api.create_dataset_part.call_count == 1
+
+    @patch.dict(os.environ, {"CSM_API_KEY": "test-api-key", "CSM_API_URL": "https://api.example.com"}, clear=True)
+    @patch("cosmotech_api.ApiClient")
+    @patch("cosmotech_api.Configuration")
+    def test_upload_dataset_parts_with_db_type(self, mock_cosmotech_config, mock_api_client):
+        """Test uploading parts with DB type."""
+        mock_config = MagicMock()
+        mock_config.cosmotech.organization_id = "org-123"
+        mock_config.cosmotech.workspace_id = "ws-456"
+
+        mock_client_instance = MagicMock()
+        mock_api_client.return_value = mock_client_instance
+        mock_configuration_instance = MagicMock()
+        mock_cosmotech_config.return_value = mock_configuration_instance
+
+        # Mock existing dataset with no parts
+        mock_dataset = MagicMock(spec=Dataset)
+        mock_dataset.id = "existing-dataset-123"
+        mock_dataset.parts = []
+
+        api = DatasetApi(configuration=mock_config)
+        api.get_dataset = MagicMock(return_value=mock_dataset)
+        api.create_dataset_part = MagicMock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            db_file = Path(tmpdir) / "data.db"
+            db_file.write_text("database content")
+
+            result = api.upload_dataset_parts("existing-dataset-123", as_db=[str(db_file)])
+
+            assert api.create_dataset_part.called
+            # Verify the part request has DB type
+            call_args = api.create_dataset_part.call_args
+            part_request = call_args.kwargs.get("dataset_part_create_request")
+            assert part_request.type == DatasetPartTypeEnum.DB

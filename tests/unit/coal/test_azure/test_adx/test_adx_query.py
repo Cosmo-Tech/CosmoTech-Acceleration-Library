@@ -5,13 +5,13 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
+import pytest
 from azure.kusto.data import KustoClient
 from azure.kusto.data.response import KustoResponseDataSet
 
-from cosmotech.coal.azure.adx.query import run_query, run_command_query
+from cosmotech.coal.azure.adx.query import run_command_query, run_query
 
 
 class TestQueryFunctions:

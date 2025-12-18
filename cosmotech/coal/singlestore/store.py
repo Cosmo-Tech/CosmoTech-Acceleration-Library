@@ -12,15 +12,16 @@ This module provides functions for interacting with SingleStore databases
 for store operations.
 """
 
+import csv
 import pathlib
 import time
-import csv
+
 import singlestoredb as s2
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.store.csv import store_csv_file
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 def _get_data(table_name: str, output_directory: str, cursor) -> None:

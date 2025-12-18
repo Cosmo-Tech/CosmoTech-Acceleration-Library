@@ -1,6 +1,7 @@
 import pyarrow as pa
-from cosmotech.coal.store.store import Store
+
 from cosmotech.coal.store.pyarrow import store_table
+from cosmotech.coal.store.store import Store
 
 # Initialize the store
 store = Store(reset=True)

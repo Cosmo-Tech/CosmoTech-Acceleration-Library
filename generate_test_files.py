@@ -6,12 +6,12 @@ This script identifies functions in the cosmotech/coal/ module that don't have
 corresponding tests and generates test files for them based on a template.
 """
 
-import os
-import ast
-import re
-from pathlib import Path
-from collections import defaultdict
 import argparse
+import ast
+import os
+import re
+from collections import defaultdict
+from pathlib import Path
 
 
 def get_functions_from_file(file_path):
@@ -268,7 +268,6 @@ def generate_test_file(module_path, functions, overwrite=False):
         except SyntaxError:
             print(f"Warning: Could not parse existing test file {test_file}")
             # If we can't parse the file, we'll just append our new tests to it
-            pass
 
     # If the file exists and we're not overwriting, check if we need to add any tests
     if test_file.exists() and not overwrite:

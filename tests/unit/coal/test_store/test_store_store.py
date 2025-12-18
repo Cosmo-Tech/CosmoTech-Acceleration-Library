@@ -5,12 +5,11 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import os
 import pathlib
-import pytest
-from unittest.mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, patch
 
 import pyarrow as pa
+import pytest
 from adbc_driver_sqlite import dbapi
 
 from cosmotech.coal.store.store import Store

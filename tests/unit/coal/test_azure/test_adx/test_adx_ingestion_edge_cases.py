@@ -6,18 +6,18 @@
 # specifically authorized by written means by Cosmo Tech.
 
 import time
-import pytest
 from unittest.mock import MagicMock, patch
 
+import pytest
 from azure.kusto.ingest import QueuedIngestClient
 from azure.kusto.ingest.status import KustoIngestStatusQueues
-
 from cosmotech.orchestrator.utils.translate import T
+
 from cosmotech.coal.azure.adx.ingestion import (
-    check_ingestion_status,
     IngestionStatus,
     _ingest_status,
     _ingest_times,
+    check_ingestion_status,
 )
 
 

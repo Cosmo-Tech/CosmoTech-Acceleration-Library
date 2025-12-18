@@ -9,10 +9,11 @@ import os
 import webbrowser
 from functools import wraps
 
-from cosmotech.coal.utils import WEB_DOCUMENTATION_ROOT
-from cosmotech.csm_data.utils.click import click
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
+
+from cosmotech.coal.utils import WEB_DOCUMENTATION_ROOT
+from cosmotech.coal.utils.logger import LOGGER
+from cosmotech.csm_data.utils.click import click
 
 
 def translate_help(translation_key):

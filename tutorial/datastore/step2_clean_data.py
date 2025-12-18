@@ -2,7 +2,7 @@
 store.execute_query(
     """
     CREATE TABLE cleaned_data AS
-    SELECT 
+    SELECT
         id,
         TRIM(name) as name,
         UPPER(category) as category,

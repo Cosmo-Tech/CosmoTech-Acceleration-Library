@@ -31,7 +31,7 @@ The API integration is organized into several modules, each focused on specific 
 
 !!! info "API vs CLI"
     While the `csm-data` CLI provides command-line tools for many common operations, the direct API integration offers more flexibility and programmatic control. Use the API integration when you need to:
-    
+
     - Build custom workflows
     - Integrate with other Python code
     - Perform complex operations not covered by the CLI
@@ -108,10 +108,10 @@ The `download_workspace_file` function downloads a file from the workspace to a 
 
 ```python
 downloaded_file = download_workspace_file(
-    api_client, 
-    organization_id, 
-    workspace_id, 
-    file_to_download, 
+    api_client,
+    organization_id,
+    workspace_id,
+    file_to_download,
     target_directory
 )
 ```
@@ -139,7 +139,7 @@ The `workspace_destination` parameter can be:
 
 !!! tip "Workspace Paths"
     When working with workspace paths:
-    
+
     - Use forward slashes (`/`) regardless of your operating system
     - End directory paths with a trailing slash (`/`)
     - Use relative paths from the workspace root
@@ -244,10 +244,10 @@ This function:
 
 !!! tip "Dataset References"
     Runners can reference datasets in two ways:
-    
+
     - Through parameters with the `%DATASETID%` variable type
     - Through the `dataset_list` property
-    
+
     The `download_runner_data` function handles both types of references.
 
 ## Complete Workflow Example
@@ -268,7 +268,7 @@ This workflow:
 
 !!! tip "Real-world Workflows"
     In real-world scenarios, you might:
-    
+
     - Use more complex data transformations
     - Integrate with external systems
     - Implement error handling and retries

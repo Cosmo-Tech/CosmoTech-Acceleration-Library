@@ -1,6 +1,7 @@
-from cosmotech.coal.store.native_python import convert_table_as_pylist
-from cosmotech.coal.store.csv import convert_store_table_to_csv
 import pathlib
+
+from cosmotech.coal.store.csv import convert_store_table_to_csv
+from cosmotech.coal.store.native_python import convert_table_as_pylist
 
 # Export to Python list
 summary_data = convert_table_as_pylist("summary_data", store=store)

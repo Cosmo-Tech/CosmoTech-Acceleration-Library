@@ -10,9 +10,9 @@ import pathlib
 
 import pyarrow
 from adbc_driver_sqlite import dbapi
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 class Store:

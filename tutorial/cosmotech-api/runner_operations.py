@@ -1,12 +1,13 @@
 # Example: Working with runners and runs in the CosmoTech API
 import os
 import pathlib
+
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.runner import (
+    download_datasets,
+    download_runner_data,
     get_runner_data,
     get_runner_parameters,
-    download_runner_data,
-    download_datasets,
 )
 from cosmotech.coal.utils.logger import LOGGER
 
@@ -79,15 +80,15 @@ try:
     # Example 5: Download specific datasets
     """
     from cosmotech.coal.cosmotech_api.runner import get_dataset_ids_from_runner
-    
+
     # Get dataset IDs from the runner
     dataset_ids = get_dataset_ids_from_runner(runner_data)
-    
+
     if dataset_ids:
         # Create a directory for the datasets
         specific_dataset_dir = pathlib.Path("./specific_datasets")
         specific_dataset_dir.mkdir(exist_ok=True, parents=True)
-        
+
         # Download the datasets
         datasets = download_datasets(
             organization_id=organization_id,
@@ -96,7 +97,7 @@ try:
             read_files=True,
             parallel=True,
         )
-        
+
         print("\nDownloaded specific datasets:")
         for dataset_id, dataset_info in datasets.items():
             print(f"  - Dataset ID: {dataset_id}")

@@ -6,22 +6,26 @@
 # specifically authorized by written means by Cosmo Tech.
 
 import time
-import pytest
-import pandas as pd
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 
+import pandas as pd
+import pytest
 from azure.kusto.data import KustoClient
-from azure.kusto.ingest import QueuedIngestClient, IngestionProperties, ReportLevel
-from azure.kusto.ingest.status import KustoIngestStatusQueues, SuccessMessage, FailureMessage
+from azure.kusto.ingest import IngestionProperties, QueuedIngestClient, ReportLevel
+from azure.kusto.ingest.status import (
+    FailureMessage,
+    KustoIngestStatusQueues,
+    SuccessMessage,
+)
 
 from cosmotech.coal.azure.adx.ingestion import (
-    ingest_dataframe,
-    send_to_adx,
-    check_ingestion_status,
-    clear_ingestion_status_queues,
     IngestionStatus,
     _ingest_status,
     _ingest_times,
+    check_ingestion_status,
+    clear_ingestion_status_queues,
+    ingest_dataframe,
+    send_to_adx,
 )
 
 
@@ -103,7 +107,7 @@ class TestIngestionFunctions:
         mock_ingest_client.ingest_from_dataframe.return_value = mock_ingestion_result
 
         # Act
-        result = ingest_dataframe(mock_ingest_client, database, table_name, mock_dataframe)
+        ingest_dataframe(mock_ingest_client, database, table_name, mock_dataframe)
 
         # Assert
         mock_ingest_client.ingest_from_dataframe.assert_called_once()

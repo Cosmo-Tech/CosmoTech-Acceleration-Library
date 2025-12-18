@@ -93,7 +93,7 @@ The datastore provides specialized adapters for working with various data format
 
 ### Joining multiple tables
 
-```python title="Joining tables in the datastore" linenums="1" 
+```python title="Joining tables in the datastore" linenums="1"
 --8<-- 'tutorial/datastore/joining_tables.py'
 ```
 

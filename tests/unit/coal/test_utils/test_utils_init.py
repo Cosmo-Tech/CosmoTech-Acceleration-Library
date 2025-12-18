@@ -7,7 +7,7 @@
 
 import pytest
 
-from cosmotech.coal.utils import strtobool, WEB_DOCUMENTATION_ROOT
+from cosmotech.coal.utils import WEB_DOCUMENTATION_ROOT, strtobool
 
 
 class TestUtilsInit:

@@ -5,9 +5,9 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from cosmotech.coal.store.store import Store
-
 import pyarrow as pa
+
+from cosmotech.coal.store.store import Store
 
 
 def store_table(

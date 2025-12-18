@@ -6,12 +6,16 @@
 # specifically authorized by written means by Cosmo Tech.
 
 from cosmotech.csm_data.commands.store.dump_to_azure import dump_to_azure
+from cosmotech.csm_data.commands.store.dump_to_mongodb import (
+    dump_to_mongodb,  # Add this line
+)
 from cosmotech.csm_data.commands.store.dump_to_postgresql import dump_to_postgresql
 from cosmotech.csm_data.commands.store.dump_to_s3 import dump_to_s3
-from cosmotech.csm_data.commands.store.dump_to_mongodb import dump_to_mongodb  # Add this line
 from cosmotech.csm_data.commands.store.list_tables import list_tables
 from cosmotech.csm_data.commands.store.load_csv_folder import load_csv_folder
-from cosmotech.csm_data.commands.store.load_from_singlestore import load_from_singlestore
+from cosmotech.csm_data.commands.store.load_from_singlestore import (
+    load_from_singlestore,
+)
 from cosmotech.csm_data.commands.store.reset import reset
 from cosmotech.csm_data.commands.store.store import store
 

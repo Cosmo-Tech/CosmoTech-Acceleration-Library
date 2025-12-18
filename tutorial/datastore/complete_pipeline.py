@@ -1,7 +1,8 @@
-from cosmotech.coal.store.store import Store
-from cosmotech.coal.store.native_python import store_pylist, convert_table_as_pylist
 import pathlib
-from cosmotech.coal.store.csv import store_csv_file, convert_store_table_to_csv
+
+from cosmotech.coal.store.csv import convert_store_table_to_csv, store_csv_file
+from cosmotech.coal.store.native_python import convert_table_as_pylist, store_pylist
+from cosmotech.coal.store.store import Store
 
 # Initialize the store
 store = Store(reset=True)
@@ -14,7 +15,7 @@ store_csv_file("raw_data", raw_data_path, store=store)
 store.execute_query(
     """
     CREATE TABLE cleaned_data AS
-    SELECT 
+    SELECT
         id,
         TRIM(name) as name,
         UPPER(category) as category,

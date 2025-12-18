@@ -5,12 +5,12 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pyarrow as pa
+import pytest
 
-from cosmotech.coal.store.pyarrow import store_table, convert_store_table_to_dataframe
+from cosmotech.coal.store.pyarrow import convert_store_table_to_dataframe, store_table
 from cosmotech.coal.store.store import Store
 
 

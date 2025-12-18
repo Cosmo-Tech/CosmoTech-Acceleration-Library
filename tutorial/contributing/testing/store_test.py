@@ -5,14 +5,16 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import os
 import tempfile
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import pyarrow
 import pytest
 
-from cosmotech.coal.mongodb.store import send_pyarrow_table_to_mongodb, dump_store_to_mongodb
+from cosmotech.coal.mongodb.store import (
+    dump_store_to_mongodb,
+    send_pyarrow_table_to_mongodb,
+)
 from cosmotech.coal.store.store import Store
 
 

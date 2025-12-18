@@ -5,11 +5,9 @@
 # etc. to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import os
-import glob
 import json
-import tempfile
-from unittest.mock import MagicMock, patch, mock_open
+import os
+from unittest.mock import MagicMock, mock_open, patch
 
 import pytest
 
@@ -36,7 +34,6 @@ class TestCsmEngine:
         # Create mock entities
         mock_entity1 = MagicMock()
         mock_entity2 = MagicMock()
-        mock_entity_not_found = None
 
         # Configure model to return entities
         def find_entity_by_name(name):

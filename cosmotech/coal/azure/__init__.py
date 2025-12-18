@@ -11,13 +11,13 @@ Azure services integration module.
 This module provides functions for interacting with Azure services like Storage and ADX.
 """
 
+# Re-export blob functions for easier importing
+from cosmotech.coal.azure.blob import (
+    dump_store_to_azure,
+)
+
 # Re-export storage functions for easier importing
 from cosmotech.coal.azure.storage import (
     upload_file,
     upload_folder,
-)
-
-# Re-export blob functions for easier importing
-from cosmotech.coal.azure.blob import (
-    dump_store_to_azure,
 )

@@ -1,21 +1,23 @@
 # Example: Complete workflow using the CosmoTech API
+import csv
+import json
 import os
 import pathlib
-import json
-import csv
+
+from cosmotech_api.api.dataset_api import DatasetApi
+from cosmotech_api.api.twin_graph_api import TwinGraphApi
+
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.runner import (
-    get_runner_data,
     download_runner_data,
-)
-from cosmotech.coal.cosmotech_api.workspace import (
-    list_workspace_files,
-    download_workspace_file,
-    upload_workspace_file,
+    get_runner_data,
 )
 from cosmotech.coal.cosmotech_api.twin_data_layer import CSVSourceFile
-from cosmotech_api.api.twin_graph_api import TwinGraphApi
-from cosmotech_api.api.dataset_api import DatasetApi
+from cosmotech.coal.cosmotech_api.workspace import (
+    download_workspace_file,
+    list_workspace_files,
+    upload_workspace_file,
+)
 from cosmotech.coal.utils.logger import LOGGER
 
 # Set up environment variables for authentication
@@ -139,27 +141,27 @@ try:
     """
     # Create a dataset
     dataset_api = DatasetApi(api_client)
-    
+
     new_dataset = {
         "name": "Customers with Loyalty Scores",
         "description": "Processed customer data with calculated loyalty scores",
         "tags": ["processed", "customers", "loyalty"]
     }
-    
+
     try:
         dataset = dataset_api.create_dataset(
             organization_id=organization_id,
             workspace_id=workspace_id,
             dataset=new_dataset
         )
-        
+
         dataset_id = dataset.id
         print(f"Created dataset with ID: {dataset_id}")
-        
+
         # Upload the processed file to the dataset
         # This would typically involve additional API calls
         # ...
-        
+
     except Exception as e:
         print(f"Error creating dataset: {e}")
     """
@@ -178,14 +180,14 @@ try:
     # In a real scenario, you would send this data to the Twin Data Layer
     """
     twin_graph_api = TwinGraphApi(api_client)
-    
+
     # For each customer, create a node in the Twin Data Layer
     with open(processed_file, "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
             # Create parameters for the Cypher query
             params = {k: v for k, v in row.items()}
-            
+
             # Execute the query
             twin_graph_api.run_twin_graph_cypher_query(
                 organization_id=organization_id,

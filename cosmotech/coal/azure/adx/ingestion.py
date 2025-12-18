@@ -5,28 +5,24 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from enum import Enum
-from typing import Dict
-from typing import Iterator
-from typing import List
-from typing import Optional
-from typing import Tuple
-
 import os
-import pandas as pd
 import time
+from enum import Enum
+from typing import Dict, Iterator, List, Optional, Tuple
+
+import pandas as pd
 import tqdm
 from azure.kusto.data import KustoClient
 from azure.kusto.data.data_format import DataFormat
-from azure.kusto.ingest import IngestionProperties
-from azure.kusto.ingest import QueuedIngestClient
-from azure.kusto.ingest import ReportLevel
-from azure.kusto.ingest.status import FailureMessage
-from azure.kusto.ingest.status import KustoIngestStatusQueues
-from azure.kusto.ingest.status import SuccessMessage
+from azure.kusto.ingest import IngestionProperties, QueuedIngestClient, ReportLevel
+from azure.kusto.ingest.status import (
+    FailureMessage,
+    KustoIngestStatusQueues,
+    SuccessMessage,
+)
 from cosmotech.orchestrator.utils.translate import T
 
-from cosmotech.coal.azure.adx.tables import create_table, _drop_by_tag
+from cosmotech.coal.azure.adx.tables import _drop_by_tag, create_table
 from cosmotech.coal.azure.adx.utils import type_mapping
 from cosmotech.coal.utils.logger import LOGGER
 

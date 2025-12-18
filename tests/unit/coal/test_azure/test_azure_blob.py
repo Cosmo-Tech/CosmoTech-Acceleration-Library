@@ -6,16 +6,16 @@
 # specifically authorized by written means by Cosmo Tech.
 
 import io
-import pytest
-from unittest.mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, mock_open, patch
 
 import pyarrow as pa
 import pyarrow.csv as pc
 import pyarrow.parquet as pq
+import pytest
 from azure.identity import ClientSecretCredential
 from azure.storage.blob import BlobServiceClient, ContainerClient
 
-from cosmotech.coal.azure.blob import dump_store_to_azure, VALID_TYPES
+from cosmotech.coal.azure.blob import VALID_TYPES, dump_store_to_azure
 from cosmotech.coal.store.store import Store
 
 

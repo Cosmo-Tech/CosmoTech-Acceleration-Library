@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      
+
 jobs:
   generate-sbom:
     runs-on: ubuntu-latest
@@ -28,4 +28,3 @@ jobs:
           apikey: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}
           project: '8d39a492-bf9e-49fa-a58c-b391ed4a1243'
           bomfilename: 'sbom.json'
-    
