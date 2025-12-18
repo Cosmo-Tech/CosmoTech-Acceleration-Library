@@ -10,6 +10,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from cosmotech.coal.store.output.channel_spliter import ChannelSpliter
+from cosmotech.coal.utils.configuration import Dotdict
 
 
 class TestChannelSpliter:
@@ -18,11 +19,10 @@ class TestChannelSpliter:
     def test_init_with_single_target(self):
         """Test ChannelSpliter initialization with a single valid target."""
         # Arrange
-        mock_config = MagicMock()
         mock_output = MagicMock()
         mock_output.type = "s3"
         mock_output.conf = {"test": "config"}
-        mock_config.outputs = [mock_output]
+        mock_config = Dotdict({"outputs": [mock_output]})
 
         # Mock the channel class in the available_interfaces dict
         mock_channel_class = MagicMock()
@@ -45,8 +45,6 @@ class TestChannelSpliter:
     def test_init_with_multiple_targets(self, mock_aws, mock_azure, mock_postgres):
         """Test ChannelSpliter initialization with multiple valid targets."""
         # Arrange
-        mock_config = MagicMock()
-
         mock_output1 = MagicMock()
         mock_output1.type = "s3"
         mock_output1.conf = {"s3": "config"}
@@ -59,7 +57,7 @@ class TestChannelSpliter:
         mock_output3.type = "postgres"
         mock_output3.conf = {"postgres": "config"}
 
-        mock_config.outputs = [mock_output1, mock_output2, mock_output3]
+        mock_config = Dotdict({"outputs": [mock_output1, mock_output2, mock_output3]})
 
         # Create mock instances
         mock_aws_instance = MagicMock()
@@ -86,11 +84,10 @@ class TestChannelSpliter:
     def test_init_with_unavailable_target(self):
         """Test ChannelSpliter initialization when target is not available."""
         # Arrange
-        mock_config = MagicMock()
         mock_output = MagicMock()
         mock_output.type = "s3"
         mock_output.conf = {"test": "config"}
-        mock_config.outputs = [mock_output]
+        mock_config = Dotdict({"outputs": [mock_output]})
 
         mock_channel_class = MagicMock()
         mock_channel_instance = MagicMock()
@@ -107,8 +104,6 @@ class TestChannelSpliter:
     def test_init_with_mixed_availability(self, mock_aws, mock_azure):
         """Test ChannelSpliter initialization with mixed target availability."""
         # Arrange
-        mock_config = MagicMock()
-
         mock_output1 = MagicMock()
         mock_output1.type = "s3"
         mock_output1.conf = {"s3": "config"}
@@ -117,7 +112,7 @@ class TestChannelSpliter:
         mock_output2.type = "az_storage"
         mock_output2.conf = {"azure": "config"}
 
-        mock_config.outputs = [mock_output1, mock_output2]
+        mock_config = Dotdict({"outputs": [mock_output1, mock_output2]})
 
         # AWS is available
         mock_aws_instance = MagicMock()
@@ -146,11 +141,10 @@ class TestChannelSpliter:
     def test_send_success(self):
         """Test send method when all targets succeed."""
         # Arrange
-        mock_config = MagicMock()
         mock_output = MagicMock()
         mock_output.type = "s3"
         mock_output.conf = {"test": "config"}
-        mock_config.outputs = [mock_output]
+        mock_config = Dotdict({"outputs": [mock_output]})
 
         mock_channel_class = MagicMock()
         mock_channel_instance = MagicMock()
@@ -170,11 +164,10 @@ class TestChannelSpliter:
     def test_send_with_filter(self):
         """Test send method with filter."""
         # Arrange
-        mock_config = MagicMock()
         mock_output = MagicMock()
         mock_output.type = "s3"
         mock_output.conf = {"test": "config"}
-        mock_config.outputs = [mock_output]
+        mock_config = Dotdict({"outputs": [mock_output]})
 
         mock_channel_class = MagicMock()
         mock_channel_instance = MagicMock()
@@ -196,8 +189,6 @@ class TestChannelSpliter:
     def test_send_multiple_targets(self, mock_aws, mock_azure):
         """Test send method with multiple targets."""
         # Arrange
-        mock_config = MagicMock()
-
         mock_output1 = MagicMock()
         mock_output1.type = "s3"
         mock_output1.conf = {"s3": "config"}
@@ -206,7 +197,7 @@ class TestChannelSpliter:
         mock_output2.type = "az_storage"
         mock_output2.conf = {"azure": "config"}
 
-        mock_config.outputs = [mock_output1, mock_output2]
+        mock_config = Dotdict({"outputs": [mock_output1, mock_output2]})
 
         mock_aws_instance = MagicMock()
         mock_aws_instance.is_available.return_value = True
@@ -239,11 +230,10 @@ class TestChannelSpliter:
     def test_send_with_exception(self):
         """Test send method when target raises exception."""
         # Arrange
-        mock_config = MagicMock()
         mock_output = MagicMock()
         mock_output.type = "s3"
         mock_output.conf = {"test": "config"}
-        mock_config.outputs = [mock_output]
+        mock_config = Dotdict({"outputs": [mock_output]})
 
         mock_channel_class = MagicMock()
         mock_channel_instance = MagicMock()
@@ -262,11 +252,10 @@ class TestChannelSpliter:
     def test_delete_success(self):
         """Test delete method when all targets succeed."""
         # Arrange
-        mock_config = MagicMock()
         mock_output = MagicMock()
         mock_output.type = "s3"
         mock_output.conf = {"test": "config"}
-        mock_config.outputs = [mock_output]
+        mock_config = Dotdict({"outputs": [mock_output]})
 
         mock_channel_class = MagicMock()
         mock_channel_instance = MagicMock()
@@ -288,8 +277,6 @@ class TestChannelSpliter:
     def test_delete_multiple_targets(self, mock_aws, mock_azure):
         """Test delete method with multiple targets."""
         # Arrange
-        mock_config = MagicMock()
-
         mock_output1 = MagicMock()
         mock_output1.type = "s3"
         mock_output1.conf = {"s3": "config"}
@@ -298,7 +285,7 @@ class TestChannelSpliter:
         mock_output2.type = "az_storage"
         mock_output2.conf = {"azure": "config"}
 
-        mock_config.outputs = [mock_output1, mock_output2]
+        mock_config = Dotdict({"outputs": [mock_output1, mock_output2]})
 
         mock_aws_instance = MagicMock()
         mock_aws_instance.is_available.return_value = True
@@ -330,11 +317,10 @@ class TestChannelSpliter:
     def test_delete_with_exception(self):
         """Test delete method when target raises exception."""
         # Arrange
-        mock_config = MagicMock()
         mock_output = MagicMock()
         mock_output.type = "s3"
         mock_output.conf = {"test": "config"}
-        mock_config.outputs = [mock_output]
+        mock_config = Dotdict({"outputs": [mock_output]})
 
         mock_channel_class = MagicMock()
         mock_channel_instance = MagicMock()

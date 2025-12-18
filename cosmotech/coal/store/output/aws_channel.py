@@ -6,7 +6,10 @@ import pyarrow.parquet as pq
 from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.aws import S3
-from cosmotech.coal.store.output.channel_interface import ChannelInterface
+from cosmotech.coal.store.output.channel_interface import (
+    ChannelInterface,
+    MissingChannelConfigError,
+)
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.configuration import Configuration, Dotdict
 from cosmotech.coal.utils.logger import LOGGER
@@ -14,20 +17,18 @@ from cosmotech.coal.utils.logger import LOGGER
 
 class AwsChannel(ChannelInterface):
     required_keys = {
-        "cosmotech": [
-            "dataset_absolute_path",
-        ],
+        "coal": ["store"],
         "s3": ["access_key_id", "endpoint_url", "secret_access_key"],
     }
     requirement_string = required_keys
 
     def __init__(self, dct: Dotdict = None):
-        self.configuration = Configuration(dct)
+        super().__init__(dct)
         self._s3 = S3(self.configuration)
 
     def send(self, filter: Optional[list[str]] = None) -> bool:
 
-        _s = Store(store_location=self.configuration.cosmotech.parameters_absolute_path)
+        _s = Store(configuration=self.configuration)
 
         if self._s3.output_type not in ("sqlite", "csv", "parquet"):
             LOGGER.error(T("coal.common.errors.data_invalid_output_type").format(output_type=self._s3.output_type))

@@ -1,6 +1,7 @@
-from cosmotech.coal.store.store import Store
-from cosmotech.coal.store.csv import store_csv_file
 import pathlib
+
+from cosmotech.coal.store.csv import store_csv_file
+from cosmotech.coal.store.store import Store
 
 # Initialize the store
 store = Store(reset=True)

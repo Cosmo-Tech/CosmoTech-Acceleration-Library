@@ -1,8 +1,7 @@
 import os
 
 import mkdocs_gen_files
-from griffe import Alias
-from griffe import Module
+from griffe import Alias, Module
 
 pyhand = mkdocs_gen_files.config["plugins"]["mkdocstrings"].handlers.get_handler("python")
 module_name = "cosmotech.coal"

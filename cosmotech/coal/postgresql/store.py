@@ -53,24 +53,27 @@ def dump_store_to_postgresql(
         selected_tables: list of tables to send
         fk_id: foreign key id to add to all table on all rows
     """
-    _c = Configuration()
-    _c.postgres.host = postgres_host
-    _c.postgres.port = postgres_port
-    _c.postgres.db_name = postgres_db
-    _c.postgres.db_schema = postgres_schema
-    _c.postgres.user_name = postgres_user
-    _c.postgres.user_password = postgres_password
-    _c.postgres.password_encoding = force_encode
-    _c.postgres.table_prefix = table_prefix
-
-    dump_store_to_postgresql_from_conf(
-        configuration=_c, store_folder=store_folder, replace=replace, selected_tables=selected_tables, fk_id=fk_id
+    _c = Configuration(
+        {
+            "coal": {"store": store_folder},
+            "postgres": {
+                "host": postgres_host,
+                "port": postgres_port,
+                "db_name": postgres_db,
+                "db_schema": postgres_schema,
+                "user_name": postgres_user,
+                "user_password": postgres_password,
+                "password_encoding": force_encode,
+                "table_prefix": table_prefix,
+            },
+        }
     )
+
+    dump_store_to_postgresql_from_conf(configuration=_c, replace=replace, selected_tables=selected_tables, fk_id=fk_id)
 
 
 def dump_store_to_postgresql_from_conf(
     configuration: Configuration,
-    store_folder: str,
     replace: bool = True,
     selected_tables: list[str] = [],
     fk_id: str = None,
@@ -80,13 +83,12 @@ def dump_store_to_postgresql_from_conf(
 
     Args:
         configuration: coal Configuration
-        store_folder: Folder containing the Store
         replace: Whether to replace existing tables
         selected_tables: list of tables to send
         fk_id: foreign key id to add to all table on all rows
     """
     _psql = PostgresUtils(configuration)
-    _s = Store(store_location=store_folder)
+    _s = Store(configuration=configuration)
 
     tables = list(_s.list_tables())
     if selected_tables:
@@ -104,7 +106,7 @@ def dump_store_to_postgresql_from_conf(
                     f"""
                     ALTER TABLE {table_name}
                     ADD csm_run_id TEXT NOT NULL
-                    DEFAULT ('{fk_id})
+                    DEFAULT ('{fk_id}')
                     """
                 )
             data = _s.get_table(table_name)

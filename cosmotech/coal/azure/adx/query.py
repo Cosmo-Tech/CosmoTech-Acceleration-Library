@@ -7,9 +7,9 @@
 
 from azure.kusto.data import KustoClient
 from azure.kusto.data.response import KustoResponseDataSet
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 def run_query(client: KustoClient, database: str, query: str) -> KustoResponseDataSet:

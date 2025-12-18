@@ -13,12 +13,13 @@ for store operations.
 """
 
 from time import perf_counter
+
 import pyarrow
 import pymongo
+from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.logger import LOGGER
-from cosmotech.orchestrator.utils.translate import T
 
 
 def send_pyarrow_table_to_mongodb(

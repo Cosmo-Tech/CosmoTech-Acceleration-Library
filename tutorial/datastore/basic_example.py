@@ -1,5 +1,5 @@
-from cosmotech.coal.store.store import Store
 from cosmotech.coal.store.native_python import store_pylist
+from cosmotech.coal.store.store import Store
 
 # We initialize and reset the data store
 my_datastore = Store(reset=True)

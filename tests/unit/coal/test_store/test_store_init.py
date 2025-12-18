@@ -5,9 +5,7 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from unittest.mock import patch, MagicMock
 import pytest
-import importlib
 
 
 class TestStoreInit:

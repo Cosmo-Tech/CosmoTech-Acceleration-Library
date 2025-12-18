@@ -11,10 +11,11 @@ from cosmotech.coal.utils.configuration import Configuration, Dotdict
 
 class PostgresChannel(ChannelInterface):
     required_keys = {
-        "cosmotech": ["dataset_absolute_path", "organization_id", "workspace_id", "runner_id"],
+        "coal": ["store"],
+        "cosmotech": ["organization_id", "workspace_id", "runner_id"],
         "postgres": [
             "host",
-            "post",
+            "port",
             "db_name",
             "db_schema",
             "user_name",
@@ -23,14 +24,10 @@ class PostgresChannel(ChannelInterface):
     }
     requirement_string = required_keys
 
-    def __init__(self, dct: Dotdict = None):
-        self.configuration = Configuration(dct)
-
     def send(self, filter: Optional[list[str]] = None) -> bool:
         run_id = send_runner_metadata_to_postgresql(self.configuration)
         dump_store_to_postgresql_from_conf(
-            self.configuration,
-            store_folder=self.configuration.cosmotech.dataset_absolute_path,
+            configuration=self.configuration,
             selected_tables=filter,
             fk_id=run_id,
         )

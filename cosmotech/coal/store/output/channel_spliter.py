@@ -6,7 +6,7 @@ from cosmotech.coal.store.output.aws_channel import AwsChannel
 from cosmotech.coal.store.output.az_storage_channel import AzureStorageChannel
 from cosmotech.coal.store.output.channel_interface import ChannelInterface
 from cosmotech.coal.store.output.postgres_channel import PostgresChannel
-from cosmotech.coal.utils.configuration import Configuration
+from cosmotech.coal.utils.configuration import Dotdict
 from cosmotech.coal.utils.logger import LOGGER
 
 
@@ -19,9 +19,11 @@ class ChannelSpliter(ChannelInterface):
         "postgres": PostgresChannel,
     }
 
-    def __init__(self, configuration: Configuration):
-        self.configuration = configuration
+    def __init__(self, dct: Dotdict = None):
+        super().__init__(dct)
         self.targets = []
+        if "outputs" not in self.configuration:
+            raise AttributeError(T("coal.store.output.split.no_targets"))
         for output in self.configuration.outputs:
             channel = self.available_interfaces[output.type]
             _i = channel(output.conf)

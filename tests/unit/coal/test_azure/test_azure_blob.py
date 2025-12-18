@@ -6,32 +6,41 @@
 # specifically authorized by written means by Cosmo Tech.
 
 import io
-import pytest
-from unittest.mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, mock_open, patch
 
 import pyarrow as pa
-import pyarrow.csv as pc
-import pyarrow.parquet as pq
+import pytest
 from azure.identity import ClientSecretCredential
 from azure.storage.blob import BlobServiceClient, ContainerClient
 
-from cosmotech.coal.azure.blob import dump_store_to_azure, VALID_TYPES
+from cosmotech.coal.azure.blob import dump_store_to_azure
 from cosmotech.coal.store.store import Store
+from cosmotech.coal.utils.configuration import Configuration
+
+
+@pytest.fixture
+def base_azure_blob_config():
+    return Configuration(
+        {
+            "coal": {"store": "path/to/store"},
+            "azure": {
+                "account_name": "teststorageaccount",
+                "client_id": "test-client-id",
+                "client_secret": "test-client-secret",
+                "container_name": "testcontainer",
+                "tenant_id": "test-tenant-id",
+            },
+        }
+    )
 
 
 class TestBlobFunctions:
     """Tests for top-level functions in the blob module."""
 
-    def test_dump_store_to_azure_invalid_output_type(self):
+    def test_dump_store_to_azure_invalid_output_type(self, base_azure_blob_config):
         """Test the dump_store_to_azure function with an invalid output type."""
         # Arrange
-        store_folder = "/path/to/store"
-        account_name = "teststorageaccount"
-        container_name = "testcontainer"
-        tenant_id = "test-tenant-id"
-        client_id = "test-client-id"
-        client_secret = "test-client-secret"
-        output_type = "invalid_type"  # Not in VALID_TYPES
+        base_azure_blob_config.azure.output_type = "invalid_type"  # Not in VALID_TYPES
 
         # Mock Store
         mock_store = MagicMock(spec=Store)
@@ -39,27 +48,13 @@ class TestBlobFunctions:
         with patch("cosmotech.coal.azure.blob.Store", return_value=mock_store):
             # Act & Assert
             with pytest.raises(ValueError, match="Invalid output type"):
-                dump_store_to_azure(
-                    store_folder=store_folder,
-                    account_name=account_name,
-                    container_name=container_name,
-                    tenant_id=tenant_id,
-                    client_id=client_id,
-                    client_secret=client_secret,
-                    output_type=output_type,
-                )
+                dump_store_to_azure(configuration=base_azure_blob_config)
 
-    def test_dump_store_to_azure_sqlite(self):
+    def test_dump_store_to_azure_sqlite(self, base_azure_blob_config):
         """Test the dump_store_to_azure function with SQLite output type."""
         # Arrange
-        store_folder = "/path/to/store"
-        account_name = "teststorageaccount"
-        container_name = "testcontainer"
-        tenant_id = "test-tenant-id"
-        client_id = "test-client-id"
-        client_secret = "test-client-secret"
-        output_type = "sqlite"
-        file_prefix = "prefix_"
+        base_azure_blob_config.azure.output_type = "sqlite"
+        base_azure_blob_config.azure.file_prefix = "prefix_"
 
         # Mock Store
         mock_store = MagicMock(spec=Store)
@@ -83,19 +78,12 @@ class TestBlobFunctions:
             patch("builtins.open", mock_open(read_data=mock_file_data)),
         ):
             # Act
-            dump_store_to_azure(
-                store_folder=store_folder,
-                account_name=account_name,
-                container_name=container_name,
-                tenant_id=tenant_id,
-                client_id=client_id,
-                client_secret=client_secret,
-                output_type=output_type,
-                file_prefix=file_prefix,
-            )
+            dump_store_to_azure(configuration=base_azure_blob_config)
 
             # Assert
-            mock_blob_service_client.get_container_client.assert_called_once_with(container_name)
+            mock_blob_service_client.get_container_client.assert_called_once_with(
+                base_azure_blob_config.azure.container_name
+            )
             mock_container_client.upload_blob.assert_called_once()
 
             # Check the call arguments without comparing the exact mock object
@@ -104,17 +92,11 @@ class TestBlobFunctions:
             assert call_args.kwargs["overwrite"] is True
             # We don't check the exact data object since it's a mock and the identity might differ
 
-    def test_dump_store_to_azure_csv(self):
+    def test_dump_store_to_azure_csv(self, base_azure_blob_config):
         """Test the dump_store_to_azure function with CSV output type."""
         # Arrange
-        store_folder = "/path/to/store"
-        account_name = "teststorageaccount"
-        container_name = "testcontainer"
-        tenant_id = "test-tenant-id"
-        client_id = "test-client-id"
-        client_secret = "test-client-secret"
-        output_type = "csv"
-        file_prefix = "prefix_"
+        base_azure_blob_config.azure.output_type = "csv"
+        base_azure_blob_config.azure.file_prefix = "prefix_"
 
         # Mock Store
         mock_store = MagicMock(spec=Store)
@@ -155,19 +137,12 @@ class TestBlobFunctions:
             patch("pyarrow.csv.write_csv") as mock_write_csv,
         ):
             # Act
-            dump_store_to_azure(
-                store_folder=store_folder,
-                account_name=account_name,
-                container_name=container_name,
-                tenant_id=tenant_id,
-                client_id=client_id,
-                client_secret=client_secret,
-                output_type=output_type,
-                file_prefix=file_prefix,
-            )
+            dump_store_to_azure(configuration=base_azure_blob_config)
 
             # Assert
-            mock_blob_service_client.get_container_client.assert_called_once_with(container_name)
+            mock_blob_service_client.get_container_client.assert_called_once_with(
+                base_azure_blob_config.azure.container_name
+            )
             assert mock_container_client.upload_blob.call_count == 2  # Only for non-empty tables
             mock_container_client.upload_blob.assert_any_call(
                 name="prefix_table1.csv", data=mock_bytesio, length=len(b"csv data"), overwrite=True
@@ -179,17 +154,11 @@ class TestBlobFunctions:
             mock_write_csv.assert_any_call(table1, mock_bytesio)
             mock_write_csv.assert_any_call(table2, mock_bytesio)
 
-    def test_dump_store_to_azure_parquet(self):
+    def test_dump_store_to_azure_parquet(self, base_azure_blob_config):
         """Test the dump_store_to_azure function with Parquet output type."""
         # Arrange
-        store_folder = "/path/to/store"
-        account_name = "teststorageaccount"
-        container_name = "testcontainer"
-        tenant_id = "test-tenant-id"
-        client_id = "test-client-id"
-        client_secret = "test-client-secret"
-        output_type = "parquet"
-        file_prefix = "prefix_"
+        base_azure_blob_config.azure.output_type = "parquet"
+        base_azure_blob_config.azure.file_prefix = "prefix_"
 
         # Mock Store
         mock_store = MagicMock(spec=Store)
@@ -230,19 +199,12 @@ class TestBlobFunctions:
             patch("pyarrow.parquet.write_table") as mock_write_table,
         ):
             # Act
-            dump_store_to_azure(
-                store_folder=store_folder,
-                account_name=account_name,
-                container_name=container_name,
-                tenant_id=tenant_id,
-                client_id=client_id,
-                client_secret=client_secret,
-                output_type=output_type,
-                file_prefix=file_prefix,
-            )
+            dump_store_to_azure(configuration=base_azure_blob_config)
 
             # Assert
-            mock_blob_service_client.get_container_client.assert_called_once_with(container_name)
+            mock_blob_service_client.get_container_client.assert_called_once_with(
+                base_azure_blob_config.azure.container_name
+            )
             assert mock_container_client.upload_blob.call_count == 2  # Only for non-empty tables
             mock_container_client.upload_blob.assert_any_call(
                 name="prefix_table1.parquet", data=mock_bytesio, length=len(b"parquet data"), overwrite=True
@@ -254,16 +216,10 @@ class TestBlobFunctions:
             mock_write_table.assert_any_call(table1, mock_bytesio)
             mock_write_table.assert_any_call(table2, mock_bytesio)
 
-    def test_dump_store_to_azure_empty_tables(self):
+    def test_dump_store_to_azure_empty_tables(self, base_azure_blob_config):
         """Test the dump_store_to_azure function with empty tables."""
         # Arrange
-        store_folder = "/path/to/store"
-        account_name = "teststorageaccount"
-        container_name = "testcontainer"
-        tenant_id = "test-tenant-id"
-        client_id = "test-client-id"
-        client_secret = "test-client-secret"
-        output_type = "csv"
+        base_azure_blob_config.azure.output_type = "csv"
 
         # Mock Store with only empty tables
         mock_store = MagicMock(spec=Store)
@@ -285,21 +241,14 @@ class TestBlobFunctions:
             patch("cosmotech.coal.azure.blob.Store", return_value=mock_store),
             patch("cosmotech.coal.azure.blob.BlobServiceClient", return_value=mock_blob_service_client),
             patch("cosmotech.coal.azure.blob.ClientSecretCredential", return_value=mock_credential),
-            patch("cosmotech.coal.azure.blob.BytesIO") as mock_bytesio,
             patch("pyarrow.csv.write_csv") as mock_write_csv,
         ):
             # Act
-            dump_store_to_azure(
-                store_folder=store_folder,
-                account_name=account_name,
-                container_name=container_name,
-                tenant_id=tenant_id,
-                client_id=client_id,
-                client_secret=client_secret,
-                output_type=output_type,
-            )
+            dump_store_to_azure(configuration=base_azure_blob_config)
 
             # Assert
-            mock_blob_service_client.get_container_client.assert_called_once_with(container_name)
+            mock_blob_service_client.get_container_client.assert_called_once_with(
+                base_azure_blob_config.azure.container_name
+            )
             mock_container_client.upload_blob.assert_not_called()  # No uploads for empty tables
             mock_write_csv.assert_not_called()  # No writes for empty tables

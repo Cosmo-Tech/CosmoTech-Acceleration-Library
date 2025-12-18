@@ -7,9 +7,9 @@
 
 import contextlib
 import io
+import os
 import pathlib
 import re
-import os
 
 import click
 

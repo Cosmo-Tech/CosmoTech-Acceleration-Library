@@ -5,14 +5,14 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import os
 import pathlib
 
 import pyarrow
 from adbc_driver_sqlite import dbapi
-
-from cosmotech.coal.utils.logger import LOGGER
 from cosmotech.orchestrator.utils.translate import T
+
+from cosmotech.coal.utils.configuration import Configuration
+from cosmotech.coal.utils.logger import LOGGER
 
 
 class Store:
@@ -20,11 +20,8 @@ class Store:
     def sanitize_column(column_name: str) -> str:
         return column_name.replace(" ", "_")
 
-    def __init__(
-        self,
-        reset=False,
-        store_location: pathlib.Path = pathlib.Path(os.environ.get("CSM_PARAMETERS_ABSOLUTE_PATH", ".")),
-    ):
+    def __init__(self, reset=False, configuration: Configuration = Configuration()):
+        store_location = configuration.safe_get("coal.store", ".")
         self.store_location = pathlib.Path(store_location) / ".coal/store"
         self.store_location.mkdir(parents=True, exist_ok=True)
         self._tables = dict()

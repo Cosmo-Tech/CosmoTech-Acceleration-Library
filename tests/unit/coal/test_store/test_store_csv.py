@@ -6,13 +6,13 @@
 # specifically authorized by written means by Cosmo Tech.
 
 import pathlib
-import pytest
 from unittest.mock import MagicMock, patch
 
 import pyarrow as pa
 import pyarrow.csv as pc
+import pytest
 
-from cosmotech.coal.store.csv import store_csv_file, convert_store_table_to_csv
+from cosmotech.coal.store.csv import convert_store_table_to_csv, store_csv_file
 from cosmotech.coal.store.store import Store
 
 

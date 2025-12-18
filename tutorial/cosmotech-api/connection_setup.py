@@ -1,5 +1,6 @@
 # Example: Setting up connections to the CosmoTech API
 import os
+
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.utils.logger import LOGGER
 

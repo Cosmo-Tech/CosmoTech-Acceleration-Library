@@ -5,16 +5,12 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import csv
-import os
-import pathlib
-import tempfile
-from unittest.mock import MagicMock, patch, mock_open, call
+from unittest.mock import MagicMock, mock_open, patch
 
 import pytest
 import singlestoredb as s2
 
-from cosmotech.coal.singlestore.store import load_from_singlestore, _get_data
+from cosmotech.coal.singlestore.store import _get_data, load_from_singlestore
 
 
 class TestStoreFunctions:

@@ -5,15 +5,15 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-import os
 import pathlib
-import pytest
-from unittest.mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, patch
 
 import pyarrow as pa
+import pytest
 from adbc_driver_sqlite import dbapi
 
 from cosmotech.coal.store.store import Store
+from cosmotech.coal.utils import configuration
 
 
 class TestStore:
@@ -348,13 +348,15 @@ class TestStore:
     def test_init_with_custom_location(self, mock_mkdir):
         """Test the __init__ method with a custom store_location."""
         # Arrange
-        custom_location = pathlib.Path("/custom/path")
+        _c = configuration.Configuration()
+        custom_location = "/custom/path"
+        _c.coal.store = custom_location
 
         # Act
-        store = Store(store_location=custom_location)
+        store = Store(configuration=_c)
 
         # Assert
         mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
-        assert store.store_location == custom_location / ".coal/store"
-        assert store._database_path == custom_location / ".coal/store" / "db.sqlite"
+        assert store.store_location == pathlib.Path(custom_location) / ".coal/store"
+        assert store._database_path == pathlib.Path(custom_location) / ".coal/store" / "db.sqlite"
         assert store._database == str(store._database_path)

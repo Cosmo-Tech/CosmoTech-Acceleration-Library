@@ -17,13 +17,18 @@ from cosmotech.coal.utils.configuration import Configuration
 
 @pytest.fixture
 def base_configuration():
-    _c = Configuration()
-    _c.s3.use_ssl = True
-    _c.s3.endpoint_url = "https://s3.example.com"
-    _c.s3.access_key_id = "test-access-id"
-    _c.s3.secret_access_key = "test-secret-key"
-    _c.s3.bucket_name = "test-bucket"
-    _c.s3.bucket_prefix = "prefix/"
+    _c = Configuration(
+        {
+            "s3": {
+                "use_ssl": True,
+                "endpoint_url": "https://s3.example.com",
+                "access_key_id": "test-access-id",
+                "secret_access_key": "test-secret-key",
+                "bucket_name": "test-bucket",
+                "bucket_prefix": "prefix/",
+            }
+        }
+    )
     return _c
 
 

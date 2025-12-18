@@ -1,10 +1,12 @@
 # Example: Working with the Twin Data Layer in the CosmoTech API
+import csv
 import os
 import pathlib
-import csv
+
+from cosmotech_api.api.twin_graph_api import TwinGraphApi
+
 from cosmotech.coal.cosmotech_api.connection import get_api_client
 from cosmotech.coal.cosmotech_api.twin_data_layer import CSVSourceFile
-from cosmotech_api.api.twin_graph_api import TwinGraphApi
 from cosmotech.coal.utils.logger import LOGGER
 
 # Set up environment variables for authentication
@@ -85,7 +87,7 @@ try:
         for row in reader:
             # Create parameters for the Cypher query
             params = {k: v for k, v in row.items()}
-            
+
             # Execute the query
             twin_graph_api.run_twin_graph_cypher_query(
                 organization_id=organization_id,
@@ -96,14 +98,14 @@ try:
                     "parameters": params
                 }
             )
-    
+
     # For relationships, you would typically:
     with open(knows_file, "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
             # Create parameters for the Cypher query
             params = {k: v for k, v in row.items()}
-            
+
             # Execute the query
             twin_graph_api.run_twin_graph_cypher_query(
                 organization_id=organization_id,
@@ -128,7 +130,7 @@ try:
             "parameters": {}
         }
     )
-    
+
     # Process the results
     print("\nPerson nodes in the Twin Data Layer:")
     for record in result.records:
