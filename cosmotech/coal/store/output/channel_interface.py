@@ -2,10 +2,18 @@ from typing import Optional
 
 from cosmotech.orchestrator.utils.translate import T
 
+from cosmotech.coal.utils.configuration import Configuration
+from cosmotech.coal.utils.configuration import Dotdict
+
 
 class ChannelInterface:
     required_keys = {}
     requirement_string: str = T("coal.store.output.data_interface.requirements")
+
+    def __init__(self, dct: Dotdict = None):
+        self.configuration = Configuration(dct)
+        if not self.is_available():
+            raise MissingChannelConfigError(self)
 
     def send(self, filter: Optional[list[str]] = None) -> bool:
         raise NotImplementedError()

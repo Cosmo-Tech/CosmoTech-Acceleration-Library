@@ -23,9 +23,7 @@ class AwsChannel(ChannelInterface):
     requirement_string = required_keys
 
     def __init__(self, dct: Dotdict = None):
-        self.configuration = Configuration(dct)
-        if not self.is_available():
-            raise MissingChannelConfigError(self)
+        super().__init__(dct)
         self._s3 = S3(self.configuration)
 
     def send(self, filter: Optional[list[str]] = None) -> bool:

@@ -25,7 +25,7 @@ def base_postgres_config():
             },
             "postgres": {
                 "host": "localhost",
-                "post": "5432",
+                "port": "5432",
                 "db_name": "testdb",
                 "db_schema": "public",
                 "user_name": "testuser",
@@ -57,7 +57,7 @@ class TestPostgresChannel:
         assert "runner_id" in PostgresChannel.required_keys["cosmotech"]
         assert "postgres" in PostgresChannel.required_keys
         assert "host" in PostgresChannel.required_keys["postgres"]
-        assert "post" in PostgresChannel.required_keys["postgres"]
+        assert "port" in PostgresChannel.required_keys["postgres"]
         assert "db_name" in PostgresChannel.required_keys["postgres"]
         assert "db_schema" in PostgresChannel.required_keys["postgres"]
         assert "user_name" in PostgresChannel.required_keys["postgres"]

@@ -75,7 +75,8 @@ class PostgresUtils:
             f"/{self.db_name}"
         )
 
-    def metadata_table_name(self):
+    @property
+    def metadata_table_name(self) -> str:
         return f"{self.table_prefix}RunnerMetadata"
 
     def get_postgresql_table_schema(self, target_table_name: str) -> Optional[pa.Schema]:
