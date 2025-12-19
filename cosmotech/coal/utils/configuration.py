@@ -190,7 +190,7 @@ class Configuration(Dotdict):
                 _r = _r.__getattr__(_k)
             return _r
         except (KeyError, AttributeError) as err:
-            LOGGER.warning(err)
+            LOGGER.debug(f"{err} not found; returning {default}")
             return default
 
 
