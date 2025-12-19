@@ -29,40 +29,42 @@ class RunnerApi(BaseRunnerApi, Connection):
 
     def get_runner_metadata(
         self,
-        organization_id: str,
-        workspace_id: str,
-        runner_id: str,
+        runner_id=None,
         include: Optional[list[str]] = None,
         exclude: Optional[list[str]] = None,
     ) -> dict[str, Any]:
-        runner = self.get_runner(organization_id, workspace_id, runner_id)
+        runner = self.get_runner(
+            self.configuration.cosmotech.organization_id,
+            self.configuration.cosmotech.workspace_id,
+            runner_id or self.configuration.cosmotech.runner_id,
+        )
 
         return runner.model_dump(by_alias=True, exclude_none=True, include=include, exclude=exclude, mode="json")
 
     def download_runner_data(
         self,
-        organization_id: str,
-        workspace_id: str,
-        runner_id: str,
-        parameter_folder: str,
         dataset_folder: Optional[str] = None,
     ):
         LOGGER.info(T("coal.cosmotech_api.runner.starting_download"))
 
         # Get runner data
-        runner_data = self.get_runner(organization_id, workspace_id, runner_id)
+        runner = self.get_runner(
+            self.configuration.cosmotech.organization_id,
+            self.configuration.cosmotech.workspace_id,
+            self.configuration.cosmotech.runner_id,
+        )
 
         # Skip if no parameters found
-        if not runner_data.parameters_values:
+        if not runner.parameters_values:
             LOGGER.warning(T("coal.cosmotech_api.runner.no_parameters"))
         else:
             LOGGER.info(T("coal.cosmotech_api.runner.loaded_data"))
-            parameters = Parameters(runner_data)
-            parameters.write_parameters_to_json(parameter_folder)
+            parameters = Parameters(runner)
+            parameters.write_parameters_to_json(self.configuration.cosmotech.parameters_absolute_path)
 
         # Download datasets if requested
         if dataset_folder:
-            datasets_ids = runner_data.datasets.bases
+            datasets_ids = runner.datasets.bases
 
             if datasets_ids:
                 LOGGER.info(T("coal.cosmotech_api.runner.downloading_datasets").format(count=len(datasets_ids)))
