@@ -43,7 +43,7 @@ class RunnerApi(BaseRunnerApi, Connection):
 
     def download_runner_data(
         self,
-        dataset_folder: Optional[str] = None,
+        download_datasets: Optional[str] = None,
     ):
         LOGGER.info(T("coal.cosmotech_api.runner.starting_download"))
 
@@ -63,7 +63,7 @@ class RunnerApi(BaseRunnerApi, Connection):
             parameters.write_parameters_to_json(self.configuration.cosmotech.parameters_absolute_path)
 
         # Download datasets if requested
-        if dataset_folder:
+        if download_datasets:
             datasets_ids = runner.datasets.bases
 
             if datasets_ids:

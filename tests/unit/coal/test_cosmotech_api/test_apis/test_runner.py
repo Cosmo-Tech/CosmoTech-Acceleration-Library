@@ -218,7 +218,7 @@ class TestRunnerApi:
     @patch.dict(os.environ, {"CSM_API_KEY": "test-api-key", "CSM_API_URL": "https://api.example.com"}, clear=True)
     @patch("cosmotech_api.ApiClient")
     def test_download_runner_data_no_datasets_without_folder(self, mock_api_client, base_runner_config):
-        """Test downloading runner data without datasets when dataset_folder is None."""
+        """Test downloading runner data without datasets when download_datasets is None."""
         mock_client_instance = MagicMock()
         mock_api_client.return_value = mock_client_instance
 
@@ -230,7 +230,7 @@ class TestRunnerApi:
         api = RunnerApi(configuration=base_runner_config)
         api.get_runner = MagicMock(return_value=mock_runner_data)
 
-        # Should not try to download datasets when dataset_folder is None
-        api.download_runner_data(dataset_folder=None)
+        # Should not try to download datasets when download_datasets is None
+        api.download_runner_data(download_datasets=None)
 
         api.get_runner.assert_called_once_with("org-123", "ws-456", "runner-789")
