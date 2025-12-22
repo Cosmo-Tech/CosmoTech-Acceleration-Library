@@ -7,6 +7,7 @@
 
 from cosmotech.orchestrator.utils.translate import T
 
+from cosmotech.coal.utils.configuration import Configuration
 from cosmotech.csm_data.utils.click import click
 from cosmotech.csm_data.utils.decorators import require_env, translate_help, web_help
 
@@ -66,15 +67,16 @@ def run_load_data(
     # Import the function at the start of the command
     from cosmotech.coal.cosmotech_api.apis.runner import RunnerApi
 
-    _r = RunnerApi()
+    _configuration = Configuration()
+    _configuration.cosmotech.organization_id = organization_id
+    _configuration.cosmotech.workspace_id = workspace_id
+    _configuration.cosmotech.runner_id = runner_id
+    _configuration.cosmotech.parameters_absolute_path = parameters_absolute_path
+    _configuration.cosmotech.dataset_absolute_path = dataset_absolute_path
 
-    return _r.download_runner_data(
-        organization_id=organization_id,
-        workspace_id=workspace_id,
-        runner_id=runner_id,
-        parameter_folder=parameters_absolute_path,
-        dataset_folder=dataset_absolute_path,
-    )
+    _r = RunnerApi(_configuration)
+
+    return _r.download_runner_data(download_datasets=True)
 
 
 if __name__ == "__main__":
