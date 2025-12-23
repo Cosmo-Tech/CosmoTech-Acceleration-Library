@@ -66,9 +66,7 @@ class TestRunnerFunctions:
         mock_runner_api_class.assert_called_once_with(mock_configuration)
 
         # Verify get_runner_metadata was called with correct parameters
-        mock_runner_api_instance.get_runner_metadata.assert_called_once_with(
-            "test-org", "test-workspace", "test-runner-id"
-        )
+        mock_runner_api_instance.get_runner_metadata.assert_called_once_with("test-runner-id")
 
         # Verify PostgreSQL connection was established
         mock_connect.assert_called_once_with("postgresql://user:password@localhost:5432/testdb", autocommit=True)
@@ -147,9 +145,7 @@ class TestRunnerFunctions:
         mock_runner_api_class.assert_called_once_with(mock_configuration)
 
         # Verify get_runner_metadata was called with correct parameters
-        mock_runner_api_instance.get_runner_metadata.assert_called_once_with(
-            "test-org", "test-workspace", "test-runner-id"
-        )
+        mock_runner_api_instance.get_runner_metadata.assert_called_once_with("test-runner-id")
 
         # Check that PostgreSQL connection was established
         mock_connect.assert_called_once_with("postgresql://user:password@localhost:5432/testdb", autocommit=True)

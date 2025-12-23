@@ -38,8 +38,6 @@ def send_runner_metadata_to_postgresql(
     # Get runner metadata
     _runner_api = RunnerApi(configuration)
     runner = _runner_api.get_runner_metadata(
-        configuration.cosmotech.organization_id,
-        configuration.cosmotech.workspace_id,
         configuration.cosmotech.runner_id,
     )
 
@@ -97,8 +95,6 @@ def remove_runner_metadata_from_postgresql(
     # Get runner metadata
     _runner_api = RunnerApi(configuration)
     runner = _runner_api.get_runner_metadata(
-        configuration.cosmotech.organization_id,
-        configuration.cosmotech.workspace_id,
         configuration.cosmotech.runner_id,
     )
 
