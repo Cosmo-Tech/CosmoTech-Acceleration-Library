@@ -244,10 +244,11 @@ class TestChannelSpliter:
         # Act
         with patch.dict(ChannelSpliter.available_interfaces, {"s3": mock_channel_class}):
             spliter = ChannelSpliter(mock_config)
-            result = spliter.send()
 
-        # Assert
-        assert result is False
+            with pytest.raises(Exception):
+                result = spliter.send()
+                # Assert
+                assert result is False
 
     def test_delete_success(self):
         """Test delete method when all targets succeed."""
@@ -331,10 +332,10 @@ class TestChannelSpliter:
         # Act
         with patch.dict(ChannelSpliter.available_interfaces, {"s3": mock_channel_class}):
             spliter = ChannelSpliter(mock_config)
-            result = spliter.delete()
-
-        # Assert
-        assert result is False
+            with pytest.raises(Exception):
+                result = spliter.delete()
+                # Assert
+                assert result is False
 
     def test_available_interfaces(self):
         """Test that available_interfaces are properly defined."""

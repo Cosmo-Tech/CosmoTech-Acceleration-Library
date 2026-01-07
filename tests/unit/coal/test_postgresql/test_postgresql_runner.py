@@ -33,7 +33,7 @@ class TestRunnerFunctions:
         mock_runner = {
             "id": "test-runner-id",
             "name": "Test Runner",
-            "lastRunId": "test-run-id",
+            "lastRunInfo": {"lastRunId": "test-run-id"},
             "runTemplateId": "test-template-id",
         }
 
@@ -87,7 +87,7 @@ class TestRunnerFunctions:
         assert upsert_call[0][1] == (
             mock_runner["id"],
             mock_runner["name"],
-            mock_runner["lastRunId"],
+            mock_runner["lastRunInfo"]["lastRunId"],
             mock_runner["runTemplateId"],
         )
 

@@ -12,7 +12,7 @@ from cosmotech.coal.utils.logger import LOGGER
 
 class ChannelSpliter(ChannelInterface):
     requirement_string: str = "(Requires any working interface)"
-    targets = []
+    targets = list()
     available_interfaces: dict[str, ChannelInterface] = {
         "s3": AwsChannel,
         "az_storage": AzureStorageChannel,
@@ -21,7 +21,7 @@ class ChannelSpliter(ChannelInterface):
 
     def __init__(self, dct: Dotdict = None):
         super().__init__(dct)
-        self.targets = []
+        self.targets = list()
         if "outputs" not in self.configuration:
             raise AttributeError(T("coal.store.output.split.no_targets"))
         for output in self.configuration.outputs:
@@ -45,6 +45,8 @@ class ChannelSpliter(ChannelInterface):
                 any_ok = i.send(filter=filter) or any_ok
             except Exception:
                 LOGGER.error(T("coal.store.output.split.send.error").format(interface_name=i.__class__.__name__))
+                if len(self.targets) < 2:
+                    raise
         return any_ok
 
     def delete(self, filter: Optional[list[str]] = None) -> bool:
@@ -54,4 +56,6 @@ class ChannelSpliter(ChannelInterface):
                 any_ok = i.delete() or any_ok
             except Exception:
                 LOGGER.error(T("coal.store.output.split.delete.error").format(interface_name=i.__class__.__name__))
+                if len(self.targets) < 2:
+                    raise
         return any_ok
