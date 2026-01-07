@@ -30,6 +30,7 @@ class PostgresChannel(ChannelInterface):
             configuration=self.configuration,
             selected_tables=filter,
             fk_id=run_id,
+            replace=False,
         )
 
     def delete(self):

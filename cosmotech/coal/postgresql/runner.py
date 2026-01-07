@@ -71,13 +71,13 @@ def send_runner_metadata_to_postgresql(
                 (
                     runner.get("id"),
                     runner.get("name"),
-                    runner.get("lastRunId"),
+                    runner.get("lastRunInfo").get("lastRunId"),
                     runner.get("runTemplateId"),
                 ),
             )
             conn.commit()
             LOGGER.info(T("coal.services.postgresql.metadata_updated"))
-    return runner.get("lastRunId")
+    return runner.get("lastRunInfo").get("lastRunId")
 
 
 def remove_runner_metadata_from_postgresql(
