@@ -24,7 +24,7 @@ from cosmotech.csm_data.utils.decorators import translate_help, web_help
 )
 @click.option(
     "--csv-folder",
-    envvar="CSM_DATASET_ABSOLUTE_PATH",
+    envvar="CSM_OUTPUT_ABSOLUTE_PATH",
     help=T("csm_data.commands.store.load_csv_folder.parameters.csv_folder"),
     metavar="PATH",
     type=str,
