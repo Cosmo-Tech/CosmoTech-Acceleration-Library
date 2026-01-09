@@ -64,6 +64,7 @@ def send_runner_metadata_to_postgresql(
                   DO
                     UPDATE SET name = EXCLUDED.name, last_csm_run_id = EXCLUDED.last_csm_run_id;
             """
+            LOGGER.info(runner)
             curs.execute(
                 sql_upsert,
                 (

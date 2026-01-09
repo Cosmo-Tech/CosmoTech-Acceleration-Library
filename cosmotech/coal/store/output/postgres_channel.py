@@ -6,7 +6,6 @@ from cosmotech.coal.postgresql.runner import (
 )
 from cosmotech.coal.postgresql.store import dump_store_to_postgresql_from_conf
 from cosmotech.coal.store.output.channel_interface import ChannelInterface
-from cosmotech.coal.utils.configuration import Configuration, Dotdict
 
 
 class PostgresChannel(ChannelInterface):
