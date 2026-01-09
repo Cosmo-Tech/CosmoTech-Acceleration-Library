@@ -26,7 +26,7 @@ class Dotdict(dict):
                     _r = _r.__getattr__(_p)
                 return _r
             except (KeyError, AttributeError):
-                LOGGER.warning("dotdict Ref {_v} doesn't exist")
+                LOGGER.warning(f"dotdict Ref {_v} doesn't exist")
                 raise ReferenceKeyError(_v)
         return _v
 
