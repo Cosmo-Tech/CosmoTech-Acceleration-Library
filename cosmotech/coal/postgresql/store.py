@@ -101,18 +101,12 @@ def dump_store_to_postgresql_from_conf(
             _s_time = perf_counter()
             target_table_name = f"{_psql.table_prefix}{table_name}"
             LOGGER.info(T("coal.services.database.table_entry").format(table=target_table_name))
-            if fk_id:
-                _s.execute_query(
-                    f"""
-                    ALTER TABLE {table_name}
-                    ADD csm_run_id TEXT NOT NULL
-                    DEFAULT ('{fk_id}')
-                    """
-                )
             data = _s.get_table(table_name)
             if not len(data):
                 LOGGER.info(T("coal.services.database.no_rows"))
                 continue
+            if fk_id:
+                data = data.append_column("csm_run_id", [[fk_id] * data.num_rows])
             _dl_time = perf_counter()
             rows = _psql.send_pyarrow_table_to_postgresql(
                 data,
