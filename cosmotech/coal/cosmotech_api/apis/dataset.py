@@ -35,16 +35,20 @@ class DatasetApi(BaseDatasetApi, Connection):
         LOGGER.debug(T("coal.cosmotech_api.initialization.dataset_api_initialized"))
 
     def download_dataset(self, dataset_id) -> Dataset:
+        return self._download(dataset_id, Path(self.configuration.cosmotech.dataset_absolute_path))
+
+    def download_parameter(self, dataset_id) -> Dataset:
+        return self._download(dataset_id, Path(self.configuration.cosmotech.parameters_absolute_path) / dataset_id)
+
+    def _download(self, dataset_id, destination) -> Dataset:
         dataset = self.get_dataset(
             organization_id=self.configuration.cosmotech.organization_id,
             workspace_id=self.configuration.cosmotech.workspace_id,
             dataset_id=dataset_id,
         )
 
-        dataset_dir = self.configuration.cosmotech.dataset_absolute_path
-        dataset_dir_path = Path(dataset_dir) / dataset_id
         for part in dataset.parts:
-            part_file_path = dataset_dir_path / part.source_name
+            part_file_path = destination / part.source_name
             part_file_path.parent.mkdir(parents=True, exist_ok=True)
             data_part = self.download_dataset_part(
                 organization_id=self.configuration.cosmotech.organization_id,

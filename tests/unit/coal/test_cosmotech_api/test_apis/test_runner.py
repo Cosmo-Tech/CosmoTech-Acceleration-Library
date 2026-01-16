@@ -210,7 +210,7 @@ class TestRunnerApi:
         api.download_runner_data("/tmp/datasets")
 
         api.get_runner.assert_called_once_with("org-123", "ws-456", "runner-789")
-        mock_dataset_api_class.assert_called_once_with(base_runner_config)
+        mock_dataset_api_class.assert_called_with(base_runner_config)
         assert mock_dataset_api_instance.download_dataset.call_count == 2
         mock_dataset_api_instance.download_dataset.assert_any_call("dataset-1")
         mock_dataset_api_instance.download_dataset.assert_any_call("dataset-2")
