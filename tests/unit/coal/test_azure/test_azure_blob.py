@@ -13,7 +13,7 @@ import pytest
 from azure.identity import ClientSecretCredential
 from azure.storage.blob import BlobServiceClient, ContainerClient
 
-from cosmotech.coal.azure.blob import dump_store_to_azure
+from cosmotech.coal.azure.blob import VALID_TYPES, dump_store_to_azure
 from cosmotech.coal.store.store import Store
 from cosmotech.coal.utils.configuration import Configuration
 
