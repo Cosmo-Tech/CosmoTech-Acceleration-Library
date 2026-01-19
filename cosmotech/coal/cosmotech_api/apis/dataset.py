@@ -108,11 +108,16 @@ class DatasetApi(BaseDatasetApi, Connection):
             ),
         )
 
+        _files = []
+        for _p in _parts:
+            with _p[1].open("rb") as _p_file:
+                _files.append((_p[0], _p_file.read()))
+
         d_ret = self.create_dataset(
             self.configuration.cosmotech.organization_id,
             self.configuration.cosmotech.workspace_id,
             d_request,
-            files=list((_p[0], _p[1].open("rb").read()) for _p in _parts),
+            files=_files,
         )
 
         LOGGER.info(T("coal.services.dataset.dataset_created").format(dataset_id=d_ret.id))
@@ -177,14 +182,15 @@ class DatasetApi(BaseDatasetApi, Connection):
                 type=_type,
             )
 
-            self.create_dataset_part(
-                organization_id=self.configuration.cosmotech.organization_id,
-                workspace_id=self.configuration.cosmotech.workspace_id,
-                dataset_id=dataset_id,
-                dataset_part_create_request=part_request,
-                file=(_p_name, _p_path.open("rb").read()),
-            )
-            LOGGER.debug(T("coal.services.dataset.part_uploaded").format(part_name=_p_name))
+            with _p_path.open("rb") as _p_file:
+                self.create_dataset_part(
+                    organization_id=self.configuration.cosmotech.organization_id,
+                    workspace_id=self.configuration.cosmotech.workspace_id,
+                    dataset_id=dataset_id,
+                    dataset_part_create_request=part_request,
+                    file=(_p_name, _p_file.read()),
+                )
+                LOGGER.debug(T("coal.services.dataset.part_uploaded").format(part_name=_p_name))
 
         # Return updated dataset
         updated_dataset = self.get_dataset(
