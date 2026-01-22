@@ -10,7 +10,6 @@ import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, mock_open, patch
 
-import pytest
 from cosmotech_api.models.dataset import Dataset
 from cosmotech_api.models.dataset_part_type_enum import DatasetPartTypeEnum
 
@@ -251,6 +250,7 @@ class TestDatasetApi:
         mock_configuration_instance = MagicMock()
         mock_cosmotech_config.return_value = mock_configuration_instance
 
+        # Mock created dataset
         mock_dataset = MagicMock(spec=Dataset)
         mock_dataset.id = "new-dataset-123"
 
@@ -359,7 +359,7 @@ class TestDatasetApi:
             file1 = Path(tmpdir) / "file1.csv"
             file1.write_text("data1")
 
-            result = api.upload_dataset_parts("existing-dataset-123", as_files=[str(file1)])
+            api.upload_dataset_parts("existing-dataset-123", as_files=[str(file1)])
 
             assert api.create_dataset_part.called
             assert api.get_dataset.call_count == 2  # Called at start and end
@@ -394,7 +394,7 @@ class TestDatasetApi:
             file1 = Path(tmpdir) / "file1.csv"
             file1.write_text("data1")
 
-            result = api.upload_dataset_parts("existing-dataset-123", as_files=[str(file1)])
+            api.upload_dataset_parts("existing-dataset-123", as_files=[str(file1)])
 
             # Part should be skipped, not created
             api.create_dataset_part.assert_not_called()
@@ -430,7 +430,7 @@ class TestDatasetApi:
             file1 = Path(tmpdir) / "file1.csv"
             file1.write_text("data1")
 
-            result = api.upload_dataset_parts("existing-dataset-123", as_files=[str(file1)], replace_existing=True)
+            api.upload_dataset_parts("existing-dataset-123", as_files=[str(file1)], replace_existing=True)
 
             # Part should be deleted and then created
             api.delete_dataset_part.assert_called_once()
@@ -470,7 +470,7 @@ class TestDatasetApi:
             file2 = Path(tmpdir) / "file2.csv"
             file2.write_text("data2")
 
-            result = api.upload_dataset_parts("existing-dataset-123", as_files=[str(file1), str(file2)])
+            api.upload_dataset_parts("existing-dataset-123", as_files=[str(file1), str(file2)])
 
             # Only the new file should be created
             assert api.create_dataset_part.call_count == 1
@@ -502,10 +502,42 @@ class TestDatasetApi:
             db_file = Path(tmpdir) / "data.db"
             db_file.write_text("database content")
 
-            result = api.upload_dataset_parts("existing-dataset-123", as_db=[str(db_file)])
+            api.upload_dataset_parts("existing-dataset-123", as_db=[str(db_file)])
 
             assert api.create_dataset_part.called
             # Verify the part request has DB type
             call_args = api.create_dataset_part.call_args
             part_request = call_args.kwargs.get("dataset_part_create_request")
             assert part_request.type == DatasetPartTypeEnum.DB
+
+    @patch.dict(os.environ, {"CSM_API_KEY": "test-api-key", "CSM_API_URL": "https://api.example.com"}, clear=True)
+    @patch("cosmotech_api.ApiClient")
+    @patch("cosmotech_api.Configuration")
+    def test_update_dataset_mixed_files(self, mock_cosmotech_config, mock_api_client):
+        """Test uploading a dataset with both file and database types."""
+        mock_config = MagicMock()
+        mock_config.cosmotech.organization_id = "org-123"
+        mock_config.cosmotech.workspace_id = "ws-456"
+
+        mock_client_instance = MagicMock()
+        mock_api_client.return_value = mock_client_instance
+        mock_configuration_instance = MagicMock()
+        mock_cosmotech_config.return_value = mock_configuration_instance
+
+        # Mock created dataset
+        mock_dataset = MagicMock(spec=Dataset)
+        mock_dataset.id = "new-dataset-123"
+
+        api = DatasetApi(configuration=mock_config)
+        api.update_dataset = MagicMock(return_value=mock_dataset)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            csv_file = Path(tmpdir) / "data.csv"
+            csv_file.write_text("csv content")
+            db_file = Path(tmpdir) / "data.db"
+            db_file.write_text("database content")
+
+            result = api.update_dataset_from_files("Test Dataset", as_files=[str(csv_file)], as_db=[str(db_file)])
+
+            assert result == mock_dataset
+            api.update_dataset.assert_called_once()
