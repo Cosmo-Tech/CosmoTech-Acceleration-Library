@@ -41,6 +41,7 @@ class DatasetApi(BaseDatasetApi, Connection):
         return self._download(dataset_id, Path(self.configuration.cosmotech.parameters_absolute_path) / dataset_id)
 
     def _download(self, dataset_id, destination) -> Dataset:
+        LOGGER.debug(f"Downloading dataset {dataset_id}")
         dataset = self.get_dataset(
             organization_id=self.configuration.cosmotech.organization_id,
             workspace_id=self.configuration.cosmotech.workspace_id,
