@@ -35,34 +35,48 @@ class DatasetApi(BaseDatasetApi, Connection):
         LOGGER.debug(T("coal.cosmotech_api.initialization.dataset_api_initialized"))
 
     def download_dataset(self, dataset_id) -> Dataset:
-        return self._download(dataset_id, Path(self.configuration.cosmotech.dataset_absolute_path))
-
-    def download_parameter(self, dataset_id) -> Dataset:
-        return self._download(dataset_id, Path(self.configuration.cosmotech.parameters_absolute_path) / dataset_id)
-
-    def _download(self, dataset_id, destination) -> Dataset:
         LOGGER.debug(f"Downloading dataset {dataset_id}")
         dataset = self.get_dataset(
             organization_id=self.configuration.cosmotech.organization_id,
             workspace_id=self.configuration.cosmotech.workspace_id,
             dataset_id=dataset_id,
         )
-
+        # send dataset files under dataset id folder
+        destination = Path(self.configuration.cosmotech.dataset_absolute_path) / dataset_id
         for part in dataset.parts:
-            part_file_path = destination / part.source_name
-            part_file_path.parent.mkdir(parents=True, exist_ok=True)
-            data_part = self.download_dataset_part(
-                organization_id=self.configuration.cosmotech.organization_id,
-                workspace_id=self.configuration.cosmotech.workspace_id,
-                dataset_id=dataset_id,
-                dataset_part_id=part.id,
-            )
-            with open(part_file_path, "wb") as binary_file:
-                binary_file.write(data_part)
-            LOGGER.debug(
-                T("coal.services.dataset.part_downloaded").format(part_name=part.source_name, file_path=part_file_path)
-            )
+            self._download_part(dataset_id, part, destination)
         return dataset
+
+    def download_parameter(self, dataset_id) -> Dataset:
+        LOGGER.debug(f"Downloading dataset {dataset_id}")
+        dataset = self.get_dataset(
+            organization_id=self.configuration.cosmotech.organization_id,
+            workspace_id=self.configuration.cosmotech.workspace_id,
+            dataset_id=dataset_id,
+        )
+        # send parameters file under parameters_name folder
+        destination = Path(self.configuration.cosmotech.parameters_absolute_path) / dataset_id
+        for part in dataset.parts:
+            part_dst = destination / part.name
+            self._download_part(dataset_id, part, part_dst)
+        return dataset
+
+    def _download_part(self, dataset_id, dataset_part, destination):
+        part_file_path = destination / dataset_part.source_name
+        part_file_path.parent.mkdir(parents=True, exist_ok=True)
+        data_part = self.download_dataset_part(
+            organization_id=self.configuration.cosmotech.organization_id,
+            workspace_id=self.configuration.cosmotech.workspace_id,
+            dataset_id=dataset_id,
+            dataset_part_id=dataset_part.id,
+        )
+        with open(part_file_path, "wb") as binary_file:
+            binary_file.write(data_part)
+        LOGGER.debug(
+            T("coal.services.dataset.part_downloaded").format(
+                part_name=dataset_part.source_name, file_path=part_file_path
+            )
+        )
 
     @staticmethod
     def path_to_parts(_path, part_type) -> list[tuple[str, Path, DatasetPartTypeEnum]]:

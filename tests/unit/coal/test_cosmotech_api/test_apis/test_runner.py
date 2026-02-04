@@ -152,6 +152,7 @@ class TestRunnerApi:
         param1.parameter_id = "param1"
         param1.value = "value1"
         mock_runner_data.parameters_values = [param1]
+        mock_runner_data.datasets.parameter = "d-123"
         mock_runner_data.datasets.bases = []
 
         # Mock Parameters instance
@@ -178,6 +179,7 @@ class TestRunnerApi:
         mock_runner_data = MagicMock()
         mock_runner_data.parameters_values = None
         mock_runner_data.datasets.bases = []
+        mock_runner_data.datasets.parameter = "d-123"
 
         api = RunnerApi(configuration=base_runner_config)
         api.get_runner = MagicMock(return_value=mock_runner_data)
@@ -226,6 +228,7 @@ class TestRunnerApi:
         mock_runner_data = MagicMock()
         mock_runner_data.parameters_values = None
         mock_runner_data.datasets.bases = ["dataset-1"]
+        mock_runner_data.datasets.parameter = "d-123"
 
         api = RunnerApi(configuration=base_runner_config)
         api.get_runner = MagicMock(return_value=mock_runner_data)

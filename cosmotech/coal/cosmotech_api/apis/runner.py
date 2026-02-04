@@ -62,16 +62,14 @@ class RunnerApi(BaseRunnerApi, Connection):
             parameters = Parameters(runner)
             parameters.write_parameters_to_json(self.configuration.cosmotech.parameters_absolute_path)
 
+        if runner.datasets.parameter:
+            ds_api = DatasetApi(self.configuration)
+            ds_api.download_parameter(runner.datasets.parameter)
+
         # Download datasets if requested
         if download_datasets:
-            LOGGER.info(
-                T("coal.cosmotech_api.runner.downloading_datasets").format(count=len(runner.datasets.bases) + 1)
-            )
+            LOGGER.info(T("coal.cosmotech_api.runner.downloading_datasets").format(count=len(runner.datasets.bases)))
             if runner.datasets.bases:
                 ds_api = DatasetApi(self.configuration)
                 for dataset_id in runner.datasets.bases:
                     ds_api.download_dataset(dataset_id)
-
-            if runner.datasets.parameter:
-                ds_api = DatasetApi(self.configuration)
-                ds_api.download_parameter(runner.datasets.parameter)
