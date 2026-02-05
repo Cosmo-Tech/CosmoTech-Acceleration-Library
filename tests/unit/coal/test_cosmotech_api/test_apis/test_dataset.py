@@ -529,7 +529,7 @@ class TestDatasetApi:
         mock_dataset.id = "new-dataset-123"
 
         api = DatasetApi(configuration=mock_config)
-        api.update_dataset = MagicMock(return_value=mock_dataset)
+        api.create_dataset_part = MagicMock()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             csv_file = Path(tmpdir) / "data.csv"
@@ -537,7 +537,19 @@ class TestDatasetApi:
             db_file = Path(tmpdir) / "data.db"
             db_file.write_text("database content")
 
-            result = api.update_dataset_from_files("Test Dataset", as_files=[str(csv_file)], as_db=[str(db_file)])
+            api.upload_dataset_parts("Test Dataset", as_files=[str(csv_file)], as_db=[str(db_file)])
 
-            assert result == mock_dataset
-            api.update_dataset.assert_called_once()
+            args_list = api.create_dataset_part.call_args_list
+            assert len(args_list) == 2
+            # check first call used to create csv part
+            dpcr = args_list[0].kwargs.get("dataset_part_create_request")
+            assert dpcr.name == "data.csv"
+            assert dpcr.source_name == "data.csv"
+            assert dpcr.description == "data.csv"
+            assert dpcr.type == DatasetPartTypeEnum.FILE
+            # check second call used to create db part
+            dpcr = args_list[1].kwargs.get("dataset_part_create_request")
+            assert dpcr.name == "data.db"
+            assert dpcr.source_name == "data.db"
+            assert dpcr.description == "data.db"
+            assert dpcr.type == DatasetPartTypeEnum.DB
