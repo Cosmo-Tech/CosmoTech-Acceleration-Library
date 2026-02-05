@@ -29,7 +29,7 @@ class RunnerApi(BaseRunnerApi, Connection):
 
     def get_runner_metadata(
         self,
-        runner_id=None,
+        runner_id: Optional[str] = None,
         include: Optional[list[str]] = None,
         exclude: Optional[list[str]] = None,
     ) -> dict[str, Any]:
