@@ -69,10 +69,11 @@ class TestChannelInterface:
     def test_is_available_with_missing_keys(self):
         """Test is_available when required keys are missing."""
         # Arrange
-        channel = ChannelInterface()
+        configuration = {"section1": {"key1": "value1"}, "section2": {"key3": "value3"}}  # missing key2
+        channel = ChannelInterface(configuration)
         channel.required_keys = {"section1": ["key1", "key2"], "section2": ["key3"]}
-        channel.configuration = {"section1": {"key1": "value1"}, "section2": {"key3": "value3"}}  # missing key2
 
+        print(type(channel.configuration))
         # Act
         result = channel.is_available()
 
@@ -82,13 +83,12 @@ class TestChannelInterface:
     def test_is_available_with_missing_section(self):
         """Test is_available when a required section is missing."""
         # Arrange
-        channel = ChannelInterface()
-        channel.required_keys = {"section1": ["key1", "key2"], "section2": ["key3"]}
-        channel.configuration = {
+        configuration = {
             "section1": {"key1": "value1", "key2": "value2"}
             # section2 is missing
         }
-
+        channel = ChannelInterface(configuration)
+        channel.required_keys = {"section1": ["key1", "key2"], "section2": ["key3"]}
         # Act & Assert
         # The is_available method will raise KeyError when section is missing
         # This is the actual behavior of the current implementation
