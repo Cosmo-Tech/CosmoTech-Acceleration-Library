@@ -112,7 +112,7 @@ class TestRunnerFunctions:
         mock_runner = {
             "id": "test-runner-id",
             "name": "Test Runner",
-            "lastRunId": "test-run-id",
+            "lastRunInfo": {"lastRunId": "test-run-id"},
             "runTemplateId": "test-template-id",
         }
 
