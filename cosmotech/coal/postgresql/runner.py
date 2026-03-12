@@ -105,8 +105,8 @@ def remove_runner_metadata_from_postgresql(
             schema_table = f"{_psql.db_schema}.{_psql.table_prefix}RunnerMetadata"
             sql_delete_from_metatable = f"""
                 DELETE FROM {schema_table}
-                WHERE last_csm_run_id={runner.get("lastRunId")};
+                WHERE last_csm_run_id={runner.get("lastRunInfo").get("lastRunId")};
             """
             curs.execute(sql_delete_from_metatable)
             conn.commit()
-    return runner.get("lastRunId")
+    return runner.get("lastRunInfo").get("lastRunId")
