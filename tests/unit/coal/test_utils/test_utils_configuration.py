@@ -36,6 +36,14 @@ class TestUtilsConfiguration:
             c.secrets
         assert c.log_level == "test_value"
 
+    def test_config_file_with_env_var_prefix(self):
+        os.environ["CONFIG_FILE_PATH"] = os.path.abspath(os.path.join(os.path.dirname(__file__), "conf.ini"))
+        os.environ["faismoinlmalin"] = "la"
+
+        c = configuration.Configuration()
+
+        assert c.bar.alors == "la"
+
     def test_config_file_with_secrets(self):
         os.environ["CONFIG_FILE_PATH"] = os.path.abspath(os.path.join(os.path.dirname(__file__), "conf.ini"))
         os.environ["faismoinlmalin"] = "la"
