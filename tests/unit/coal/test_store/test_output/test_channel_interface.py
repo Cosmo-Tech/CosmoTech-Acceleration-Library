@@ -73,7 +73,6 @@ class TestChannelInterface:
         channel = ChannelInterface(configuration)
         channel.required_keys = {"section1": ["key1", "key2"], "section2": ["key3"]}
 
-        print(type(channel.configuration))
         # Act
         result = channel.is_available()
 

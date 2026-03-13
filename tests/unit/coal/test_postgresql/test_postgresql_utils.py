@@ -110,7 +110,6 @@ class TestPostgresqlFunctions:
         # Arrange
         target_table_name = "test_table"
         _psql = PostgresUtils(base_configuration)
-        print(base_configuration.postgres)
 
         # Mock connection and cursor
         mock_conn = MagicMock()
