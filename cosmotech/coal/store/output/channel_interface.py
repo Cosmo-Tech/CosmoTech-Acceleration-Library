@@ -22,10 +22,12 @@ class ChannelInterface:
 
     def is_available(self) -> bool:
         try:
-            return all(
-                all(key in self.configuration[section] for key in self.required_keys[section])
-                for section in self.required_keys.keys()
-            )
+            for section in self.required_keys.keys():
+                for key in self.required_keys[section]:
+                    if key not in self.configuration[section]:
+                        # if key not in conf get global conf value else KeyError is raised
+                        self.configuration[section][key] = self.configuration.root[section][key]
+            return True
         except KeyError:
             return False
 

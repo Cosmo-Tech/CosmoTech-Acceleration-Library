@@ -28,6 +28,8 @@ class Dotdict(dict):
             except (KeyError, AttributeError):
                 LOGGER.warning(f"dotdict Ref {_v} doesn't exist")
                 raise ReferenceKeyError(_v)
+        if isinstance(_v, str) and _v.startswith("env."):
+            return os.getenv(_v[4:])
         return _v
 
     __delattr__ = dict.__delitem__
