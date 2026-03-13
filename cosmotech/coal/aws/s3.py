@@ -33,6 +33,10 @@ class S3:
             return self._configuration.bucket_prefix
         return ""
 
+    @file_prefix.setter
+    def file_prefix(self, value):
+        self._configuration.bucket_prefix = value
+
     @property
     def use_ssl(self):
         if "use_ssl" in self._configuration:
