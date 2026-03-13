@@ -17,7 +17,11 @@ from cosmotech.coal.store.output.aws_channel import AwsChannel
 def base_aws_config():
     return {
         "coal": {"store": "$cosmotech.parameters_absolute_path"},
-        "cosmotech": {"dataset_absolute_path": "/path/to/dataset", "parameters_absolute_path": "/path/to/params"},
+        "cosmotech": {
+            "runner_id": "runner-789",
+            "dataset_absolute_path": "/path/to/dataset",
+            "parameters_absolute_path": "/path/to/params",
+        },
         "s3": {
             "access_key_id": "test_key",
             "endpoint_url": "http://test.url",
@@ -30,11 +34,11 @@ def base_aws_config():
 class TestAwsChannel:
     """Tests for the AwsChannel class."""
 
-    def test_init_with_configuration(self, base_aws_config):
+    @patch("cosmotech.coal.store.output.aws_channel.S3")
+    def test_init_with_configuration(self, mock_s3_class, base_aws_config):
         """Test AwsChannel initialization with configuration."""
         # Act
-        with patch("cosmotech.coal.store.output.aws_channel.S3"):
-            channel = AwsChannel(base_aws_config)
+        channel = AwsChannel(base_aws_config)
 
         # Assert
         assert channel.configuration is not None
@@ -44,6 +48,8 @@ class TestAwsChannel:
         # Assert
         assert "coal" in AwsChannel.required_keys
         assert "s3" in AwsChannel.required_keys
+        assert "cosmotech" in AwsChannel.required_keys
+        assert "runner_id" in AwsChannel.required_keys["cosmotech"]
         assert "store" in AwsChannel.required_keys["coal"]
         assert "access_key_id" in AwsChannel.required_keys["s3"]
         assert "endpoint_url" in AwsChannel.required_keys["s3"]
@@ -68,7 +74,7 @@ class TestAwsChannel:
         channel.send()
 
         # Assert
-        mock_s3.upload_file.assert_called_once_with("/path/to/db.sqlite", "prefix/db.sqlite")
+        mock_s3.upload_file.assert_called_once_with("/path/to/db.sqlite")
 
     @patch("cosmotech.coal.store.output.aws_channel.Store")
     @patch("cosmotech.coal.store.output.aws_channel.S3")
