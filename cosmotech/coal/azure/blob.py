@@ -101,3 +101,19 @@ def dump_store_to_azure(
                 T("coal.common.data_transfer.sending_table").format(table_name=table_name, output_type=output_type)
             )
             data_upload(_data_stream, _file_name)
+
+
+def delete_azure_blobs(configuration: Configuration = Configuration()) -> None:
+    container_client = BlobServiceClient(
+        account_url=f"https://{configuration.azure.account_name}.blob.core.windows.net/",
+        credential=ClientSecretCredential(
+            tenant_id=configuration.azure.tenant_id,
+            client_id=configuration.azure.client_id,
+            client_secret=configuration.azure.client_secret,
+        ),
+    ).get_container_client(configuration.azure.container_name)
+
+    file_prefix = configuration.safe_get("azure.file_prefix", default="")
+    # List and delete blobs
+    blob_list = [b.name for b in container_client.list_blobs(name_starts_with=file_prefix)]
+    container_client.delete_blobs(*blob_list)
