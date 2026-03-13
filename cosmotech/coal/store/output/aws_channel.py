@@ -8,16 +8,16 @@ from cosmotech.orchestrator.utils.translate import T
 from cosmotech.coal.aws import S3
 from cosmotech.coal.store.output.channel_interface import (
     ChannelInterface,
-    MissingChannelConfigError,
 )
 from cosmotech.coal.store.store import Store
-from cosmotech.coal.utils.configuration import Configuration, Dotdict
+from cosmotech.coal.utils.configuration import Dotdict
 from cosmotech.coal.utils.logger import LOGGER
 
 
 class AwsChannel(ChannelInterface):
     required_keys = {
         "coal": ["store"],
+        "cosmotech": ["runner_id"],
         "s3": ["access_key_id", "endpoint_url", "secret_access_key"],
     }
     requirement_string = required_keys
@@ -25,6 +25,7 @@ class AwsChannel(ChannelInterface):
     def __init__(self, dct: Dotdict = None):
         super().__init__(dct)
         self._s3 = S3(self.configuration)
+        self._s3.file_prefix = self.configuration.cosmotech.runner_id + "/" + self._s3.file_prefix
 
     def send(self, filter: Optional[list[str]] = None) -> bool:
 
@@ -37,11 +38,7 @@ class AwsChannel(ChannelInterface):
         if self._s3.output_type == "sqlite":
             _file_path = _s._database_path
             _file_name = "db.sqlite"
-            _uploaded_file_name = self.configuration.s3.bucket_prefix + _file_name
-            LOGGER.info(
-                T("coal.common.data_transfer.file_sent").format(file_path=_file_path, uploaded_name=_uploaded_file_name)
-            )
-            self._s3.upload_file(_file_path, _uploaded_file_name)
+            self._s3.upload_file(_file_path)
         else:
             tables = list(_s.list_tables())
             if filter:
