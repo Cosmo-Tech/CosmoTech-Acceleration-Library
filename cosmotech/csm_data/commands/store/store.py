@@ -5,6 +5,7 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
+from cosmotech.csm_data.commands.store.delete import delete
 from cosmotech.csm_data.commands.store.dump_to_azure import dump_to_azure
 from cosmotech.csm_data.commands.store.dump_to_postgresql import dump_to_postgresql
 from cosmotech.csm_data.commands.store.dump_to_s3 import dump_to_s3
@@ -34,3 +35,4 @@ store.add_command(dump_to_postgresql, "dump-to-postgresql")
 store.add_command(dump_to_s3, "dump-to-s3")
 store.add_command(dump_to_azure, "dump-to-azure")
 store.add_command(output, "output")
+store.add_command(delete, "delete")
