@@ -18,7 +18,11 @@ def base_azure_storage_config():
     return Configuration(
         {
             "coal": {"store": "$cosmotech.parameters_absolute_path"},
-            "cosmotech": {"dataset_absolute_path": "/path/to/dataset", "parameters_absolute_path": "/path/to/params"},
+            "cosmotech": {
+                "runner_id": "r-789",
+                "dataset_absolute_path": "/path/to/dataset",
+                "parameters_absolute_path": "/path/to/params",
+            },
             "azure": {
                 "account_name": "test_account",
                 "container_name": "test_container",
@@ -62,20 +66,25 @@ class TestAzureStorageChannel:
     @patch("cosmotech.coal.azure.blob.ClientSecretCredential")
     def test_send_without_filter(self, mock_client_secret, mock_store, mock_dump, base_azure_storage_config):
         """Test sending data without table filter."""
+        # Arrange
         channel = AzureStorageChannel(base_azure_storage_config)
 
         # Act
         channel.send()
 
         # Assert
-        mock_dump.assert_called_once_with(base_azure_storage_config, selected_tables=None)
+        expected_config = base_azure_storage_config
+        expected_config.azure.file_prefix = (
+            base_azure_storage_config.cosmotech.runner_id + "/" + base_azure_storage_config.azure.file_prefix
+        )
+        mock_dump.assert_called_once_with(expected_config, selected_tables=None)
 
     @patch("cosmotech.coal.store.output.az_storage_channel.dump_store_to_azure")
     @patch("cosmotech.coal.azure.blob.Store")
     @patch("cosmotech.coal.azure.blob.ClientSecretCredential")
     def test_send_with_filter(self, mock_client_secret, mock_store, mock_dump, base_azure_storage_config):
         """Test sending data with table filter."""
-
+        # Arrange
         channel = AzureStorageChannel(base_azure_storage_config)
         tables_filter = ["table1", "table2"]
 
@@ -83,18 +92,28 @@ class TestAzureStorageChannel:
         channel.send(filter=tables_filter)
 
         # Assert
+        expected_config = base_azure_storage_config
+        expected_config.azure.file_prefix = (
+            base_azure_storage_config.cosmotech.runner_id + "/" + base_azure_storage_config.azure.file_prefix
+        )
         mock_dump.assert_called_once_with(
-            base_azure_storage_config,
+            expected_config,
             selected_tables=["table1", "table2"],
         )
 
-    def test_delete(self, base_azure_storage_config):
+    @patch("cosmotech.coal.store.output.az_storage_channel.delete_azure_blobs")
+    @patch("cosmotech.coal.azure.blob.Store")
+    @patch("cosmotech.coal.azure.blob.ClientSecretCredential")
+    def test_delete(self, mock_client_secret, mock_store, mock_delete, base_azure_storage_config):
         """Test delete method (should do nothing)."""
         channel = AzureStorageChannel(base_azure_storage_config)
 
         # Act
-        result = channel.delete()
+        channel.delete()
 
         # Assert
-        # Should not raise any exception and return None
-        assert result is None
+        expected_config = base_azure_storage_config
+        expected_config.azure.file_prefix = (
+            base_azure_storage_config.cosmotech.runner_id + "/" + base_azure_storage_config.azure.file_prefix
+        )
+        mock_delete.assert_called_once_with(expected_config)
