@@ -37,7 +37,7 @@ class Store:
     def get_table(self, table_name: str) -> pyarrow.Table:
         if not self.table_exists(table_name):
             raise ValueError(T("coal.errors.data.no_table").format(table_name=table_name))
-        return self.execute_query(f"select * from {table_name}")
+        return self.execute_query(f'select * from "{table_name}"')
 
     def table_exists(self, table_name) -> bool:
         return table_name in self.list_tables()
