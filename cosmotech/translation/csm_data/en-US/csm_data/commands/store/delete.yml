@@ -1,0 +1,4 @@
+description: |
+  Delete simulation result from where the output command pushed data.
+
+  This delete is base on the configuration.

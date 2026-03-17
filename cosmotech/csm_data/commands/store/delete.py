@@ -5,22 +5,13 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from cosmotech.orchestrator.utils.translate import T
-
 from cosmotech.csm_data.utils.click import click
 from cosmotech.csm_data.utils.decorators import translate_help, web_help
 
 
 @click.command()
-@click.option(
-    "--filter",
-    "-f",
-    multiple=True,
-    help=T("csm_data.commands.store.output.parameters.filter"),
-    type=str,
-)
-@web_help("csm-data/store/output")
-@translate_help("csm_data.commands.store.output.description")
+@web_help("csm-data/store/delete")
+@translate_help("csm_data.commands.store.delete.description")
 def delete(
     filter,
 ):
@@ -30,6 +21,6 @@ def delete(
 
     try:
         _cs = channel_spliter.ChannelSpliter(Configuration())
-        _cs.delete(list(filter))
+        _cs.delete()
     except ValueError as e:
         raise click.Abort() from e
