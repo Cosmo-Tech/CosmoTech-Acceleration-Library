@@ -77,7 +77,7 @@ class TestStore:
 
         # Assert
         mock_table_exists.assert_called_once_with(table_name)
-        mock_execute_query.assert_called_once_with(f"select * from {table_name}")
+        mock_execute_query.assert_called_once_with(f'select * from "{table_name}"')
         assert result == expected_table
 
     @patch.object(Store, "table_exists")
