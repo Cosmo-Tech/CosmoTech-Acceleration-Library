@@ -103,10 +103,11 @@ def remove_runner_metadata_from_postgresql(
     with dbapi.connect(_psql.full_uri, autocommit=True) as conn:
         with conn.cursor() as curs:
             schema_table = f"{_psql.db_schema}.{_psql.table_prefix}RunnerMetadata"
+            last_run_id = runner.get("lastRunInfo").get("lastRunId")
             sql_delete_from_metatable = f"""
                 DELETE FROM {schema_table}
-                WHERE last_csm_run_id={runner.get("lastRunInfo").get("lastRunId")};
+                WHERE last_csm_run_id= $1;
             """
-            curs.execute(sql_delete_from_metatable)
+            curs.execute(sql_delete_from_metatable, (last_run_id,))
             conn.commit()
     return runner.get("lastRunInfo").get("lastRunId")

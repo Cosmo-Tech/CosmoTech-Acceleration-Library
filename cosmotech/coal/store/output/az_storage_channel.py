@@ -25,9 +25,10 @@ class AzureStorageChannel(ChannelInterface):
 
     def __init__(self, dct: Dotdict = None):
         super().__init__(dct)
-        self.configuration.azure.file_prefix = (
-            self.configuration.cosmotech.runner_id + "/" + self.configuration.azure.file_prefix
-        )
+        runner_id = self.configuration.cosmotech.runner_id
+        prefix = self.configuration.azure.file_prefix
+        if not prefix.startswith(runner_id):
+            self.configuration.azure.file_prefix = runner_id + "/" + prefix
 
     def send(self, filter: Optional[list[str]] = None) -> bool:
         dump_store_to_azure(

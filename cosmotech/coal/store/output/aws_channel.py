@@ -37,7 +37,6 @@ class AwsChannel(ChannelInterface):
 
         if self._s3.output_type == "sqlite":
             _file_path = _s._database_path
-            _file_name = "db.sqlite"
             self._s3.upload_file(_file_path)
         else:
             tables = list(_s.list_tables())

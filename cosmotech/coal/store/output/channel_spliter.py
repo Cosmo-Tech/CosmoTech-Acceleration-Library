@@ -49,7 +49,7 @@ class ChannelSpliter(ChannelInterface):
                     raise
         return any_ok
 
-    def delete(self, filter: Optional[list[str]] = None) -> bool:
+    def delete(self) -> bool:
         any_ok = False
         for i in self.targets:
             try:

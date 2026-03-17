@@ -114,6 +114,13 @@ def delete_azure_blobs(configuration: Configuration = Configuration()) -> None:
     ).get_container_client(configuration.azure.container_name)
 
     file_prefix = configuration.safe_get("azure.file_prefix", default="")
-    # List and delete blobs
-    blob_list = [b.name for b in container_client.list_blobs(name_starts_with=file_prefix)]
-    container_client.delete_blobs(*blob_list)
+    # List and delete blobs in batches of 256 as the limit is specified in the doc.
+    # https://learn.microsoft.com/en-us/python/api/azure-storage-blob/azure.storage.blob.aio.containerclient?view=azure-python#azure-storage-blob-aio-containerclient-delete-blobs
+    blob_names_batch: list[str] = []
+    for blob in container_client.list_blobs(name_starts_with=file_prefix):
+        blob_names_batch.append(blob.name)
+        if len(blob_names_batch) >= 256:
+            container_client.delete_blobs(*blob_names_batch)
+            blob_names_batch = []
+    if blob_names_batch:
+        container_client.delete_blobs(*blob_names_batch)
