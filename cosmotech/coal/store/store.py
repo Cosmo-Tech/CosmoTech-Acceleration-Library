@@ -6,6 +6,7 @@
 # specifically authorized by written means by Cosmo Tech.
 
 import pathlib
+from functools import wraps
 
 import pyarrow
 from adbc_driver_sqlite import dbapi
@@ -13,6 +14,19 @@ from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.utils.configuration import Configuration
 from cosmotech.coal.utils.logger import LOGGER
+
+
+def table_name_to_lower(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if "table_name" in kwargs:
+            kwargs["table_name"] = kwargs["table_name"].lower()
+        else:
+            args = list(args)
+            args[1] = args[1].lower()
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 class Store:
@@ -34,27 +48,31 @@ class Store:
         if self._database_path.exists():
             self._database_path.unlink()
 
+    @table_name_to_lower
     def get_table(self, table_name: str) -> pyarrow.Table:
         if not self.table_exists(table_name):
             raise ValueError(T("coal.errors.data.no_table").format(table_name=table_name))
         return self.execute_query(f'select * from "{table_name}"')
 
+    @table_name_to_lower
     def table_exists(self, table_name) -> bool:
         return table_name in self.list_tables()
 
+    @table_name_to_lower
     def get_table_schema(self, table_name: str) -> pyarrow.Schema:
         if not self.table_exists(table_name):
             raise ValueError(T("coal.errors.data.no_table").format(table_name=table_name))
         with dbapi.connect(self._database) as conn:
             return conn.adbc_get_table_schema(table_name)
 
+    @table_name_to_lower
     def add_table(self, table_name: str, data=pyarrow.Table, replace: bool = False):
         with dbapi.connect(self._database, autocommit=True) as conn:
             with conn.cursor() as curs:
                 rows = curs.adbc_ingest(table_name, data, "replace" if replace else "create_append")
                 LOGGER.debug(T("coal.common.data_transfer.rows_inserted").format(rows=rows, table_name=table_name))
 
-    def execute_query(self, sql_query: str) -> pyarrow.Table:
+    def execute_query(self, sql_query: str, parameters: list = (None,)) -> pyarrow.Table:
         batch_size = 1024
         batch_size_increment = 1024
         while True:
@@ -62,7 +80,7 @@ class Store:
                 with dbapi.connect(self._database, autocommit=True) as conn:
                     with conn.cursor() as curs:
                         curs.adbc_statement.set_options(**{"adbc.sqlite.query.batch_rows": str(batch_size)})
-                        curs.execute(sql_query)
+                        curs.execute(sql_query, parameters)
                         return curs.fetch_arrow_table()
             except OSError:
                 batch_size += batch_size_increment

@@ -270,7 +270,7 @@ class TestStore:
         # Assert
         mock_connect.assert_called_once()
         mock_cursor.adbc_statement.set_options.assert_called_once_with(**{"adbc.sqlite.query.batch_rows": "1024"})
-        mock_cursor.execute.assert_called_once_with(sql_query)
+        mock_cursor.execute.assert_called_once_with(sql_query, (None,))
         mock_cursor.fetch_arrow_table.assert_called_once()
         assert result == expected_table
 
@@ -306,7 +306,7 @@ class TestStore:
         # First call with batch_size = 1024, second with batch_size = 2048
         mock_cursor.adbc_statement.set_options.assert_any_call(**{"adbc.sqlite.query.batch_rows": "1024"})
         mock_cursor.adbc_statement.set_options.assert_any_call(**{"adbc.sqlite.query.batch_rows": "2048"})
-        mock_cursor.execute.assert_called_once_with(sql_query)
+        mock_cursor.execute.assert_called_once_with(sql_query, (None,))
         mock_cursor.fetch_arrow_table.assert_called_once()
         assert result == expected_table
 

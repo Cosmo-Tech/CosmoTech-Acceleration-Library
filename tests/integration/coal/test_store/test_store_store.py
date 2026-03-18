@@ -13,7 +13,6 @@ from cosmotech.coal.store.store import Store
 
 @pytest.fixture(scope="function")
 def store():
-    print("reset_store")
     store = Store(reset=True)
     yield store
     store.reset()
@@ -49,3 +48,21 @@ class TestStore:
 
         # Assert
         assert result
+
+    def test_add_get_table_with_upper_and_lower_case(self, store):
+        """Test add table and get table behavior with uppper and lower cases"""
+
+        # Arrange
+
+        table = pa.Table.from_arrays([pa.array([1, 2, 3]), pa.array(["a", "b", "c"])], names=["id", "name"])
+        store.add_table("10mb", table)
+        table = pa.Table.from_arrays([pa.array([4, 5, 6]), pa.array(["A", "B", "C"])], names=["id", "name"])
+        store.add_table("10MB", table)
+
+        # Act
+        UPPER_result = store.get_table("10MB")
+        upper_result = store.get_table("10mb")
+
+        assert upper_result
+        assert UPPER_result
+        assert upper_result == UPPER_result
