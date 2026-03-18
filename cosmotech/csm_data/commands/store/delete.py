@@ -12,9 +12,7 @@ from cosmotech.csm_data.utils.decorators import translate_help, web_help
 @click.command()
 @web_help("csm-data/store/delete")
 @translate_help("csm_data.commands.store.delete.description")
-def delete(
-    filter,
-):
+def delete():
     # Import the function at the start of the command
     from cosmotech.coal.store.output import channel_spliter
     from cosmotech.coal.utils.configuration import Configuration
