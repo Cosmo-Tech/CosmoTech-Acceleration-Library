@@ -46,7 +46,7 @@ class TestRunnerFunctions:
         mock_postgres_utils_instance = MagicMock()
         mock_postgres_utils_instance.full_uri = "postgresql://user:password@localhost:5432/testdb"
         mock_postgres_utils_instance.db_schema = "public"
-        mock_postgres_utils_instance.table_prefix = "Test_"
+        mock_postgres_utils_instance.metadata_table_name = "test_runnermetadata"
         mock_postgres_utils_class.return_value = mock_postgres_utils_instance
 
         # Mock PostgreSQL connection and cursor
@@ -77,11 +77,11 @@ class TestRunnerFunctions:
         # Verify the SQL statements (partially, since the exact SQL is complex)
         create_table_call = mock_cursor.execute.call_args_list[0]
         assert "CREATE TABLE IF NOT EXISTS" in create_table_call[0][0]
-        assert "public.Test_RunnerMetadata" in create_table_call[0][0]
+        assert "public.test_runnermetadata" in create_table_call[0][0]
 
         upsert_call = mock_cursor.execute.call_args_list[1]
         assert "INSERT INTO" in upsert_call[0][0]
-        assert "public.Test_RunnerMetadata" in upsert_call[0][0]
+        assert "public.test_runnermetadata" in upsert_call[0][0]
         assert upsert_call[0][1] == (
             mock_runner["id"],
             mock_runner["name"],
@@ -125,7 +125,7 @@ class TestRunnerFunctions:
         mock_postgres_utils_instance = MagicMock()
         mock_postgres_utils_instance.full_uri = "postgresql://user:password@localhost:5432/testdb"
         mock_postgres_utils_instance.db_schema = "public"
-        mock_postgres_utils_instance.table_prefix = "Test_"
+        mock_postgres_utils_instance.metadata_table_name = "test_runnermetadata"
         mock_postgres_utils_class.return_value = mock_postgres_utils_instance
 
         # Mock PostgreSQL connection and cursor
@@ -156,7 +156,7 @@ class TestRunnerFunctions:
         # Verify the SQL statements (partially, since the exact SQL is complex)
         delete_call = mock_cursor.execute.call_args_list[0]
         assert "DELETE FROM" in delete_call[0][0]
-        assert "public.Test_RunnerMetadata" in delete_call[0][0]
+        assert "public.test_runnermetadata" in delete_call[0][0]
 
         # Check that commits were called
         assert mock_conn.commit.call_count == 1
