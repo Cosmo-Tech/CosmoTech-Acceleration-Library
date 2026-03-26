@@ -26,8 +26,8 @@ class PostgresUtils:
     @property
     def table_prefix(self):
         if "table_prefix" in self._configuration:
-            return self._configuration.table_prefix
-        return "Cosmotech_"
+            return self._configuration.table_prefix.lower()
+        return "Cosmotech_".lower()
 
     @property
     def db_name(self):
@@ -77,7 +77,7 @@ class PostgresUtils:
 
     @property
     def metadata_table_name(self) -> str:
-        return f"{self.table_prefix}RunnerMetadata"
+        return f"{self.table_prefix}RunnerMetadata".lower()
 
     def get_postgresql_table_schema(self, target_table_name: str) -> Optional[pa.Schema]:
         """

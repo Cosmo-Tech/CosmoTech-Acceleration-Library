@@ -44,7 +44,7 @@ def send_runner_metadata_to_postgresql(
     # Connect to PostgreSQL and update runner metadata
     with dbapi.connect(_psql.full_uri, autocommit=True) as conn:
         with conn.cursor() as curs:
-            schema_table = f"{str(_psql.db_schema)}.{str(_psql.table_prefix)}RunnerMetadata"
+            schema_table = f"{str(_psql.db_schema)}.{str(_psql.metadata_table_name)}"
             sql_create_table = f"""
                 CREATE TABLE IF NOT EXISTS {schema_table}  (
                   id varchar(32) PRIMARY KEY,
@@ -102,7 +102,7 @@ def remove_runner_metadata_from_postgresql(
     # Connect to PostgreSQL and remove runner metadata row
     with dbapi.connect(_psql.full_uri, autocommit=True) as conn:
         with conn.cursor() as curs:
-            schema_table = f"{_psql.db_schema}.{_psql.table_prefix}RunnerMetadata"
+            schema_table = f"{_psql.db_schema}.{_psql.metadata_table_name}"
             last_run_id = runner.get("lastRunInfo").get("lastRunId")
             sql_delete_from_metatable = f"""
                 DELETE FROM {schema_table}

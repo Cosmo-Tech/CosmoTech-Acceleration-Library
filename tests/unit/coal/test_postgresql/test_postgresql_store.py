@@ -42,7 +42,6 @@ class TestStoreFunctions:
         postgres_schema = "public"
         postgres_user = "user"
         postgres_password = "password"
-        table_prefix = "Test_"
         replace = True
 
         _config = Configuration(
@@ -58,7 +57,7 @@ class TestStoreFunctions:
                     "user_name": postgres_user,
                     "user_password": postgres_password,
                     "password_encoding": False,
-                    "table_prefix": table_prefix,
+                    "table_prefix": "Test_",
                 },
             }
         )
@@ -72,7 +71,7 @@ class TestStoreFunctions:
             postgres_schema,
             postgres_user,
             postgres_password,
-            table_prefix,
+            "Test_",
             replace,
         )
 
@@ -93,12 +92,12 @@ class TestStoreFunctions:
             [
                 call(
                     table1_data,
-                    f"{table_prefix}table1",
+                    f"test_table1",
                     replace,
                 ),
                 call(
                     table2_data,
-                    f"{table_prefix}table2",
+                    f"test_table2",
                     replace,
                 ),
             ]
@@ -266,6 +265,6 @@ class TestStoreFunctions:
         # Check that send_pyarrow_table_to_postgresql was called with default parameters
         mock_send_to_postgresql.assert_called_once_with(
             table_data,
-            "Cosmotech_table1",  # Default table_prefix is "Cosmotech_"
+            "cosmotech_table1",  # Default table_prefix is "Cosmotech_" but is sanitized to "cosmotech_" for psql
             True,  # Default replace is True
         )
