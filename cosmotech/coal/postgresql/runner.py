@@ -56,7 +56,6 @@ def send_runner_metadata_to_postgresql(
             LOGGER.info(T("coal.services.postgresql.creating_table").format(schema_table=schema_table))
             curs.execute(sql_create_table)
             conn.commit()
-            LOGGER.info(T("coal.services.postgresql.metadata"))
             sql_upsert = f"""
                 INSERT INTO {schema_table} (id, name, last_csm_run_id, run_template_id)
                   VALUES ($1, $2, $3, $4)
