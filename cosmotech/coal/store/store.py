@@ -72,7 +72,7 @@ class Store:
                 rows = curs.adbc_ingest(table_name, data, "replace" if replace else "create_append")
                 LOGGER.debug(T("coal.common.data_transfer.rows_inserted").format(rows=rows, table_name=table_name))
 
-    def execute_query(self, sql_query: str, parameters: list = (None,)) -> pyarrow.Table:
+    def execute_query(self, sql_query: str, parameters: list = None) -> pyarrow.Table:
         batch_size = 1024
         batch_size_increment = 1024
         while True:

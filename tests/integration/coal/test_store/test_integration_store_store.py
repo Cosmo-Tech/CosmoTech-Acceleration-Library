@@ -18,7 +18,7 @@ def store():
     store.reset()
 
 
-class TestStore:
+class TestIntegrationStore:
     """Tests for the store class."""
 
     def test_get_table(self, store):
@@ -66,3 +66,37 @@ class TestStore:
         assert upper_result
         assert UPPER_result
         assert upper_result == UPPER_result
+
+    def test_execute_query_without_parameters(self, store):
+        """Test execute_query with a plain SQL query and no parameters"""
+
+        # Arrange
+        table_name = "items"
+        table = pa.Table.from_arrays([pa.array([1, 2, 3]), pa.array(["a", "b", "c"])], names=["id", "name"])
+        store.add_table(table_name, table)
+
+        # Act
+        result = store.execute_query(f'SELECT * FROM "{table_name}" ORDER BY id')
+
+        # Assert
+        assert result is not None
+        assert result.num_rows == 3
+        assert result.column("id").to_pylist() == [1, 2, 3]
+        assert result.column("name").to_pylist() == ["a", "b", "c"]
+
+    def test_execute_query_with_parameters(self, store):
+        """Test execute_query with a parameterized SQL query"""
+
+        # Arrange
+        table_name = "items"
+        table = pa.Table.from_arrays([pa.array([1, 2, 3]), pa.array(["a", "b", "c"])], names=["id", "name"])
+        store.add_table(table_name, table)
+
+        # Act
+        result = store.execute_query(f'SELECT * FROM "{table_name}" WHERE id = ?', parameters=[2])
+
+        # Assert
+        assert result is not None
+        assert result.num_rows == 1
+        assert result.column("id").to_pylist() == [2]
+        assert result.column("name").to_pylist() == ["b"]
