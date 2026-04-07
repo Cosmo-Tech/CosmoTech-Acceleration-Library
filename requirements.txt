@@ -20,7 +20,7 @@ requests~=2.32
 singlestoredb~=1.16
 
 # Orchestrator templates requirements
-cosmotech-run-orchestrator~=2.0.0
+cosmotech-run-orchestrator~=2.1.0
 
 # Data store requirements
 pyarrow~=22.0
