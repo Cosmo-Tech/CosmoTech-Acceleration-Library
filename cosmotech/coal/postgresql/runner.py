@@ -49,7 +49,7 @@ def send_runner_metadata_to_postgresql(
                 CREATE TABLE IF NOT EXISTS {schema_table}  (
                   id varchar(32) PRIMARY KEY,
                   name varchar(256),
-                  last_csm_run_id varchar(32),
+                  last_csm_run_id varchar(32) UNIQUE,
                   run_template_id varchar(32)
                 );
             """
