@@ -56,6 +56,16 @@ def send_runner_metadata_to_postgresql(
             LOGGER.info(T("coal.services.postgresql.creating_table").format(schema_table=schema_table))
             curs.execute(sql_create_table)
             conn.commit()
+
+            last_run_id = runner.get("lastRunInfo").get("lastRunId")
+            if last_run_id:
+                sql_delete_from_metatable = f"""
+                    DELETE FROM {schema_table}
+                    WHERE last_csm_run_id= $1;
+                """
+                curs.execute(sql_delete_from_metatable, (last_run_id,))
+                conn.commit()
+
             sql_upsert = f"""
                 INSERT INTO {schema_table} (id, name, last_csm_run_id, run_template_id)
                   VALUES ($1, $2, $3, $4)
