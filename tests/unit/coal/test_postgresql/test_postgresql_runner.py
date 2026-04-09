@@ -82,7 +82,7 @@ class TestRunnerFunctions:
         delete_call = mock_cursor.execute.call_args_list[1]
         assert "DELETE FROM" in delete_call[0][0]
         assert "public.test_runnermetadata" in delete_call[0][0]
-        assert delete_call[0][1] == ("test-run-id",)
+        assert delete_call[0][1] == ("test-runner-id",)
 
         upsert_call = mock_cursor.execute.call_args_list[2]
         assert "INSERT INTO" in upsert_call[0][0]
