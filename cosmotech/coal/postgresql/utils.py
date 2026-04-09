@@ -169,7 +169,8 @@ class PostgresUtils:
                         ) THEN
                             ALTER TABLE {self.db_schema}.{from_table}
                             ADD CONSTRAINT metadata FOREIGN KEY ({from_col})
-                            REFERENCES {self.db_schema}.{to_table}({to_col});
+                            REFERENCES {self.db_schema}.{to_table}({to_col})
+                            ON DELETE CASCADE;
                         END IF;
                     END $$;
                 """
