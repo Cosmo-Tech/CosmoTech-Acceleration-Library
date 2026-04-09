@@ -57,14 +57,13 @@ def send_runner_metadata_to_postgresql(
             curs.execute(sql_create_table)
             conn.commit()
 
-            last_run_id = runner.get("lastRunInfo").get("lastRunId")
-            if last_run_id:
-                sql_delete_from_metatable = f"""
-                    DELETE FROM {schema_table}
-                    WHERE last_csm_run_id= $1;
-                """
-                curs.execute(sql_delete_from_metatable, (last_run_id,))
-                conn.commit()
+            runner_id = runner.get("id")
+            sql_delete_from_metatable = f"""
+                DELETE FROM {schema_table}
+                WHERE id= $1;
+            """
+            curs.execute(sql_delete_from_metatable, (runner_id,))
+            conn.commit()
 
             sql_upsert = f"""
                 INSERT INTO {schema_table} (id, name, last_csm_run_id, run_template_id)
