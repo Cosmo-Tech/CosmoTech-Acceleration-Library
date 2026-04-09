@@ -155,12 +155,24 @@ class PostgresUtils:
         to_table: str,
         to_col: str,
     ) -> None:
-        # Connect to PostgreSQL and remove runner metadata row
+        # Connect to PostgreSQL and add a foreign key constraint
         with dbapi.connect(self.full_uri, autocommit=True) as conn:
             with conn.cursor() as curs:
                 sql_add_fk = f"""
-                    ALTER TABLE {self.db_schema}.{from_table}
-                    CONSTRAINT metadata FOREIGN KEY ({from_col}) REFERENCES {to_table}({to_col})
+                    DO $$
+                    BEGIN
+                        IF NOT EXISTS (
+                            SELECT 1
+                            FROM pg_constraint
+                            WHERE conname = 'metadata'
+                              AND conrelid = '{self.db_schema}.{from_table}'::regclass
+                        ) THEN
+                            ALTER TABLE {self.db_schema}.{from_table}
+                            ADD CONSTRAINT metadata FOREIGN KEY ({from_col})
+                            REFERENCES {self.db_schema}.{to_table}({to_col})
+                            ON DELETE CASCADE;
+                        END IF;
+                    END $$;
                 """
                 curs.execute(sql_add_fk)
                 conn.commit()

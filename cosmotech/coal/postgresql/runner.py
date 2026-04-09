@@ -49,19 +49,25 @@ def send_runner_metadata_to_postgresql(
                 CREATE TABLE IF NOT EXISTS {schema_table}  (
                   id varchar(32) PRIMARY KEY,
                   name varchar(256),
-                  last_csm_run_id varchar(32),
+                  last_csm_run_id varchar(32) UNIQUE,
                   run_template_id varchar(32)
                 );
             """
             LOGGER.info(T("coal.services.postgresql.creating_table").format(schema_table=schema_table))
             curs.execute(sql_create_table)
             conn.commit()
+
+            runner_id = runner.get("id")
+            sql_delete_from_metatable = f"""
+                DELETE FROM {schema_table}
+                WHERE id= $1;
+            """
+            curs.execute(sql_delete_from_metatable, (runner_id,))
+            conn.commit()
+
             sql_upsert = f"""
                 INSERT INTO {schema_table} (id, name, last_csm_run_id, run_template_id)
-                  VALUES ($1, $2, $3, $4)
-                  ON CONFLICT (id)
-                  DO
-                    UPDATE SET name = EXCLUDED.name, last_csm_run_id = EXCLUDED.last_csm_run_id;
+                VALUES ($1, $2, $3, $4)
             """
             LOGGER.debug(runner)
             curs.execute(

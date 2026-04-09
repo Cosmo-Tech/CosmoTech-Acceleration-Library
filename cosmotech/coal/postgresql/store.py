@@ -115,7 +115,7 @@ def dump_store_to_postgresql_from_conf(
             )
             if fk_id and _psql.is_metadata_exists():
                 metadata_table = f"{_psql.metadata_table_name}"
-                _psql.add_fk_constraint(table_name, "csm_run_id", metadata_table, "last_csm_run_id")
+                _psql.add_fk_constraint(target_table_name, "csm_run_id", metadata_table, "last_csm_run_id")
 
             total_rows += rows
             _up_time = perf_counter()
