@@ -67,10 +67,7 @@ def send_runner_metadata_to_postgresql(
 
             sql_upsert = f"""
                 INSERT INTO {schema_table} (id, name, last_csm_run_id, run_template_id)
-                  VALUES ($1, $2, $3, $4)
-                  ON CONFLICT (id)
-                  DO
-                    UPDATE SET name = EXCLUDED.name, last_csm_run_id = EXCLUDED.last_csm_run_id;
+                VALUES ($1, $2, $3, $4)
             """
             LOGGER.debug(runner)
             curs.execute(
