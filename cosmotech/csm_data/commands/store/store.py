@@ -11,6 +11,7 @@ from cosmotech.csm_data.commands.store.dump_to_postgresql import dump_to_postgre
 from cosmotech.csm_data.commands.store.dump_to_s3 import dump_to_s3
 from cosmotech.csm_data.commands.store.list_tables import list_tables
 from cosmotech.csm_data.commands.store.load_csv_folder import load_csv_folder
+from cosmotech.csm_data.commands.store.load_parquet_folder import load_parquet_folder
 from cosmotech.csm_data.commands.store.load_from_singlestore import (
     load_from_singlestore_command,
 )
@@ -30,6 +31,7 @@ def store():
 store.add_command(reset, "reset")
 store.add_command(list_tables, "list-tables")
 store.add_command(load_csv_folder, "load-csv-folder")
+store.add_command(load_parquet_folder, "load-parquet-folder")
 store.add_command(load_from_singlestore_command, "load-from-singlestore")
 store.add_command(dump_to_postgresql, "dump-to-postgresql")
 store.add_command(dump_to_s3, "dump-to-s3")
