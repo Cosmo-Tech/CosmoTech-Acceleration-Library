@@ -30,7 +30,6 @@ class DatasetCollector:
     def collect(self):
         for dataset_id in os.listdir(EC.cosmotech.dataset_absolute_path):
             for r, d, f in os.walk(Path(EC.cosmotech.dataset_absolute_path) / dataset_id):
-                print(f"dataset: {r} {d} {f}")
                 for dataset_name in f:
                     path = Path(r) / dataset_name
                     self.paths[dataset_name] = path
@@ -52,14 +51,12 @@ class ParameterCollector:
         if parameter_file.exists():
             with open(parameter_file) as f:
                 parameters = json.load(f)
-                print(f"{parameters=}")
                 for parameter in parameters:
                     self.parameters[parameter["parameterId"]] = parameter["value"]
 
     def collect(self):
-        for dataset_id in os.listdir(EC.cosmotech.dataset_absolute_path):
+        for dataset_id in os.listdir(EC.cosmotech.parameters_absolute_path):
             for r, d, f in os.walk(Path(EC.cosmotech.parameters_absolute_path) / dataset_id):
-                print(f"parameter: {r} {d} {f}")
                 for file_name in f:
                     path = Path(r) / file_name
                     param_name = path.parent.name
