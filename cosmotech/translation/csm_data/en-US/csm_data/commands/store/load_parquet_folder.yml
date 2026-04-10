@@ -1,0 +1,5 @@
+description: |
+  Running this command will find all parquet files in the given folder and put them in the store
+parameters:
+  store_folder: The folder containing the store files
+  parquet_folder: The folder containing the parquet files to store
