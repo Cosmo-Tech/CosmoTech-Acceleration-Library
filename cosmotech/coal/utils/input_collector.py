@@ -47,6 +47,8 @@ class ParameterCollector:
     def __init__(self):
         self.paths: dict[str, Path] = {}
         self.parameters: dict[str, str] = {}
+
+    def read_parameters_json(self):
         parameter_file = Path(EC.cosmotech.parameters_absolute_path) / "parameters.json"
         if parameter_file.exists():
             with open(parameter_file) as f:
@@ -63,6 +65,9 @@ class ParameterCollector:
                     self.paths[param_name] = path
 
     def fetch_parameter(self, param_name: str) -> Path:
+        # lazy collection to avoid unnecessary json loading
+        if not self.parameters:
+            self.read_parameters_json()
         return self.parameters[param_name]
 
     def fetch_file_path(self, param_name: str) -> Path:
