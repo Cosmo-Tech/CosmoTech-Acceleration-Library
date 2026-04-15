@@ -176,7 +176,7 @@ class TestParameterCollector:
         collector = ParameterCollector()
         result = collector.fetch("myparam")
 
-        assert result == f
+        assert result == "json_val"
 
 
 class TestInputCollector:
