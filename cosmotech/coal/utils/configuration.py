@@ -76,6 +76,8 @@ class Configuration(Dotdict):
                 "api": {"url": "CSM_API_URL", "scope": "CSM_API_SCOPE"},
                 "dataset_absolute_path": "CSM_DATASET_ABSOLUTE_PATH",
                 "parameters_absolute_path": "CSM_PARAMETERS_ABSOLUTE_PATH",
+                "output_absolute_path": "CSM_OUTPUT_ABSOLUTE_PATH",
+                "tmp_absolute_path": "CSM_TEMP_ABSOLUTE_PATH",
                 "organization_id": "CSM_ORGANIZATION_ID",
                 "workspace_id": "CSM_WORKSPACE_ID",
                 "runner_id": "CSM_RUNNER_ID",
