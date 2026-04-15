@@ -156,24 +156,19 @@ class PostgresUtils:
         to_col: str,
     ) -> None:
         # Connect to PostgreSQL and add a foreign key constraint
-        with dbapi.connect(self.full_uri, autocommit=True) as conn:
+        with dbapi.connect(self.full_uri, autocommit=False) as conn:
             with conn.cursor() as curs:
-                sql_add_fk = f"""
-                    DO $$
-                    BEGIN
-                        IF NOT EXISTS (
-                            SELECT 1
-                            FROM pg_constraint
-                            WHERE conname = 'metadata'
-                              AND conrelid = '{self.db_schema}.{from_table}'::regclass
-                        ) THEN
-                            ALTER TABLE {self.db_schema}.{from_table}
-                            ADD CONSTRAINT metadata FOREIGN KEY ({from_col})
-                            REFERENCES {self.db_schema}.{to_table}({to_col})
-                            ON DELETE CASCADE;
-                        END IF;
-                    END $$;
+                sql_drop_fk = f"""
+                    ALTER TABLE {self.db_schema}.{from_table}
+                    DROP CONSTRAINT IF EXISTS metadata;
                 """
+                sql_add_fk = f"""
+                    ALTER TABLE {self.db_schema}.{from_table}
+                    ADD CONSTRAINT metadata FOREIGN KEY ({from_col})
+                    REFERENCES {self.db_schema}.{to_table}({to_col})
+                    ON DELETE CASCADE;
+                """
+                curs.execute(sql_drop_fk)
                 curs.execute(sql_add_fk)
                 conn.commit()
 
