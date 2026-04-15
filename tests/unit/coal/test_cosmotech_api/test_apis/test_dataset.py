@@ -543,13 +543,13 @@ class TestDatasetApi:
             assert len(args_list) == 2
             # check first call used to create csv part
             dpcr = args_list[0].kwargs.get("dataset_part_create_request")
-            assert dpcr.name == "data.csv"
+            assert dpcr.name == "data"
             assert dpcr.source_name == "data.csv"
             assert dpcr.description == "data.csv"
             assert dpcr.type == DatasetPartTypeEnum.FILE
             # check second call used to create db part
             dpcr = args_list[1].kwargs.get("dataset_part_create_request")
-            assert dpcr.name == "data.db"
+            assert dpcr.name == "data"
             assert dpcr.source_name == "data.db"
             assert dpcr.description == "data.db"
             assert dpcr.type == DatasetPartTypeEnum.DB

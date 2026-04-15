@@ -79,7 +79,7 @@ class DatasetApi(BaseDatasetApi, Connection):
         )
 
     @staticmethod
-    def path_to_parts(_path, part_type) -> list[tuple[str, Path, DatasetPartTypeEnum]]:
+    def path_to_parts(_path, part_type) -> list[tuple[str, str, Path, DatasetPartTypeEnum]]:
         if (_path := Path(_path)).is_dir():
             return list((str(_p.relative_to(_path)), _p, part_type) for _p in _path.rglob("*") if _p.is_file())
         return list(((_path.name, _path, part_type),))
@@ -118,7 +118,7 @@ class DatasetApi(BaseDatasetApi, Connection):
             additional_data=additional_data,
             parts=list(
                 DatasetPartCreateRequest(
-                    name=_p_name,
+                    name=Path(_p_name).stem,
                     description=_p_name,
                     sourceName=_p_name,
                     type=_type,
@@ -195,7 +195,7 @@ class DatasetApi(BaseDatasetApi, Connection):
 
             # Create new part
             part_request = DatasetPartCreateRequest(
-                name=_p_name,
+                name=Path(_p_name).stem,
                 description=_p_name,
                 sourceName=_p_name,
                 type=_type,
