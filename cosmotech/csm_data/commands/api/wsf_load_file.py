@@ -35,7 +35,7 @@ from cosmotech.csm_data.utils.decorators import translate_help, web_help
     "--workspace-path",
     help=T("csm_data.commands.api.wsf_load_file.parameters.workspace_path"),
     metavar="PATH",
-    default="/",
+    default="",
     type=str,
 )
 @click.option(
