@@ -41,9 +41,9 @@ def load_parquet_folder(store_folder, parquet_folder):
     from cosmotech.coal.utils.logger import LOGGER
 
     _conf = Configuration()
-
     _conf.coal.store = store_folder
 
+    store = Store(False, _conf)
     for parquet_path in pathlib.Path(parquet_folder).glob("*.parquet"):
         LOGGER.info(T("coal.services.azure_storage.found_file").format(file=parquet_path.name))
-        store_parquet_file(parquet_path.name[:-8], parquet_path, store=Store(False, _conf))
+        store_parquet_file(parquet_path.name[:-8], parquet_path, store=store)

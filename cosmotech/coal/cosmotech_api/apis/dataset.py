@@ -79,7 +79,7 @@ class DatasetApi(BaseDatasetApi, Connection):
         )
 
     @staticmethod
-    def path_to_parts(_path, part_type) -> list[tuple[str, str, Path, DatasetPartTypeEnum]]:
+    def path_to_parts(_path, part_type) -> list[tuple[str, Path, DatasetPartTypeEnum]]:
         if (_path := Path(_path)).is_dir():
             return list((str(_p.relative_to(_path)), _p, part_type) for _p in _path.rglob("*") if _p.is_file())
         return list(((_path.name, _path, part_type),))

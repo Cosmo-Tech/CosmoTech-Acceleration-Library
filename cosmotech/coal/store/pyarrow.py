@@ -14,10 +14,14 @@ def store_table(
     table_name: str,
     data: pa.Table,
     replace_existsing_file: bool = False,
-    store=Store(),
+    store: Store | None = None,
 ):
+    if store is None:
+        store = Store()
     store.add_table(table_name=table_name, data=data, replace=replace_existsing_file)
 
 
-def convert_store_table_to_dataframe(table_name: str, store=Store()) -> pa.Table:
+def convert_store_table_to_dataframe(table_name: str, store: Store | None = None) -> pa.Table:
+    if store is None:
+        store = Store()
     return store.get_table(table_name)

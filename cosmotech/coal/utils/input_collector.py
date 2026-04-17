@@ -21,7 +21,7 @@ class InputCollector:
     def fetch_workspace_file(self, file_name: str) -> Path:
         return self.workspace_collector.fetch(file_name)
 
-    def fetch(self, name: str) -> Path:
+    def fetch(self, name: str) -> Path | str:
         try:
             return self.fetch_parameter(name)
         except (KeyError, FileNotFoundError):
@@ -38,8 +38,11 @@ class DatasetCollector:
         self.paths: dict[str, Path] = {}
 
     def collect(self):
-        for dataset_id in os.listdir(EC.cosmotech.dataset_absolute_path):
-            for r, d, f in os.walk(Path(EC.cosmotech.dataset_absolute_path) / dataset_id):
+        base_path = Path(EC.cosmotech.dataset_absolute_path)
+        for dataset_id in os.listdir(base_path):
+            if not (base_path / dataset_id).is_dir():
+                continue
+            for r, d, f in os.walk(base_path / dataset_id):
                 for dataset_name in f:
                     path = Path(r) / dataset_name
                     self.paths[dataset_name] = path
@@ -89,15 +92,18 @@ class ParameterCollector:
                     self.parameters[parameter["parameterId"]] = parameter["value"]
 
     def collect(self):
-        for dataset_id in os.listdir(EC.cosmotech.parameters_absolute_path):
-            for r, d, f in os.walk(Path(EC.cosmotech.parameters_absolute_path) / dataset_id):
+        base_path = Path(EC.cosmotech.parameters_absolute_path)
+        for dataset_id in os.listdir(base_path):
+            if not (base_path / dataset_id).is_dir():
+                continue
+            for r, d, f in os.walk(base_path / dataset_id):
                 for file_name in f:
                     path = Path(r) / file_name
                     param_name = path.parent.name
                     self.paths[param_name] = path
                     self.paths[path.stem] = path
 
-    def fetch_parameter(self, param_name: str) -> Path:
+    def fetch_parameter(self, param_name: str) -> Path | str:
         # lazy collection to avoid unnecessary json loading
         if not self.parameters:
             self.read_parameters_json()
@@ -111,7 +117,7 @@ class ParameterCollector:
             return self.paths[param_name]
         raise FileNotFoundError(f"File for {param_name} not found in {EC.cosmotech.parameters_absolute_path}.")
 
-    def fetch(self, param_name: str) -> Path:
+    def fetch(self, param_name: str) -> Path | str:
         try:
             return self.fetch_parameter(param_name)
         except KeyError:
