@@ -17,8 +17,10 @@ def store_parquet_file(
     table_name: str,
     parquet_path: pathlib.Path,
     replace_existsing_file: bool = False,
-    store=Store(),
+    store: Store | None = None,
 ):
+    if store is None:
+        store = Store()
     if not parquet_path.exists():
         raise FileNotFoundError(f"File {parquet_path} does not exists")
 
@@ -33,8 +35,10 @@ def convert_store_table_to_parquet(
     table_name: str,
     parquet_path: pathlib.Path,
     replace_existsing_file: bool = False,
-    store=Store(),
+    store: Store | None = None,
 ):
+    if store is None:
+        store = Store()
     if parquet_path.name.endswith(".parquet") and parquet_path.exists() and not replace_existsing_file:
         raise FileExistsError(f"File {parquet_path} already exists")
     if not parquet_path.name.endswith(".parquet"):

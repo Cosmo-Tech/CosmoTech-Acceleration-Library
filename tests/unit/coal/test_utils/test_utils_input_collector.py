@@ -164,7 +164,7 @@ class TestParameterCollector:
         assert result == "value"
 
     def test_fetch_falls_back_to_file_without_lazy_load(self, tmp_path, mock_ec):
-        """fetch() does NOT trigger read_parameters_json — falls straight to fetch_file_path."""
+        """fetch() delegates to fetch_parameter(), which loads parameters.json FIRST and returns the JSON value."""
         param_dir = tmp_path / "myparam"
         param_dir.mkdir()
         f = param_dir / "data.csv"

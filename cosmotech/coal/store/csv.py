@@ -16,8 +16,10 @@ def store_csv_file(
     table_name: str,
     csv_path: pathlib.Path,
     replace_existsing_file: bool = False,
-    store=Store(),
+    store: Store | None = None,
 ):
+    if store is None:
+        store = Store()
     if not csv_path.exists():
         raise FileNotFoundError(f"File {csv_path} does not exists")
 
@@ -32,8 +34,10 @@ def convert_store_table_to_csv(
     table_name: str,
     csv_path: pathlib.Path,
     replace_existsing_file: bool = False,
-    store=Store(),
+    store: Store | None = None,
 ):
+    if store is None:
+        store = Store()
     if csv_path.name.endswith(".csv") and csv_path.exists() and not replace_existsing_file:
         raise FileExistsError(f"File {csv_path} already exists")
     if not csv_path.name.endswith(".csv"):
