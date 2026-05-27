@@ -100,19 +100,20 @@ def remove_runner_metadata_from_postgresql(
 
     # Get runner metadata
     _runner_api = RunnerApi(configuration)
+    runner_id = configuration.cosmotech.runner_id
     runner = _runner_api.get_runner_metadata(
-        configuration.cosmotech.runner_id,
+        runner_id,
     )
 
     # Connect to PostgreSQL and remove runner metadata row
     with dbapi.connect(_psql.full_uri, autocommit=True) as conn:
         with conn.cursor() as curs:
             schema_table = f"{_psql.db_schema}.{_psql.metadata_table_name}"
-            last_run_id = runner.get("lastRunInfo").get("lastRunId")
             sql_delete_from_metatable = f"""
                 DELETE FROM {schema_table}
-                WHERE last_csm_run_id= $1;
+                WHERE id= $1;
             """
-            curs.execute(sql_delete_from_metatable, (last_run_id,))
+            curs.execute(sql_delete_from_metatable, (runner_id,))
             conn.commit()
+    LOGGER.info(T("coal.services.postgresql.metadata_removed").format(runner_id=runner_id))
     return runner.get("lastRunInfo").get("lastRunId")
