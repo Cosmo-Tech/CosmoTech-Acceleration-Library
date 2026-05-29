@@ -339,7 +339,7 @@ class ScenarioDownloader:
         type = dataset_info['type']
         content = dataset_info['content']
         name = dataset_info['name']
-        if type in == "twincache":
+        if type == "twincache":
             return self.graph_dataset(content, name, type)
         return self.dataset_file_temp_path[dataset_id]
 
