@@ -8,7 +8,6 @@ import os
 import tempfile
 from typing import Union
 
-from azure.digitaltwins.core import DigitalTwinsClient
 from azure.identity import DefaultAzureCredential
 from cosmotech_api import DatasetApi
 from cosmotech_api import DatasetTwinGraphQuery
@@ -109,18 +108,11 @@ class ScenarioDownloader:
                 parameters = []
             else:
                 parameters = dataset.connector.parameters_values
-            is_adt = 'AZURE_DIGITAL_TWINS_URL' in parameters
             is_storage = 'AZURE_STORAGE_CONTAINER_BLOB_PREFIX' in parameters
             is_legacy_twin_cache = 'TWIN_CACHE_NAME' in parameters and dataset.twingraph_id is None  # Legacy twingraph dataset with specific connector
             is_in_workspace_file = False if dataset.tags is None else 'workspaceFile' in dataset.tags or 'dataset_part' in dataset.tags
 
-            if is_adt:
-                return {
-                    "type": 'adt',
-                    "content": self._download_adt_content(
-                        adt_adress=parameters['AZURE_DIGITAL_TWINS_URL']),
-                    "name": dataset.name}
-            elif is_legacy_twin_cache:
+            if is_legacy_twin_cache:
                 twin_cache_name = parameters['TWIN_CACHE_NAME']
                 return {
                     "type": "twincache",
@@ -275,40 +267,6 @@ class ScenarioDownloader:
                             line for line in _file)
         return content
 
-    def _download_adt_content(self, adt_adress: str) -> dict:
-        client = DigitalTwinsClient(adt_adress, self.credentials)
-        query_expression = 'SELECT * FROM digitaltwins'
-        query_result = client.query_twins(query_expression)
-        json_content = dict()
-        for twin in query_result:
-            entity_type = twin.get('$metadata').get(
-                '$model').split(':')[-1].split(';')[0]
-            t_content = {k: v for k, v in twin.items()}
-            t_content['id'] = t_content['$dtId']
-            for k in twin.keys():
-                if k[0] == '$':
-                    del t_content[k]
-            json_content.setdefault(entity_type, [])
-            json_content[entity_type].append(t_content)
-
-        relations_query = 'SELECT * FROM relationships'
-        query_result = client.query_twins(relations_query)
-        for relation in query_result:
-            tr = {
-                "$relationshipId": "id",
-                "$sourceId": "source",
-                "$targetId": "target"
-            }
-            r_content = {k: v for k, v in relation.items()}
-            for k, v in tr.items():
-                r_content[v] = r_content[k]
-            for k in relation.keys():
-                if k[0] == '$':
-                    del r_content[k]
-            json_content.setdefault(relation['$relationshipName'], [])
-            json_content[relation['$relationshipName']].append(r_content)
-
-        return json_content
 
     def get_all_parameters(self, scenario_id) -> dict:
         scenario_data = self.get_scenario_data(scenario_id=scenario_id)
@@ -381,8 +339,8 @@ class ScenarioDownloader:
         type = dataset_info['type']
         content = dataset_info['content']
         name = dataset_info['name']
-        if type in ["adt", "twincache"]:
-            return self.adt_dataset(content, name, type)
+        if type == "twincache":
+            return self.graph_dataset(content, name, type)
         return self.dataset_file_temp_path[dataset_id]
 
     @staticmethod
@@ -405,7 +363,7 @@ class ScenarioDownloader:
             fieldnames = ['id', ] + fieldnames
         return fieldnames
 
-    def adt_dataset(self, content, _name, _type):
+    def graph_dataset(self, content, _name, _type):
         tmp_dataset_dir = tempfile.mkdtemp()
         for _filename, _filecontent in content.items():
             with open(tmp_dataset_dir + "/" + _filename + ".csv", "w") as _file:
