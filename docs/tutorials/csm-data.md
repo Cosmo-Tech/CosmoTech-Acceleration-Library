@@ -2,7 +2,7 @@
 description: "Comprehensive guide to the csm-data CLI: a powerful data management tool for CosmoTech platforms"
 ---
 
-# CSM-DATA
+# csm-data
 
 !!! abstract "Objective"
     + Understand what the csm-data CLI is and its capabilities
