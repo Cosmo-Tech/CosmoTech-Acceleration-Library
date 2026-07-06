@@ -26,3 +26,9 @@ csm-data adx-send-runnerdata \
   --database-name "$AZURE_DATA_EXPLORER_DATABASE_NAME" \
   --send-datasets \
   --wait
+
+# 5. Post-process the results (using your own code)
+# ...
+
+# 6. Delete run data when done
+csm-data store delete

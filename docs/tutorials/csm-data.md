@@ -154,6 +154,10 @@ The `csm-data` commands integrate seamlessly with `csm-orc` for orchestration:
 --8<-- 'tutorial/csm-data/csm_orc_integration.json'
 ```
 
+```json title="delete.json for csm-orc" linenums="1"
+--8<-- 'tutorial/csm-data/csm_orc_integration_delete.json'
+```
+
 ## Best Practices and Tips
 
 !!! tip "Environment Variables"
