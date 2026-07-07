@@ -1,0 +1,13 @@
+{
+  "steps": [
+    {
+      "id": "delete-data",
+      "command": "csm-data",
+      "arguments": [
+        "store",
+        "delete"
+      ],
+      "useSystemEnvironment": true
+    }
+  ]
+}

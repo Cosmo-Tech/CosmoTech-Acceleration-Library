@@ -2,7 +2,7 @@
 description: "Comprehensive guide to the csm-data CLI: a powerful data management tool for CosmoTech platforms"
 ---
 
-# CSM-DATA
+# csm-data
 
 !!! abstract "Objective"
     + Understand what the csm-data CLI is and its capabilities
@@ -152,6 +152,10 @@ The `csm-data` commands integrate seamlessly with `csm-orc` for orchestration:
 
 ```json title="run.json for csm-orc" linenums="1"
 --8<-- 'tutorial/csm-data/csm_orc_integration.json'
+```
+
+```json title="delete.json for csm-orc" linenums="1"
+--8<-- 'tutorial/csm-data/csm_orc_integration_delete.json'
 ```
 
 ## Best Practices and Tips
