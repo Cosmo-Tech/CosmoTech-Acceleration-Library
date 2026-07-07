@@ -24,7 +24,7 @@
     
     
       
-        <title>CSM-DATA - Cosmotech Acceleration Library Docs</title>
+        <title>csm-data - Cosmotech Acceleration Library Docs</title>
       
     
     
@@ -63,7 +63,7 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="CSM-DATA - Cosmotech Acceleration Library Docs" >
+        <meta  property="og:title"  content="csm-data - Cosmotech Acceleration Library Docs" >
       
         <meta  property="og:description"  content="Comprehensive guide to the csm-data CLI: a powerful data management tool for CosmoTech platforms" >
       
@@ -79,7 +79,7 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="CSM-DATA - Cosmotech Acceleration Library Docs" >
+        <meta  name="twitter:title"  content="csm-data - Cosmotech Acceleration Library Docs" >
       
         <meta  name="twitter:description"  content="Comprehensive guide to the csm-data CLI: a powerful data management tool for CosmoTech platforms" >
       
@@ -145,7 +145,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CSM-DATA
+              csm-data
             
           </span>
         </div>
@@ -643,7 +643,7 @@
   
   
   <span class="md-ellipsis">
-    CSM-DATA
+    csm-data
     
   </span>
   
@@ -656,7 +656,7 @@
   
   
   <span class="md-ellipsis">
-    CSM-DATA
+    csm-data
     
   </span>
   
@@ -1403,6 +1403,8 @@
       
         
       
+        
+      
     
     
     
@@ -1446,6 +1448,29 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../csm-data/store/delete/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    delete
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1856,7 +1881,7 @@
   
 
 
-<h1 id="csm-data">CSM-DATA<a class="headerlink" href="#csm-data" title="Permanent link">&para;</a></h1>
+<h1 id="csm-data">csm-data<a class="headerlink" href="#csm-data" title="Permanent link">&para;</a></h1>
 <div class="admonition abstract">
 <p class="admonition-title">Objective</p>
 <ul>
@@ -2084,7 +2109,13 @@ csm-data<span class="w"> </span>api<span class="w"> </span>run-load-data<span cl
 <span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
-<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># 1. Download runner data from the API</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># 1. Download runner data from the API</span>
 csm-data<span class="w"> </span>api<span class="w"> </span>run-load-data<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--organization-id<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CSM_ORGANIZATION_ID</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--workspace-id<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CSM_WORKSPACE_ID</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
@@ -2112,6 +2143,12 @@ csm-data<span class="w"> </span>adx-send-runnerdata<span class="w"> </span><span
 <span class="w">  </span>--database-name<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$AZURE_DATA_EXPLORER_DATABASE_NAME</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--send-datasets<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--wait
+
+<span class="c1"># 5. Post-process the results (using your own code)</span>
+<span class="c1"># ...</span>
+
+<span class="c1"># 6. Delete run data when done</span>
+csm-data<span class="w"> </span>store<span class="w"> </span>delete
 </code></pre></div></td></tr></table></div>
 <h3 id="integration-with-csm-orc">Integration with csm-orc<a class="headerlink" href="#integration-with-csm-orc" title="Permanent link">&para;</a></h3>
 <p>The <code>csm-data</code> commands integrate seamlessly with <code>csm-orc</code> for orchestration:</p>
@@ -2173,6 +2210,32 @@ csm-data<span class="w"> </span>adx-send-runnerdata<span class="w"> </span><span
 <span class="w">      </span><span class="p">],</span>
 <span class="w">      </span><span class="nt">&quot;useSystemEnvironment&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;precedents&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;run-simulation&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">delete.json for csm-orc</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;steps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;delete-data&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;csm-data&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;store&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;delete&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;useSystemEnvironment&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">]</span>
 <span class="p">}</span>

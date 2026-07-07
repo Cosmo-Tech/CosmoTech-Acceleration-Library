@@ -6,32 +6,32 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Command help: `csm-data s3-bucket-delete`">
+        <meta name="description" content="Command help: `csm-data store delete`">
       
       
       
-        <link rel="canonical" href="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.3.0/csm-data/s3-bucket-delete/">
+        <link rel="canonical" href="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.3.0/csm-data/store/delete/">
       
       
-        <link rel="prev" href="../az-storage-upload/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../s3-bucket-download/">
+        <link rel="next" href="../dump-to-azure/">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
-        <title>s3-bucket-delete - Cosmotech Acceleration Library Docs</title>
+        <title>delete - Cosmotech Acceleration Library Docs</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.84d31ad4.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -50,11 +50,11 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
-      <link rel="stylesheet" href="../../stylesheets/templates.css">
+      <link rel="stylesheet" href="../../../stylesheets/templates.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -63,11 +63,11 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="s3-bucket-delete - Cosmotech Acceleration Library Docs" >
+        <meta  property="og:title"  content="delete - Cosmotech Acceleration Library Docs" >
       
-        <meta  property="og:description"  content="Command help: `csm-data s3-bucket-delete`" >
+        <meta  property="og:description"  content="Command help: `csm-data store delete`" >
       
-        <meta  property="og:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.3.0/assets/images/social/csm-data/s3-bucket-delete.png" >
+        <meta  property="og:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.3.0/assets/images/social/csm-data/store/delete.png" >
       
         <meta  property="og:image:type"  content="image/png" >
       
@@ -75,15 +75,15 @@
       
         <meta  property="og:image:height"  content="630" >
       
-        <meta  property="og:url"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.3.0/csm-data/s3-bucket-delete/" >
+        <meta  property="og:url"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.3.0/csm-data/store/delete/" >
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="s3-bucket-delete - Cosmotech Acceleration Library Docs" >
+        <meta  name="twitter:title"  content="delete - Cosmotech Acceleration Library Docs" >
       
-        <meta  name="twitter:description"  content="Command help: `csm-data s3-bucket-delete`" >
+        <meta  name="twitter:description"  content="Command help: `csm-data store delete`" >
       
-        <meta  name="twitter:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.3.0/assets/images/social/csm-data/s3-bucket-delete.png" >
+        <meta  name="twitter:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.3.0/assets/images/social/csm-data/store/delete.png" >
       
     
     
@@ -106,7 +106,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#s3-bucket-delete" class="md-skip">
+        <a href="#delete" class="md-skip">
           Skip to content
         </a>
       
@@ -126,9 +126,9 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Cosmotech Acceleration Library Docs" class="md-header__button md-logo" aria-label="Cosmotech Acceleration Library Docs" data-md-component="logo">
+    <a href="../../.." title="Cosmotech Acceleration Library Docs" class="md-header__button md-logo" aria-label="Cosmotech Acceleration Library Docs" data-md-component="logo">
       
-  <img src="../../assets/logo.png" alt="logo">
+  <img src="../../../assets/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -145,7 +145,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              s3-bucket-delete
+              delete
             
           </span>
         </div>
@@ -250,7 +250,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -271,7 +271,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../dependencies/" class="md-tabs__link">
+        <a href="../../../dependencies/" class="md-tabs__link">
           
   
   
@@ -293,7 +293,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../tutorials/" class="md-tabs__link">
+        <a href="../../../tutorials/" class="md-tabs__link">
           
   
   
@@ -317,7 +317,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+        <a href="../../" class="md-tabs__link">
           
   
   
@@ -361,9 +361,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Cosmotech Acceleration Library Docs" class="md-nav__button md-logo" aria-label="Cosmotech Acceleration Library Docs" data-md-component="logo">
+    <a href="../../.." title="Cosmotech Acceleration Library Docs" class="md-nav__button md-logo" aria-label="Cosmotech Acceleration Library Docs" data-md-component="logo">
       
-  <img src="../../assets/logo.png" alt="logo">
+  <img src="../../../assets/logo.png" alt="logo">
 
     </a>
     Cosmotech Acceleration Library Docs
@@ -390,7 +390,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -461,7 +461,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dependencies/" class="md-nav__link">
+      <a href="../../../dependencies/" class="md-nav__link">
         
   
   
@@ -484,7 +484,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../pull_request/" class="md-nav__link">
+      <a href="../../../pull_request/" class="md-nav__link">
         
   
   
@@ -545,7 +545,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../tutorials/" class="md-nav__link ">
+            <a href="../../../tutorials/" class="md-nav__link ">
               
   
   
@@ -580,7 +580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/contributing/" class="md-nav__link">
+      <a href="../../../tutorials/contributing/" class="md-nav__link">
         
   
   
@@ -603,7 +603,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/cosmotech-api/" class="md-nav__link">
+      <a href="../../../tutorials/cosmotech-api/" class="md-nav__link">
         
   
   
@@ -626,7 +626,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/csm-data/" class="md-nav__link">
+      <a href="../../../tutorials/csm-data/" class="md-nav__link">
         
   
   
@@ -649,7 +649,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/datastore/" class="md-nav__link">
+      <a href="../../../tutorials/datastore/" class="md-nav__link">
         
   
   
@@ -723,7 +723,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   
@@ -758,7 +758,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adx-send-data/" class="md-nav__link">
+      <a href="../../adx-send-data/" class="md-nav__link">
         
   
   
@@ -781,7 +781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adx-send-runnerdata/" class="md-nav__link">
+      <a href="../../adx-send-runnerdata/" class="md-nav__link">
         
   
   
@@ -804,7 +804,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../az-storage-upload/" class="md-nav__link">
+      <a href="../../az-storage-upload/" class="md-nav__link">
         
   
   
@@ -824,19 +824,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../s3-bucket-delete/" class="md-nav__link">
         
   
   
@@ -847,7 +838,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -860,7 +850,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../s3-bucket-download/" class="md-nav__link">
+      <a href="../../s3-bucket-download/" class="md-nav__link">
         
   
   
@@ -883,7 +873,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../s3-bucket-upload/" class="md-nav__link">
+      <a href="../../s3-bucket-upload/" class="md-nav__link">
         
   
   
@@ -987,7 +977,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/" class="md-nav__link ">
+            <a href="../../api/" class="md-nav__link ">
               
   
   
@@ -1022,7 +1012,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/postgres-send-runner-metadata/" class="md-nav__link">
+      <a href="../../api/postgres-send-runner-metadata/" class="md-nav__link">
         
   
   
@@ -1045,7 +1035,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/run-load-data/" class="md-nav__link">
+      <a href="../../api/run-load-data/" class="md-nav__link">
         
   
   
@@ -1068,7 +1058,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/wsf-load-file/" class="md-nav__link">
+      <a href="../../api/wsf-load-file/" class="md-nav__link">
         
   
   
@@ -1091,7 +1081,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/wsf-send-file/" class="md-nav__link">
+      <a href="../../api/wsf-send-file/" class="md-nav__link">
         
   
   
@@ -1127,6 +1117,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1146,11 +1138,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" checked>
         
           
           <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="">
@@ -1166,7 +1158,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_9">
             <span class="md-nav__icon md-icon"></span>
             Store
@@ -1177,6 +1169,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1211,15 +1205,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9_1" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../store/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -1238,7 +1232,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_9_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_9_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_9_1">
             <span class="md-nav__icon md-icon"></span>
             Store
@@ -1251,10 +1245,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../store/delete/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1265,6 +1268,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -1277,7 +1281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../store/dump-to-azure/" class="md-nav__link">
+      <a href="../dump-to-azure/" class="md-nav__link">
         
   
   
@@ -1300,7 +1304,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../store/dump-to-postgresql/" class="md-nav__link">
+      <a href="../dump-to-postgresql/" class="md-nav__link">
         
   
   
@@ -1323,7 +1327,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../store/dump-to-s3/" class="md-nav__link">
+      <a href="../dump-to-s3/" class="md-nav__link">
         
   
   
@@ -1346,7 +1350,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../store/list-tables/" class="md-nav__link">
+      <a href="../list-tables/" class="md-nav__link">
         
   
   
@@ -1369,7 +1373,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../store/load-csv-folder/" class="md-nav__link">
+      <a href="../load-csv-folder/" class="md-nav__link">
         
   
   
@@ -1392,7 +1396,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../store/load-from-singlestore/" class="md-nav__link">
+      <a href="../load-from-singlestore/" class="md-nav__link">
         
   
   
@@ -1415,7 +1419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../store/reset/" class="md-nav__link">
+      <a href="../reset/" class="md-nav__link">
         
   
   
@@ -1497,46 +1501,19 @@
   
 
 
-<h1 id="s3-bucket-delete">s3-bucket-delete<a class="headerlink" href="#s3-bucket-delete" title="Permanent link">&para;</a></h1>
+<h1 id="delete">delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h1>
 <div class="admonition info">
 <p class="admonition-title">Help command</p>
-<div class="highlight"><pre><span></span><code>&gt; csm-data s3-bucket-delete --help
+<div class="highlight"><pre><span></span><code>&gt; csm-data store delete --help
 
- Usage: csm-data s3-bucket-delete [OPTIONS]                                     
+ Usage: csm-data store delete [OPTIONS]                                         
 
- Delete S3 bucket content to a given folder                                     
- Will delete everything in the bucket unless a prefix is set, then only file    
- following the given prefix will be deleted                                     
-
- Make use of the boto3 library to access the bucket                             
-
- More information is available on this page:                                    
- [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.h 
- tml]                                                                           
+ Delete simulation result from where the output command pushed data.            
+ This delete is base on the configuration.                                      
 
 ╭─ OPTIONS ────────────────────────────────────────────────────────────────────╮
-│ *  --bucket-name         BUCKET  The bucket on S3 to delete                  │
-│                                  ENV: CSM_DATA_BUCKET_NAME                   │
-│                                  [required]                                  │
-│    --prefix-filter       PREFIX  A prefix by which all deleted files should  │
-│                                  start in the bucket                         │
-│                                  ENV: CSM_DATA_BUCKET_PREFIX                 │
-│    --use-ssl/--no-ssl            Use SSL to secure connection to S3          │
-│ *  --s3-url              URL     URL to connect to the S3 system             │
-│                                  ENV: AWS_ENDPOINT_URL                       │
-│                                  [required]                                  │
-│ *  --access-id           ID      Identity used to connect to the S3 system   │
-│                                  ENV: AWS_ACCESS_KEY_ID                      │
-│                                  [required]                                  │
-│ *  --secret-key          ID      Secret tied to the ID used to connect to    │
-│                                  the S3 system                               │
-│                                  ENV: AWS_SECRET_ACCESS_KEY                  │
-│                                  [required]                                  │
-│    --ssl-cert-bundle     PATH    Path to an alternate CA Bundle to validate  │
-│                                  SSL connections                             │
-│                                  ENV: CSM_S3_CA_BUNDLE                       │
-│    --web-help                    Open the web documentation                  │
-│    --help                        Show this message and exit.                 │
+│ --web-help      Open the web documentation                                   │
+│ --help          Show this message and exit.                                  │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 </code></pre></div>
 </div>
@@ -1582,7 +1559,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../az-storage-upload/" class="md-footer__link md-footer__link--prev" aria-label="Previous: az-storage-upload">
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: store">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1592,20 +1569,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                az-storage-upload
+                store
               </div>
             </div>
           </a>
         
         
           
-          <a href="../s3-bucket-download/" class="md-footer__link md-footer__link--next" aria-label="Next: s3-bucket-download">
+          <a href="../dump-to-azure/" class="md-footer__link md-footer__link--next" aria-label="Next: dump-to-azure">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                s3-bucket-download
+                dump-to-azure
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1702,14 +1679,14 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.annotate", "content.tooltips", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.instant", "navigation.footer"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.code.annotate", "content.tooltips", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.instant", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
         <script src="https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js"></script>
       
-        <script src="../../javascript/tablesort.js"></script>
+        <script src="../../../javascript/tablesort.js"></script>
       
     
   </body>
