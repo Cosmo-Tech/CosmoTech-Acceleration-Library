@@ -1,7 +1,7 @@
 {
   "steps": [
     {
-      "id": "delete_data",
+      "id": "delete-data",
       "command": "csm-data",
       "arguments": [
         "store",
