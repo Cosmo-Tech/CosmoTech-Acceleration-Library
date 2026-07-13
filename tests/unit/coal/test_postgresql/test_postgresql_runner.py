@@ -72,21 +72,28 @@ class TestRunnerFunctions:
         mock_connect.assert_called_once_with("postgresql://user:password@localhost:5432/testdb", autocommit=True)
 
         # Check that SQL statements were executed
-        assert mock_cursor.execute.call_count == 3
+        assert mock_cursor.execute.call_count == 4
 
         # Verify the SQL statements (partially, since the exact SQL is complex)
         create_table_call = mock_cursor.execute.call_args_list[0]
         assert "CREATE TABLE IF NOT EXISTS" in create_table_call[0][0]
         assert "public.test_runnermetadata" in create_table_call[0][0]
+        assert "last_run_start_time" in create_table_call[0][0]
 
-        delete_call = mock_cursor.execute.call_args_list[1]
+        alter_table_call = mock_cursor.execute.call_args_list[1]
+        assert "ALTER TABLE" in alter_table_call[0][0]
+        assert "ADD COLUMN IF NOT EXISTS last_run_start_time" in alter_table_call[0][0]
+
+        delete_call = mock_cursor.execute.call_args_list[2]
         assert "DELETE FROM" in delete_call[0][0]
         assert "public.test_runnermetadata" in delete_call[0][0]
         assert delete_call[0][1] == ("test-runner-id",)
 
-        upsert_call = mock_cursor.execute.call_args_list[2]
+        upsert_call = mock_cursor.execute.call_args_list[3]
         assert "INSERT INTO" in upsert_call[0][0]
         assert "public.test_runnermetadata" in upsert_call[0][0]
+        assert "last_run_start_time" in upsert_call[0][0]
+        assert "CURRENT_TIMESTAMP" in upsert_call[0][0]
         assert upsert_call[0][1] == (
             mock_runner["id"],
             mock_runner["name"],
@@ -95,7 +102,7 @@ class TestRunnerFunctions:
         )
 
         # Check that commits were called
-        assert mock_conn.commit.call_count == 3
+        assert mock_conn.commit.call_count == 4
 
         # Verify the function returns the lastRunId
         assert result == "test-run-id"
