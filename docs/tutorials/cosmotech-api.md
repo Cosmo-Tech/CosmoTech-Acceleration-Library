@@ -1,5 +1,5 @@
 ---
-description: "Comprehensive guide to working with the CosmoTech API in CoAL: authentication, workspaces, Twin Data Layer, and more"
+description: "Comprehensive guide to working with the CosmoTech API in CoAL: authentication, workspaces, runners, and datasets"
 ---
 
 # Working with the CosmoTech API
@@ -7,8 +7,8 @@ description: "Comprehensive guide to working with the CosmoTech API in CoAL: aut
 !!! abstract "Objective"
     + Understand how to authenticate and connect to the CosmoTech API
     + Learn to work with workspaces for file management
-    + Master the Twin Data Layer for graph data operations
     + Implement runner and run data management
+    + Upload and download datasets
     + Build complete workflows integrating multiple API features
 
 ## Introduction to the CosmoTech API Integration
@@ -17,17 +17,21 @@ The CosmoTech Acceleration Library (CoAL) provides a comprehensive set of tools 
 
 - Authenticate with different identity providers
 - Manage workspaces and files
-- Work with the Twin Data Layer for graph data
 - Handle runners and runs
+- Upload and download datasets
 - Process and transform data
 - Build end-to-end workflows
 
-The API integration is organized into several modules, each focused on specific functionality:
+The API integration is organized into two sub-packages under `cosmotech.coal.cosmotech_api`:
 
-- **connection**: Authentication and API client management
-- **workspace**: Workspace file operations
-- **twin_data_layer**: Graph data management
-- **runner**: Runner and run data operations
+- **`objects/`**: Core building blocks
+    - `connection` — `Connection` class: authentication and `ApiClient` management
+    - `parameters` — `Parameters` class: typed access to runner parameters
+- **`apis/`**: High-level wrappers for each CosmoTech API resource
+    - `DatasetApi` — dataset upload, download, and parts management
+    - `RunnerApi` — runner metadata and data download
+    - `WorkspaceApi` — workspace file listing, download, and upload
+    - `RunApi`, `OrganizationApi`, `SolutionApi`, `MetaApi` — additional resource wrappers
 
 !!! info "API vs CLI"
     While the `csm-data` CLI provides command-line tools for many common operations, the direct API integration offers more flexibility and programmatic control. Use the API integration when you need to:
@@ -45,10 +49,24 @@ The first step in working with the CosmoTech API is establishing a connection. C
 - Azure Entra (formerly Azure AD) authentication
 - Keycloak authentication
 
-The `get_api_client()` function automatically detects which authentication method to use based on the environment variables you've set.
+The `Connection` class automatically detects which authentication method to use based on the environment variables present.
 
 ```python title="Basic connection setup" linenums="1"
---8<-- 'tutorial/cosmotech-api/connection_setup.py'
+from cosmotech.coal.cosmotech_api.objects.connection import Connection
+
+# Connection auto-detects authentication from environment variables
+connection = Connection()
+api_client = connection.api_client  # cosmotech_api.ApiClient
+```
+
+All API wrapper classes (`WorkspaceApi`, `RunnerApi`, `DatasetApi`, …) extend `Connection` and set themselves up automatically — you do not need to create the `Connection` separately unless you want direct access to the raw `ApiClient`.
+
+```python
+from cosmotech.coal.cosmotech_api.apis import WorkspaceApi, RunnerApi, DatasetApi
+
+ws_api = WorkspaceApi()   # auth resolved automatically
+runner_api = RunnerApi()
+dataset_api = DatasetApi()
 ```
 
 !!! tip "Environment Variables"
@@ -86,54 +104,47 @@ Keycloak authentication requires these environment variables:
 
 ## Working with Workspaces
 
-Workspaces in the CosmoTech platform provide a way to organize and share files. The CoAL library offers functions for listing, downloading, and uploading files in workspaces.
+Workspaces in the CosmoTech platform provide a way to organize and share files. `WorkspaceApi` offers methods for listing, downloading, and uploading files.
 
 ```python title="Workspace operations" linenums="1"
---8<-- 'tutorial/cosmotech-api/workspace_operations.py'
+from pathlib import Path
+from cosmotech.coal.cosmotech_api.apis import WorkspaceApi
+
+ws_api = WorkspaceApi()
+
+# List files whose names start with a given prefix
+files = ws_api.list_filtered_workspace_files(
+    organization_id, workspace_id, file_prefix="inputs/"
+)
+
+# Download a file to a local directory
+local_path = ws_api.download_workspace_file(
+    organization_id, workspace_id,
+    file_name="inputs/data.csv",
+    target_dir=Path("/tmp/downloads"),
+)
+
+# Upload a local file to the workspace
+uploaded_name = ws_api.upload_workspace_file(
+    organization_id, workspace_id,
+    file_path="/tmp/results/output.csv",
+    workspace_path="outputs/",  # trailing slash → preserves original filename
+    overwrite=True,
+)
 ```
 
 ### Listing Files
 
-The `list_workspace_files` function allows you to list files in a workspace with a specific prefix:
-
-```python
-files = list_workspace_files(api_client, organization_id, workspace_id, file_prefix)
-```
-
-This is useful for finding files in a specific directory or with a specific naming pattern.
+`list_filtered_workspace_files` returns all workspace files whose `file_name` starts with the given prefix. It raises `ValueError` when no matching files are found.
 
 ### Downloading Files
 
-The `download_workspace_file` function downloads a file from the workspace to a local directory:
-
-```python
-downloaded_file = download_workspace_file(
-    api_client,
-    organization_id,
-    workspace_id,
-    file_to_download,
-    target_directory
-)
-```
-
-If the file is in a subdirectory in the workspace, the function will create the necessary local subdirectories.
+`download_workspace_file` writes the file content to `target_dir / file_name`, creating any necessary intermediate directories.
 
 ### Uploading Files
 
-The `upload_workspace_file` function uploads a local file to the workspace:
+`upload_workspace_file` uploads a single local file. The `workspace_path` parameter can be:
 
-```python
-uploaded_file = upload_workspace_file(
-    api_client,
-    organization_id,
-    workspace_id,
-    file_to_upload,
-    workspace_destination,
-    overwrite=True
-)
-```
-
-The `workspace_destination` parameter can be:
 - A specific file path in the workspace
 - A directory path ending with `/`, in which case the original filename is preserved
 
@@ -144,133 +155,105 @@ The `workspace_destination` parameter can be:
     - End directory paths with a trailing slash (`/`)
     - Use relative paths from the workspace root
 
-## Twin Data Layer Operations
+## Dataset Management
 
-The Twin Data Layer (TDL) is a graph database that stores nodes and relationships. CoAL provides tools for working with the TDL, particularly for preparing and sending CSV data.
+`DatasetApi` provides helpers for uploading datasets and managing their parts (files that compose the dataset).
 
-```python title="Twin Data Layer operations" linenums="1"
---8<-- 'tutorial/cosmotech-api/twin_data_layer.py'
-```
+```python title="Dataset upload" linenums="1"
+from cosmotech.coal.cosmotech_api.apis import DatasetApi
 
-### CSV File Format
+dataset_api = DatasetApi()
 
-The TDL expects CSV files in a specific format:
-
-- **Node files**: Must have an `id` column and can have additional property columns
-- **Relationship files**: Must have `src` and `dest` columns and can have additional property columns
-
-The filename (without the `.csv` extension) becomes the node label or relationship type in the graph.
-
-### Parsing CSV Files
-
-The `CSVSourceFile` class helps parse CSV files and determine if they represent nodes or relationships:
-
-```python
-csv_file = CSVSourceFile(file_path)
-print(f"Is node: {csv_file.is_node}")
-print(f"Fields: {csv_file.fields}")
-```
-
-### Generating Cypher Queries
-
-The `generate_query_insert` method creates Cypher queries for inserting data into the TDL:
-
-```python
-query = csv_file.generate_query_insert()
-```
-
-These queries can then be executed using the TwinGraphApi:
-
-```python
-twin_graph_api.run_twin_graph_cypher_query(
+# Upload a single file as a dataset
+dataset_api.upload_dataset(
     organization_id=organization_id,
-    workspace_id=workspace_id,
-    twin_graph_id=twin_graph_id,
-    twin_graph_cypher_query={
-        "query": query,
-        "parameters": params
-    }
+    dataset_id=dataset_id,
+    file_path="/tmp/data/customers.csv",
+)
+
+# Upload multiple parts from a folder (one part per file)
+dataset_api.upload_dataset_parts(
+    organization_id=organization_id,
+    dataset_id=dataset_id,
+    folder_path="/tmp/data/parts/",
+)
+
+# Download a dataset to a local directory
+dataset_api.download_dataset(
+    dataset_id=dataset_id,
 )
 ```
 
-!!! warning "Node References"
-    When creating relationships, make sure the nodes referenced by the `src` and `dest` columns already exist in the graph. Otherwise, the relationship creation will fail.
+!!! info "Dataset Parts"
+    When uploading parts, the part name is derived from the filename without its extension.
 
 ## Runner and Run Management
 
-Runners and runs are central concepts in the CosmoTech platform. CoAL provides functions for working with runner data, parameters, and associated datasets.
+Runners and runs are central concepts in the CosmoTech platform. `RunnerApi` provides methods for retrieving runner metadata and downloading all associated data (parameters and datasets).
 
 ```python title="Runner operations" linenums="1"
---8<-- 'tutorial/cosmotech-api/runner_operations.py'
-```
+from cosmotech.coal.cosmotech_api.apis import RunnerApi
 
-### Getting Runner Data
+runner_api = RunnerApi()
 
-The `get_runner_data` function retrieves information about a runner:
-
-```python
-runner_data = get_runner_data(organization_id, workspace_id, runner_id)
-```
-
-### Working with Parameters
-
-The `get_runner_parameters` function extracts parameters from runner data:
-
-```python
-parameters = get_runner_parameters(runner_data)
-```
-
-### Downloading Runner Data
-
-The `download_runner_data` function downloads all data associated with a runner, including parameters and datasets:
-
-```python
-result = download_runner_data(
-    organization_id=organization_id,
-    workspace_id=workspace_id,
+# Retrieve runner metadata as a dict
+metadata = runner_api.get_runner_metadata(
     runner_id=runner_id,
-    parameter_folder=str(param_dir),
-    dataset_folder=str(dataset_dir),
-    write_json=True,
-    write_csv=True,
-    fetch_dataset=True,
+    # optionally scope returned fields:
+    # include=["parametersValues", "datasetList"]
+)
+
+# Download runner parameters and datasets
+runner_api.download_runner_data(
+    download_datasets="all",  # or None to skip dataset download
 )
 ```
 
-This function:
-- Downloads parameters and writes them as JSON and/or CSV files
-- Downloads associated datasets
-- Organizes everything in the specified directories
-
-!!! tip "Dataset References"
-    Runners can reference datasets in two ways:
-
-    - Through parameters with the `%DATASETID%` variable type
-    - Through the `dataset_list` property
-
-    The `download_runner_data` function handles both types of references.
-
 ## Complete Workflow Example
 
-Putting it all together, here's a complete workflow that demonstrates how to use the CosmoTech API for a data processing pipeline:
+Putting it all together, here's a typical end-to-end workflow for a CosmoTech data processing pipeline:
 
 ```python title="Complete workflow" linenums="1"
---8<-- 'tutorial/cosmotech-api/complete_workflow.py'
+from cosmotech.coal.cosmotech_api.apis import RunnerApi, WorkspaceApi, DatasetApi
+from pathlib import Path
+
+# 1. Download runner parameters and datasets
+runner_api = RunnerApi()
+runner_api.download_runner_data(download_datasets="all")
+
+# 2. Process the data (application-specific logic)
+# ...
+
+# 3. Upload results back to the workspace
+ws_api = WorkspaceApi()
+ws_api.upload_workspace_file(
+    organization_id, workspace_id,
+    file_path="/tmp/results/report.csv",
+    workspace_path="outputs/",
+    overwrite=True,
+)
+
+# 4. Update a dataset with processed parts
+dataset_api = DatasetApi()
+dataset_api.upload_dataset_parts(
+    organization_id=organization_id,
+    dataset_id=output_dataset_id,
+    folder_path="/tmp/results/parts/",
+)
 ```
 
 This workflow:
 
-1. Downloads runner data (parameters and datasets)
-2. Processes the data (calculates loyalty scores for customers)
-3. Uploads the processed data to the workspace
-4. Prepares the data for the Twin Data Layer
-5. Generates a report with statistics and insights
+1. Downloads runner parameters and associated datasets
+2. Processes the data (application-specific logic)
+3. Uploads processed results to the workspace
+4. Updates a dataset with the processed output parts
 
 !!! tip "Real-world Workflows"
     In real-world scenarios, you might:
 
     - Use more complex data transformations
-    - Integrate with external systems
+    - Integrate with other Python code or services
     - Implement error handling and retries
     - Add logging and monitoring
     - Parallelize operations for better performance
@@ -286,6 +269,8 @@ This workflow:
 ### Error Handling
 
 ```python
+import cosmotech_api
+
 try:
     # API operations
 except cosmotech_api.exceptions.ApiException as e:
@@ -294,9 +279,6 @@ except cosmotech_api.exceptions.ApiException as e:
 except Exception as e:
     # Handle other errors
     print(f"Error: {e}")
-finally:
-    # Always close the client
-    api_client.close()
 ```
 
 ### Performance Considerations

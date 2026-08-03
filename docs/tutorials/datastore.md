@@ -17,7 +17,7 @@ The datastore is a powerful data management abstraction that provides a unified 
 The core idea behind the datastore is to provide a robust, flexible system for data management that simplifies working with different data formats while offering persistence and advanced query capabilities.
 
 !!! info "Key Features"
-    - Format flexibility (Python dictionaries, CSV files, Pandas DataFrames, PyArrow Tables)
+    - Format flexibility (Python dictionaries, CSV files, Pandas DataFrames, PyArrow Tables, Parquet files)
     - Persistent storage in SQLite
     - SQL query capabilities
     - Simplified data pipeline management
@@ -32,6 +32,7 @@ The datastore works seamlessly with multiple data formats:
 - CSV files
 - Pandas DataFrames
 - PyArrow Tables
+- Parquet files
 
 This flexibility eliminates the need for manual format conversions and allows you to work with data in your preferred format.
 
