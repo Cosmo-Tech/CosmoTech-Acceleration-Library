@@ -52,11 +52,7 @@ The first step in working with the CosmoTech API is establishing a connection. C
 The `Connection` class automatically detects which authentication method to use based on the environment variables present.
 
 ```python title="Basic connection setup" linenums="1"
-from cosmotech.coal.cosmotech_api.objects.connection import Connection
-
-# Connection auto-detects authentication from environment variables
-connection = Connection()
-api_client = connection.api_client  # cosmotech_api.ApiClient
+--8<-- 'tutorial/cosmotech-api/connection_setup.py'
 ```
 
 All API wrapper classes (`WorkspaceApi`, `RunnerApi`, `DatasetApi`, …) extend `Connection` and set themselves up automatically — you do not need to create the `Connection` separately unless you want direct access to the raw `ApiClient`.
@@ -107,30 +103,7 @@ Keycloak authentication requires these environment variables:
 Workspaces in the CosmoTech platform provide a way to organize and share files. `WorkspaceApi` offers methods for listing, downloading, and uploading files.
 
 ```python title="Workspace operations" linenums="1"
-from pathlib import Path
-from cosmotech.coal.cosmotech_api.apis import WorkspaceApi
-
-ws_api = WorkspaceApi()
-
-# List files whose names start with a given prefix
-files = ws_api.list_filtered_workspace_files(
-    organization_id, workspace_id, file_prefix="inputs/"
-)
-
-# Download a file to a local directory
-local_path = ws_api.download_workspace_file(
-    organization_id, workspace_id,
-    file_name="inputs/data.csv",
-    target_dir=Path("/tmp/downloads"),
-)
-
-# Upload a local file to the workspace
-uploaded_name = ws_api.upload_workspace_file(
-    organization_id, workspace_id,
-    file_path="/tmp/results/output.csv",
-    workspace_path="outputs/",  # trailing slash → preserves original filename
-    overwrite=True,
-)
+--8<-- 'tutorial/cosmotech-api/workspace_operations.py'
 ```
 
 ### Listing Files
@@ -192,21 +165,7 @@ dataset_api.download_dataset(
 Runners and runs are central concepts in the CosmoTech platform. `RunnerApi` provides methods for retrieving runner metadata and downloading all associated data (parameters and datasets).
 
 ```python title="Runner operations" linenums="1"
-from cosmotech.coal.cosmotech_api.apis import RunnerApi
-
-runner_api = RunnerApi()
-
-# Retrieve runner metadata as a dict
-metadata = runner_api.get_runner_metadata(
-    runner_id=runner_id,
-    # optionally scope returned fields:
-    # include=["parametersValues", "datasetList"]
-)
-
-# Download runner parameters and datasets
-runner_api.download_runner_data(
-    download_datasets="all",  # or None to skip dataset download
-)
+--8<-- 'tutorial/cosmotech-api/runner_operations.py'
 ```
 
 ## Complete Workflow Example
@@ -214,32 +173,7 @@ runner_api.download_runner_data(
 Putting it all together, here's a typical end-to-end workflow for a CosmoTech data processing pipeline:
 
 ```python title="Complete workflow" linenums="1"
-from cosmotech.coal.cosmotech_api.apis import RunnerApi, WorkspaceApi, DatasetApi
-from pathlib import Path
-
-# 1. Download runner parameters and datasets
-runner_api = RunnerApi()
-runner_api.download_runner_data(download_datasets="all")
-
-# 2. Process the data (application-specific logic)
-# ...
-
-# 3. Upload results back to the workspace
-ws_api = WorkspaceApi()
-ws_api.upload_workspace_file(
-    organization_id, workspace_id,
-    file_path="/tmp/results/report.csv",
-    workspace_path="outputs/",
-    overwrite=True,
-)
-
-# 4. Update a dataset with processed parts
-dataset_api = DatasetApi()
-dataset_api.upload_dataset_parts(
-    organization_id=organization_id,
-    dataset_id=output_dataset_id,
-    folder_path="/tmp/results/parts/",
-)
+--8<-- 'tutorial/cosmotech-api/complete_workflow.py'
 ```
 
 This workflow:

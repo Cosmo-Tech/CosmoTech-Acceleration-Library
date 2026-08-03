@@ -90,6 +90,12 @@ The datastore provides specialized adapters for working with various data format
 --8<-- 'tutorial/datastore/pyarrow_tables.py'
 ```
 
+### Parquet Files
+
+```python title="Loading and exporting Parquet files" linenums="1"
+--8<-- 'tutorial/datastore/parquet_files.py'
+```
+
 ## Advanced use cases
 
 ### Joining multiple tables

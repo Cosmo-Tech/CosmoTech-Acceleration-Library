@@ -4,9 +4,7 @@ csm-data api run-load-data \
   --workspace-id "$CSM_WORKSPACE_ID" \
   --runner-id "$CSM_RUNNER_ID" \
   --dataset-absolute-path "$CSM_DATASET_ABSOLUTE_PATH" \
-  --parameters-absolute-path "$CSM_PARAMETERS_ABSOLUTE_PATH" \
-  --write-json \
-  --fetch-dataset
+  --parameters-absolute-path "$CSM_PARAMETERS_ABSOLUTE_PATH"
 
 # 2. Load data into the datastore for processing
 csm-data store load-csv-folder \

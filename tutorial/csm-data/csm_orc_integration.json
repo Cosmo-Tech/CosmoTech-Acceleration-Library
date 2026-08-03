@@ -1,12 +1,10 @@
 {
   "steps": [
     {
-      "id": "download-scenario-data",
+      "id": "download-runner-data",
       "command": "csm-data",
       "arguments": [
-        "api", "scenariorun-load-data",
-        "--write-json",
-        "--fetch-dataset"
+        "api", "run-load-data"
       ],
       "useSystemEnvironment": true
     },
@@ -14,13 +12,13 @@
       "id": "run-simulation",
       "command": "python",
       "arguments": ["run_simulation.py"],
-      "precedents": ["download-scenario-data"]
+      "precedents": ["download-runner-data"]
     },
     {
       "id": "send-results-to-adx",
       "command": "csm-data",
       "arguments": [
-        "adx-send-scenariodata",
+        "adx-send-runnerdata",
         "--send-datasets",
         "--wait"
       ],
