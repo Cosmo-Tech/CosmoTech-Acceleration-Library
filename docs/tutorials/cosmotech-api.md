@@ -108,15 +108,47 @@ Workspaces in the CosmoTech platform provide a way to organize and share files. 
 
 ### Listing Files
 
-`list_filtered_workspace_files` returns all workspace files whose `file_name` starts with the given prefix. It raises `ValueError` when no matching files are found.
+`list_filtered_workspace_files` returns all workspace files whose `file_name` starts with the given prefix. It raises `ValueError` when no matching files are found:
+
+```python
+files = ws_api.list_filtered_workspace_files(
+    organization_id,
+    workspace_id,
+    file_prefix
+)
+```
+
+This is useful for finding files in a specific directory or with a specific naming pattern.
 
 ### Downloading Files
 
-`download_workspace_file` writes the file content to `target_dir / file_name`, creating any necessary intermediate directories.
+`download_workspace_file` writes the file content to `target_dir / file_name`, creating any necessary intermediate directories:
+
+
+```python
+local_path = ws_api.download_workspace_file(
+    organization_id,
+    workspace_id,
+    file_to_download,
+    target_directory
+)
+```
 
 ### Uploading Files
 
-`upload_workspace_file` uploads a single local file. The `workspace_path` parameter can be:
+`upload_workspace_file` uploads a single local file:
+
+```python
+uploaded_name = ws_api.upload_workspace_file(
+    organization_id,
+    workspace_id,
+    file_path,
+    workspace_path,
+    overwrite=True,
+)
+```
+
+The `workspace_path` parameter can be:
 
 - A specific file path in the workspace
 - A directory path ending with `/`, in which case the original filename is preserved
@@ -139,16 +171,15 @@ dataset_api = DatasetApi()
 
 # Upload a single file as a dataset
 dataset_api.upload_dataset(
-    organization_id=organization_id,
-    dataset_id=dataset_id,
-    file_path="/tmp/data/customers.csv",
+    dataset_name="customers",
+    as_files=["/tmp/data/customers.csv"],
 )
+dataset_id = dataset.id
 
 # Upload multiple parts from a folder (one part per file)
 dataset_api.upload_dataset_parts(
-    organization_id=organization_id,
     dataset_id=dataset_id,
-    folder_path="/tmp/data/parts/",
+    as_files=["/tmp/data/customers_p1.csv", "/tmp/data/customers_p2.csv"],
 )
 
 # Download a dataset to a local directory

@@ -3,7 +3,6 @@ import os
 import pathlib
 
 from cosmotech.coal.cosmotech_api.apis import WorkspaceApi
-from cosmotech.coal.utils.logger import LOGGER
 
 os.environ["CSM_API_URL"] = "https://api.cosmotech.com"  # Replace with your API URL
 os.environ["CSM_API_KEY"] = "your-api-key"  # Replace with your actual API key
@@ -37,15 +36,15 @@ except Exception as e:
     print(f"Error downloading file: {e}")
 
 # Example 3: Upload a file to the workspace
-file_to_upload = "./local_data/upload_sample.csv"  # Replace with a local file path
-workspace_destination = "data/uploaded/"  # Trailing slash → original filename is kept
+file_path = "./local_data/upload_sample.csv"  # Replace with a local file path
+workspace_path = "data/uploaded/"  # Trailing slash → original filename is kept
 
 try:
     uploaded_name = ws_api.upload_workspace_file(
         organization_id,
         workspace_id,
-        file_to_upload,
-        workspace_destination,
+        file_path,
+        workspace_path,
         overwrite=True,
     )
     print(f"Uploaded file as: {uploaded_name}")

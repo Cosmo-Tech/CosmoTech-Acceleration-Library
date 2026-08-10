@@ -4,7 +4,6 @@ import pathlib
 
 from cosmotech.coal.cosmotech_api.apis import RunnerApi
 from cosmotech.coal.utils.configuration import Configuration
-from cosmotech.coal.utils.logger import LOGGER
 
 os.environ["CSM_API_URL"] = "https://api.cosmotech.com"  # Replace with your API URL
 os.environ["CSM_API_KEY"] = "your-api-key"  # Replace with your actual API key

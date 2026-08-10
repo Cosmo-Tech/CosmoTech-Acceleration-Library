@@ -6,7 +6,6 @@ import pathlib
 
 from cosmotech.coal.cosmotech_api.apis import DatasetApi, RunnerApi, WorkspaceApi
 from cosmotech.coal.utils.configuration import Configuration
-from cosmotech.coal.utils.logger import LOGGER
 
 os.environ["CSM_API_URL"] = "https://api.cosmotech.com"  # Replace with your API URL
 os.environ["CSM_API_KEY"] = "your-api-key"  # Replace with your actual API key
@@ -88,10 +87,10 @@ print("\n=== Step 4: Update Output Dataset ===")
 try:
     dataset_api = DatasetApi(config)
     dataset_api.upload_dataset(
-        organization_id=organization_id,
-        dataset_id=output_dataset_id,
-        file_path=str(processed_file),
+        dataset_name="customers",
+        as_files=str(processed_file),
     )
+    output_dataset_id = dataset_api.id
     print(f"Dataset {output_dataset_id} updated")
 except Exception as e:
     print(f"Error updating dataset: {e}")

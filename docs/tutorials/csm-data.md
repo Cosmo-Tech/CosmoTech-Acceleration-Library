@@ -110,6 +110,7 @@ The `adx-send-runnerdata` command enables sending runner data to Azure Data Expl
 ```
 
 This command:
+
 - Creates tables in ADX based on CSV files in the dataset and/or parameters folders
 - Ingests the data into those tables
 - Adds a `run` column with the runner ID for tracking
@@ -131,6 +132,7 @@ The `store` command group provides tools for working with the CoAL datastore:
 ```
 
 These commands allow you to:
+
 - Load data from CSV files into the datastore
 - Load data from Parquet files into the datastore
 - Dump datastore contents to various destinations (S3, Azure, PostgreSQL)
