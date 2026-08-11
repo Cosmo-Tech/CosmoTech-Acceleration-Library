@@ -54,9 +54,7 @@ if not customers_file.exists():
 customers = []
 with open(customers_file, "r") as f:
     for row in csv.DictReader(f):
-        row["loyalty_score"] = str(
-            round(int(row["spending"]) / 100 + (int(row["age"]) - 20) / 10, 1)
-        )
+        row["loyalty_score"] = str(round(int(row["spending"]) / 100 + (int(row["age"]) - 20) / 10, 1))
         customers.append(row)
 
 processed_file = processed_dir / "customers_with_loyalty.csv"
@@ -115,4 +113,3 @@ print(f"Report saved to {report_file}")
 print(f"Total customers: {report['statistics']['total_customers']}")
 print(f"Avg loyalty score: {report['statistics']['average_loyalty_score']}")
 print("\nWorkflow completed successfully!")
-

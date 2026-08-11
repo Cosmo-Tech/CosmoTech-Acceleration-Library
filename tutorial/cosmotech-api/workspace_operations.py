@@ -28,9 +28,7 @@ target_directory = pathlib.Path("./downloaded_files")
 target_directory.mkdir(exist_ok=True, parents=True)
 
 try:
-    local_path = ws_api.download_workspace_file(
-        organization_id, workspace_id, file_to_download, target_directory
-    )
+    local_path = ws_api.download_workspace_file(organization_id, workspace_id, file_to_download, target_directory)
     print(f"Downloaded file to: {local_path}")
 except Exception as e:
     print(f"Error downloading file: {e}")
