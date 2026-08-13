@@ -43,7 +43,7 @@ The datastore is your friend to keep data between orchestration steps. It comes 
 :material-api: __CosmoTech API__
 
 ---
-Learn how to interact with the CosmoTech API directly: authentication, workspaces, Twin Data Layer, and more.
+Learn how to interact with the CosmoTech API directly: authentication, workspaces, runners and datasets.
 
 ---
 <footer markdown>

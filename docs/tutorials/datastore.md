@@ -132,7 +132,7 @@ The datastore provides specialized adapters for working with various data format
 
 !!! tip "Store initialization"
     - Use `reset=True` when you want to start with a fresh database
-    - Omit the reset parameter or set it to `False` when you want to maintain data between runs
+    - Omit the reset parameter or set it to `False` when you want to maintain data between steps
     - Specify a custom location with the `store_location` parameter if needed
 
 ```python title="Store initialization options" linenums="1"

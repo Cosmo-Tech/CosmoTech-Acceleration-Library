@@ -50,11 +50,6 @@ The first step in working with the CosmoTech API is establishing a connection. C
 - Keycloak authentication
 
 The `Connection` class automatically detects which authentication method to use based on the environment variables present.
-
-```python title="Basic connection setup" linenums="1"
---8<-- 'tutorial/cosmotech-api/connection_setup.py'
-```
-
 All API wrapper classes (`WorkspaceApi`, `RunnerApi`, `DatasetApi`, …) extend `Connection` and set themselves up automatically — you do not need to create the `Connection` separately unless you want direct access to the raw `ApiClient`.
 
 ```python
@@ -66,7 +61,7 @@ dataset_api = DatasetApi()
 ```
 
 !!! tip "Environment Variables"
-    You can set environment variables in your code for testing, but in production environments, it's better to set them at the system or container level for security.
+    You can set environment variables in your code for testing, but in production environments, it's better to set them at the container level using Coal configuration. Coal configuration uses a combination of Kubernetes ConfigMaps and Secrets to setup the environnement.
 
 ### API Key Authentication
 
@@ -197,71 +192,26 @@ The `workspace_path` parameter can be:
 `DatasetApi` provides helpers for uploading datasets and managing their parts (files that compose the dataset).
 
 ```python title="Dataset upload" linenums="1"
-from cosmotech.coal.cosmotech_api.apis import DatasetApi
-
-dataset_api = DatasetApi()
-
-# Upload a single file as a dataset
-dataset_api.upload_dataset(
-    dataset_name="customers",
-    as_files=["/tmp/data/customers.csv"],
-)
-dataset_id = dataset.id
-
-# Upload multiple parts from a folder (one part per file)
-dataset_api.upload_dataset_parts(
-    dataset_id=dataset_id,
-    as_files=["/tmp/data/customers_p1.csv", "/tmp/data/customers_p2.csv"],
-)
-
-# Download a dataset to a local directory
-dataset_api.download_dataset(
-    dataset_id=dataset_id,
-)
+--8<-- 'tutorial/cosmotech-api/dataset_operations.py'
 ```
 
 !!! info "Dataset Parts"
     When uploading parts, the part name is derived from the filename without its extension.
 
-## Runner and Run Management
+## Runner Management
 
-Runners and runs are central concepts in the CosmoTech platform. `RunnerApi` provides methods for retrieving runner metadata and downloading all associated data (parameters and datasets).
+Runners are central concepts in the CosmoTech platform. `RunnerApi` provides methods for retrieving runner metadata and downloading all associated data (parameters and datasets).
 
 ```python title="Runner operations" linenums="1"
 --8<-- 'tutorial/cosmotech-api/runner_operations.py'
 ```
 
-## Complete Workflow Example
-
-Putting it all together, here's a typical end-to-end workflow for a CosmoTech data processing pipeline:
-
-```python title="Complete workflow" linenums="1"
---8<-- 'tutorial/cosmotech-api/complete_workflow.py'
-```
-
-This workflow:
-
-1. Downloads runner parameters and associated datasets
-2. Processes the data (application-specific logic)
-3. Uploads processed results to the workspace
-4. Updates a dataset with the processed output parts
-
-!!! tip "Real-world Workflows"
-    In real-world scenarios, you might:
-
-    - Use more complex data transformations
-    - Integrate with other Python code or services
-    - Implement error handling and retries
-    - Add logging and monitoring
-    - Parallelize operations for better performance
-
 ## Best Practices and Tips
 
 ### Authentication
 
-- Use environment variables for credentials
 - Implement proper secret management in production
-- Always close API clients when done
+- Use Coal configuration secrets loading for credentials
 
 ### Error Handling
 

@@ -1,26 +1,28 @@
 # Example: Working with workspaces in the CosmoTech API
-import os
 import pathlib
 
+from cosmotech.orchestrator.utils.logger import get_logger
+
 from cosmotech.coal.cosmotech_api.apis import WorkspaceApi
+from cosmotech.coal.utils.configuration import ENVIRONMENT_CONFIGURATION as EC
 
-os.environ["CSM_API_URL"] = "https://api.cosmotech.com"  # Replace with your API URL
-os.environ["CSM_API_KEY"] = "your-api-key"  # Replace with your actual API key
+logger = get_logger("my_project.worspace_work")
 
-organization_id = "your-organization-id"  # Replace with your organization ID
-workspace_id = "your-workspace-id"  # Replace with your workspace ID
-
+# Use Coal configuration to setup connection and WorkspaceApi object
 ws_api = WorkspaceApi()
+
+organization_id = EC.cosmotech.organization_id
+workspace_id = EC.cosmotech.workspace_id
 
 # Example 1: List workspace files with a given prefix
 file_prefix = "data/"
 try:
     files = ws_api.list_filtered_workspace_files(organization_id, workspace_id, file_prefix)
-    print(f"Files in workspace with prefix '{file_prefix}':")
+    logger.info(f"Files in workspace with prefix '{file_prefix}':")
     for file in files:
-        print(f"  - {file}")
+        logger.info(f"  - {file}")
 except ValueError as e:
-    print(f"No files found: {e}")
+    logger.error(f"No files found: {e}")
 
 # Example 2: Download a file from the workspace
 file_to_download = "data/sample.csv"  # Replace with an actual file in your workspace
@@ -29,9 +31,9 @@ target_directory.mkdir(exist_ok=True, parents=True)
 
 try:
     local_path = ws_api.download_workspace_file(organization_id, workspace_id, file_to_download, target_directory)
-    print(f"Downloaded file to: {local_path}")
+    logger.info(f"Downloaded file to: {local_path}")
 except Exception as e:
-    print(f"Error downloading file: {e}")
+    logger.error(f"Error downloading file: {e}")
 
 # Example 3: Upload a file to the workspace
 file_path = "./local_data/upload_sample.csv"  # Replace with a local file path
@@ -45,6 +47,6 @@ try:
         workspace_path,
         overwrite=True,
     )
-    print(f"Uploaded file as: {uploaded_name}")
+    logger.info(f"Uploaded file as: {uploaded_name}")
 except Exception as e:
-    print(f"Error uploading file: {e}")
+    logger.error(f"Error uploading file: {e}")
