@@ -98,6 +98,38 @@ Keycloak authentication requires these environment variables:
 !!! warning "API Client Lifecycle"
     Always close the API client when you're done using it to release resources. The best practice is to use a `try`/`finally` block to ensure the client is closed even if an error occurs.
 
+## Configuration
+
+The CoAL configuration system is based on a centralized data dictionary used to manage platform settings and behaviors dynamically. It allows scripts to run without requiring users to manually define connection or output specifics every single time. Data is primarily sourced from a TOML file loaded into a Kubernetes ConfigMap.
+
+### Core mechanics
+
+- The Configuration singleton: CoAL provides a `ENVIRONMENT_CONFIGURATION` singleton that users can import this into their scripts (`from cosmotech.coal.utils.configuration import ENVIRONMENT_CONFIGURATION as EC`) to access properties using dot-notation, such as `EC.cosmotech.runner_id`.
+
+- Kubernetes (K8s) ConfigMap integration: To supply configuration inside a pod launched via a workflow, CoAL mounts a K8s ConfigMap containing the configuration file directly inside the container.
+
+- Automatic path loading: CoAL automatically attempts to load the TOML file at the specific path `/mnt/coal/coal-config.toml`, making K8s ConfigMap auto-mounts seamless.
+
+### Syntax
+
+The configuration uses the TOML format to support specific features:
+
+- **secrets**: Environment variables (e.g. credentials, `TWIN_CACHE_HOST`, or `IDP_BASE_URL`) that are loaded at startup. At import, they are initialized and then removed from the final configuration dictionary, so variables like `run_template_id` are accessed directly under `EC.cosmotech` rather than a "secrets" sub-dictionary. CosmoTech environment variables provided by the API are always loaded.
+
+- **env.**: Fetches environment variables dynamically at runtime (e.g. `env.POSTGRES_USER_PASSWORD`), unlike "secrets" which are resolved statically at import.
+
+- **Internal References ($)**: Allows configuration keys to reference other values in the same TOML file (e.g. `$postgres.host`).
+
+- **[[outputs]]**: Uses TOML double-bracket list syntax to define a series of output destinations (such as PostgreSQL, S3, or Azure Blob Storage) utilized by the ChannelSplitter to direct simulation results.
+
+- **Error handling**: CoAL handles internal configuration references (like `$config.path`) with proper error reporting such as the `ReferenceKeyError` exception for missing configuration references.
+
+### Configuration dictionary
+
+```toml title="Configuration TOML file" linenums="1"
+--8<-- 'tutorial/cosmotech-api/coal-config.toml'
+```
+
 ## Working with Workspaces
 
 Workspaces in the CosmoTech platform provide a way to organize and share files. `WorkspaceApi` offers methods for listing, downloading, and uploading files.

@@ -1,0 +1,78 @@
+# This an exemple of a coal-config.toml
+
+# the double [[ section indicate a list. This allows to define multiple outputs
+# Each output define its type (currently supported: s3, az_storage, postgres)
+# For each output, the configuration defines value needed to interact with a storage. Mandatory value are mark with a [M]
+
+[[outputs]]
+type = "s3"         # indicate the output channel to use
+[outputs.conf.s3]
+endpoint_url =      # [M] url of the s3 server
+access_key_id =     # [M] the id used to connect (equivalent to a username)
+secret_access_key = # [M] the key to connect (equivalent to a password)
+bucket_name =       # [M] name of the bucket. s3 bucket is a concept that define a ressource that holds data. 
+bucket_prefix =     # This is a prefix that will be add in front of each upload file 
+                        # (this can allow to store in subfolder by adding a prefix ending with "/")
+outputs_type =      # indicate the type of the data push. Can be .parquet or .csv (default: .csv)
+use_ssl =           # indicate the use of ssl (default: True)
+ssl_cert_bundle =   # in case of a s3 using custom SSL certification; here is where to put the path to the custom pem bundle. 
+                        # (Can also be set to False to not verify SSL certificat)
+
+[[outputs]]
+type = "az_storage" # indicate the output channel to use
+[outputs.conf.azure]
+account_name =      # use to build azure storage URL 
+tenant_id =         # Azure tenant ID
+client_id =         # Azure client ID
+client_secret =     # Azure secret
+container_name =    # Name of the container (equivalent to AWS Bucket name)
+outputs_type =      # indicate the type of the data push. Can be .parquet or .csv (default: .csv)
+file_prefix =       # This is a prefix that will be add in front of each upload file 
+                        # (this can allow to store in subfolder by adding a prefix ending with "/")
+
+[[outputs]]
+type = "postgres"
+[outputs.conf.postgres]
+host =              # Host URL of postgres server
+port =              # Port expose by postgres server
+db_name =           # Postgres db name
+db_schema =         # Postgres db schema
+user_name =         # postgres username
+user_password =     # posrgres password
+table_prefix =      # prefix used on table creation (useful in case of using a centralize DB to differentiate)
+password_encoding = # boolean indicating if the password should be encoder (default: False) (used for password with special characters)
+
+
+# The secrets section contains all values that will be replaced by environement variables
+# The secrets section is transform at initialisation and then merge to root (the secrets sections no longer exist after transformation)
+
+# The cosmotech sub section is added by default (it's all the environment variables given by the API)"
+
+# # # DON'T ADD THIS IN THE FINAL FILE # # #
+
+[secrets.cosmotech]
+dataset_absolute_path = "CSM_DATASET_ABSOLUTE_PATH"
+parameters_absolute_path = "CSM_PARAMETERS_ABSOLUTE_PATH"
+output_absolute_path = "CSM_OUTPUT_ABSOLUTE_PATH"
+tmp_absolute_path = "CSM_TEMP_ABSOLUTE_PATH"
+organization_id = "CSM_ORGANIZATION_ID"
+workspace_id = "CSM_WORKSPACE_ID"
+runner_id = "CSM_RUNNER_ID"
+run_id = "CSM_RUN_ID"
+run_template_id = "CSM_RUN_TEMPLATE_ID"
+
+[secrets.cosmotech.api]
+url = "CSM_API_URL "
+scope = "CSM_API_SCOPE"
+
+[secrets.cosmotech.twin_cache]
+host = "TWIN_CACHE_HOST"
+port = "TWIN_CACHE_PORT"
+password = "TWIN_CACHE_PASSWORD"
+username = "TWIN_CACHE_USERNAME"
+
+[secrets.cosmotech.idp]
+base_url = "IDP_BASE_URL"
+tenant_id = "IDP_TENANT_ID"
+client_id = "IDP_CLIENT_ID"
+client_secret = "IDP_CLIENT_SECRET"
