@@ -206,6 +206,55 @@ Runners are central concepts in the CosmoTech platform. `RunnerApi` provides met
 --8<-- 'tutorial/cosmotech-api/runner_operations.py'
 ```
 
+## Output channels
+
+CoAL provides a centralized, configurable pipeline to route and manage simulation output data.
+
+**Core Architecture and Available Channels**
+
+The system is built on a modular design consisting of a base interface, specific output channels, and an output router:
+
+- `ChannelInterface`: The class defining the base operations .send() and .delete().
+
+- Supported Output Channels:
+
+   - AWS S3 Channel (AwsChannel): Directs output files to AWS S3 buckets.
+   - Azure Storage Channel (AzureStorageChannel): Directs output files to Azure Blob Storage.
+   - PostgreSQL Channel (PostgresChannel): Sends structured tables to a PostgreSQL database.
+
+- `ChannelSpliter`: An output router that reads the configuration and automatically instantiates and calls the appropriate channel(s). This allows sending output to multiple destinations simultaneously (e.g. PostgreSQL and S3) without requiring custom code from the developer.
+
+**Configuration**
+
+Output channels are defined in the centralized Configuration under the `[[output]]` list:
+
+- Root Configuration Inheritance: Configuration is simplified by sub-channels being able to automatically load default values from the root configuration. This reduces repetition in the TOML file and makes it easier for DevOps to manage credentials and connections centrally.
+
+**CLI (csm-data) Integration**
+Developers trigger output operations using simplified CLI commands from `csm-data`:
+
+- `csm-data store output`: Triggers the `ChannelSplitter.send()` function, routing the stored data based on the loaded Configuration
+
+- `csm-data store delete`: Triggers the `ChannelSplitter.delete()` function, cleaning up the data associated with a run
+
+- Parquet Support: CoAL supports loading Parquet folders (`csm-data store load-parquet-folder`) into the internal store, preserving data typing (using the pyarrow library) before data is exported to PostgreSQL or other outputs.
+
+**Output Rolling and Cleanup**
+
+To manage storage and prevent the infinite accumulation of old outputs, CoAL implements output rolling:
+
+- **Blob Storage (S3 / Azure)**: The system replaces the older run files in place within the bucket or blob container.
+
+- **PostgreSQL**: Deletion is handled natively via database cascades. CoAL leverages a reference `RunnerMetadata` table and foreign keys (`csm_run_id` and `last_csm_run_id`) to automatically wipe old run data when a new run begins for the same runner.
+
+**Sending Store Data to Configured Outputs**
+
+`ChannelSpliter` sends store data to every available output configured in the CoAL Configuration. According to the Configuration specifying one or more `[[outputs]]` entries, the example below will explicitly launch the sending precedure (otherwise automatic). A filter can be passed to send only selected tables.
+
+```python title="ChannelSpliter usage" linenums="1"
+--8<-- 'tutorial/cosmotech-api/channel_spliter.py'
+```
+
 ## Best Practices and Tips
 
 ### Authentication
