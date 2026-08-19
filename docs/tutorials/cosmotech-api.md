@@ -189,12 +189,24 @@ The `workspace_path` parameter can be:
 
 ## Input Collector
 
-The Input Collector is a framework that provides a unified interface for easily retrieving simulation inputs (parameters and datasets) from environment-configured paths:
+The Input Collector is a class that provides a unified interface for easily retrieving simulation inputs (parameters and datasets) from environment-configured paths.
+The `InputCollector` has a generic `.fetch(...)` function that cycle through:
 
-- The `DatasetCollector` resolves dataset files by name from the configured dataset path
-- The `WorkspaceCollector` resolves workspace files from the configured workspace path
+-  `.fetch_parameter(...)` -> calls `ParameterCollector.fetch(...)`
+-  `.fetch_workspace(...)` -> calls `WorkspaceCollector.fetch(...)`
+-  `.fetch_dataset(...)`   -> calls `DatasetCollector.fetch(...)`
+
+Each sub Collector search in it respective folder:
+
 - The `ParameterCollector` resolves parameter values by name from the configured parameters path
-- The `ENVIRONMENT_INPUT_COLLECTOR` singleton is a ready-to-use collector instance pre-configured from environment variables
+    - The fetch function of `ParameterCollector` return a Path object or a String value (this depends of the type of the asked parameter)
+- The `WorkspaceCollector` resolves workspace files from the configured workspace path
+    - The fetch function of `WorkspaceCollector` return a Path object
+- The `DatasetCollector` resolves dataset files by name from the configured dataset path
+    - The fetch function of `DatasetCollector` return a Path object
+
+
+The `ENVIRONMENT_INPUT_COLLECTOR` singleton is a ready-to-use collector instance pre-configured from environment variables
 
 ```python title="Input Collector usage" linenums="1"
 --8<-- 'tutorial/cosmotech-api/input_collector.py'
