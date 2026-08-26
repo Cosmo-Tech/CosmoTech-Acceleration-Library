@@ -45,17 +45,17 @@ def send_runner_metadata_to_postgresql(
     with dbapi.connect(_psql.full_uri, autocommit=True) as conn:
         with conn.cursor() as curs:
             schema_table = f"{str(_psql.db_schema)}.{str(_psql.metadata_table_name)}"
-            sql_create_table = f"""
-                CREATE TABLE IF NOT EXISTS {schema_table}  (
-                  id varchar(32) PRIMARY KEY,
-                  name varchar(256),
-                  last_csm_run_id varchar(32) UNIQUE,
-                  run_template_id varchar(32)
-                );
-            """
-            LOGGER.info(T("coal.services.postgresql.creating_table").format(schema_table=schema_table))
-            curs.execute(sql_create_table)
-            conn.commit()
+            # sql_create_table = f"""
+            #     CREATE TABLE IF NOT EXISTS {schema_table}  (
+            #       id varchar(32) PRIMARY KEY,
+            #       name varchar(256),
+            #       last_csm_run_id varchar(32) UNIQUE,
+            #       run_template_id varchar(32)
+            #     );
+            # """
+            # LOGGER.info(T("coal.services.postgresql.creating_table").format(schema_table=schema_table))
+            # curs.execute(sql_create_table)
+            # conn.commit()
 
             runner_id = runner.get("id")
             sql_delete_from_metatable = f"""

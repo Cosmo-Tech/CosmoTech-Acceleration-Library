@@ -90,53 +90,58 @@ def dump_store_to_postgresql_from_conf(
     _psql = PostgresUtils(configuration)
     _s = Store(configuration=configuration)
 
+    # Apply table filter
     tables = list(_s.list_tables())
     if selected_tables:
         tables = [t for t in tables if t in selected_tables]
-    if len(tables):
-        LOGGER.info(T("coal.services.database.sending_data").format(table=f"{_psql.db_name}.{_psql.db_schema}"))
-        total_rows = 0
-        _process_start = perf_counter()
-        for table_name in tables:
-            _s_time = perf_counter()
-            target_table_name = f"{_psql.table_prefix}{table_name}"
-            LOGGER.info(T("coal.services.database.table_entry").format(table=target_table_name))
-            data = _s.get_table(table_name)
-            if not len(data):
-                LOGGER.info(T("coal.services.database.no_rows"))
-                continue
-            if fk_id:
-                data = data.append_column("csm_run_id", [[fk_id] * data.num_rows])
-            _dl_time = perf_counter()
-            rows = _psql.send_pyarrow_table_to_postgresql(
-                data,
-                target_table_name,
-                replace,
-            )
-            if fk_id and _psql.is_metadata_exists():
-                metadata_table = f"{_psql.metadata_table_name}"
-                _psql.add_fk_constraint(target_table_name, "csm_run_id", metadata_table, "last_csm_run_id")
 
-            total_rows += rows
-            _up_time = perf_counter()
-            LOGGER.info(T("coal.services.database.row_count").format(count=rows))
-            LOGGER.debug(
-                T("coal.common.timing.operation_completed").format(
-                    operation="Load from datastore", time=f"{_dl_time - _s_time:0.3}"
-                )
-            )
-            LOGGER.debug(
-                T("coal.common.timing.operation_completed").format(
-                    operation="Send to postgresql", time=f"{_up_time - _dl_time:0.3}"
-                )
-            )
-        _process_end = perf_counter()
-        LOGGER.info(
-            T("coal.services.database.rows_fetched").format(
-                table="all tables",
-                count=total_rows,
-                time=f"{_process_end - _process_start:0.3}",
+    if not tables:
+        LOGGER.info(T("coal.services.database.store_empty"))
+
+    LOGGER.info(T("coal.services.database.sending_data").format(table=f"{_psql.db_name}.{_psql.db_schema}"))
+    total_rows = 0
+    _process_start = perf_counter()
+    for table_name in tables:
+        _s_time = perf_counter()
+        target_table_name = f"{_psql.table_prefix}{table_name}"
+        LOGGER.info(T("coal.services.database.table_entry").format(table=target_table_name))
+
+        data = _s.get_table(table_name)
+        if not len(data):
+            LOGGER.info(T("coal.services.database.no_rows"))
+            continue
+        if fk_id:
+            data = data.append_column("csm_run_id", [[fk_id] * data.num_rows])
+        _dl_time = perf_counter()
+
+        rows = _psql.send_pyarrow_table_to_postgresql(
+            data,
+            target_table_name,
+            replace,
+        )
+
+        # if fk_id and _psql.is_metadata_exists():
+        #     metadata_table = f"{_psql.metadata_table_name}"
+        #     _psql.add_fk_constraint(target_table_name, "csm_run_id", metadata_table, "last_csm_run_id")
+
+        total_rows += rows
+        _up_time = perf_counter()
+        LOGGER.info(T("coal.services.database.row_count").format(count=rows))
+        LOGGER.debug(
+            T("coal.common.timing.operation_completed").format(
+                operation="Load from datastore", time=f"{_dl_time - _s_time:0.3}"
             )
         )
-    else:
-        LOGGER.info(T("coal.services.database.store_empty"))
+        LOGGER.debug(
+            T("coal.common.timing.operation_completed").format(
+                operation="Send to postgresql", time=f"{_up_time - _dl_time:0.3}"
+            )
+        )
+    _process_end = perf_counter()
+    LOGGER.info(
+        T("coal.services.database.rows_fetched").format(
+            table="all tables",
+            count=total_rows,
+            time=f"{_process_end - _process_start:0.3}",
+        )
+    )
