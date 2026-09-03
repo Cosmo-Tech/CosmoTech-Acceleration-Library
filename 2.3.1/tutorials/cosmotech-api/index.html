@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Comprehensive guide to working with the CosmoTech API in CoAL: authentication, workspaces, Twin Data Layer, and more">
+        <meta name="description" content="Comprehensive guide to working with the CosmoTech API in CoAL: authentication, workspaces, runners, and datasets">
       
       
       
@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
       <link rel="stylesheet" href="../../stylesheets/extra.css">
     
       <link rel="stylesheet" href="../../stylesheets/templates.css">
@@ -65,7 +67,7 @@
       
         <meta  property="og:title"  content="Working with the CosmoTech API - Cosmotech Acceleration Library Docs" >
       
-        <meta  property="og:description"  content="Comprehensive guide to working with the CosmoTech API in CoAL: authentication, workspaces, Twin Data Layer, and more" >
+        <meta  property="og:description"  content="Comprehensive guide to working with the CosmoTech API in CoAL: authentication, workspaces, runners, and datasets" >
       
         <meta  property="og:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.3.1/assets/images/social/tutorials/cosmotech-api.png" >
       
@@ -81,7 +83,7 @@
       
         <meta  name="twitter:title"  content="Working with the CosmoTech API - Cosmotech Acceleration Library Docs" >
       
-        <meta  name="twitter:description"  content="Comprehensive guide to working with the CosmoTech API in CoAL: authentication, workspaces, Twin Data Layer, and more" >
+        <meta  name="twitter:description"  content="Comprehensive guide to working with the CosmoTech API in CoAL: authentication, workspaces, runners, and datasets" >
       
         <meta  name="twitter:image"  content="https://cosmo-tech.github.io/CosmoTech-Acceleration-Library/2.3.1/assets/images/social/tutorials/cosmotech-api.png" >
       
@@ -324,6 +326,28 @@
     
   
   csm-data
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../helpers/aws/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Helpers
 
         </a>
       </li>
@@ -709,6 +733,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core mechanics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      Syntax
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration dictionary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#working-with-workspaces" class="md-nav__link">
     <span class="md-ellipsis">
       Working with Workspaces
@@ -751,93 +817,36 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#twin-data-layer-operations" class="md-nav__link">
+  <a href="#input-collector" class="md-nav__link">
     <span class="md-ellipsis">
-      Twin Data Layer Operations
+      Input Collector
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Twin Data Layer Operations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#csv-file-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      CSV File Format
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#parsing-csv-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      Parsing CSV Files
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-cypher-queries" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generating Cypher Queries
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#runner-and-run-management" class="md-nav__link">
+  <a href="#dataset-management" class="md-nav__link">
     <span class="md-ellipsis">
-      Runner and Run Management
+      Dataset Management
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Runner and Run Management">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#getting-runner-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      Getting Runner Data
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#working-with-parameters" class="md-nav__link">
-    <span class="md-ellipsis">
-      Working with Parameters
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#downloading-runner-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      Downloading Runner Data
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#complete-workflow-example" class="md-nav__link">
+  <a href="#runner-management" class="md-nav__link">
     <span class="md-ellipsis">
-      Complete Workflow Example
+      Runner Management
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output channels
     </span>
   </a>
   
@@ -1474,6 +1483,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1687,6 +1700,52 @@
   
   
     <li class="md-nav__item">
+      <a href="../../csm-data/store/load-parquet-folder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    load-parquet-folder
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../csm-data/store/output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    output
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../csm-data/store/reset/" class="md-nav__link">
         
   
@@ -1714,6 +1773,258 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Helpers
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Helpers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../helpers/aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    aws
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../helpers/azure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    azure
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../helpers/cosmotech_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    cosmotech_api
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../helpers/csm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    csm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../helpers/postgresql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    postgresql
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../helpers/singlestore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    singlestore
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../helpers/store/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    store
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../helpers/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    utils
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1806,6 +2117,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core mechanics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      Syntax
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration dictionary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#working-with-workspaces" class="md-nav__link">
     <span class="md-ellipsis">
       Working with Workspaces
@@ -1848,93 +2201,36 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#twin-data-layer-operations" class="md-nav__link">
+  <a href="#input-collector" class="md-nav__link">
     <span class="md-ellipsis">
-      Twin Data Layer Operations
+      Input Collector
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Twin Data Layer Operations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#csv-file-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      CSV File Format
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#parsing-csv-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      Parsing CSV Files
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-cypher-queries" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generating Cypher Queries
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#runner-and-run-management" class="md-nav__link">
+  <a href="#dataset-management" class="md-nav__link">
     <span class="md-ellipsis">
-      Runner and Run Management
+      Dataset Management
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Runner and Run Management">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#getting-runner-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      Getting Runner Data
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#working-with-parameters" class="md-nav__link">
-    <span class="md-ellipsis">
-      Working with Parameters
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#downloading-runner-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      Downloading Runner Data
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#complete-workflow-example" class="md-nav__link">
+  <a href="#runner-management" class="md-nav__link">
     <span class="md-ellipsis">
-      Complete Workflow Example
+      Runner Management
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output channels
     </span>
   </a>
   
@@ -2025,8 +2321,8 @@
 <ul>
 <li>Understand how to authenticate and connect to the CosmoTech API</li>
 <li>Learn to work with workspaces for file management</li>
-<li>Master the Twin Data Layer for graph data operations</li>
 <li>Implement runner and run data management</li>
+<li>Upload and download datasets</li>
 <li>Build complete workflows integrating multiple API features</li>
 </ul>
 </div>
@@ -2035,17 +2331,25 @@
 <ul>
 <li>Authenticate with different identity providers</li>
 <li>Manage workspaces and files</li>
-<li>Work with the Twin Data Layer for graph data</li>
 <li>Handle runners and runs</li>
+<li>Upload and download datasets</li>
 <li>Process and transform data</li>
 <li>Build end-to-end workflows</li>
 </ul>
-<p>The API integration is organized into several modules, each focused on specific functionality:</p>
+<p>The API integration is organized into two sub-packages under <code>cosmotech.coal.cosmotech_api</code>:</p>
 <ul>
-<li><strong>connection</strong>: Authentication and API client management</li>
-<li><strong>workspace</strong>: Workspace file operations</li>
-<li><strong>twin_data_layer</strong>: Graph data management</li>
-<li><strong>runner</strong>: Runner and run data operations</li>
+<li><strong><code>objects/</code></strong>: Core building blocks<ul>
+<li><code>connection</code> — <code>Connection</code> class: authentication and <code>ApiClient</code> management</li>
+<li><code>parameters</code> — <code>Parameters</code> class: typed access to runner parameters</li>
+</ul>
+</li>
+<li><strong><code>apis/</code></strong>: High-level wrappers for each CosmoTech API resource<ul>
+<li><code>DatasetApi</code> — dataset upload, download, and parts management</li>
+<li><code>RunnerApi</code> — runner metadata and data download</li>
+<li><code>WorkspaceApi</code> — workspace file listing, download, and upload</li>
+<li><code>RunApi</code>, <code>OrganizationApi</code>, <code>SolutionApi</code>, <code>MetaApi</code> — additional resource wrappers</li>
+</ul>
+</li>
 </ul>
 <div class="admonition info">
 <p class="admonition-title">API vs CLI</p>
@@ -2064,138 +2368,17 @@
 <li>Azure Entra (formerly Azure AD) authentication</li>
 <li>Keycloak authentication</li>
 </ul>
-<p>The <code>get_api_client()</code> function automatically detects which authentication method to use based on the environment variables you've set.</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Basic connection setup</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Setting up connections to the CosmoTech API</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<p>The <code>Connection</code> class automatically detects which authentication method to use based on the environment variables present.
+All API wrapper classes (<code>WorkspaceApi</code>, <code>RunnerApi</code>, <code>DatasetApi</code>, …) extend <code>Connection</code> and set themselves up automatically — you do not need to create the <code>Connection</code> separately unless you want direct access to the raw <code>ApiClient</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.apis</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkspaceApi</span><span class="p">,</span> <span class="n">RunnerApi</span><span class="p">,</span> <span class="n">DatasetApi</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_api_client</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
-
-<span class="c1"># Method 1: Using API Key (set these environment variables before running)</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CSM_API_URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;https://api.cosmotech.com&quot;</span>  <span class="c1"># Replace with your API URL</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CSM_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;your-api-key&quot;</span>  <span class="c1"># Replace with your actual API key</span>
-
-<span class="c1"># Get the API client</span>
-<span class="n">api_client</span><span class="p">,</span> <span class="n">connection_type</span> <span class="o">=</span> <span class="n">get_api_client</span><span class="p">()</span>
-<span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connected using: </span><span class="si">{</span><span class="n">connection_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Use the client with various API instances</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech_api.api.organization_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrganizationApi</span>
-
-<span class="n">org_api</span> <span class="o">=</span> <span class="n">OrganizationApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
-
-<span class="c1"># List organizations</span>
-<span class="n">organizations</span> <span class="o">=</span> <span class="n">org_api</span><span class="o">.</span><span class="n">find_all_organizations</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">org</span> <span class="ow">in</span> <span class="n">organizations</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Organization: </span><span class="si">{</span><span class="n">org</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> (ID: </span><span class="si">{</span><span class="n">org</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
-
-<span class="c1"># Don&#39;t forget to close the client when done</span>
-<span class="n">api_client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-<span class="c1"># Method 2: Using Azure Entra (set these environment variables before running)</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">os.environ[&quot;CSM_API_URL&quot;] = &quot;https://api.cosmotech.com&quot;  # Replace with your API URL</span>
-<span class="sd">os.environ[&quot;CSM_API_SCOPE&quot;] = &quot;api://your-app-id/.default&quot;  # Replace with your API scope</span>
-<span class="sd">os.environ[&quot;AZURE_CLIENT_ID&quot;] = &quot;your-client-id&quot;  # Replace with your client ID</span>
-<span class="sd">os.environ[&quot;AZURE_CLIENT_SECRET&quot;] = &quot;your-client-secret&quot;  # Replace with your client secret</span>
-<span class="sd">os.environ[&quot;AZURE_TENANT_ID&quot;] = &quot;your-tenant-id&quot;  # Replace with your tenant ID</span>
-
-<span class="sd"># Get the API client</span>
-<span class="sd">api_client, connection_type = get_api_client()</span>
-<span class="sd">LOGGER.info(f&quot;Connected using: {connection_type}&quot;)</span>
-
-<span class="sd"># Use the client with various API instances</span>
-<span class="sd"># ...</span>
-
-<span class="sd"># Don&#39;t forget to close the client when done</span>
-<span class="sd">api_client.close()</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="c1"># Method 3: Using Keycloak (set these environment variables before running)</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">os.environ[&quot;CSM_API_URL&quot;] = &quot;https://api.cosmotech.com&quot;  # Replace with your API URL</span>
-<span class="sd">os.environ[&quot;IDP_BASE_URL&quot;] = &quot;https://keycloak.example.com/auth/&quot;  # Replace with your Keycloak URL</span>
-<span class="sd">os.environ[&quot;IDP_TENANT_ID&quot;] = &quot;your-realm&quot;  # Replace with your realm</span>
-<span class="sd">os.environ[&quot;IDP_CLIENT_ID&quot;] = &quot;your-client-id&quot;  # Replace with your client ID</span>
-<span class="sd">os.environ[&quot;IDP_CLIENT_SECRET&quot;] = &quot;your-client-secret&quot;  # Replace with your client secret</span>
-
-<span class="sd"># Get the API client</span>
-<span class="sd">api_client, connection_type = get_api_client()</span>
-<span class="sd">LOGGER.info(f&quot;Connected using: {connection_type}&quot;)</span>
-
-<span class="sd"># Use the client with various API instances</span>
-<span class="sd"># ...</span>
-
-<span class="sd"># Don&#39;t forget to close the client when done</span>
-<span class="sd">api_client.close()</span>
-<span class="sd">&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
+<span class="n">ws_api</span> <span class="o">=</span> <span class="n">WorkspaceApi</span><span class="p">()</span>   <span class="c1"># auth resolved automatically</span>
+<span class="n">runner_api</span> <span class="o">=</span> <span class="n">RunnerApi</span><span class="p">()</span>
+<span class="n">dataset_api</span> <span class="o">=</span> <span class="n">DatasetApi</span><span class="p">()</span>
+</code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Environment Variables</p>
-<p>You can set environment variables in your code for testing, but in production environments, it's better to set them at the system or container level for security.</p>
+<p>You can set environment variables in your code for testing, but in production environments, it's better to set them at the container level using Coal configuration. Coal configuration uses a combination of Kubernetes ConfigMaps and Secrets to setup the environnement.</p>
 </div>
 <h3 id="api-key-authentication">API Key Authentication<a class="headerlink" href="#api-key-authentication" title="Permanent link">&para;</a></h3>
 <p>API Key authentication is the simplest method and requires two environment variables:</p>
@@ -2225,9 +2408,41 @@
 <p class="admonition-title">API Client Lifecycle</p>
 <p>Always close the API client when you're done using it to release resources. The best practice is to use a <code>try</code>/<code>finally</code> block to ensure the client is closed even if an error occurs.</p>
 </div>
-<h2 id="working-with-workspaces">Working with Workspaces<a class="headerlink" href="#working-with-workspaces" title="Permanent link">&para;</a></h2>
-<p>Workspaces in the CosmoTech platform provide a way to organize and share files. The CoAL library offers functions for listing, downloading, and uploading files in workspaces.</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Workspace operations</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>The CoAL configuration system is based on a centralized data dictionary used to manage platform settings and behaviors dynamically. It allows scripts to run without requiring users to manually define connection or output specifics every single time. Data is primarily sourced from a TOML file loaded into a Kubernetes ConfigMap.</p>
+<h3 id="core-mechanics">Core mechanics<a class="headerlink" href="#core-mechanics" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>The Configuration singleton: CoAL provides a <code>ENVIRONMENT_CONFIGURATION</code> singleton that users can import this into their scripts (<code>from cosmotech.coal.utils.configuration import ENVIRONMENT_CONFIGURATION as EC</code>) to access properties using dot-notation, such as <code>EC.cosmotech.runner_id</code>.</p>
+</li>
+<li>
+<p>Kubernetes (K8s) ConfigMap integration: To supply configuration inside a pod launched via a workflow, CoAL mounts a K8s ConfigMap containing the configuration file directly inside the container.</p>
+</li>
+<li>
+<p>Automatic path loading: CoAL automatically attempts to load the TOML file at the specific path <code>/mnt/coal/coal-config.toml</code>, making K8s ConfigMap auto-mounts seamless.</p>
+</li>
+</ul>
+<h3 id="syntax">Syntax<a class="headerlink" href="#syntax" title="Permanent link">&para;</a></h3>
+<p>The configuration uses the TOML format to support specific features:</p>
+<ul>
+<li>
+<p><strong>secrets</strong>: Environment variables (e.g. credentials, <code>TWIN_CACHE_HOST</code>, or <code>IDP_BASE_URL</code>) that are loaded at startup. At import, they are initialized and then removed from the final configuration dictionary, so variables like <code>run_template_id</code> are accessed directly under <code>EC.cosmotech</code> rather than a "secrets" sub-dictionary. CosmoTech environment variables provided by the API are always loaded.</p>
+</li>
+<li>
+<p><strong>env.</strong>: Fetches environment variables dynamically at runtime (e.g. <code>env.POSTGRES_USER_PASSWORD</code>), unlike "secrets" which are resolved statically at import.</p>
+</li>
+<li>
+<p><strong>Internal References ($)</strong>: Allows configuration keys to reference other values in the same TOML file (e.g. <code>$postgres.host</code>).</p>
+</li>
+<li>
+<p><strong>[[outputs]]</strong>: Uses TOML double-bracket list syntax to define a series of output destinations (such as PostgreSQL, S3, or Azure Blob Storage) utilized by the ChannelSplitter to direct simulation results.</p>
+</li>
+<li>
+<p><strong>Error handling</strong>: CoAL handles internal configuration references (like <code>$config.path</code>) with proper error reporting such as the <code>ReferenceKeyError</code> exception for missing configuration references.</p>
+</li>
+</ul>
+<h3 id="configuration-dictionary">Configuration dictionary<a class="headerlink" href="#configuration-dictionary" title="Permanent link">&para;</a></h3>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Configuration TOML file</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -2294,105 +2509,234 @@
 <span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
-<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with workspaces in the CosmoTech API</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># This an exemple of a coal-config.toml</span>
+
+<span class="c1"># the double [[ section indicate a list. This allows to define multiple outputs</span>
+<span class="c1"># Each output define its type (currently supported: s3, az_storage, postgres)</span>
+<span class="c1"># For each output, the configuration defines value needed to interact with a storage. Mandatory value are mark with a [M]</span>
+
+<span class="k">[[outputs]]</span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"s3"</span><span class="w">         </span><span class="c1"># indicate the output channel to use</span>
+<span class="k">[outputs.conf.s3]</span>
+<span class="n">endpoint_url</span><span class="w"> </span><span class="o">=</span><span class="w">      </span><span class="err"># </span><span class="p">[</span><span class="err">M] url of the s</span><span class="mi">3</span><span class="w"> </span><span class="err">server</span>
+<span class="n">access_key_id</span><span class="w"> </span><span class="o">=</span><span class="w">     </span><span class="err"># </span><span class="p">[</span><span class="err">M] the id used to connect (equivalent to a username)</span>
+<span class="n">secret_access_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err"># </span><span class="p">[</span><span class="err">M] the key to connect (equivalent to a password)</span>
+<span class="n">bucket_name</span><span class="w"> </span><span class="o">=</span><span class="w">       </span><span class="err"># </span><span class="p">[</span><span class="err">M] name of the bucket. s</span><span class="mi">3</span><span class="w"> </span><span class="err">bucket is a concept that define a ressource that holds data. </span>
+<span class="n">bucket_prefix</span><span class="w"> </span><span class="o">=</span><span class="w">     </span><span class="err"># This is a prefix that will be add in front of each upload file </span>
+<span class="w">                        </span><span class="c1"># (this can allow to store in subfolder by adding a prefix ending with "/")</span>
+<span class="n">outputs_type</span><span class="w"> </span><span class="o">=</span><span class="w">      </span><span class="err"># indicate the type of the data push. Can be .parquet or .csv (default: .csv)</span>
+<span class="n">use_ssl</span><span class="w"> </span><span class="o">=</span><span class="w">           </span><span class="err"># indicate the use of ssl (default: True)</span>
+<span class="n">ssl_cert_bundle</span><span class="w"> </span><span class="o">=</span><span class="w">   </span><span class="err"># in case of a s</span><span class="mi">3</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">custom</span><span class="w"> </span><span class="n">SSL</span><span class="w"> </span><span class="n">certification</span><span class="err">;</span><span class="w"> </span><span class="n">here</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">where</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">custom</span><span class="w"> </span><span class="n">pem</span><span class="w"> </span><span class="n">bundle</span><span class="p">.</span><span class="w"> </span>
+<span class="w">                        </span><span class="c1"># (Can also be set to False to not verify SSL certificat)</span>
+
+<span class="k">[[outputs]]</span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"az_storage"</span><span class="w"> </span><span class="c1"># indicate the output channel to use</span>
+<span class="k">[outputs.conf.azure]</span>
+<span class="n">account_name</span><span class="w"> </span><span class="o">=</span><span class="w">      </span><span class="err"># use to build azure storage URL </span>
+<span class="n">tenant_id</span><span class="w"> </span><span class="o">=</span><span class="w">         </span><span class="err"># Azure te</span><span class="mf">nan</span><span class="n">t</span><span class="w"> </span><span class="n">ID</span>
+<span class="n">client_id</span><span class="w"> </span><span class="o">=</span><span class="w">         </span><span class="err"># Azure client ID</span>
+<span class="n">client_secret</span><span class="w"> </span><span class="o">=</span><span class="w">     </span><span class="err"># Azure secret</span>
+<span class="n">container_name</span><span class="w"> </span><span class="o">=</span><span class="w">    </span><span class="err"># Name of the container (equivalent to AWS Bucket name)</span>
+<span class="n">outputs_type</span><span class="w"> </span><span class="o">=</span><span class="w">      </span><span class="err"># indicate the type of the data push. Can be .parquet or .csv (default: .csv)</span>
+<span class="n">file_prefix</span><span class="w"> </span><span class="o">=</span><span class="w">       </span><span class="err"># This is a prefix that will be add in front of each upload file </span>
+<span class="w">                        </span><span class="c1"># (this can allow to store in subfolder by adding a prefix ending with "/")</span>
+
+<span class="k">[[outputs]]</span>
+<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"postgres"</span>
+<span class="k">[outputs.conf.postgres]</span>
+<span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w">              </span><span class="err"># Host URL of postgres server</span>
+<span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w">              </span><span class="err"># Port expose by postgres server</span>
+<span class="n">db_name</span><span class="w"> </span><span class="o">=</span><span class="w">           </span><span class="err"># Postgres db name</span>
+<span class="n">db_schema</span><span class="w"> </span><span class="o">=</span><span class="w">         </span><span class="err"># Postgres db schema</span>
+<span class="n">user_name</span><span class="w"> </span><span class="o">=</span><span class="w">         </span><span class="err"># postgres username</span>
+<span class="n">user_password</span><span class="w"> </span><span class="o">=</span><span class="w">     </span><span class="err"># posrgres password</span>
+<span class="n">table_prefix</span><span class="w"> </span><span class="o">=</span><span class="w">      </span><span class="err"># prefix used on table creation (useful in case of using a centralize DB to differentiate)</span>
+<span class="n">password_encoding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err"># boolean indicating if the password should be encoder (default: False) (used for password with special characters)</span>
+
+
+<span class="c1"># The secrets section contains all values that will be replaced by environement variables</span>
+<span class="c1"># The secrets section is transform at initialisation and then merge to root (the secrets sections no longer exist after transformation)</span>
+
+<span class="c1"># The cosmotech sub section is added by default (it's all the environment variables given by the API)"</span>
+
+<span class="c1"># # # DON'T ADD THIS IN THE FINAL FILE # # #</span>
+
+<span class="k">[secrets.cosmotech]</span>
+<span class="n">dataset_absolute_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"CSM_DATASET_ABSOLUTE_PATH"</span>
+<span class="n">parameters_absolute_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"CSM_PARAMETERS_ABSOLUTE_PATH"</span>
+<span class="n">output_absolute_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"CSM_OUTPUT_ABSOLUTE_PATH"</span>
+<span class="n">tmp_absolute_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"CSM_TEMP_ABSOLUTE_PATH"</span>
+<span class="n">organization_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"CSM_ORGANIZATION_ID"</span>
+<span class="n">workspace_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"CSM_WORKSPACE_ID"</span>
+<span class="n">runner_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"CSM_RUNNER_ID"</span>
+<span class="n">run_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"CSM_RUN_ID"</span>
+<span class="n">run_template_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"CSM_RUN_TEMPLATE_ID"</span>
+
+<span class="k">[secrets.cosmotech.api]</span>
+<span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"CSM_API_URL "</span>
+<span class="n">scope</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"CSM_API_SCOPE"</span>
+
+<span class="k">[secrets.cosmotech.twin_cache]</span>
+<span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"TWIN_CACHE_HOST"</span>
+<span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"TWIN_CACHE_PORT"</span>
+<span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"TWIN_CACHE_PASSWORD"</span>
+<span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"TWIN_CACHE_USERNAME"</span>
+
+<span class="k">[secrets.cosmotech.idp]</span>
+<span class="n">base_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"IDP_BASE_URL"</span>
+<span class="n">tenant_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"IDP_TENANT_ID"</span>
+<span class="n">client_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"IDP_CLIENT_ID"</span>
+<span class="n">client_secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"IDP_CLIENT_SECRET"</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="working-with-workspaces">Working with Workspaces<a class="headerlink" href="#working-with-workspaces" title="Permanent link">&para;</a></h2>
+<p>Workspaces in the CosmoTech platform provide a way to organize and share files. <code>WorkspaceApi</code> offers methods for listing, downloading, and uploading files.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Workspace operations</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with workspaces in the CosmoTech API</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_api_client</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.workspace</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">download_workspace_file</span><span class="p">,</span>
-    <span class="n">list_workspace_files</span><span class="p">,</span>
-    <span class="n">upload_workspace_file</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.orchestrator.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
 
-<span class="c1"># Set up environment variables for authentication</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CSM_API_URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;https://api.cosmotech.com&quot;</span>  <span class="c1"># Replace with your API URL</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CSM_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;your-api-key&quot;</span>  <span class="c1"># Replace with your actual API key</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.apis</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkspaceApi</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.configuration</span><span class="w"> </span><span class="kn">import</span> <span class="n">ENVIRONMENT_CONFIGURATION</span> <span class="k">as</span> <span class="n">EC</span>
 
-<span class="c1"># Organization and workspace IDs</span>
-<span class="n">organization_id</span> <span class="o">=</span> <span class="s2">&quot;your-organization-id&quot;</span>  <span class="c1"># Replace with your organization ID</span>
-<span class="n">workspace_id</span> <span class="o">=</span> <span class="s2">&quot;your-workspace-id&quot;</span>  <span class="c1"># Replace with your workspace ID</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="s2">"my_project.worspace_work"</span><span class="p">)</span>
 
-<span class="c1"># Get the API client</span>
-<span class="n">api_client</span><span class="p">,</span> <span class="n">connection_type</span> <span class="o">=</span> <span class="n">get_api_client</span><span class="p">()</span>
-<span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connected using: </span><span class="si">{</span><span class="n">connection_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Use Coal configuration to setup connection and WorkspaceApi object</span>
+<span class="n">ws_api</span> <span class="o">=</span> <span class="n">WorkspaceApi</span><span class="p">()</span>
+
+<span class="n">organization_id</span> <span class="o">=</span> <span class="n">EC</span><span class="o">.</span><span class="n">cosmotech</span><span class="o">.</span><span class="n">organization_id</span>
+<span class="n">workspace_id</span> <span class="o">=</span> <span class="n">EC</span><span class="o">.</span><span class="n">cosmotech</span><span class="o">.</span><span class="n">workspace_id</span>
+
+<span class="c1"># Example 1: List workspace files with a given prefix</span>
+<span class="n">file_prefix</span> <span class="o">=</span> <span class="s2">"data/"</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">ws_api</span><span class="o">.</span><span class="n">list_filtered_workspace_files</span><span class="p">(</span><span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">file_prefix</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Files in workspace with prefix '</span><span class="si">{</span><span class="n">file_prefix</span><span class="si">}</span><span class="s2">':"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No files found: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Example 2: Download a file from the workspace</span>
+<span class="n">file_to_download</span> <span class="o">=</span> <span class="s2">"data/sample.csv"</span>  <span class="c1"># Replace with an actual file in your workspace</span>
+<span class="n">target_directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"./downloaded_files"</span><span class="p">)</span>
+<span class="n">target_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="c1"># Example 1: List files in a workspace with a specific prefix</span>
-    <span class="n">file_prefix</span> <span class="o">=</span> <span class="s2">&quot;data/&quot;</span>  <span class="c1"># List files in the &quot;data&quot; directory</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">files</span> <span class="o">=</span> <span class="n">list_workspace_files</span><span class="p">(</span><span class="n">api_client</span><span class="p">,</span> <span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">file_prefix</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Files in workspace with prefix &#39;</span><span class="si">{</span><span class="n">file_prefix</span><span class="si">}</span><span class="s2">&#39;:&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error listing files: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">local_path</span> <span class="o">=</span> <span class="n">ws_api</span><span class="o">.</span><span class="n">download_workspace_file</span><span class="p">(</span><span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">file_to_download</span><span class="p">,</span> <span class="n">target_directory</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Downloaded file to: </span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error downloading file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="c1"># Example 2: Download a file from the workspace</span>
-    <span class="n">file_to_download</span> <span class="o">=</span> <span class="s2">&quot;data/sample.csv&quot;</span>  <span class="c1"># Replace with an actual file in your workspace</span>
-    <span class="n">target_directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./downloaded_files&quot;</span><span class="p">)</span>
-    <span class="n">target_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Example 3: Upload a file to the workspace</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s2">"./local_data/upload_sample.csv"</span>  <span class="c1"># Replace with a local file path</span>
+<span class="n">workspace_path</span> <span class="o">=</span> <span class="s2">"data/uploaded/"</span>  <span class="c1"># Trailing slash → original filename is kept</span>
 
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">downloaded_file</span> <span class="o">=</span> <span class="n">download_workspace_file</span><span class="p">(</span>
-            <span class="n">api_client</span><span class="p">,</span> <span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">file_to_download</span><span class="p">,</span> <span class="n">target_directory</span>
-        <span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloaded file to: </span><span class="si">{</span><span class="n">downloaded_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error downloading file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Example 3: Upload a file to the workspace</span>
-    <span class="n">file_to_upload</span> <span class="o">=</span> <span class="s2">&quot;./local_data/upload_sample.csv&quot;</span>  <span class="c1"># Replace with a local file path</span>
-    <span class="n">workspace_destination</span> <span class="o">=</span> <span class="s2">&quot;data/uploaded/&quot;</span>  <span class="c1"># Destination in the workspace (ending with / to keep filename)</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">uploaded_file</span> <span class="o">=</span> <span class="n">upload_workspace_file</span><span class="p">(</span>
-            <span class="n">api_client</span><span class="p">,</span>
-            <span class="n">organization_id</span><span class="p">,</span>
-            <span class="n">workspace_id</span><span class="p">,</span>
-            <span class="n">file_to_upload</span><span class="p">,</span>
-            <span class="n">workspace_destination</span><span class="p">,</span>
-            <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Set to False to prevent overwriting existing files</span>
-        <span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Uploaded file as: </span><span class="si">{</span><span class="n">uploaded_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error uploading file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="k">finally</span><span class="p">:</span>
-    <span class="c1"># Always close the API client when done</span>
-    <span class="n">api_client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">uploaded_name</span> <span class="o">=</span> <span class="n">ws_api</span><span class="o">.</span><span class="n">upload_workspace_file</span><span class="p">(</span>
+        <span class="n">organization_id</span><span class="p">,</span>
+        <span class="n">workspace_id</span><span class="p">,</span>
+        <span class="n">file_path</span><span class="p">,</span>
+        <span class="n">workspace_path</span><span class="p">,</span>
+        <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Uploaded file as: </span><span class="si">{</span><span class="n">uploaded_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error uploading file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <h3 id="listing-files">Listing Files<a class="headerlink" href="#listing-files" title="Permanent link">&para;</a></h3>
-<p>The <code>list_workspace_files</code> function allows you to list files in a workspace with a specific prefix:</p>
-<div class="highlight"><pre><span></span><code><span class="n">files</span> <span class="o">=</span> <span class="n">list_workspace_files</span><span class="p">(</span><span class="n">api_client</span><span class="p">,</span> <span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">file_prefix</span><span class="p">)</span>
+<p><code>list_filtered_workspace_files</code> returns all workspace files whose <code>file_name</code> starts with the given prefix. It raises <code>ValueError</code> when no matching files are found:</p>
+<div class="highlight"><pre><span></span><code><span class="n">files</span> <span class="o">=</span> <span class="n">ws_api</span><span class="o">.</span><span class="n">list_filtered_workspace_files</span><span class="p">(</span>
+    <span class="n">organization_id</span><span class="p">,</span>
+    <span class="n">workspace_id</span><span class="p">,</span>
+    <span class="n">file_prefix</span>
+<span class="p">)</span>
 </code></pre></div>
 <p>This is useful for finding files in a specific directory or with a specific naming pattern.</p>
 <h3 id="downloading-files">Downloading Files<a class="headerlink" href="#downloading-files" title="Permanent link">&para;</a></h3>
-<p>The <code>download_workspace_file</code> function downloads a file from the workspace to a local directory:</p>
-<div class="highlight"><pre><span></span><code><span class="n">downloaded_file</span> <span class="o">=</span> <span class="n">download_workspace_file</span><span class="p">(</span>
-    <span class="n">api_client</span><span class="p">,</span>
+<p><code>download_workspace_file</code> writes the file content to <code>target_dir / file_name</code>, creating any necessary intermediate directories:</p>
+<div class="highlight"><pre><span></span><code><span class="n">local_path</span> <span class="o">=</span> <span class="n">ws_api</span><span class="o">.</span><span class="n">download_workspace_file</span><span class="p">(</span>
     <span class="n">organization_id</span><span class="p">,</span>
     <span class="n">workspace_id</span><span class="p">,</span>
     <span class="n">file_to_download</span><span class="p">,</span>
     <span class="n">target_directory</span>
 <span class="p">)</span>
 </code></pre></div>
-<p>If the file is in a subdirectory in the workspace, the function will create the necessary local subdirectories.</p>
 <h3 id="uploading-files">Uploading Files<a class="headerlink" href="#uploading-files" title="Permanent link">&para;</a></h3>
-<p>The <code>upload_workspace_file</code> function uploads a local file to the workspace:</p>
-<div class="highlight"><pre><span></span><code><span class="n">uploaded_file</span> <span class="o">=</span> <span class="n">upload_workspace_file</span><span class="p">(</span>
-    <span class="n">api_client</span><span class="p">,</span>
+<p><code>upload_workspace_file</code> uploads a single local file:</p>
+<div class="highlight"><pre><span></span><code><span class="n">uploaded_name</span> <span class="o">=</span> <span class="n">ws_api</span><span class="o">.</span><span class="n">upload_workspace_file</span><span class="p">(</span>
     <span class="n">organization_id</span><span class="p">,</span>
     <span class="n">workspace_id</span><span class="p">,</span>
-    <span class="n">file_to_upload</span><span class="p">,</span>
-    <span class="n">workspace_destination</span><span class="p">,</span>
-    <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">file_path</span><span class="p">,</span>
+    <span class="n">workspace_path</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-<p>The <code>workspace_destination</code> parameter can be:
-- A specific file path in the workspace
-- A directory path ending with <code>/</code>, in which case the original filename is preserved</p>
+<p>The <code>workspace_path</code> parameter can be:</p>
+<ul>
+<li>A specific file path in the workspace</li>
+<li>A directory path ending with <code>/</code>, in which case the original filename is preserved</li>
+</ul>
 <div class="admonition tip">
 <p class="admonition-title">Workspace Paths</p>
 <p>When working with workspace paths:</p>
@@ -2402,1114 +2746,273 @@
 <li>Use relative paths from the workspace root</li>
 </ul>
 </div>
-<h2 id="twin-data-layer-operations">Twin Data Layer Operations<a class="headerlink" href="#twin-data-layer-operations" title="Permanent link">&para;</a></h2>
-<p>The Twin Data Layer (TDL) is a graph database that stores nodes and relationships. CoAL provides tools for working with the TDL, particularly for preparing and sending CSV data.</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Twin Data Layer operations</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  1</span>
-<span class="normal">  2</span>
-<span class="normal">  3</span>
-<span class="normal">  4</span>
-<span class="normal">  5</span>
-<span class="normal">  6</span>
-<span class="normal">  7</span>
-<span class="normal">  8</span>
-<span class="normal">  9</span>
-<span class="normal"> 10</span>
-<span class="normal"> 11</span>
-<span class="normal"> 12</span>
-<span class="normal"> 13</span>
-<span class="normal"> 14</span>
-<span class="normal"> 15</span>
-<span class="normal"> 16</span>
-<span class="normal"> 17</span>
-<span class="normal"> 18</span>
-<span class="normal"> 19</span>
-<span class="normal"> 20</span>
-<span class="normal"> 21</span>
-<span class="normal"> 22</span>
-<span class="normal"> 23</span>
-<span class="normal"> 24</span>
-<span class="normal"> 25</span>
-<span class="normal"> 26</span>
-<span class="normal"> 27</span>
-<span class="normal"> 28</span>
-<span class="normal"> 29</span>
-<span class="normal"> 30</span>
-<span class="normal"> 31</span>
-<span class="normal"> 32</span>
-<span class="normal"> 33</span>
-<span class="normal"> 34</span>
-<span class="normal"> 35</span>
-<span class="normal"> 36</span>
-<span class="normal"> 37</span>
-<span class="normal"> 38</span>
-<span class="normal"> 39</span>
-<span class="normal"> 40</span>
-<span class="normal"> 41</span>
-<span class="normal"> 42</span>
-<span class="normal"> 43</span>
-<span class="normal"> 44</span>
-<span class="normal"> 45</span>
-<span class="normal"> 46</span>
-<span class="normal"> 47</span>
-<span class="normal"> 48</span>
-<span class="normal"> 49</span>
-<span class="normal"> 50</span>
-<span class="normal"> 51</span>
-<span class="normal"> 52</span>
-<span class="normal"> 53</span>
-<span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with the Twin Data Layer in the CosmoTech API</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech_api.api.twin_graph_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">TwinGraphApi</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_api_client</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.twin_data_layer</span><span class="w"> </span><span class="kn">import</span> <span class="n">CSVSourceFile</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
-
-<span class="c1"># Set up environment variables for authentication</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CSM_API_URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;https://api.cosmotech.com&quot;</span>  <span class="c1"># Replace with your API URL</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CSM_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;your-api-key&quot;</span>  <span class="c1"># Replace with your actual API key</span>
-
-<span class="c1"># Organization and workspace IDs</span>
-<span class="n">organization_id</span> <span class="o">=</span> <span class="s2">&quot;your-organization-id&quot;</span>  <span class="c1"># Replace with your organization ID</span>
-<span class="n">workspace_id</span> <span class="o">=</span> <span class="s2">&quot;your-workspace-id&quot;</span>  <span class="c1"># Replace with your workspace ID</span>
-<span class="n">twin_graph_id</span> <span class="o">=</span> <span class="s2">&quot;your-twin-graph-id&quot;</span>  <span class="c1"># Replace with your twin graph ID</span>
-
-<span class="c1"># Get the API client</span>
-<span class="n">api_client</span><span class="p">,</span> <span class="n">connection_type</span> <span class="o">=</span> <span class="n">get_api_client</span><span class="p">()</span>
-<span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connected using: </span><span class="si">{</span><span class="n">connection_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="c1"># Create a TwinGraphApi instance</span>
-    <span class="n">twin_graph_api</span> <span class="o">=</span> <span class="n">TwinGraphApi</span><span class="p">(</span><span class="n">api_client</span><span class="p">)</span>
-
-    <span class="c1"># Example 1: Create sample CSV files for nodes and relationships</span>
-
-    <span class="c1"># Create a directory for our sample data</span>
-    <span class="n">data_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./tdl_sample_data&quot;</span><span class="p">)</span>
-    <span class="n">data_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="c1"># Create a sample nodes CSV file (Person nodes)</span>
-    <span class="n">persons_file</span> <span class="o">=</span> <span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;Person.csv&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">persons_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;city&quot;</span><span class="p">])</span>
-        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;30&quot;</span><span class="p">,</span> <span class="s2">&quot;New York&quot;</span><span class="p">])</span>
-        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;p2&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;25&quot;</span><span class="p">,</span> <span class="s2">&quot;San Francisco&quot;</span><span class="p">])</span>
-        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;p3&quot;</span><span class="p">,</span> <span class="s2">&quot;Charlie&quot;</span><span class="p">,</span> <span class="s2">&quot;35&quot;</span><span class="p">,</span> <span class="s2">&quot;Chicago&quot;</span><span class="p">])</span>
-
-    <span class="c1"># Create a sample relationships CSV file (KNOWS relationships)</span>
-    <span class="n">knows_file</span> <span class="o">=</span> <span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;KNOWS.csv&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">knows_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;src&quot;</span><span class="p">,</span> <span class="s2">&quot;dest&quot;</span><span class="p">,</span> <span class="s2">&quot;since&quot;</span><span class="p">])</span>
-        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="s2">&quot;p2&quot;</span><span class="p">,</span> <span class="s2">&quot;2020&quot;</span><span class="p">])</span>
-        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;p2&quot;</span><span class="p">,</span> <span class="s2">&quot;p3&quot;</span><span class="p">,</span> <span class="s2">&quot;2021&quot;</span><span class="p">])</span>
-        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;p3&quot;</span><span class="p">,</span> <span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="s2">&quot;2019&quot;</span><span class="p">])</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created sample CSV files in </span><span class="si">{</span><span class="n">data_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Example 2: Parse CSV files and generate Cypher queries</span>
-
-    <span class="c1"># Parse the nodes CSV file</span>
-    <span class="n">person_csv</span> <span class="o">=</span> <span class="n">CSVSourceFile</span><span class="p">(</span><span class="n">persons_file</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsed </span><span class="si">{</span><span class="n">person_csv</span><span class="o">.</span><span class="n">object_type</span><span class="si">}</span><span class="s2"> CSV file:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Is node: </span><span class="si">{</span><span class="n">person_csv</span><span class="o">.</span><span class="n">is_node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Fields: </span><span class="si">{</span><span class="n">person_csv</span><span class="o">.</span><span class="n">fields</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ID column: </span><span class="si">{</span><span class="n">person_csv</span><span class="o">.</span><span class="n">id_column</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Generate a Cypher query for creating nodes</span>
-    <span class="n">person_query</span> <span class="o">=</span> <span class="n">person_csv</span><span class="o">.</span><span class="n">generate_query_insert</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Generated Cypher query for </span><span class="si">{</span><span class="n">person_csv</span><span class="o">.</span><span class="n">object_type</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">person_query</span><span class="p">)</span>
-
-    <span class="c1"># Parse the relationships CSV file</span>
-    <span class="n">knows_csv</span> <span class="o">=</span> <span class="n">CSVSourceFile</span><span class="p">(</span><span class="n">knows_file</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Parsed </span><span class="si">{</span><span class="n">knows_csv</span><span class="o">.</span><span class="n">object_type</span><span class="si">}</span><span class="s2"> CSV file:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Is node: </span><span class="si">{</span><span class="n">knows_csv</span><span class="o">.</span><span class="n">is_node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Fields: </span><span class="si">{</span><span class="n">knows_csv</span><span class="o">.</span><span class="n">fields</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Source column: </span><span class="si">{</span><span class="n">knows_csv</span><span class="o">.</span><span class="n">source_column</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Target column: </span><span class="si">{</span><span class="n">knows_csv</span><span class="o">.</span><span class="n">target_column</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Generate a Cypher query for creating relationships</span>
-    <span class="n">knows_query</span> <span class="o">=</span> <span class="n">knows_csv</span><span class="o">.</span><span class="n">generate_query_insert</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Generated Cypher query for </span><span class="si">{</span><span class="n">knows_csv</span><span class="o">.</span><span class="n">object_type</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">knows_query</span><span class="p">)</span>
-
-    <span class="c1"># Example 3: Send data to the Twin Data Layer (commented out as it requires an actual twin graph)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    # For nodes, you would typically:</span>
-<span class="sd">    with open(persons_file, &quot;r&quot;) as f:</span>
-<span class="sd">        reader = csv.DictReader(f)</span>
-<span class="sd">        for row in reader:</span>
-<span class="sd">            # Create parameters for the Cypher query</span>
-<span class="sd">            params = {k: v for k, v in row.items()}</span>
-
-<span class="sd">            # Execute the query</span>
-<span class="sd">            twin_graph_api.run_twin_graph_cypher_query(</span>
-<span class="sd">                organization_id=organization_id,</span>
-<span class="sd">                workspace_id=workspace_id,</span>
-<span class="sd">                twin_graph_id=twin_graph_id,</span>
-<span class="sd">                twin_graph_cypher_query={</span>
-<span class="sd">                    &quot;query&quot;: person_query,</span>
-<span class="sd">                    &quot;parameters&quot;: params</span>
-<span class="sd">                }</span>
-<span class="sd">            )</span>
-
-<span class="sd">    # For relationships, you would typically:</span>
-<span class="sd">    with open(knows_file, &quot;r&quot;) as f:</span>
-<span class="sd">        reader = csv.DictReader(f)</span>
-<span class="sd">        for row in reader:</span>
-<span class="sd">            # Create parameters for the Cypher query</span>
-<span class="sd">            params = {k: v for k, v in row.items()}</span>
-
-<span class="sd">            # Execute the query</span>
-<span class="sd">            twin_graph_api.run_twin_graph_cypher_query(</span>
-<span class="sd">                organization_id=organization_id,</span>
-<span class="sd">                workspace_id=workspace_id,</span>
-<span class="sd">                twin_graph_id=twin_graph_id,</span>
-<span class="sd">                twin_graph_cypher_query={</span>
-<span class="sd">                    &quot;query&quot;: knows_query,</span>
-<span class="sd">                    &quot;parameters&quot;: params</span>
-<span class="sd">                }</span>
-<span class="sd">            )</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Example 4: Query data from the Twin Data Layer (commented out as it requires an actual twin graph)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    # Execute a Cypher query to get all Person nodes</span>
-<span class="sd">    result = twin_graph_api.run_twin_graph_cypher_query(</span>
-<span class="sd">        organization_id=organization_id,</span>
-<span class="sd">        workspace_id=workspace_id,</span>
-<span class="sd">        twin_graph_id=twin_graph_id,</span>
-<span class="sd">        twin_graph_cypher_query={</span>
-<span class="sd">            &quot;query&quot;: &quot;MATCH (p:Person) RETURN p.id, p.name, p.age, p.city&quot;,</span>
-<span class="sd">            &quot;parameters&quot;: {}</span>
-<span class="sd">        }</span>
-<span class="sd">    )</span>
-
-<span class="sd">    # Process the results</span>
-<span class="sd">    print(&quot;\nPerson nodes in the Twin Data Layer:&quot;)</span>
-<span class="sd">    for record in result.records:</span>
-<span class="sd">        print(f&quot;  - {record}&quot;)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-<span class="k">finally</span><span class="p">:</span>
-    <span class="c1"># Always close the API client when done</span>
-    <span class="n">api_client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</code></pre></div></td></tr></table></div>
-<h3 id="csv-file-format">CSV File Format<a class="headerlink" href="#csv-file-format" title="Permanent link">&para;</a></h3>
-<p>The TDL expects CSV files in a specific format:</p>
+<h2 id="input-collector">Input Collector<a class="headerlink" href="#input-collector" title="Permanent link">&para;</a></h2>
+<p>The Input Collector is a class that provides a unified interface for easily retrieving simulation inputs (parameters and datasets) from environment-configured paths.
+The <code>InputCollector</code> has a generic <code>.fetch(...)</code> function that cycle through:</p>
 <ul>
-<li><strong>Node files</strong>: Must have an <code>id</code> column and can have additional property columns</li>
-<li><strong>Relationship files</strong>: Must have <code>src</code> and <code>dest</code> columns and can have additional property columns</li>
+<li><code>.fetch_parameter(...)</code> -&gt; calls <code>ParameterCollector.fetch(...)</code></li>
+<li><code>.fetch_workspace(...)</code> -&gt; calls <code>WorkspaceCollector.fetch(...)</code></li>
+<li><code>.fetch_dataset(...)</code>   -&gt; calls <code>DatasetCollector.fetch(...)</code></li>
 </ul>
-<p>The filename (without the <code>.csv</code> extension) becomes the node label or relationship type in the graph.</p>
-<h3 id="parsing-csv-files">Parsing CSV Files<a class="headerlink" href="#parsing-csv-files" title="Permanent link">&para;</a></h3>
-<p>The <code>CSVSourceFile</code> class helps parse CSV files and determine if they represent nodes or relationships:</p>
-<div class="highlight"><pre><span></span><code><span class="n">csv_file</span> <span class="o">=</span> <span class="n">CSVSourceFile</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Is node: </span><span class="si">{</span><span class="n">csv_file</span><span class="o">.</span><span class="n">is_node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fields: </span><span class="si">{</span><span class="n">csv_file</span><span class="o">.</span><span class="n">fields</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</code></pre></div>
-<h3 id="generating-cypher-queries">Generating Cypher Queries<a class="headerlink" href="#generating-cypher-queries" title="Permanent link">&para;</a></h3>
-<p>The <code>generate_query_insert</code> method creates Cypher queries for inserting data into the TDL:</p>
-<div class="highlight"><pre><span></span><code><span class="n">query</span> <span class="o">=</span> <span class="n">csv_file</span><span class="o">.</span><span class="n">generate_query_insert</span><span class="p">()</span>
-</code></pre></div>
-<p>These queries can then be executed using the TwinGraphApi:</p>
-<div class="highlight"><pre><span></span><code><span class="n">twin_graph_api</span><span class="o">.</span><span class="n">run_twin_graph_cypher_query</span><span class="p">(</span>
-    <span class="n">organization_id</span><span class="o">=</span><span class="n">organization_id</span><span class="p">,</span>
-    <span class="n">workspace_id</span><span class="o">=</span><span class="n">workspace_id</span><span class="p">,</span>
-    <span class="n">twin_graph_id</span><span class="o">=</span><span class="n">twin_graph_id</span><span class="p">,</span>
-    <span class="n">twin_graph_cypher_query</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
-        <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="n">params</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-</code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Node References</p>
-<p>When creating relationships, make sure the nodes referenced by the <code>src</code> and <code>dest</code> columns already exist in the graph. Otherwise, the relationship creation will fail.</p>
-</div>
-<h2 id="runner-and-run-management">Runner and Run Management<a class="headerlink" href="#runner-and-run-management" title="Permanent link">&para;</a></h2>
-<p>Runners and runs are central concepts in the CosmoTech platform. CoAL provides functions for working with runner data, parameters, and associated datasets.</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Runner operations</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  1</span>
-<span class="normal">  2</span>
-<span class="normal">  3</span>
-<span class="normal">  4</span>
-<span class="normal">  5</span>
-<span class="normal">  6</span>
-<span class="normal">  7</span>
-<span class="normal">  8</span>
-<span class="normal">  9</span>
-<span class="normal"> 10</span>
-<span class="normal"> 11</span>
-<span class="normal"> 12</span>
-<span class="normal"> 13</span>
-<span class="normal"> 14</span>
-<span class="normal"> 15</span>
-<span class="normal"> 16</span>
-<span class="normal"> 17</span>
-<span class="normal"> 18</span>
-<span class="normal"> 19</span>
-<span class="normal"> 20</span>
-<span class="normal"> 21</span>
-<span class="normal"> 22</span>
-<span class="normal"> 23</span>
-<span class="normal"> 24</span>
-<span class="normal"> 25</span>
-<span class="normal"> 26</span>
-<span class="normal"> 27</span>
-<span class="normal"> 28</span>
-<span class="normal"> 29</span>
-<span class="normal"> 30</span>
-<span class="normal"> 31</span>
-<span class="normal"> 32</span>
-<span class="normal"> 33</span>
-<span class="normal"> 34</span>
-<span class="normal"> 35</span>
-<span class="normal"> 36</span>
-<span class="normal"> 37</span>
-<span class="normal"> 38</span>
-<span class="normal"> 39</span>
-<span class="normal"> 40</span>
-<span class="normal"> 41</span>
-<span class="normal"> 42</span>
-<span class="normal"> 43</span>
-<span class="normal"> 44</span>
-<span class="normal"> 45</span>
-<span class="normal"> 46</span>
-<span class="normal"> 47</span>
-<span class="normal"> 48</span>
-<span class="normal"> 49</span>
-<span class="normal"> 50</span>
-<span class="normal"> 51</span>
-<span class="normal"> 52</span>
-<span class="normal"> 53</span>
-<span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with runners and runs in the CosmoTech API</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_api_client</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.runner</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">download_datasets</span><span class="p">,</span>
-    <span class="n">download_runner_data</span><span class="p">,</span>
-    <span class="n">get_runner_data</span><span class="p">,</span>
-    <span class="n">get_runner_parameters</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
-
-<span class="c1"># Set up environment variables for authentication</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CSM_API_URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;https://api.cosmotech.com&quot;</span>  <span class="c1"># Replace with your API URL</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CSM_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;your-api-key&quot;</span>  <span class="c1"># Replace with your actual API key</span>
-
-<span class="c1"># Organization, workspace, and runner IDs</span>
-<span class="n">organization_id</span> <span class="o">=</span> <span class="s2">&quot;your-organization-id&quot;</span>  <span class="c1"># Replace with your organization ID</span>
-<span class="n">workspace_id</span> <span class="o">=</span> <span class="s2">&quot;your-workspace-id&quot;</span>  <span class="c1"># Replace with your workspace ID</span>
-<span class="n">runner_id</span> <span class="o">=</span> <span class="s2">&quot;your-runner-id&quot;</span>  <span class="c1"># Replace with your runner ID</span>
-
-<span class="c1"># Get the API client</span>
-<span class="n">api_client</span><span class="p">,</span> <span class="n">connection_type</span> <span class="o">=</span> <span class="n">get_api_client</span><span class="p">()</span>
-<span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connected using: </span><span class="si">{</span><span class="n">connection_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="c1"># Example 1: Get runner data</span>
-    <span class="n">runner_data</span> <span class="o">=</span> <span class="n">get_runner_data</span><span class="p">(</span><span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">runner_id</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Runner name: </span><span class="si">{</span><span class="n">runner_data</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Runner ID: </span><span class="si">{</span><span class="n">runner_data</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Runner state: </span><span class="si">{</span><span class="n">runner_data</span><span class="o">.</span><span class="n">state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Example 2: Get runner parameters</span>
-    <span class="n">parameters</span> <span class="o">=</span> <span class="n">get_runner_parameters</span><span class="p">(</span><span class="n">runner_data</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Runner parameters:&quot;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">param</span><span class="p">[</span><span class="s1">&#39;parameterId&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">param</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (type: </span><span class="si">{</span><span class="n">param</span><span class="p">[</span><span class="s1">&#39;varType&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Example 3: Download runner data (parameters and datasets)</span>
-    <span class="c1"># Create directories for parameters and datasets</span>
-    <span class="n">param_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./runner_parameters&quot;</span><span class="p">)</span>
-    <span class="n">dataset_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./runner_datasets&quot;</span><span class="p">)</span>
-    <span class="n">param_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">dataset_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="c1"># Download runner data</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">download_runner_data</span><span class="p">(</span>
-        <span class="n">organization_id</span><span class="o">=</span><span class="n">organization_id</span><span class="p">,</span>
-        <span class="n">workspace_id</span><span class="o">=</span><span class="n">workspace_id</span><span class="p">,</span>
-        <span class="n">runner_id</span><span class="o">=</span><span class="n">runner_id</span><span class="p">,</span>
-        <span class="n">parameter_folder</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">param_dir</span><span class="p">),</span>
-        <span class="n">dataset_folder</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">dataset_dir</span><span class="p">),</span>
-        <span class="n">read_files</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Read file contents</span>
-        <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Download datasets in parallel</span>
-        <span class="n">write_json</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Write parameters as JSON</span>
-        <span class="n">write_csv</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Write parameters as CSV</span>
-        <span class="n">fetch_dataset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Fetch datasets</span>
-    <span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Downloaded runner data:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - Parameters saved to: </span><span class="si">{</span><span class="n">param_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - Datasets saved to: </span><span class="si">{</span><span class="n">dataset_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Example 4: Working with specific datasets</span>
-    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;datasets&quot;</span><span class="p">]:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Datasets associated with the runner:&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">dataset_info</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;datasets&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - Dataset ID: </span><span class="si">{</span><span class="n">dataset_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    Name: </span><span class="si">{</span><span class="n">dataset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-            <span class="c1"># List files in the dataset</span>
-            <span class="k">if</span> <span class="s2">&quot;files&quot;</span> <span class="ow">in</span> <span class="n">dataset_info</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    Files:&quot;</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">file_info</span> <span class="ow">in</span> <span class="n">dataset_info</span><span class="p">[</span><span class="s2">&quot;files&quot;</span><span class="p">]:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      - </span><span class="si">{</span><span class="n">file_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">No datasets associated with this runner.&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Example 5: Download specific datasets</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    from cosmotech.coal.cosmotech_api.runner import get_dataset_ids_from_runner</span>
-
-<span class="sd">    # Get dataset IDs from the runner</span>
-<span class="sd">    dataset_ids = get_dataset_ids_from_runner(runner_data)</span>
-
-<span class="sd">    if dataset_ids:</span>
-<span class="sd">        # Create a directory for the datasets</span>
-<span class="sd">        specific_dataset_dir = pathlib.Path(&quot;./specific_datasets&quot;)</span>
-<span class="sd">        specific_dataset_dir.mkdir(exist_ok=True, parents=True)</span>
-
-<span class="sd">        # Download the datasets</span>
-<span class="sd">        datasets = download_datasets(</span>
-<span class="sd">            organization_id=organization_id,</span>
-<span class="sd">            workspace_id=workspace_id,</span>
-<span class="sd">            dataset_ids=dataset_ids,</span>
-<span class="sd">            read_files=True,</span>
-<span class="sd">            parallel=True,</span>
-<span class="sd">        )</span>
-
-<span class="sd">        print(&quot;\nDownloaded specific datasets:&quot;)</span>
-<span class="sd">        for dataset_id, dataset_info in datasets.items():</span>
-<span class="sd">            print(f&quot;  - Dataset ID: {dataset_id}&quot;)</span>
-<span class="sd">            print(f&quot;    Name: {dataset_info.get(&#39;name&#39;, &#39;N/A&#39;)}&quot;)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-<span class="k">finally</span><span class="p">:</span>
-    <span class="c1"># Always close the API client when done</span>
-    <span class="n">api_client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</code></pre></div></td></tr></table></div>
-<h3 id="getting-runner-data">Getting Runner Data<a class="headerlink" href="#getting-runner-data" title="Permanent link">&para;</a></h3>
-<p>The <code>get_runner_data</code> function retrieves information about a runner:</p>
-<div class="highlight"><pre><span></span><code><span class="n">runner_data</span> <span class="o">=</span> <span class="n">get_runner_data</span><span class="p">(</span><span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">runner_id</span><span class="p">)</span>
-</code></pre></div>
-<h3 id="working-with-parameters">Working with Parameters<a class="headerlink" href="#working-with-parameters" title="Permanent link">&para;</a></h3>
-<p>The <code>get_runner_parameters</code> function extracts parameters from runner data:</p>
-<div class="highlight"><pre><span></span><code><span class="n">parameters</span> <span class="o">=</span> <span class="n">get_runner_parameters</span><span class="p">(</span><span class="n">runner_data</span><span class="p">)</span>
-</code></pre></div>
-<h3 id="downloading-runner-data">Downloading Runner Data<a class="headerlink" href="#downloading-runner-data" title="Permanent link">&para;</a></h3>
-<p>The <code>download_runner_data</code> function downloads all data associated with a runner, including parameters and datasets:</p>
-<div class="highlight"><pre><span></span><code><span class="n">result</span> <span class="o">=</span> <span class="n">download_runner_data</span><span class="p">(</span>
-    <span class="n">organization_id</span><span class="o">=</span><span class="n">organization_id</span><span class="p">,</span>
-    <span class="n">workspace_id</span><span class="o">=</span><span class="n">workspace_id</span><span class="p">,</span>
-    <span class="n">runner_id</span><span class="o">=</span><span class="n">runner_id</span><span class="p">,</span>
-    <span class="n">parameter_folder</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">param_dir</span><span class="p">),</span>
-    <span class="n">dataset_folder</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">dataset_dir</span><span class="p">),</span>
-    <span class="n">write_json</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">write_csv</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">fetch_dataset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span>
-</code></pre></div>
-<p>This function:
-- Downloads parameters and writes them as JSON and/or CSV files
-- Downloads associated datasets
-- Organizes everything in the specified directories</p>
-<div class="admonition tip">
-<p class="admonition-title">Dataset References</p>
-<p>Runners can reference datasets in two ways:</p>
+<p>Each sub Collector search in it respective folder:</p>
 <ul>
-<li>Through parameters with the <code>%DATASETID%</code> variable type</li>
-<li>Through the <code>dataset_list</code> property</li>
+<li>The <code>ParameterCollector</code> resolves parameter values by name from the configured parameters path<ul>
+<li>The fetch function of <code>ParameterCollector</code> return a Path object or a String value (this depends of the type of the asked parameter)</li>
 </ul>
-<p>The <code>download_runner_data</code> function handles both types of references.</p>
-</div>
-<h2 id="complete-workflow-example">Complete Workflow Example<a class="headerlink" href="#complete-workflow-example" title="Permanent link">&para;</a></h2>
-<p>Putting it all together, here's a complete workflow that demonstrates how to use the CosmoTech API for a data processing pipeline:</p>
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Complete workflow</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  1</span>
-<span class="normal">  2</span>
-<span class="normal">  3</span>
-<span class="normal">  4</span>
-<span class="normal">  5</span>
-<span class="normal">  6</span>
-<span class="normal">  7</span>
-<span class="normal">  8</span>
-<span class="normal">  9</span>
-<span class="normal"> 10</span>
-<span class="normal"> 11</span>
-<span class="normal"> 12</span>
-<span class="normal"> 13</span>
-<span class="normal"> 14</span>
-<span class="normal"> 15</span>
-<span class="normal"> 16</span>
-<span class="normal"> 17</span>
-<span class="normal"> 18</span>
-<span class="normal"> 19</span>
-<span class="normal"> 20</span>
-<span class="normal"> 21</span>
-<span class="normal"> 22</span>
-<span class="normal"> 23</span>
-<span class="normal"> 24</span>
-<span class="normal"> 25</span>
-<span class="normal"> 26</span>
-<span class="normal"> 27</span>
-<span class="normal"> 28</span>
-<span class="normal"> 29</span>
-<span class="normal"> 30</span>
-<span class="normal"> 31</span>
-<span class="normal"> 32</span>
-<span class="normal"> 33</span>
-<span class="normal"> 34</span>
-<span class="normal"> 35</span>
-<span class="normal"> 36</span>
-<span class="normal"> 37</span>
-<span class="normal"> 38</span>
-<span class="normal"> 39</span>
-<span class="normal"> 40</span>
-<span class="normal"> 41</span>
-<span class="normal"> 42</span>
-<span class="normal"> 43</span>
-<span class="normal"> 44</span>
-<span class="normal"> 45</span>
-<span class="normal"> 46</span>
-<span class="normal"> 47</span>
-<span class="normal"> 48</span>
-<span class="normal"> 49</span>
-<span class="normal"> 50</span>
-<span class="normal"> 51</span>
-<span class="normal"> 52</span>
-<span class="normal"> 53</span>
-<span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Complete workflow using the CosmoTech API</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech_api.api.dataset_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatasetApi</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech_api.api.twin_graph_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">TwinGraphApi</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_api_client</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.runner</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">download_runner_data</span><span class="p">,</span>
-    <span class="n">get_runner_data</span><span class="p">,</span>
+</li>
+<li>The <code>WorkspaceCollector</code> resolves workspace files from the configured workspace path<ul>
+<li>The fetch function of <code>WorkspaceCollector</code> return a Path object</li>
+</ul>
+</li>
+<li>The <code>DatasetCollector</code> resolves dataset files by name from the configured dataset path<ul>
+<li>The fetch function of <code>DatasetCollector</code> return a Path object</li>
+</ul>
+</li>
+</ul>
+<p>The <code>ENVIRONMENT_INPUT_COLLECTOR</code> singleton is a ready-to-use collector instance pre-configured from environment variables</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Input Collector usage</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.input_collector</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ENVIRONMENT_INPUT_COLLECTOR</span> <span class="k">as</span> <span class="n">Collector</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.twin_data_layer</span><span class="w"> </span><span class="kn">import</span> <span class="n">CSVSourceFile</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.workspace</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">download_workspace_file</span><span class="p">,</span>
-    <span class="n">list_workspace_files</span><span class="p">,</span>
-    <span class="n">upload_workspace_file</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
 
-<span class="c1"># Set up environment variables for authentication</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CSM_API_URL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;https://api.cosmotech.com&quot;</span>  <span class="c1"># Replace with your API URL</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CSM_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;your-api-key&quot;</span>  <span class="c1"># Replace with your actual API key</span>
+<span class="c1"># get parameter toto</span>
+<span class="n">toto</span> <span class="o">=</span> <span class="n">Collector</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">"toto"</span><span class="p">)</span>
 
-<span class="c1"># Organization, workspace, and runner IDs</span>
-<span class="n">organization_id</span> <span class="o">=</span> <span class="s2">&quot;your-organization-id&quot;</span>  <span class="c1"># Replace with your organization ID</span>
-<span class="n">workspace_id</span> <span class="o">=</span> <span class="s2">&quot;your-workspace-id&quot;</span>  <span class="c1"># Replace with your workspace ID</span>
-<span class="n">runner_id</span> <span class="o">=</span> <span class="s2">&quot;your-runner-id&quot;</span>  <span class="c1"># Replace with your runner ID</span>
-<span class="n">twin_graph_id</span> <span class="o">=</span> <span class="s2">&quot;your-twin-graph-id&quot;</span>  <span class="c1"># Replace with your twin graph ID</span>
+<span class="c1"># get path to file uploaded as a parameter (parameter_json.json)</span>
+<span class="n">parameter_file_path</span> <span class="o">=</span> <span class="n">Collector</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">"parameter_file.json"</span><span class="p">)</span>
+<span class="c1"># or</span>
+<span class="n">parameter_file_path</span> <span class="o">=</span> <span class="n">Collector</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">"parameter_file"</span><span class="p">)</span>
 
-<span class="c1"># Create directories for our workflow</span>
-<span class="n">workflow_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./workflow_example&quot;</span><span class="p">)</span>
-<span class="n">workflow_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">input_dir</span> <span class="o">=</span> <span class="n">workflow_dir</span> <span class="o">/</span> <span class="s2">&quot;input&quot;</span>
-<span class="n">processed_dir</span> <span class="o">=</span> <span class="n">workflow_dir</span> <span class="o">/</span> <span class="s2">&quot;processed&quot;</span>
-<span class="n">output_dir</span> <span class="o">=</span> <span class="n">workflow_dir</span> <span class="o">/</span> <span class="s2">&quot;output&quot;</span>
+<span class="c1"># get path to a dataset files (data1.csv)</span>
+<span class="n">data1_file_path</span> <span class="o">=</span> <span class="n">Collector</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">"data1.csv"</span><span class="p">)</span>
+<span class="c1"># or</span>
+<span class="n">data1_file_path</span> <span class="o">=</span> <span class="n">Collector</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">"data1"</span><span class="p">)</span>
 
-<span class="n">input_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">processed_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">output_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="c1"># Get the API client</span>
-<span class="n">api_client</span><span class="p">,</span> <span class="n">connection_type</span> <span class="o">=</span> <span class="n">get_api_client</span><span class="p">()</span>
-<span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connected using: </span><span class="si">{</span><span class="n">connection_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="c1"># Step 1: Download runner data (parameters and datasets)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Step 1: Download Runner Data ===&quot;</span><span class="p">)</span>
-
-    <span class="n">runner_data</span> <span class="o">=</span> <span class="n">get_runner_data</span><span class="p">(</span><span class="n">organization_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">runner_id</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Runner name: </span><span class="si">{</span><span class="n">runner_data</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="n">result</span> <span class="o">=</span> <span class="n">download_runner_data</span><span class="p">(</span>
-        <span class="n">organization_id</span><span class="o">=</span><span class="n">organization_id</span><span class="p">,</span>
-        <span class="n">workspace_id</span><span class="o">=</span><span class="n">workspace_id</span><span class="p">,</span>
-        <span class="n">runner_id</span><span class="o">=</span><span class="n">runner_id</span><span class="p">,</span>
-        <span class="n">parameter_folder</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">input_dir</span> <span class="o">/</span> <span class="s2">&quot;parameters&quot;</span><span class="p">),</span>
-        <span class="n">dataset_folder</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">input_dir</span> <span class="o">/</span> <span class="s2">&quot;datasets&quot;</span><span class="p">),</span>
-        <span class="n">write_json</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">write_csv</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloaded runner data to </span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Step 2: Process the data</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Step 2: Process Data ===&quot;</span><span class="p">)</span>
-
-    <span class="c1"># For this example, we&#39;ll create a simple transformation:</span>
-    <span class="c1"># - Read a CSV file from the input</span>
-    <span class="c1"># - Transform it</span>
-    <span class="c1"># - Write the result to the processed directory</span>
-
-    <span class="c1"># Let&#39;s assume we have a &quot;customers.csv&quot; file in the input directory</span>
-    <span class="n">customers_file</span> <span class="o">=</span> <span class="n">input_dir</span> <span class="o">/</span> <span class="s2">&quot;datasets&quot;</span> <span class="o">/</span> <span class="s2">&quot;customers.csv&quot;</span>
-
-    <span class="c1"># If the file doesn&#39;t exist for this example, create a sample one</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">customers_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Creating sample customers.csv file for demonstration&quot;</span><span class="p">)</span>
-        <span class="n">customers_file</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">customers_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-            <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="s2">&quot;spending&quot;</span><span class="p">])</span>
-            <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;30&quot;</span><span class="p">,</span> <span class="s2">&quot;New York&quot;</span><span class="p">,</span> <span class="s2">&quot;1500&quot;</span><span class="p">])</span>
-            <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;25&quot;</span><span class="p">,</span> <span class="s2">&quot;San Francisco&quot;</span><span class="p">,</span> <span class="s2">&quot;2000&quot;</span><span class="p">])</span>
-            <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;Charlie&quot;</span><span class="p">,</span> <span class="s2">&quot;35&quot;</span><span class="p">,</span> <span class="s2">&quot;Chicago&quot;</span><span class="p">,</span> <span class="s2">&quot;1200&quot;</span><span class="p">])</span>
-
-    <span class="c1"># Read the customers data</span>
-    <span class="n">customers</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">customers_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
-            <span class="n">customers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Read </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">customers</span><span class="p">)</span><span class="si">}</span><span class="s2"> customers from </span><span class="si">{</span><span class="n">customers_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Process the data: calculate a loyalty score based on age and spending</span>
-    <span class="k">for</span> <span class="n">customer</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">:</span>
-        <span class="n">age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">customer</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">])</span>
-        <span class="n">spending</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">customer</span><span class="p">[</span><span class="s2">&quot;spending&quot;</span><span class="p">])</span>
-
-        <span class="c1"># Simple formula: loyalty score = spending / 100 + (age - 20) / 10</span>
-        <span class="n">loyalty_score</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">spending</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">+</span> <span class="p">(</span><span class="n">age</span> <span class="o">-</span> <span class="mi">20</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;loyalty_score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">loyalty_score</span><span class="p">)</span>
-
-    <span class="c1"># Write the processed data</span>
-    <span class="n">processed_file</span> <span class="o">=</span> <span class="n">processed_dir</span> <span class="o">/</span> <span class="s2">&quot;customers_with_loyalty.csv&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">processed_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">fieldnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="s2">&quot;spending&quot;</span><span class="p">,</span> <span class="s2">&quot;loyalty_score&quot;</span><span class="p">]</span>
-        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="n">fieldnames</span><span class="p">)</span>
-        <span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
-        <span class="n">writer</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="n">customers</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processed data written to </span><span class="si">{</span><span class="n">processed_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Step 3: Upload the processed file to the workspace</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Step 3: Upload Processed Data to Workspace ===&quot;</span><span class="p">)</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">uploaded_file</span> <span class="o">=</span> <span class="n">upload_workspace_file</span><span class="p">(</span>
-            <span class="n">api_client</span><span class="p">,</span>
-            <span class="n">organization_id</span><span class="p">,</span>
-            <span class="n">workspace_id</span><span class="p">,</span>
-            <span class="nb">str</span><span class="p">(</span><span class="n">processed_file</span><span class="p">),</span>
-            <span class="s2">&quot;processed_data/&quot;</span><span class="p">,</span>  <span class="c1"># Destination in the workspace</span>
-            <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Uploaded processed file as: </span><span class="si">{</span><span class="n">uploaded_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error uploading file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Step 4: Create a dataset from the processed data</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Step 4: Create Dataset from Processed Data ===&quot;</span><span class="p">)</span>
-
-    <span class="c1"># This step would typically involve:</span>
-    <span class="c1"># 1. Creating a dataset in the CosmoTech API</span>
-    <span class="c1"># 2. Uploading files to the dataset</span>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    # Create a dataset</span>
-<span class="sd">    dataset_api = DatasetApi(api_client)</span>
-
-<span class="sd">    new_dataset = {</span>
-<span class="sd">        &quot;name&quot;: &quot;Customers with Loyalty Scores&quot;,</span>
-<span class="sd">        &quot;description&quot;: &quot;Processed customer data with calculated loyalty scores&quot;,</span>
-<span class="sd">        &quot;tags&quot;: [&quot;processed&quot;, &quot;customers&quot;, &quot;loyalty&quot;]</span>
-<span class="sd">    }</span>
-
-<span class="sd">    try:</span>
-<span class="sd">        dataset = dataset_api.create_dataset(</span>
-<span class="sd">            organization_id=organization_id,</span>
-<span class="sd">            workspace_id=workspace_id,</span>
-<span class="sd">            dataset=new_dataset</span>
-<span class="sd">        )</span>
-
-<span class="sd">        dataset_id = dataset.id</span>
-<span class="sd">        print(f&quot;Created dataset with ID: {dataset_id}&quot;)</span>
-
-<span class="sd">        # Upload the processed file to the dataset</span>
-<span class="sd">        # This would typically involve additional API calls</span>
-<span class="sd">        # ...</span>
-
-<span class="sd">    except Exception as e:</span>
-<span class="sd">        print(f&quot;Error creating dataset: {e}&quot;)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Step 5: Send data to the Twin Data Layer</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Step 5: Send Data to Twin Data Layer ===&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Parse the processed CSV file for the Twin Data Layer</span>
-    <span class="n">customer_csv</span> <span class="o">=</span> <span class="n">CSVSourceFile</span><span class="p">(</span><span class="n">processed_file</span><span class="p">)</span>
-
-    <span class="c1"># Generate a Cypher query for creating nodes</span>
-    <span class="n">customer_query</span> <span class="o">=</span> <span class="n">customer_csv</span><span class="o">.</span><span class="n">generate_query_insert</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated Cypher query for Customer nodes:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">customer_query</span><span class="p">)</span>
-
-    <span class="c1"># In a real scenario, you would send this data to the Twin Data Layer</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    twin_graph_api = TwinGraphApi(api_client)</span>
-
-<span class="sd">    # For each customer, create a node in the Twin Data Layer</span>
-<span class="sd">    with open(processed_file, &quot;r&quot;) as f:</span>
-<span class="sd">        reader = csv.DictReader(f)</span>
-<span class="sd">        for row in reader:</span>
-<span class="sd">            # Create parameters for the Cypher query</span>
-<span class="sd">            params = {k: v for k, v in row.items()}</span>
-
-<span class="sd">            # Execute the query</span>
-<span class="sd">            twin_graph_api.run_twin_graph_cypher_query(</span>
-<span class="sd">                organization_id=organization_id,</span>
-<span class="sd">                workspace_id=workspace_id,</span>
-<span class="sd">                twin_graph_id=twin_graph_id,</span>
-<span class="sd">                twin_graph_cypher_query={</span>
-<span class="sd">                    &quot;query&quot;: customer_query,</span>
-<span class="sd">                    &quot;parameters&quot;: params</span>
-<span class="sd">                }</span>
-<span class="sd">            )</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Step 6: Generate a report</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Step 6: Generate Report ===&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Calculate some statistics</span>
-    <span class="n">total_customers</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">customers</span><span class="p">)</span>
-    <span class="n">avg_age</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_customers</span>
-    <span class="n">avg_spending</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;spending&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_customers</span>
-    <span class="n">avg_loyalty</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;loyalty_score&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_customers</span>
-
-    <span class="c1"># Create a report</span>
-    <span class="n">report</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;report_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2025-02-28&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;runner_id&quot;</span><span class="p">:</span> <span class="n">runner_id</span><span class="p">,</span>
-        <span class="s2">&quot;statistics&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;total_customers&quot;</span><span class="p">:</span> <span class="n">total_customers</span><span class="p">,</span>
-            <span class="s2">&quot;average_age&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">avg_age</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-            <span class="s2">&quot;average_spending&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">avg_spending</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-            <span class="s2">&quot;average_loyalty_score&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">avg_loyalty</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="p">},</span>
-        <span class="s2">&quot;top_customers&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">customers</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;loyalty_score&quot;</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span>
-            <span class="p">:</span><span class="mi">2</span>
-        <span class="p">],</span>  <span class="c1"># Top 2 customers by loyalty score</span>
-    <span class="p">}</span>
-
-    <span class="c1"># Write the report to a JSON file</span>
-    <span class="n">report_file</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;customer_report.json&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">report_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">report</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Report generated and saved to </span><span class="si">{</span><span class="n">report_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Print a summary of the report</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Report Summary:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total Customers: </span><span class="si">{</span><span class="n">report</span><span class="p">[</span><span class="s1">&#39;statistics&#39;</span><span class="p">][</span><span class="s1">&#39;total_customers&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Average Age: </span><span class="si">{</span><span class="n">report</span><span class="p">[</span><span class="s1">&#39;statistics&#39;</span><span class="p">][</span><span class="s1">&#39;average_age&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Average Spending: </span><span class="si">{</span><span class="n">report</span><span class="p">[</span><span class="s1">&#39;statistics&#39;</span><span class="p">][</span><span class="s1">&#39;average_spending&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Average Loyalty Score: </span><span class="si">{</span><span class="n">report</span><span class="p">[</span><span class="s1">&#39;statistics&#39;</span><span class="p">][</span><span class="s1">&#39;average_loyalty_score&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Top Customers by Loyalty Score:&quot;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">customer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">report</span><span class="p">[</span><span class="s2">&quot;top_customers&quot;</span><span class="p">],</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">customer</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (Score: </span><span class="si">{</span><span class="n">customer</span><span class="p">[</span><span class="s1">&#39;loyalty_score&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Workflow completed successfully!&quot;</span><span class="p">)</span>
-
-<span class="k">finally</span><span class="p">:</span>
-    <span class="c1"># Always close the API client when done</span>
-    <span class="n">api_client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c1"># direct call to sub collector is possible (this is usefull for disambiguation)</span>
+<span class="n">data2_file_path</span> <span class="o">=</span> <span class="n">Collector</span><span class="o">.</span><span class="n">fetch_workspace</span><span class="p">(</span><span class="s2">"my_data_file"</span><span class="p">)</span>
+<span class="n">data3_file_path</span> <span class="o">=</span> <span class="n">Collector</span><span class="o">.</span><span class="n">fetch_dataset</span><span class="p">(</span><span class="s2">"my_data_file"</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-<p>This workflow:</p>
-<ol>
-<li>Downloads runner data (parameters and datasets)</li>
-<li>Processes the data (calculates loyalty scores for customers)</li>
-<li>Uploads the processed data to the workspace</li>
-<li>Prepares the data for the Twin Data Layer</li>
-<li>Generates a report with statistics and insights</li>
-</ol>
-<div class="admonition tip">
-<p class="admonition-title">Real-world Workflows</p>
-<p>In real-world scenarios, you might:</p>
-<ul>
-<li>Use more complex data transformations</li>
-<li>Integrate with external systems</li>
-<li>Implement error handling and retries</li>
-<li>Add logging and monitoring</li>
-<li>Parallelize operations for better performance</li>
-</ul>
+<h2 id="dataset-management">Dataset Management<a class="headerlink" href="#dataset-management" title="Permanent link">&para;</a></h2>
+<p><code>DatasetApi</code> provides helpers for uploading datasets and managing their parts (files that compose the dataset).</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Dataset upload</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with datasets in the CosmoTech API</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.apis</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatasetApi</span>
+
+<span class="n">dataset_id</span> <span class="o">=</span> <span class="s2">"my_dataset_id"</span>
+
+<span class="c1"># Use Coal configuration to setup connection and DatasetApi object</span>
+<span class="n">dataset_api</span> <span class="o">=</span> <span class="n">DatasetApi</span><span class="p">()</span>
+
+<span class="c1"># Upload a single file as a dataset</span>
+<span class="n">dataset_api</span><span class="o">.</span><span class="n">upload_dataset</span><span class="p">(</span>
+    <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span>
+    <span class="n">file_path</span><span class="o">=</span><span class="s2">"/tmp/data/customers.csv"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Upload multiple parts from a folder (one part per file)</span>
+<span class="n">dataset_api</span><span class="o">.</span><span class="n">upload_dataset_parts</span><span class="p">(</span>
+    <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span>
+    <span class="n">folder_path</span><span class="o">=</span><span class="s2">"/tmp/data/parts/"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Download a dataset to a local directory</span>
+<span class="n">dataset_api</span><span class="o">.</span><span class="n">download_dataset</span><span class="p">(</span>
+    <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<div class="admonition info">
+<p class="admonition-title">Dataset Parts</p>
+<p>When uploading parts, the part name is derived from the filename without its extension.</p>
 </div>
+<h2 id="runner-management">Runner Management<a class="headerlink" href="#runner-management" title="Permanent link">&para;</a></h2>
+<p>Runners are central concepts in the CosmoTech platform. <code>RunnerApi</code> provides methods for retrieving runner metadata and downloading all associated data (parameters and datasets).</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Runner operations</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Example: Working with runners and runs in the CosmoTech API</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.orchestrator.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.cosmotech_api.apis</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnerApi</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.utils.configuration</span><span class="w"> </span><span class="kn">import</span> <span class="n">ENVIRONMENT_CONFIGURATION</span> <span class="k">as</span> <span class="n">EC</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="s2">"MyProject.runner_work"</span><span class="p">)</span>
+
+<span class="c1"># Use Coal configuration to setup connection and RunnerApi object</span>
+<span class="n">runner_api</span> <span class="o">=</span> <span class="n">RunnerApi</span><span class="p">()</span>
+
+<span class="c1"># Example 1: Get runner metadata</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">runner_api</span><span class="o">.</span><span class="n">get_runner_metadata</span><span class="p">()</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Runner name:  </span><span class="si">{</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Runner state: </span><span class="si">{</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'state'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Optionally scope the returned fields:</span>
+<span class="c1"># metadata = runner_api.get_runner_metadata(</span>
+<span class="c1">#     include=["parametersValues", "datasetList"]</span>
+<span class="c1"># )</span>
+
+<span class="c1"># Example 2: Download runner parameters and datasets</span>
+<span class="n">runner_api</span><span class="o">.</span><span class="n">download_runner_data</span><span class="p">(</span><span class="n">download_datasets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parameters saved to: </span><span class="si">{</span><span class="n">EC</span><span class="o">.</span><span class="n">cosmotech</span><span class="o">.</span><span class="n">parameter_absolute_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Datasets   saved to: </span><span class="si">{</span><span class="n">EC</span><span class="o">.</span><span class="n">cosmotech</span><span class="o">.</span><span class="n">dataset_asbsolute_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="output-channels">Output channels<a class="headerlink" href="#output-channels" title="Permanent link">&para;</a></h2>
+<p>CoAL provides a centralized, configurable pipeline to route and manage simulation output data.</p>
+<p><strong>Core Architecture and Available Channels</strong></p>
+<p>The system is built on a modular design consisting of a base interface, specific output channels, and an output router:</p>
+<ul>
+<li>
+<p><code>ChannelInterface</code>: The class defining the base operations .send() and .delete().</p>
+</li>
+<li>
+<p>Supported Output Channels:</p>
+</li>
+<li>
+<p>AWS S3 Channel (AwsChannel): Directs output files to AWS S3 buckets.</p>
+</li>
+<li>Azure Storage Channel (AzureStorageChannel): Directs output files to Azure Blob Storage.</li>
+<li>
+<p>PostgreSQL Channel (PostgresChannel): Sends structured tables to a PostgreSQL database.</p>
+</li>
+<li>
+<p><code>ChannelSpliter</code>: An output router that reads the configuration and automatically instantiates and calls the appropriate channel(s). This allows sending output to multiple destinations simultaneously (e.g. PostgreSQL and S3) without requiring custom code from the developer.</p>
+</li>
+</ul>
+<p><strong>Configuration</strong></p>
+<p>Output channels are defined in the centralized Configuration under the <code>[[output]]</code> list:</p>
+<ul>
+<li>Root Configuration Inheritance: Configuration is simplified by sub-channels being able to automatically load default values from the root configuration. This reduces repetition in the TOML file and makes it easier for DevOps to manage credentials and connections centrally.</li>
+</ul>
+<p><strong>CLI (csm-data) Integration</strong>
+Developers trigger output operations using simplified CLI commands from <code>csm-data</code>:</p>
+<ul>
+<li>
+<p><code>csm-data store output</code>: Triggers the <code>ChannelSplitter.send()</code> function, routing the stored data based on the loaded Configuration</p>
+</li>
+<li>
+<p><code>csm-data store delete</code>: Triggers the <code>ChannelSplitter.delete()</code> function, cleaning up the data associated with a run</p>
+</li>
+<li>
+<p>Parquet Support: CoAL supports loading Parquet folders (<code>csm-data store load-parquet-folder</code>) into the internal store, preserving data typing (using the pyarrow library) before data is exported to PostgreSQL or other outputs.</p>
+</li>
+</ul>
+<p><strong>Output Rolling and Cleanup</strong></p>
+<p>To manage storage and prevent the infinite accumulation of old outputs, CoAL implements output rolling:</p>
+<ul>
+<li>
+<p><strong>Blob Storage (S3 / Azure)</strong>: The system replaces the older run files in place within the bucket or blob container.</p>
+</li>
+<li>
+<p><strong>PostgreSQL</strong>: Deletion is handled natively via database cascades. CoAL leverages a reference <code>RunnerMetadata</code> table and foreign keys (<code>csm_run_id</code> and <code>last_csm_run_id</code>) to automatically wipe old run data when a new run begins for the same runner.</p>
+</li>
+</ul>
+<p><strong>Sending Store Data to Configured Outputs</strong></p>
+<p><code>ChannelSpliter</code> sends store data to every available output configured in the CoAL Configuration. According to the Configuration specifying one or more <code>[[outputs]]</code> entries, the example below will explicitly launch the sending precedure (otherwise automatic). A filter can be passed to send only selected tables.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">ChannelSpliter usage</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="sd">"""Send store data to the output channels configured for the runner."""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">cosmotech.coal.store.output.channel_spliter</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChannelSpliter</span>
+
+<span class="c1"># Configuration loads the outputs from CONFIG_FILE_PATH or the mounted</span>
+<span class="c1"># /mnt/coal/coal-config.toml file.</span>
+<span class="n">channel_spliter</span> <span class="o">=</span> <span class="n">ChannelSpliter</span><span class="p">()</span>
+
+<span class="c1"># Send every table in the store to all available configured outputs.</span>
+<span class="n">channel_spliter</span><span class="o">.</span><span class="n">send</span><span class="p">()</span>
+
+<span class="c1"># To send only selected tables, pass their names as a filter.</span>
+<span class="c1"># channel_spliter.send(filter=["summary_data"])</span>
+</code></pre></div></td></tr></table></div>
 <h2 id="best-practices-and-tips">Best Practices and Tips<a class="headerlink" href="#best-practices-and-tips" title="Permanent link">&para;</a></h2>
 <h3 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Use environment variables for credentials</li>
 <li>Implement proper secret management in production</li>
-<li>Always close API clients when done</li>
+<li>Use Coal configuration secrets loading for credentials</li>
 </ul>
 <h3 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="k">try</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">cosmotech_api</span>
+
+<span class="k">try</span><span class="p">:</span>
     <span class="c1"># API operations</span>
 <span class="k">except</span> <span class="n">cosmotech_api</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ApiException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="c1"># Handle API errors</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;API error: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">reason</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"API error: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">reason</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="c1"># Handle other errors</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="k">finally</span><span class="p">:</span>
-    <span class="c1"># Always close the client</span>
-    <span class="n">api_client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="performance-considerations">Performance Considerations<a class="headerlink" href="#performance-considerations" title="Permanent link">&para;</a></h3>
 <ul>
