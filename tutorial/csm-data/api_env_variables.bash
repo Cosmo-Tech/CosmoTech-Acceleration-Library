@@ -1,7 +1,7 @@
 # API connection
 export CSM_ORGANIZATION_ID="o-organization"
 export CSM_WORKSPACE_ID="w-workspace"
-export CSM_SCENARIO_ID="s-scenario"
+export CSM_RUNNER_ID="r-runner"
 
 # Paths
 export CSM_DATASET_ABSOLUTE_PATH="/path/to/dataset"

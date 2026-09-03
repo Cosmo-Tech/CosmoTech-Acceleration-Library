@@ -52,35 +52,28 @@ CoAL provides comprehensive tools for interacting with the CosmoTech API, allowi
 
 - Authenticate with different identity providers (API Key, Azure Entra, Keycloak)
 - Manage workspaces and files
-- Work with the Twin Data Layer for graph data
 - Handle runners and runs
 - Process and transform data
 - Build end-to-end workflows
 
+CoAL use a Configuration that loads environement variables. This Allows to integrate authentication directly in api clients. Below the intantiation of OrganizationApi integrate the authentiation via the configuration file.
+
 ```python
-import os
-from cosmotech.coal.cosmotech_api.connection import get_api_client
-
-# Set up environment variables for authentication
-os.environ["CSM_API_URL"] = "https://api.cosmotech.com"  # Replace with your API URL
-os.environ["CSM_API_KEY"] = "your-api-key"  # Replace with your actual API key
-
-# Get the API client
-api_client, connection_type = get_api_client()
-print(f"Connected using: {connection_type}")
-
 # Use the client with various API instances
-from cosmotech_api.api.organization_api import OrganizationApi
-org_api = OrganizationApi(api_client)
+from cosmotech.coal.cosmotech_api.apis import OrganizationApi
+org_api = OrganizationApi()
 
 # List organizations
 organizations = org_api.find_all_organizations()
 for org in organizations:
     print(f"Organization: {org.name} (ID: {org.id})")
 
-# Don't forget to close the client when done
-api_client.close()
 ```
+
+### Configuration
+
+CoAL uses a Configuration, it contains default configuration (all environment variable loaded for a Cosmotech RUN) and can be augmented by loading a .toml file.
+The configuration is the tool that allows the seemless connection to the cosmotech API.
 
 ### Other Components
 

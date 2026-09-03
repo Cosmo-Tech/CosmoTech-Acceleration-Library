@@ -1,0 +1,9 @@
+nav:
+   - aws: 'aws.md'
+   - azure: 'azure.md'
+   - cosmotech_api: 'cosmotech_api.md'
+   - csm: 'csm.md'
+   - postgresql: 'postgresql.md'
+   - singlestore: 'singlestore.md'
+   - store: 'store.md'
+   - utils: 'utils.md'

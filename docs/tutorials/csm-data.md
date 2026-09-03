@@ -17,7 +17,7 @@ description: "Comprehensive guide to the csm-data CLI: a powerful data managemen
 The CLI is organized into several command groups, each focused on specific types of data operations:
 
 - **api**: Commands for interacting with the CosmoTech API
-- **store**: Commands for working with the CoAL datastore
+- **store**: Commands for working with the CoAL datastore (load CSV/Parquet, dump, output channels, delete, reset)
 - **s3-bucket-***: Commands for S3 bucket operations (download, upload, delete)
 - **adx-send-runnerdata**: Command for sending runner data to Azure Data Explorer
 - **az-storage-upload**: Command for uploading to Azure Storage
@@ -110,6 +110,7 @@ The `adx-send-runnerdata` command enables sending runner data to Azure Data Expl
 ```
 
 This command:
+
 - Creates tables in ADX based on CSV files in the dataset and/or parameters folders
 - Ingests the data into those tables
 - Adds a `run` column with the runner ID for tracking
@@ -131,9 +132,13 @@ The `store` command group provides tools for working with the CoAL datastore:
 ```
 
 These commands allow you to:
+
 - Load data from CSV files into the datastore
+- Load data from Parquet files into the datastore
 - Dump datastore contents to various destinations (S3, Azure, PostgreSQL)
+- Send the full datastore output through one or more configured output channels
 - List tables in the datastore
+- Delete specific tables from the datastore
 - Reset the datastore
 
 ## Common Workflows and Integration Patterns
