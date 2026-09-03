@@ -50,11 +50,16 @@ def send_runner_metadata_to_postgresql(
                   id varchar(32) PRIMARY KEY,
                   name varchar(256),
                   last_csm_run_id varchar(32) UNIQUE,
-                  run_template_id varchar(32)
+                  run_template_id varchar(32),
+                  last_run_start_time timestamptz
                 );
             """
             LOGGER.info(T("coal.services.postgresql.creating_table").format(schema_table=schema_table))
             curs.execute(sql_create_table)
+            conn.commit()
+
+            # Migrate metadata tables created before last_run_start_time existed
+            curs.execute(f"ALTER TABLE {schema_table} ADD COLUMN IF NOT EXISTS last_run_start_time timestamptz;")
             conn.commit()
 
             runner_id = runner.get("id")
@@ -66,8 +71,8 @@ def send_runner_metadata_to_postgresql(
             conn.commit()
 
             sql_upsert = f"""
-                INSERT INTO {schema_table} (id, name, last_csm_run_id, run_template_id)
-                VALUES ($1, $2, $3, $4)
+                INSERT INTO {schema_table} (id, name, last_csm_run_id, run_template_id, last_run_start_time)
+                VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)
             """
             LOGGER.debug(runner)
             curs.execute(
