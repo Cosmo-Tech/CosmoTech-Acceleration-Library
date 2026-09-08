@@ -28,6 +28,8 @@ class TestRunnerFunctions:
         mock_configuration.cosmotech.organization_id = "test-org"
         mock_configuration.cosmotech.workspace_id = "test-workspace"
         mock_configuration.cosmotech.runner_id = "test-runner-id"
+        mock_configuration.cosmotech.run_id = "test-run-id"
+        mock_configuration.cosmotech.run_template_id = "test-template-id"
 
         # Mock runner metadata
         mock_runner = {
@@ -56,7 +58,7 @@ class TestRunnerFunctions:
         mock_connect.return_value.__enter__.return_value = mock_conn
 
         # Act
-        result = send_runner_metadata_to_postgresql(mock_configuration)
+        send_runner_metadata_to_postgresql(mock_configuration)
 
         # Assert
         # Verify PostgresUtils was instantiated with configuration
@@ -72,19 +74,14 @@ class TestRunnerFunctions:
         mock_connect.assert_called_once_with("postgresql://user:password@localhost:5432/testdb", autocommit=True)
 
         # Check that SQL statements were executed
-        assert mock_cursor.execute.call_count == 2
+        assert mock_cursor.execute.call_count == 1
 
         # Verify the SQL statements (partially, since the exact SQL is complex)
         # create_table_call = mock_cursor.execute.call_args_list[0]
         # assert "CREATE TABLE IF NOT EXISTS" in create_table_call[0][0]
         # assert "public.test_runnermetadata" in create_table_call[0][0]
 
-        delete_call = mock_cursor.execute.call_args_list[0]
-        assert "DELETE FROM" in delete_call[0][0]
-        assert "public.test_runnermetadata" in delete_call[0][0]
-        assert delete_call[0][1] == ("test-runner-id",)
-
-        upsert_call = mock_cursor.execute.call_args_list[1]
+        upsert_call = mock_cursor.execute.call_args_list[0]
         assert "INSERT INTO" in upsert_call[0][0]
         assert "public.test_runnermetadata" in upsert_call[0][0]
         assert upsert_call[0][1] == (
@@ -95,10 +92,7 @@ class TestRunnerFunctions:
         )
 
         # Check that commits were called
-        assert mock_conn.commit.call_count == 2
-
-        # Verify the function returns the lastRunId
-        assert result == "test-run-id"
+        assert mock_conn.commit.call_count == 1
 
     @patch("cosmotech.coal.postgresql.runner.RunnerApi")
     @patch("cosmotech.coal.postgresql.runner.PostgresUtils")

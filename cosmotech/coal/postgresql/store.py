@@ -72,6 +72,23 @@ def dump_store_to_postgresql(
     dump_store_to_postgresql_from_conf(configuration=_c, replace=replace, selected_tables=selected_tables, fk_id=fk_id)
 
 
+def add_fk_constraints(configuration: Configuration) -> None:
+    """
+    Add constraints on the column 'csm_run_id' on every PSQL tables that are in the current store
+
+    Args:
+        configuration: coal Configuration
+    """
+    _s = Store(configuration=configuration)
+    _psql = PostgresUtils(configuration)
+
+    tables = list(_s.list_tables())
+    for table_name in tables:
+        target_table_name = f"{_psql.table_prefix}{table_name}"
+        metadata_table = f"{_psql.metadata_table_name}"
+        _psql.add_fk_constraint(target_table_name, "csm_run_id", metadata_table, "last_csm_run_id")
+
+
 def dump_store_to_postgresql_from_conf(
     configuration: Configuration,
     replace: bool = True,
@@ -119,10 +136,6 @@ def dump_store_to_postgresql_from_conf(
             target_table_name,
             replace,
         )
-
-        # if fk_id and _psql.is_metadata_exists():
-        #     metadata_table = f"{_psql.metadata_table_name}"
-        #     _psql.add_fk_constraint(target_table_name, "csm_run_id", metadata_table, "last_csm_run_id")
 
         total_rows += rows
         _up_time = perf_counter()

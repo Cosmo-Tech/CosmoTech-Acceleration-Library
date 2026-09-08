@@ -21,9 +21,39 @@ from cosmotech.coal.utils.configuration import Configuration
 from cosmotech.coal.utils.logger import LOGGER
 
 
+def create_metadata(configuration: Configuration) -> None:
+    _psql = PostgresUtils(configuration)
+    with dbapi.connect(_psql.full_uri, autocommit=True) as conn:
+        with conn.cursor() as curs:
+            schema_table = f"{str(_psql.db_schema)}.{str(_psql.metadata_table_name)}"
+            sql_create_table = f"""
+                CREATE TABLE IF NOT EXISTS {schema_table}  (
+                  id varchar(32),
+                  name varchar(256),
+                  last_csm_run_id varchar(32) PRIMARY KEY,
+                  run_template_id varchar(32)
+                );
+            """
+            LOGGER.info(T("coal.services.postgresql.creating_table").format(schema_table=schema_table))
+            curs.execute(sql_create_table)
+            conn.commit()
+
+
+def get_metadata_last_run(configuration: Configuration) -> list:
+    _psql = PostgresUtils(configuration)
+    with dbapi.connect(_psql.full_uri, autocommit=True) as conn:
+        with conn.cursor() as curs:
+            metadata_table = f"{str(_psql.db_schema)}.{str(_psql.metadata_table_name)}"
+            sql_query_run = f"""
+                SELECT last_csm_run_id FROM {metadata_table} WHERE id = $1
+            """
+            curs.execute(sql_query_run, (configuration.cosmotech.runner_id,))
+            return [row[0] for row in curs.fetchall()]
+
+
 def send_runner_metadata_to_postgresql(
     configuration: Configuration,
-) -> str:
+) -> None:
     """
     Send runner metadata to a PostgreSQL database.
 
@@ -45,25 +75,6 @@ def send_runner_metadata_to_postgresql(
     with dbapi.connect(_psql.full_uri, autocommit=True) as conn:
         with conn.cursor() as curs:
             schema_table = f"{str(_psql.db_schema)}.{str(_psql.metadata_table_name)}"
-            # sql_create_table = f"""
-            #     CREATE TABLE IF NOT EXISTS {schema_table}  (
-            #       id varchar(32) PRIMARY KEY,
-            #       name varchar(256),
-            #       last_csm_run_id varchar(32) UNIQUE,
-            #       run_template_id varchar(32)
-            #     );
-            # """
-            # LOGGER.info(T("coal.services.postgresql.creating_table").format(schema_table=schema_table))
-            # curs.execute(sql_create_table)
-            # conn.commit()
-
-            runner_id = runner.get("id")
-            sql_delete_from_metatable = f"""
-                DELETE FROM {schema_table}
-                WHERE id= $1;
-            """
-            curs.execute(sql_delete_from_metatable, (runner_id,))
-            conn.commit()
 
             sql_upsert = f"""
                 INSERT INTO {schema_table} (id, name, last_csm_run_id, run_template_id)
@@ -73,15 +84,33 @@ def send_runner_metadata_to_postgresql(
             curs.execute(
                 sql_upsert,
                 (
-                    runner.get("id"),
+                    configuration.cosmotech.runner_id,
                     runner.get("name"),
-                    runner.get("lastRunInfo").get("lastRunId"),
-                    runner.get("runTemplateId"),
+                    configuration.cosmotech.run_id,
+                    configuration.cosmotech.run_template_id,
                 ),
             )
             conn.commit()
             LOGGER.info(T("coal.services.postgresql.metadata_updated"))
-    return runner.get("lastRunInfo").get("lastRunId")
+
+
+def remove_run_metadata_from_postgresql(
+    configuration: Configuration,
+    run_id: str,
+) -> str:
+    _psql = PostgresUtils(configuration)
+
+    # Connect to PostgreSQL and remove runner metadata row
+    with dbapi.connect(_psql.full_uri, autocommit=True) as conn:
+        with conn.cursor() as curs:
+            schema_table = f"{_psql.db_schema}.{_psql.metadata_table_name}"
+            sql_delete_from_metatable = f"""
+                DELETE FROM {schema_table}
+                WHERE last_csm_run_id = $1;
+            """
+            curs.execute(sql_delete_from_metatable, (run_id,))
+            conn.commit()
+    LOGGER.info(T("coal.services.postgresql.metadata_removed").format(id=run_id))
 
 
 def remove_runner_metadata_from_postgresql(
@@ -115,5 +144,5 @@ def remove_runner_metadata_from_postgresql(
             """
             curs.execute(sql_delete_from_metatable, (runner_id,))
             conn.commit()
-    LOGGER.info(T("coal.services.postgresql.metadata_removed").format(runner_id=runner_id))
+    LOGGER.info(T("coal.services.postgresql.metadata_removed").format(id=runner_id))
     return runner.get("lastRunInfo").get("lastRunId")
