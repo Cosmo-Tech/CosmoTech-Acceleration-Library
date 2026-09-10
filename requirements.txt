@@ -1,7 +1,6 @@
 # Azure connection requirements
 azure-core~=1.38
 azure-functions~=1.20
-azure-digitaltwins-core~=1.2
 azure-identity~=1.16
 azure-kusto-data~=4.4
 azure-kusto-ingest~=4.4
@@ -11,7 +10,7 @@ tenacity~=9.1
 python-keycloak~=5.8
 
 # Cosmotech specific requirements
-cosmotech-api~=5.0.0rc1
+cosmotech-api~=5.2.0
 
 
 # Commands requirements
@@ -23,7 +22,7 @@ singlestoredb~=1.16
 cosmotech-run-orchestrator~=2.1.0
 
 # Data store requirements
-pyarrow~=22.0
+pyarrow~=25.0.1
 adbc-driver-manager~=1.7
 adbc-driver-sqlite~=1.7
 adbc-driver-postgresql~=1.7

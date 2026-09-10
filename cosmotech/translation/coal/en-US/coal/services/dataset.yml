@@ -27,14 +27,6 @@ writing_file: "Writing file: {file_name} (type: {file_type})"
 file_written: "File written: {file_path}"
 files_created: "Created {count} files in folder: {folder}"
 
-# ADT specific
-adt_connecting: "Connecting to ADT instance at {url}"
-adt_no_credentials: "No credentials available for ADT connection"
-adt_querying_twins: "Querying digital twins"
-adt_twins_found: "Found {count} digital twins"
-adt_querying_relations: "Querying relationships"
-adt_relations_found: "Found {count} relationships"
-
 # File specific
 file_downloading: "Downloading file dataset (organization: {organization_id}, workspace: {workspace_id}, file: {file_name})"
 listing_workspace_files: "Listing workspace files"
