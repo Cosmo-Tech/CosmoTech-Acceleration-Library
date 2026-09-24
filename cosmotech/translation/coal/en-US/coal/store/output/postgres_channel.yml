@@ -1,0 +1,2 @@
+data_send_fail: "Data dump to postgres failed. Rolling back data."
+output_rollout: "Rolling out data: removing {run_id}"
