@@ -169,7 +169,7 @@ class PostgresUtils:
                     ON DELETE CASCADE;
                 """
                 sql_add_fk_index = f"""
-                    CREATE INDEX CONCURRENTLY IF NOT EXISTS {from_table}_index
+                    CREATE INDEX IF NOT EXISTS {from_table}_index
                     on {self.db_schema}.{from_table}(csm_run_id)
                 """
                 curs.execute(sql_drop_fk)

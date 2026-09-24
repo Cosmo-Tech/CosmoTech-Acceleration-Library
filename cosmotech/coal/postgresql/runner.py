@@ -28,7 +28,7 @@ def create_metadata(configuration: Configuration) -> None:
             schema_table = f"{str(_psql.db_schema)}.{str(_psql.metadata_table_name)}"
             sql_create_table = f"""
                 CREATE TABLE IF NOT EXISTS {schema_table}  (
-                  id varchar(32) PRIMARY KEY
+                  id varchar(32) PRIMARY KEY,
                   name varchar(256),
                   last_csm_run_id varchar(32) UNIQUE,
                   run_template_id varchar(32)

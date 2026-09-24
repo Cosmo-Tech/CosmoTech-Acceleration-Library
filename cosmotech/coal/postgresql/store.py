@@ -72,7 +72,7 @@ def dump_store_to_postgresql(
     dump_store_to_postgresql_from_conf(configuration=_c, replace=replace, selected_tables=selected_tables, fk_id=fk_id)
 
 
-def add_fk_constraints(configuration: Configuration) -> None:
+def add_fk_constraints(configuration: Configuration, selected_tables: list[str] = []) -> None:
     """
     Add constraints on the column 'csm_run_id' on every PSQL tables that are in the current store
 
@@ -83,6 +83,8 @@ def add_fk_constraints(configuration: Configuration) -> None:
     _psql = PostgresUtils(configuration)
 
     tables = list(_s.list_tables())
+    if selected_tables:
+        tables = [t for t in tables if t in selected_tables]
     for table_name in tables:
         target_table_name = f"{_psql.table_prefix}{table_name}"
         metadata_table = f"{_psql.metadata_table_name}"
