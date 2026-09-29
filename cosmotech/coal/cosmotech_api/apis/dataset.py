@@ -35,6 +35,14 @@ class DatasetApi(BaseDatasetApi, Connection):
         LOGGER.debug(T("coal.cosmotech_api.initialization.dataset_api_initialized"))
 
     def download_dataset(self, dataset_id) -> Dataset:
+        """Download all parts of a dataset to the configured dataset folder.
+
+        Args:
+            dataset_id: The ID of the dataset to download
+
+        Returns:
+            The Dataset object as returned by the API
+        """
         LOGGER.debug(f"Downloading dataset {dataset_id}")
         dataset = self.get_dataset(
             organization_id=self.configuration.cosmotech.organization_id,
@@ -48,6 +56,14 @@ class DatasetApi(BaseDatasetApi, Connection):
         return dataset
 
     def download_parameter(self, dataset_id) -> Dataset:
+        """Download all parts of a dataset to the configured parameters folder.
+
+        Args:
+            dataset_id: The ID of the dataset to download
+
+        Returns:
+            The Dataset object as returned by the API
+        """
         LOGGER.debug(f"Downloading dataset {dataset_id}")
         dataset = self.get_dataset(
             organization_id=self.configuration.cosmotech.organization_id,
@@ -80,6 +96,15 @@ class DatasetApi(BaseDatasetApi, Connection):
 
     @staticmethod
     def path_to_parts(_path, part_type) -> list[tuple[str, Path, DatasetPartTypeEnum]]:
+        """Turn a file or directory path into a list of dataset part descriptors.
+
+        Args:
+            _path: Path to a file, or to a directory whose files are each turned into a part
+            part_type: The DatasetPartTypeEnum to assign to every resulting part
+
+        Returns:
+            A list of tuples of (relative part name, absolute file path, part type)
+        """
         if (_path := Path(_path)).is_dir():
             return list((str(_p.relative_to(_path)), _p, part_type) for _p in _path.rglob("*") if _p.is_file())
         return list(((_path.name, _path, part_type),))

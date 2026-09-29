@@ -14,6 +14,8 @@ from cosmotech.coal.utils.configuration import Dotdict
 
 
 class PostgresChannel(ChannelInterface):
+    """Output channel that sends the store's tables and runner metadata to a PostgreSQL database."""
+
     required_keys = {
         "coal": ["store"],
         "cosmotech": ["organization_id", "workspace_id", "runner_id"],
@@ -34,6 +36,14 @@ class PostgresChannel(ChannelInterface):
         self.configuration.setup_db = self.configuration.safe_get("setup_db", True)
 
     def send(self, filter: Optional[list[str]] = None) -> bool:
+        """Send the runner's metadata and the store's tables to the configured PostgreSQL database.
+
+        Args:
+            filter: Optional list of table names to restrict the send to
+
+        Returns:
+            True if the data was sent successfully
+        """
         if self.configuration.setup_db:
             create_metadata(self.configuration)
 
@@ -55,5 +65,6 @@ class PostgresChannel(ChannelInterface):
             add_fk_constraints(self.configuration)
 
     def delete(self):
+        """Delete the runner's metadata, cascading to delete its associated data in PostgreSQL."""
         # removing metadata will trigger cascade delete on real data
         remove_runner_metadata_from_postgresql(self.configuration)

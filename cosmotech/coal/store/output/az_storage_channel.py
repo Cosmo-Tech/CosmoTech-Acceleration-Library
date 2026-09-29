@@ -8,6 +8,8 @@ from cosmotech.coal.utils.configuration import Dotdict
 
 
 class AzureStorageChannel(ChannelInterface):
+    """Output channel that sends the store's tables to an Azure Blob Storage container."""
+
     required_keys = {
         "coal": ["store"],
         "cosmotech": ["runner_id"],
@@ -31,10 +33,19 @@ class AzureStorageChannel(ChannelInterface):
             self.configuration.azure.file_prefix = runner_id + "/" + prefix
 
     def send(self, filter: Optional[list[str]] = None) -> bool:
+        """Dump the store's tables to the configured Azure Blob Storage container.
+
+        Args:
+            filter: Optional list of table names to restrict the dump to
+
+        Returns:
+            True if the data was uploaded successfully
+        """
         dump_store_to_azure(
             self.configuration,
             selected_tables=filter,
         )
 
     def delete(self):
+        """Delete all blobs previously uploaded to the configured Azure Blob Storage container."""
         delete_azure_blobs(self.configuration)

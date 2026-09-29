@@ -33,6 +33,16 @@ class RunnerApi(BaseRunnerApi, Connection):
         include: Optional[list[str]] = None,
         exclude: Optional[list[str]] = None,
     ) -> dict[str, Any]:
+        """Fetch a runner and serialize it to a JSON-compatible dictionary.
+
+        Args:
+            runner_id: The ID of the runner, defaults to the configured runner ID
+            include: Optional list of field names to include in the result
+            exclude: Optional list of field names to exclude from the result
+
+        Returns:
+            A dictionary representation of the runner's metadata
+        """
         runner = self.get_runner(
             self.configuration.cosmotech.organization_id,
             self.configuration.cosmotech.workspace_id,
@@ -45,6 +55,11 @@ class RunnerApi(BaseRunnerApi, Connection):
         self,
         download_datasets: Optional[str] = None,
     ):
+        """Download a runner's parameters and, optionally, its associated datasets.
+
+        Args:
+            download_datasets: If set, also download the runner's base datasets
+        """
         LOGGER.info(T("coal.cosmotech_api.runner.starting_download"))
 
         # Get runner data

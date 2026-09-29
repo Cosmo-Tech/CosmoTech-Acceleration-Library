@@ -32,6 +32,19 @@ class WorkspaceApi(BaseWorkspaceApi, Connection):
         workspace_id: str,
         file_prefix: str,
     ) -> list[str]:
+        """List workspace files whose name starts with the given prefix.
+
+        Args:
+            organization_id: The ID of the organization
+            workspace_id: The ID of the workspace
+            file_prefix: The prefix to filter workspace file names by
+
+        Returns:
+            List of matching workspace file names
+
+        Raises:
+            ValueError: If no workspace file matches the given prefix
+        """
         target_list = []
         LOGGER.info(T("coal.cosmotech_api.workspace.target_is_folder"))
         wsf = self.list_workspace_files(organization_id, workspace_id)
@@ -60,6 +73,20 @@ class WorkspaceApi(BaseWorkspaceApi, Connection):
         file_name: str,
         target_dir: Path,
     ) -> Path:
+        """Download a single workspace file to a local directory.
+
+        Args:
+            organization_id: The ID of the organization
+            workspace_id: The ID of the workspace
+            file_name: The name of the workspace file to download
+            target_dir: The local directory to download the file into
+
+        Returns:
+            The local path of the downloaded file
+
+        Raises:
+            ValueError: If target_dir is not a directory
+        """
         if target_dir.is_file():
             raise ValueError(T("coal.common.file_operations.not_directory").format(target_dir=target_dir))
 
@@ -85,6 +112,22 @@ class WorkspaceApi(BaseWorkspaceApi, Connection):
         workspace_path: str,
         overwrite: bool = True,
     ) -> str:
+        """Upload a local file to a workspace.
+
+        Args:
+            organization_id: The ID of the organization
+            workspace_id: The ID of the workspace
+            file_path: Local path of the file to upload
+            workspace_path: Destination path (or directory ending with '/') in the workspace
+            overwrite: If True, overwrite an existing file at the destination
+
+        Returns:
+            The name of the uploaded workspace file
+
+        Raises:
+            ValueError: If file_path does not exist or is not a single file
+            ApiException: If the API call fails, e.g. because the file already exists
+        """
         target_file = Path(file_path)
         if not target_file.exists():
             LOGGER.error(T("coal.common.file_operations.not_exists").format(file_path=file_path))

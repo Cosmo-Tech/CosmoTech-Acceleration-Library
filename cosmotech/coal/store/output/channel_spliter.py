@@ -11,6 +11,8 @@ from cosmotech.coal.utils.logger import LOGGER
 
 
 class ChannelSpliter(ChannelInterface):
+    """Channel that fans out the store's data to every configured output channel."""
+
     requirement_string: str = "(Requires any working interface)"
     targets = list()
     available_interfaces: dict[str, ChannelInterface] = {
@@ -39,6 +41,14 @@ class ChannelSpliter(ChannelInterface):
             raise AttributeError(T("coal.store.output.split.no_targets"))
 
     def send(self, filter: Optional[list[str]] = None) -> bool:
+        """Send the store's data through every available target channel.
+
+        Args:
+            filter: Optional list of table names to restrict the send to
+
+        Returns:
+            True if at least one target channel sent its data successfully
+        """
         any_ok = False
         for i in self.targets:
             try:
@@ -50,6 +60,11 @@ class ChannelSpliter(ChannelInterface):
         return any_ok
 
     def delete(self) -> bool:
+        """Delete the data previously sent through every available target channel.
+
+        Returns:
+            True if at least one target channel deleted its data successfully
+        """
         any_ok = False
         for i in self.targets:
             try:

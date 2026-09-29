@@ -15,6 +15,8 @@ from cosmotech.coal.utils.logger import LOGGER
 
 
 class AwsChannel(ChannelInterface):
+    """Output channel that sends the store's tables or database file to an S3 bucket."""
+
     required_keys = {
         "coal": ["store"],
         "cosmotech": ["runner_id"],
@@ -28,7 +30,17 @@ class AwsChannel(ChannelInterface):
         self._s3.file_prefix = self.configuration.cosmotech.runner_id + "/" + self._s3.file_prefix
 
     def send(self, filter: Optional[list[str]] = None) -> bool:
+        """Upload the store's database file or tables to the configured S3 bucket.
 
+        Args:
+            filter: Optional list of table names to restrict the upload to
+
+        Returns:
+            True if the data was uploaded successfully
+
+        Raises:
+            ValueError: If the configured output type is not sqlite, csv or parquet
+        """
         _s = Store(configuration=self.configuration)
 
         if self._s3.output_type not in ("sqlite", "csv", "parquet"):
@@ -67,4 +79,5 @@ class AwsChannel(ChannelInterface):
                 )
 
     def delete(self):
+        """Delete all objects previously uploaded to the configured S3 bucket."""
         self._s3.delete_objects()
