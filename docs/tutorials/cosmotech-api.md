@@ -255,7 +255,7 @@ Output channels are defined in the centralized Configuration under the `[[output
 
 - Root Configuration Inheritance: Configuration is simplified by sub-channels being able to automatically load default values from the root configuration. This reduces repetition in the TOML file and makes it easier for DevOps to manage credentials and connections centrally.
 
-- Output DB management setting up: A `setup_db` option (since version 2.4.0) allows to able/disable the output DB management setup at writing.
+- PostgreSQL database setup: The `setup_db` option (available since version 2.4.0) enables or disables database setup when writing output.
 The DB management setting up is activated when the configuration key `setup_db` is set to `True` in the CoAL configuration file at root level.
 To keep compatibility with the previous version 2.3.1, the `setup_db` option is set by default to `True`.
 The option can be set to `False` once the DB is all setup.
