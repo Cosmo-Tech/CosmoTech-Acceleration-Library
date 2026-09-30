@@ -1,0 +1,35 @@
+article > .tpl_table {
+    max-width: 100%;
+}
+
+.tpl_row {
+    max-width: 100%;
+}
+
+.tpl_row > div {
+    max-width: 100%;
+}
+
+.tpl_head {
+    text-align: center;
+}
+
+.joined {
+    max-width: 100%;
+}
+
+.title_cmd {
+    display: inline-block;
+    width: 20%;
+    vertical-align: middle;
+}
+
+.body_cmd {
+    display: inline-block;
+    width: 79%;
+}
+
+.hidden {
+    visibility: hidden;
+    display: none;
+}
