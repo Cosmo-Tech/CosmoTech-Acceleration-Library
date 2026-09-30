@@ -255,6 +255,14 @@ Output channels are defined in the centralized Configuration under the `[[output
 
 - Root Configuration Inheritance: Configuration is simplified by sub-channels being able to automatically load default values from the root configuration. This reduces repetition in the TOML file and makes it easier for DevOps to manage credentials and connections centrally.
 
+- Output DB management setting up: A `setup_db` option (since version 2.4.0) allows to able/disable the output DB management setup at writing.
+The DB management setting up is activated when the configuration key `setup_db` is set to `True` in the CoAL configuration file at root level.
+To keep compatibility with the previous version 2.3.1, the `setup_db` option is set by default to `True`.
+The option can be set to `False` once the DB is all setup.
+For context, in CoAL, all channels set up a way to make a data rollout (old data is replace by new data).
+For the PostgreSQL channel this is done by using a metadata table and setting up foreignkey constraints and indexes on output tables.
+By default, this setup/check runs with every new output rollout to the channel, potentially leading to a heavy usage of the database.
+
 **CLI (csm-data) Integration**
 Developers trigger output operations using simplified CLI commands from `csm-data`:
 
