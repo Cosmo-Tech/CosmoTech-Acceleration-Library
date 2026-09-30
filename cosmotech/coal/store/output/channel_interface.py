@@ -6,6 +6,8 @@ from cosmotech.coal.utils.configuration import Configuration, Dotdict
 
 
 class ChannelInterface:
+    """Base class for an output channel that can send the store's data to a target and delete it."""
+
     required_keys = {}
     requirement_string: str = T("coal.store.output.data_interface.requirements")
 
@@ -21,6 +23,11 @@ class ChannelInterface:
         raise NotImplementedError()
 
     def is_available(self) -> bool:
+        """Check whether all required configuration keys are present, falling back to global config.
+
+        Returns:
+            True if the channel is fully configured and can be used
+        """
         try:
             for section in self.required_keys.keys():
                 for key in self.required_keys[section]:

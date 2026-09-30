@@ -53,6 +53,17 @@ class Connection:
         self.api_client, self.api_type = self.get_api_client()
 
     def get_api_client(self) -> (cosmotech_api.ApiClient, str):
+        """Build an authenticated API client from available environment variables.
+
+        Detects Keycloak, Cosmo Tech API key, or Azure Entra credentials from the
+        environment and builds the corresponding API client.
+
+        Returns:
+            A tuple of the configured ApiClient and a label describing the connection type used
+
+        Raises:
+            EnvironmentError: If no complete set of required environment variables is found
+        """
         existing_keys = set(os.environ.keys())
         missing_azure_keys = self.__azure_env_keys - existing_keys
         missing_api_keys = self.__api_env_keys - existing_keys

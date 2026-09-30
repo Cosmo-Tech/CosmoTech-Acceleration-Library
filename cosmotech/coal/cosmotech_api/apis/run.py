@@ -34,5 +34,18 @@ class RunApi(BaseRunApi, Connection):
         include: Optional[list[str]] = None,
         exclude: Optional[list[str]] = None,
     ) -> dict[str, Any]:
+        """Fetch a run and serialize it to a JSON-compatible dictionary.
+
+        Args:
+            organization_id: The ID of the organization
+            workspace_id: The ID of the workspace
+            runner_id: The ID of the runner
+            run_id: The ID of the run
+            include: Optional list of field names to include in the result
+            exclude: Optional list of field names to exclude from the result
+
+        Returns:
+            A dictionary representation of the run's metadata
+        """
         run = self.get_run(organization_id, workspace_id, runner_id, run_id)
         return run.model_dump(by_alias=True, exclude_none=True, include=include, exclude=exclude, mode="json")

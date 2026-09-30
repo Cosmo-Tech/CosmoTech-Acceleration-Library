@@ -84,6 +84,14 @@ class Parameters:
         self,
         parameter_folder: str,
     ) -> str:
+        """Write the parameters list to a parameters.json file.
+
+        Args:
+            parameter_folder: Directory in which to create the JSON file
+
+        Returns:
+            The path of the written JSON file
+        """
         pathlib.Path(parameter_folder).mkdir(exist_ok=True, parents=True)
         tmp_parameter_file = os.path.join(parameter_folder, "parameters.json")
 
@@ -98,6 +106,14 @@ class Parameters:
         self,
         parameter_folder: str,
     ) -> str:
+        """Write the parameters list to a parameters.csv file.
+
+        Args:
+            parameter_folder: Directory in which to create the CSV file
+
+        Returns:
+            The path of the written CSV file
+        """
         pathlib.Path(parameter_folder).mkdir(exist_ok=True, parents=True)
         tmp_parameter_file = os.path.join(parameter_folder, "parameters.csv")
 
@@ -116,6 +132,16 @@ class Parameters:
         write_csv: bool = True,
         write_json: bool = False,
     ) -> Dict[str, str]:
+        """Write the parameters list to CSV and/or JSON files.
+
+        Args:
+            parameter_folder: Directory in which to create the files
+            write_csv: If True, write a parameters.csv file
+            write_json: If True, write a parameters.json file
+
+        Returns:
+            Dictionary mapping format name ("csv", "json") to the written file path
+        """
         result = {}
 
         if write_csv:
