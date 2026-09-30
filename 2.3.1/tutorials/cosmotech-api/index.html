@@ -2943,7 +2943,18 @@ The <code>InputCollector</code> has a generic <code>.fetch(...)</code> function 
 <p><strong>Configuration</strong></p>
 <p>Output channels are defined in the centralized Configuration under the <code>[[output]]</code> list:</p>
 <ul>
-<li>Root Configuration Inheritance: Configuration is simplified by sub-channels being able to automatically load default values from the root configuration. This reduces repetition in the TOML file and makes it easier for DevOps to manage credentials and connections centrally.</li>
+<li>
+<p>Root Configuration Inheritance: Configuration is simplified by sub-channels being able to automatically load default values from the root configuration. This reduces repetition in the TOML file and makes it easier for DevOps to manage credentials and connections centrally.</p>
+</li>
+<li>
+<p>PostgreSQL database setup: The <code>setup_db</code> option (available since version 2.4.0) enables or disables database setup when writing output.
+The DB management setting up is activated when the configuration key <code>setup_db</code> is set to <code>True</code> in the CoAL configuration file at root level.
+To keep compatibility with the previous version 2.3.1, the <code>setup_db</code> option is set by default to <code>True</code>.
+The option can be set to <code>False</code> once the DB is all setup.
+For context, in CoAL, all channels set up a way to make a data rollout (old data is replace by new data).
+For the PostgreSQL channel this is done by using a metadata table and setting up foreignkey constraints and indexes on output tables.
+By default, this setup/check runs with every new output rollout to the channel, potentially leading to a heavy usage of the database.</p>
+</li>
 </ul>
 <p><strong>CLI (csm-data) Integration</strong>
 Developers trigger output operations using simplified CLI commands from <code>csm-data</code>:</p>
