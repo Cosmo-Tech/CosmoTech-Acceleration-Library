@@ -17,6 +17,7 @@ cosmotech-api~=5.3
 boto3~=1.41
 requests~=2.32
 singlestoredb~=1.16
+psycopg[binary]~=3.3
 
 # Orchestrator templates requirements
 cosmotech-run-orchestrator~=2.1.0

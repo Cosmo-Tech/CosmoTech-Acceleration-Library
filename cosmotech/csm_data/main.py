@@ -13,6 +13,7 @@ from cosmotech.csm_data.commands.adx_send_data import adx_send_data
 from cosmotech.csm_data.commands.adx_send_runnerdata import adx_send_runnerdata
 from cosmotech.csm_data.commands.api.api import api
 from cosmotech.csm_data.commands.az_storage_upload import az_storage_upload
+from cosmotech.csm_data.commands.postgres.postgres import postgres
 from cosmotech.csm_data.commands.s3_bucket_delete import s3_bucket_delete
 from cosmotech.csm_data.commands.s3_bucket_download import s3_bucket_download
 from cosmotech.csm_data.commands.s3_bucket_upload import s3_bucket_upload
@@ -48,6 +49,7 @@ def main(ctx):
 
 main.add_command(api, "api")
 main.add_command(store, "store")
+main.add_command(postgres, "postgres")
 main.add_command(s3_bucket_download, "s3-bucket-download")
 main.add_command(s3_bucket_upload, "s3-bucket-upload")
 main.add_command(s3_bucket_delete, "s3-bucket-delete")

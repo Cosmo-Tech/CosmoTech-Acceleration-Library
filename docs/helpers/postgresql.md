@@ -3,6 +3,22 @@ description: "Helpers"
 ---
 # **cosmotech.coal.postgresql**
 
+::: cosmotech.coal.postgresql.native_csv_ingestion
+    options:
+      members:
+        - ingest_csv_file
+        - ingest_csv_folder
+
+<br/>
+
+::: cosmotech.coal.postgresql.postgres_connection
+    options:
+      members:
+        - resolve_postgres_configuration
+        - connect
+
+<br/>
+
 ::: cosmotech.coal.postgresql.runner
     options:
       members:
