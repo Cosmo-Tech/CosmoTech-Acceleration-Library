@@ -1,0 +1,36 @@
+# CSV ingestion into PostgreSQL (COPY FROM STDIN)
+
+# Option validation
+option_input_required: "Exactly one of --csv-file or --csv-folder is required"
+option_table_with_folder: "--table can only be used with --csv-file"
+option_table_with_prefix: "--table and --table-prefix cannot be used together"
+option_run_id_required: "--run-id (or CSM_RUN_ID) is required with --add-id"
+
+# File checks
+file_not_found: "{path} is not a file"
+folder_not_found: "{path} is not a directory"
+file_empty: "{path} is empty"
+folder_no_csv: "No .csv file found in {path}"
+
+# Preflight
+header_empty: "{path}: the header line is empty"
+header_empty_column: "{path}: the header contains an empty column name"
+header_duplicate_columns: "{path}: duplicate column names in the header: {columns}"
+table_not_found: "Table '{table}' not found in schema '{schema}' (names are case-sensitive)"
+table_wrong_kind: "'{schema}.{table}' is not a table"
+unknown_columns: "{path}: columns not found in table '{schema}.{table}': {columns}"
+run_id_in_header: "{path}: the header already contains csm_run_id, which cannot be used with --add-id"
+run_id_column_missing: "Table '{schema}.{table}' has no csm_run_id column, required by --add-id"
+run_id_default_missing: "Column csm_run_id of '{schema}.{table}' must have the default current_setting('csm.run_id') to be used with --add-id"
+
+# Load
+preflight_ok: "Preflight OK: {path} -> {schema}.{table} ({columns} columns)"
+loading: "Loading {path} ({size_mb:,.1f} MB) into {schema}.{table}"
+progress: "  {sent_mb:,.0f}/{total_mb:,.0f} MB sent"
+copy_finished: "COPY finished: {rows:,} rows, {size_mb:,.1f} MB in {seconds:,.1f}s ({rate:,.1f} MB/s)"
+committed: "Committed: {rows:,} rows into {schema}.{table}"
+no_rows: "{path} contains a header only: 0 rows copied into {schema}.{table}"
+load_failed: "Loading {path} failed: {error}"
+folder_loaded: "Tables loaded before the failure: {tables}"
+folder_failed: "Table in error: {table}"
+folder_not_started: "Tables not started: {tables}"

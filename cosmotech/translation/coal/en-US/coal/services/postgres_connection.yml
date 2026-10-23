@@ -1,0 +1,6 @@
+# PostgreSQL connection (psycopg)
+psycopg_missing: "psycopg is required by this command: install it with 'pip install \"psycopg[binary]\"'"
+connection_failed: "Could not connect to PostgreSQL: {error}"
+partial_options: "Incomplete PostgreSQL connection options, missing: {missing}. Give all of them or none to use the configuration file or environment"
+password_missing: "No PostgreSQL password: use --postgres-password or POSTGRES_USER_PASSWORD"
+incomplete_config: "Incomplete PostgreSQL configuration, missing: {missing}"

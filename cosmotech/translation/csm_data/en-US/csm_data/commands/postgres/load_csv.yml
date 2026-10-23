@@ -1,0 +1,31 @@
+description: |
+  Stream CSV file(s) into existing PostgreSQL table(s) with COPY FROM STDIN
+
+  PostgreSQL parses the CSV and converts the values to the column types declared on the table:
+  the tables must already exist and the CSV header must only contain column names of the table
+  (exact match, case-sensitive). No file is loaded into memory.
+
+  Each file is loaded in a single transaction: if anything fails, nothing is written for that file.
+
+  Connection settings: either give all of --postgres-host, --postgres-db, --postgres-schema and --postgres-user
+  (with the password), or give none of them to use the CoAL configuration file (CONFIG_FILE_PATH,
+  or /mnt/coal/coal-config.toml in the cluster), then the POSTGRES_* environment variables.
+
+  With --add-id, the transaction-local setting csm.run_id is set from --run-id, so that a table column
+  `csm_run_id text NOT NULL DEFAULT current_setting('csm.run_id')` is filled for every row.
+
+  The postgresql user must have USAGE granted on the schema and INSERT on the tables.
+parameters:
+  csv_file: Path of one CSV file to load (exclusive with --csv-folder)
+  csv_folder: Folder containing CSV files to load, one table per .csv file (exclusive with --csv-file)
+  table: Target table name, used as is (only with --csv-file). Default is table prefix + file name without extension
+  table_prefix: Prefix added to the file name to get the table name, lowercased (default Cosmotech_). Not usable with --table
+  add_id: Fill the csm_run_id column of the table with the run id
+  run_id: Run id used with --add-id
+  postgres_host: PostgreSQL host URI
+  postgres_port: PostgreSQL database port
+  postgres_db: PostgreSQL database name
+  postgres_schema: PostgreSQL schema name
+  postgres_user: PostgreSQL connection user name
+  postgres_password: PostgreSQL connection password
+  encode_password: Force encoding of password to percent encoding
