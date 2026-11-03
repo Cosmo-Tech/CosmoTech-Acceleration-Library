@@ -18,7 +18,6 @@ from cosmotech.coal.postgresql.postgres_connection import (
     PostgresConnectionOptionError,
     connect,
     import_psycopg,
-    postgres_configuration,
     resolve_postgres_configuration,
 )
 from cosmotech.coal.utils.configuration import Configuration
@@ -129,51 +128,18 @@ class TestResolvePostgresConfiguration:
         assert "--postgres-schema" in str(excinfo.value)
         assert "--postgres-host" not in str(excinfo.value)
 
-    def test_resolve_postgres_configuration_none_uses_environment(self, monkeypatch):
-        clear_env(monkeypatch)
-        for key, value in {
-            "POSTGRES_HOST_URI": "envhost",
-            "POSTGRES_DB_NAME": "envdb",
-            "POSTGRES_DB_SCHEMA": "envschema",
-            "POSTGRES_USER_NAME": "envuser",
-            "POSTGRES_USER_PASSWORD": "envpw",
-        }.items():
-            monkeypatch.setenv(key, value)
-        conf = resolve_postgres_configuration()
-        assert conf.postgres.host == "envhost"
-        assert conf.postgres.db_schema == "envschema"
-        assert conf.postgres.user_password == "envpw"
-        assert conf.postgres.port == 5432
+    def test_resolve_postgres_configuration_none_uses_configuration(self, configuration):
+        conf = resolve_postgres_configuration(configuration=configuration)
+        assert conf is configuration
+        assert conf.postgres.host == "localhost"
+        assert conf.postgres.user_password == "p@ss word"
 
-    def test_resolve_postgres_configuration_none_uses_toml_with_password_from_env(self, monkeypatch, tmp_path):
-        clear_env(monkeypatch)
-        toml = tmp_path / "coal-config.toml"
-        toml.write_text(
-            "[[outputs]]\n"
-            'type = "postgres"\n'
-            "[outputs.conf.postgres]\n"
-            'host = "tomlhost"\n'
-            'port = "5433"\n'
-            'db_name = "tomldb"\n'
-            'db_schema = "tomlschema"\n'
-            'user_name = "tomluser"\n'
-            'user_password = "env.POSTGRES_USER_PASSWORD"\n'
-        )
-        monkeypatch.setenv("CONFIG_FILE_PATH", str(toml))
-        monkeypatch.setenv("POSTGRES_USER_PASSWORD", "cluster-pw")
-        conf = resolve_postgres_configuration()
-        assert conf.postgres.host == "tomlhost"
-        assert conf.postgres.port == "5433"
-        assert conf.postgres.user_password == "cluster-pw"
+    def test_resolve_postgres_configuration_none_defaults_port(self, configuration):
+        del configuration.postgres["port"]
+        assert resolve_postgres_configuration(configuration=configuration).postgres.port == 5432
 
-    def test_resolve_postgres_configuration_nothing_usable(self, monkeypatch):
-        clear_env(monkeypatch)
+    def test_resolve_postgres_configuration_nothing_usable(self):
         with pytest.raises(PostgresConnectionOptionError) as excinfo:
-            resolve_postgres_configuration()
+            resolve_postgres_configuration(configuration=Configuration({}))
         assert "host" in str(excinfo.value)
         assert "user_password" in str(excinfo.value)
-
-
-def test_postgres_configuration_uses_postgres_output():
-    base = Configuration({"outputs": [{"type": "postgres", "conf": {"postgres": {"host": "tomlhost"}}}]})
-    assert postgres_configuration(base).postgres.host == "tomlhost"

@@ -20,6 +20,7 @@ from urllib.parse import quote
 from cosmotech.orchestrator.utils.translate import T
 
 from cosmotech.coal.postgresql.utils import PostgresUtils
+from cosmotech.coal.utils.configuration import ENVIRONMENT_CONFIGURATION as EC
 from cosmotech.coal.utils.configuration import Configuration
 
 DEFAULT_PORT = 5432
@@ -61,26 +62,6 @@ def import_psycopg():
     return psycopg, sql
 
 
-def postgres_configuration(configuration: Configuration) -> Configuration:
-    """
-    Return a configuration exposing ``.postgres``.
-
-    It is taken from the ``[[outputs]]`` entry of type postgres of the configuration file if there is one,
-    else from the POSTGRES_* environment variables.
-
-    Args:
-        configuration: coal Configuration
-
-    Returns:
-        A Configuration with a postgres section
-    """
-    for output in configuration.safe_get("outputs") or []:
-        postgres = (output.get("conf") or {}).get("postgres") if output.get("type") == "postgres" else None
-        if postgres is not None:
-            return Configuration({"postgres": postgres})
-    return Configuration(Configuration.CONVERSION_DICT)
-
-
 def resolve_postgres_configuration(
     host: Optional[str] = None,
     port: Optional[int] = None,
@@ -89,13 +70,13 @@ def resolve_postgres_configuration(
     user: Optional[str] = None,
     password: Optional[str] = None,
     encode_password: bool = True,
-    configuration: Optional[Configuration] = None,
+    configuration: Configuration = EC,
 ) -> Configuration:
     """
     Build the connection configuration from one single source: all the options or the configuration.
 
     - host, db, schema and user all given: they are used, with the password (required in this case).
-    - none of them given: the configuration file, then the environment variables, are used.
+    - none of them given: ``configuration.postgres`` is used (configuration file or environment variables).
     - only some of them given: error, nothing is completed from the configuration.
 
     Args:
@@ -106,7 +87,7 @@ def resolve_postgres_configuration(
         user: PostgreSQL user name
         password: PostgreSQL password
         encode_password: force password encoding to percent encoding
-        configuration: base coal Configuration, loaded by Configuration() if not given
+        configuration: coal Configuration used when no option is given
 
     Returns:
         A Configuration with a postgres section
@@ -139,15 +120,14 @@ def resolve_postgres_configuration(
             T("coal.services.postgres_connection.partial_options").format(missing=", ".join(missing_options))
         )
 
-    postgres_conf = postgres_configuration(configuration if configuration is not None else Configuration())
-    missing_keys = [key for key in REQUIRED_CONFIGURATION_KEYS if not postgres_conf.safe_get(f"postgres.{key}")]
+    missing_keys = [key for key in REQUIRED_CONFIGURATION_KEYS if not configuration.safe_get(f"postgres.{key}")]
     if missing_keys:
         raise PostgresConnectionOptionError(
             T("coal.services.postgres_connection.incomplete_config").format(missing=", ".join(missing_keys))
         )
-    if not postgres_conf.safe_get("postgres.port"):
-        postgres_conf.postgres.port = DEFAULT_PORT
-    return postgres_conf
+    if not configuration.safe_get("postgres.port"):
+        configuration.postgres.port = DEFAULT_PORT
+    return configuration
 
 
 def _redact(error: Exception, psql: PostgresUtils) -> str:
