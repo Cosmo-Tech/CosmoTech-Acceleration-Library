@@ -47,6 +47,7 @@ include-package-data = true
 package-data."*" = [
     "requirements.txt",
     "requirements.doc.txt",
+    "requirements.custom.txt",
     "requirements.test.txt",
     "requirements.dev.txt"
 ]
@@ -65,4 +66,5 @@ dependencies.file = "requirements.txt"
 optional-dependencies.doc.file = "requirements.doc.txt"
 optional-dependencies.test.file = "requirements.test.txt"
 optional-dependencies.dev.file = "requirements.dev.txt"
+optional-dependencies.custom.file = "requirements.custom.txt"
 optional-dependencies.all.file = "requirements.all.txt"

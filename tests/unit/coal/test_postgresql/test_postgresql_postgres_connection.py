@@ -67,7 +67,7 @@ class TestImportPsycopg:
             with pytest.raises(PostgresConnectionError) as excinfo:
                 import_psycopg()
         assert isinstance(excinfo.value.__cause__, ImportError)
-        assert "psycopg[binary]" in str(excinfo.value)
+        assert "[custom]" in str(excinfo.value)
 
     def test_import_psycopg_package_import_does_not_need_psycopg(self):
         code = (

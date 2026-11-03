@@ -11,7 +11,8 @@ PostgreSQL connection module (psycopg).
 This module resolves the connection settings (from options, the configuration file or the environment)
 and opens psycopg connections.
 
-``psycopg`` is imported lazily, so that importing this module never fails where it is not installed.
+``psycopg`` is an optional dependency (``custom`` extra), so it is imported lazily, so that importing this module
+never fails where it is not installed.
 """
 
 from typing import Optional
