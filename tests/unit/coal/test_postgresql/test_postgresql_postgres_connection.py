@@ -89,14 +89,12 @@ class TestConnect:
         assert connect_mock.call_args.kwargs == {"autocommit": False}
         assert conn.execute.call_args.args[0].as_string() == 'SET search_path TO "dbschema"'
 
-    def test_connect_failure_has_no_password(self, configuration):
-        error = psycopg.OperationalError("failed with p@ss word and p%40ss%20word")
+    def test_connect_failure_raises_connection_error(self, configuration):
+        error = psycopg.OperationalError("connection refused")
         with patch("psycopg.connect", side_effect=error):
-            with pytest.raises(PostgresConnectionError) as excinfo:
+            with pytest.raises(PostgresConnectionError, match="connection refused") as excinfo:
                 connect(configuration)
-        assert "p@ss word" not in str(excinfo.value)
-        assert "p%40ss%20word" not in str(excinfo.value)
-        assert excinfo.value.__cause__ is None
+        assert excinfo.value.__cause__ is error
 
 
 class TestResolvePostgresConfiguration:

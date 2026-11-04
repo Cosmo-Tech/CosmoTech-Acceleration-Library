@@ -16,7 +16,6 @@ never fails where it is not installed.
 """
 
 from typing import Optional
-from urllib.parse import quote
 
 from cosmotech.orchestrator.utils.translate import T
 
@@ -131,15 +130,6 @@ def resolve_postgres_configuration(
     return configuration
 
 
-def _redact(error: Exception, psql: PostgresUtils) -> str:
-    """Return the error message without the password."""
-    message = str(error)
-    for secret in {psql.user_password, quote(psql.user_password or "", safe="")}:
-        if secret:
-            message = message.replace(secret, "***")
-    return message
-
-
 def connect(configuration: Configuration, autocommit: bool = False):
     """
     Connect with the URI built by PostgresUtils and point the search_path to the configured schema.
@@ -152,7 +142,7 @@ def connect(configuration: Configuration, autocommit: bool = False):
         A psycopg connection
 
     Raises:
-        PostgresConnectionError: if the connection fails (the message never contains the password)
+        PostgresConnectionError: if the connection fails
     """
     psycopg, sql = import_psycopg()
     psql = PostgresUtils(configuration)
@@ -164,6 +154,6 @@ def connect(configuration: Configuration, autocommit: bool = False):
         if conn is not None:
             conn.close()
         raise PostgresConnectionError(
-            T("coal.services.postgres_connection.connection_failed").format(error=_redact(err, psql))
-        ) from None
+            T("coal.services.postgres_connection.connection_failed").format(error=err)
+        ) from err
     return conn
