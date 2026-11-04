@@ -11,8 +11,8 @@ import pytest
 from click.testing import CliRunner
 
 from cosmotech.coal.postgresql.native_csv_ingestion import CsvIngestionError
-from cosmotech.csm_data.commands.postgres.load_csv import load_csv
-from cosmotech.csm_data.commands.postgres.postgres import postgres
+from cosmotech.csm_data.commands.custom.custom import custom
+from cosmotech.csm_data.commands.custom.load_csv import load_csv
 from cosmotech.csm_data.main import main
 
 CONNECTION = [
@@ -50,8 +50,8 @@ def invoke(args):
 
 
 def test_command_registered():
-    assert "load-csv" in postgres.commands
-    assert "postgres" in main.commands
+    assert "load-csv" in custom.commands
+    assert "custom" in main.commands
 
 
 def test_file_options_passed_through(mocks):

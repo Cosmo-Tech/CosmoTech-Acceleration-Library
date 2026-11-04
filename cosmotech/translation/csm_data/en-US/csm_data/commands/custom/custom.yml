@@ -1,0 +1,5 @@
+description: |
+  CoAL custom command group
+
+  This group contains optional, customized commands for special use cases. They do not follow the standard
+  datastore design and may require extra dependencies: pip install "cosmotech-acceleration-library[custom]"

@@ -1,13 +1,13 @@
 ---
 hide:
   - toc
-description: "Command help: `csm-data postgres load-csv`"
+description: "Command help: `csm-data custom load-csv`"
 ---
 # load-csv
 
 !!! info "Help command"
     ```text
-    --8<-- "generated/commands_help/csm-data/postgres/load-csv.txt"
+    --8<-- "generated/commands_help/csm-data/custom/load-csv.txt"
     ```
 
 !!! note "Optional dependency"

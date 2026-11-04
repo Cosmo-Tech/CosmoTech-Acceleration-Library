@@ -12,32 +12,32 @@ from cosmotech.csm_data.utils.decorators import translate_help, web_help
 
 
 @click.command()
-@web_help("csm-data/postgres/load-csv")
-@translate_help("csm_data.commands.postgres.load_csv.description")
+@web_help("csm-data/custom/load-csv")
+@translate_help("csm_data.commands.custom.load_csv.description")
 @click.option(
     "--csv-file",
-    help=T("csm_data.commands.postgres.load_csv.parameters.csv_file"),
+    help=T("csm_data.commands.custom.load_csv.parameters.csv_file"),
     metavar="PATH",
     type=str,
     default=None,
 )
 @click.option(
     "--csv-folder",
-    help=T("csm_data.commands.postgres.load_csv.parameters.csv_folder"),
+    help=T("csm_data.commands.custom.load_csv.parameters.csv_folder"),
     metavar="PATH",
     type=str,
     default=None,
 )
 @click.option(
     "--table",
-    help=T("csm_data.commands.postgres.load_csv.parameters.table"),
+    help=T("csm_data.commands.custom.load_csv.parameters.table"),
     metavar="NAME",
     type=str,
     default=None,
 )
 @click.option(
     "--table-prefix",
-    help=T("csm_data.commands.postgres.load_csv.parameters.table_prefix"),
+    help=T("csm_data.commands.custom.load_csv.parameters.table_prefix"),
     metavar="PREFIX",
     type=str,
     default=None,
@@ -45,14 +45,14 @@ from cosmotech.csm_data.utils.decorators import translate_help, web_help
 @click.option(
     "--add-id/--no-add-id",
     "add_id",
-    help=T("csm_data.commands.postgres.load_csv.parameters.add_id"),
+    help=T("csm_data.commands.custom.load_csv.parameters.add_id"),
     default=False,
     is_flag=True,
     show_default=True,
 )
 @click.option(
     "--run-id",
-    help=T("csm_data.commands.postgres.load_csv.parameters.run_id"),
+    help=T("csm_data.commands.custom.load_csv.parameters.run_id"),
     envvar="CSM_RUN_ID",
     show_envvar=True,
     type=str,
@@ -60,14 +60,14 @@ from cosmotech.csm_data.utils.decorators import translate_help, web_help
 )
 @click.option(
     "--postgres-host",
-    help=T("csm_data.commands.postgres.load_csv.parameters.postgres_host"),
+    help=T("csm_data.commands.custom.load_csv.parameters.postgres_host"),
     envvar="POSTGRES_HOST_URI",
     show_envvar=True,
     required=False,
 )
 @click.option(
     "--postgres-port",
-    help=T("csm_data.commands.postgres.load_csv.parameters.postgres_port"),
+    help=T("csm_data.commands.custom.load_csv.parameters.postgres_port"),
     envvar="POSTGRES_HOST_PORT",
     show_envvar=True,
     required=False,
@@ -75,28 +75,28 @@ from cosmotech.csm_data.utils.decorators import translate_help, web_help
 )
 @click.option(
     "--postgres-db",
-    help=T("csm_data.commands.postgres.load_csv.parameters.postgres_db"),
+    help=T("csm_data.commands.custom.load_csv.parameters.postgres_db"),
     envvar="POSTGRES_DB_NAME",
     show_envvar=True,
     required=False,
 )
 @click.option(
     "--postgres-schema",
-    help=T("csm_data.commands.postgres.load_csv.parameters.postgres_schema"),
+    help=T("csm_data.commands.custom.load_csv.parameters.postgres_schema"),
     envvar="POSTGRES_DB_SCHEMA",
     show_envvar=True,
     required=False,
 )
 @click.option(
     "--postgres-user",
-    help=T("csm_data.commands.postgres.load_csv.parameters.postgres_user"),
+    help=T("csm_data.commands.custom.load_csv.parameters.postgres_user"),
     envvar="POSTGRES_USER_NAME",
     show_envvar=True,
     required=False,
 )
 @click.option(
     "--postgres-password",
-    help=T("csm_data.commands.postgres.load_csv.parameters.postgres_password"),
+    help=T("csm_data.commands.custom.load_csv.parameters.postgres_password"),
     envvar="POSTGRES_USER_PASSWORD",
     show_envvar=True,
     required=False,
@@ -104,7 +104,7 @@ from cosmotech.csm_data.utils.decorators import translate_help, web_help
 @click.option(
     "--encode-password/--no-encode-password",
     "force_encode",
-    help=T("csm_data.commands.postgres.load_csv.parameters.encode_password"),
+    help=T("csm_data.commands.custom.load_csv.parameters.encode_password"),
     envvar="CSM_PSQL_FORCE_PASSWORD_ENCODING",
     show_envvar=True,
     default=True,

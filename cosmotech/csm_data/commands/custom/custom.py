@@ -5,16 +5,16 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from cosmotech.csm_data.commands.postgres.load_csv import load_csv
+from cosmotech.csm_data.commands.custom.load_csv import load_csv
 from cosmotech.csm_data.utils.click import click
 from cosmotech.csm_data.utils.decorators import translate_help, web_help
 
 
 @click.group()
-@web_help("csm-data/postgres")
-@translate_help("csm_data.commands.postgres.postgres.description")
-def postgres():
+@web_help("csm-data/custom")
+@translate_help("csm_data.commands.custom.custom.description")
+def custom():
     pass
 
 
-postgres.add_command(load_csv, "load-csv")
+custom.add_command(load_csv, "load-csv")
