@@ -152,7 +152,7 @@ def build_copy_statement(table: str, columns: list[str], schema: str):
         A psycopg ``sql.Composed`` statement
     """
     _, sql = import_psycopg()
-    return sql.SQL("COPY {table} ({columns}) FROM STDIN WITH (FORMAT csv, HEADER true)").format(
+    return sql.SQL("COPY {table} ({columns}) FROM STDIN WITH (FORMAT csv, HEADER true, ENCODING 'UTF8')").format(
         table=sql.Identifier(schema, table),
         columns=sql.SQL(", ").join(sql.Identifier(c) for c in columns),
     )

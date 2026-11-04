@@ -157,7 +157,8 @@ class TestFileChecks:
 def test_build_copy_statement_quotes_identifiers_and_preserves_case():
     statement = build_copy_statement("MyTable", ["a", "B c", 'd"e'], schema="Sch")
     assert (
-        statement.as_string() == 'COPY "Sch"."MyTable" ("a", "B c", "d""e") FROM STDIN WITH (FORMAT csv, HEADER true)'
+        statement.as_string()
+        == """COPY "Sch"."MyTable" ("a", "B c", "d""e") FROM STDIN WITH (FORMAT csv, HEADER true, ENCODING 'UTF8')"""
     )
 
 
@@ -262,7 +263,10 @@ class TestIngestCsvFile:
         conn = make_catalog_conn()
         self.run(csv_file, conn, configuration, table="Other")
         statement = cursor_of(conn).copy.call_args.args[0].as_string()
-        assert statement == 'COPY "dbschema"."Other" ("a", "B") FROM STDIN WITH (FORMAT csv, HEADER true)'
+        assert (
+            statement
+            == """COPY "dbschema"."Other" ("a", "B") FROM STDIN WITH (FORMAT csv, HEADER true, ENCODING 'UTF8')"""
+        )
 
     def test_ingest_csv_file_run_id_sets_transaction_local_setting(self, csv_file, configuration):
         conn = make_catalog_conn(columns=[("a", None), ("B", None), ("csm_run_id", RUN_ID_DEFAULT)])
