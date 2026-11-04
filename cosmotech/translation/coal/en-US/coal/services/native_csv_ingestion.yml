@@ -21,7 +21,7 @@ table_wrong_kind: "'{schema}.{table}' is not a table"
 unknown_columns: "{path}: columns not found in table '{schema}.{table}': {columns}"
 run_id_in_header: "{path}: the header already contains csm_run_id, which cannot be used with --add-id"
 run_id_column_missing: "Table '{schema}.{table}' has no csm_run_id column, required by --add-id"
-run_id_default_missing: "Column csm_run_id of '{schema}.{table}' must have the default current_setting('csm.run_id') to be used with --add-id"
+run_id_default_missing: "Column csm_run_id of '{schema}.{table}' must have the default current_setting('csm.run_id') (optionally with missing_ok and a cast) to be used with --add-id"
 
 # Load
 preflight_ok: "Preflight OK: {path} -> {schema}.{table} ({columns} columns)"

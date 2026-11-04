@@ -202,6 +202,21 @@ class TestPreflight:
         conn = make_catalog_conn(columns=[("a", None), ("B", None), ("csm_run_id", RUN_ID_DEFAULT)])
         assert preflight(conn, csv_file, "Data", True, "dbschema") == ["a", "B"]
 
+    @pytest.mark.parametrize(
+        "default",
+        [
+            "current_setting('csm.run_id'::text, true)",
+            "current_setting('csm.run_id'::text, false)",
+            "current_setting('CSM.run_id'::text)",
+            "(current_setting('csm.run_id'::text))::uuid",
+            "(current_setting('csm.run_id'::text))::character varying(32)",
+            "(current_setting('csm.run_id'::text))::numeric(10,2)",
+        ],
+    )
+    def test_preflight_add_id_supported_defaults(self, csv_file, default):
+        conn = make_catalog_conn(columns=[("a", None), ("B", None), ("csm_run_id", default)])
+        assert preflight(conn, csv_file, "Data", True, "dbschema") == ["a", "B"]
+
     def test_preflight_add_id_with_run_id_in_header(self, tmp_path):
         path = tmp_path / "x.csv"
         path.write_text("a,csm_run_id\n1,2\n")
@@ -213,7 +228,18 @@ class TestPreflight:
         with pytest.raises(CsvIngestionError, match="no csm_run_id column"):
             preflight(make_catalog_conn(), csv_file, "Data", True, "dbschema")
 
-    @pytest.mark.parametrize("default", [None, "'fixed'::text"])
+    @pytest.mark.parametrize(
+        "default",
+        [
+            None,
+            "'fixed'::text",
+            "'csm.run_id'::text",
+            "current_setting('csm.run_id_backup'::text, true)",
+            "current_setting('other.csm.run_id'::text)",
+            "COALESCE(current_setting('csm.run_id'::text, true), 'x'::text)",
+            "current_setting('csm.run_id'::text) || 'x'::text",
+        ],
+    )
     def test_preflight_add_id_without_run_id_default(self, csv_file, default):
         conn = make_catalog_conn(columns=[("a", None), ("B", None), ("csm_run_id", default)])
         with pytest.raises(CsvIngestionError, match="current_setting"):

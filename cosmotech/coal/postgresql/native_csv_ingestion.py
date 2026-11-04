@@ -16,6 +16,7 @@ The connection is handled by ``cosmotech.coal.postgresql.postgres_connection``.
 """
 
 import csv
+import re
 import time
 from pathlib import Path
 from typing import Optional
@@ -32,6 +33,10 @@ CHUNK_SIZE = 8 * 1024 * 1024
 LOG_EVERY_BYTES = 128 * 1024 * 1024
 RUN_ID_SETTING = "csm.run_id"
 RUN_ID_COLUMN = "csm_run_id"
+# Default expression of csm_run_id as normalized by pg_get_expr: current_setting('csm.run_id'[, true|false]),
+# optionally with an explicit cast. The setting name is case-insensitive in PostgreSQL.
+_RUN_ID_CALL = r"current_setting\('" + re.escape(RUN_ID_SETTING) + r"'::text(?:, (?:true|false))?\)"
+RUN_ID_DEFAULT_PATTERN = re.compile(rf"{_RUN_ID_CALL}|\({_RUN_ID_CALL}\)::[a-z ]+(?:\(\d+(?:,\d+)?\))?", re.IGNORECASE)
 
 
 class CsvIngestionError(Exception):
@@ -232,8 +237,7 @@ def preflight(conn, csv_path: Path, table: str, add_id: bool, schema: str) -> li
             raise CsvIngestionError(
                 T("coal.services.native_csv_ingestion.run_id_column_missing").format(schema=schema, table=table)
             )
-        default = table_columns[RUN_ID_COLUMN] or ""
-        if "current_setting" not in default or RUN_ID_SETTING not in default:
+        if not RUN_ID_DEFAULT_PATTERN.fullmatch(table_columns[RUN_ID_COLUMN] or ""):
             raise CsvIngestionError(
                 T("coal.services.native_csv_ingestion.run_id_default_missing").format(schema=schema, table=table)
             )
