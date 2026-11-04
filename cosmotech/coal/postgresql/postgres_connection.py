@@ -95,39 +95,46 @@ def resolve_postgres_configuration(
     Raises:
         PostgresConnectionOptionError: if the settings are partial or incomplete
     """
+    # host, db, schema and user are the options that select the source of the settings (the password does not)
     given = {"host": host, "db_name": db, "db_schema": schema, "user_name": user}
     missing_options = [option for key, option in CONNECTION_SET if not given[key]]
+    none_given = len(missing_options) == len(CONNECTION_SET)
+    all_given = not missing_options
 
-    if not missing_options:
-        if not password:
-            raise PostgresConnectionOptionError(T("coal.services.postgres_connection.password_missing"))
-        return Configuration(
-            {
-                "postgres": {
-                    "host": host,
-                    "port": port or DEFAULT_PORT,
-                    "db_name": db,
-                    "db_schema": schema,
-                    "user_name": user,
-                    "user_password": password,
-                    "password_encoding": encode_password,
-                }
-            }
-        )
+    if none_given:
+        # Case 1: no option given, the settings come from the configuration only
+        missing_keys = [key for key in REQUIRED_CONFIGURATION_KEYS if not configuration.safe_get(f"postgres.{key}")]
+        if missing_keys:
+            raise PostgresConnectionOptionError(
+                T("coal.services.postgres_connection.incomplete_config").format(missing=", ".join(missing_keys))
+            )
+        if not configuration.safe_get("postgres.port"):
+            configuration.postgres.port = DEFAULT_PORT
+        return configuration
 
-    if len(missing_options) < len(CONNECTION_SET):
+    if not all_given:
+        # Case 2: only some options given. Refused, so that the options and the configuration are never mixed
         raise PostgresConnectionOptionError(
             T("coal.services.postgres_connection.partial_options").format(missing=", ".join(missing_options))
         )
 
-    missing_keys = [key for key in REQUIRED_CONFIGURATION_KEYS if not configuration.safe_get(f"postgres.{key}")]
-    if missing_keys:
-        raise PostgresConnectionOptionError(
-            T("coal.services.postgres_connection.incomplete_config").format(missing=", ".join(missing_keys))
-        )
-    if not configuration.safe_get("postgres.port"):
-        configuration.postgres.port = DEFAULT_PORT
-    return configuration
+    # Case 3: all options given (cases 1 and 2 returned or raised above), the settings come from the options only.
+    # The password is not one of the options checked above, so it is checked here.
+    if not password:
+        raise PostgresConnectionOptionError(T("coal.services.postgres_connection.password_missing"))
+    return Configuration(
+        {
+            "postgres": {
+                "host": host,
+                "port": port or DEFAULT_PORT,
+                "db_name": db,
+                "db_schema": schema,
+                "user_name": user,
+                "user_password": password,
+                "password_encoding": encode_password,
+            }
+        }
+    )
 
 
 def connect(configuration: Configuration, autocommit: bool = False):
