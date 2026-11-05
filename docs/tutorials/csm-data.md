@@ -18,6 +18,7 @@ The CLI is organized into several command groups, each focused on specific types
 
 - **api**: Commands for interacting with the CosmoTech API
 - **store**: Commands for working with the CoAL datastore (load CSV/Parquet, dump, output channels, delete, reset)
+- **custom**: Optional customized commands for special use cases (load CSV files straight into PostgreSQL tables), see [Custom Commands](#custom-commands)
 - **s3-bucket-***: Commands for S3 bucket operations (download, upload, delete)
 - **adx-send-runnerdata**: Command for sending runner data to Azure Data Explorer
 - **az-storage-upload**: Command for uploading to Azure Storage
@@ -140,6 +141,47 @@ These commands allow you to:
 - List tables in the datastore
 - Delete specific tables from the datastore
 - Reset the datastore
+
+### Custom Commands
+
+The `custom` command group contains optional, customized commands for special use cases. They do not follow the
+standard datastore design and need an extra dependency:
+
+```bash
+pip install "cosmotech-acceleration-library[custom]"
+```
+
+#### Loading CSV files directly into PostgreSQL
+
+`load-csv-file` and `load-csv-folder` send CSV files straight into **existing** PostgreSQL tables, without going
+through the datastore. Use them when you want to keep the types declared on your tables, or when the files are
+too large for the datastore route (`store load-csv-folder` then `store dump-to-postgresql`).
+
+```bash title="Load one CSV file into a table" linenums="1"
+--8<-- 'tutorial/csm-data/custom_load_csv_file.bash'
+```
+
+```bash title="Load every CSV file of a folder, one table per file" linenums="1"
+--8<-- 'tutorial/csm-data/custom_load_csv_folder.bash'
+```
+
+How they behave:
+
+- The tables must already exist, for example created with the following statement. Their column types are used to
+  convert the CSV values, and each CSV header must only contain column names of the table (case-sensitive).
+
+    ```sql title="Table prepared before the load" linenums="1"
+    --8<-- 'tutorial/csm-data/custom_create_table.sql'
+    ```
+
+- The table of a file is `--table` for `load-csv-file`, otherwise the table prefix (default `Cosmotech_`) followed by
+  the file name without extension, in lowercase.
+- Each file is loaded in a single transaction: if anything fails, nothing is written for that file.
+  `load-csv-folder` checks all the files and tables before the first load, then loads the files one after the
+  other: if a load fails, the tables already loaded stay committed.
+- With `--add-id`, the `csm_run_id` column of the table is filled with `--run-id` (or `CSM_RUN_ID`) for every row. Without it, the CSV is loaded as is and no run id is added.
+- The connection comes from `--postgres-*` options (all of host, db, schema and user, and the password), or from the
+  CoAL configuration file and `POSTGRES_*` environment variables when none of them is given.
 
 ## Common Workflows and Integration Patterns
 

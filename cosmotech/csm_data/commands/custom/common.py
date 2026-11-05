@@ -18,8 +18,7 @@ PARAMETERS = "csm_data.commands.custom.common.parameters"
 # Listed in the order they are displayed in the help
 CONNECTION_OPTIONS = (
     click.option(
-        "--add-id/--no-add-id",
-        "add_id",
+        "--add-id",
         help=T(f"{PARAMETERS}.add_id"),
         default=False,
         is_flag=True,
