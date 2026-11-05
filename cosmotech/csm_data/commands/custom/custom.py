@@ -5,7 +5,8 @@
 # etc., to any person is prohibited unless it has been previously and
 # specifically authorized by written means by Cosmo Tech.
 
-from cosmotech.csm_data.commands.custom.load_csv import load_csv
+from cosmotech.csm_data.commands.custom.load_csv_file import load_csv_file
+from cosmotech.csm_data.commands.custom.load_csv_folder import load_csv_folder
 from cosmotech.csm_data.utils.click import click
 from cosmotech.csm_data.utils.decorators import translate_help, web_help
 
@@ -17,4 +18,5 @@ def custom():
     pass
 
 
-custom.add_command(load_csv, "load-csv")
+custom.add_command(load_csv_file, "load-csv-file")
+custom.add_command(load_csv_folder, "load-csv-folder")

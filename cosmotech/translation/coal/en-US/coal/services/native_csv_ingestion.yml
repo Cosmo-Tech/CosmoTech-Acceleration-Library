@@ -1,8 +1,6 @@
 # CSV ingestion into PostgreSQL (COPY FROM STDIN)
 
 # Option validation
-option_input_required: "Exactly one of --csv-file or --csv-folder is required"
-option_table_with_folder: "--table can only be used with --csv-file"
 option_table_with_prefix: "--table and --table-prefix cannot be used together"
 option_run_id_required: "--run-id (or CSM_RUN_ID) is required with --add-id"
 

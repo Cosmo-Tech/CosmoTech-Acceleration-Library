@@ -88,18 +88,15 @@ def written_chunks(conn):
 
 class TestValidateOptions:
     def test_validate_options_valid(self):
-        validate_options(csv_file="a.csv", table="t")
-        validate_options(csv_folder="dir", table_prefix="x_")
-        validate_options(csv_file="a.csv", add_id=True, run_id="run-1")
+        validate_options(table="t")
+        validate_options(table_prefix="x_")
+        validate_options(add_id=True, run_id="run-1")
 
     @pytest.mark.parametrize(
         "kwargs",
         [
-            {},
-            {"csv_file": "a.csv", "csv_folder": "dir"},
-            {"csv_folder": "dir", "table": "t"},
-            {"csv_file": "a.csv", "table": "t", "table_prefix": ""},
-            {"csv_file": "a.csv", "add_id": True},
+            {"table": "t", "table_prefix": ""},
+            {"add_id": True},
         ],
     )
     def test_validate_options_invalid(self, kwargs):

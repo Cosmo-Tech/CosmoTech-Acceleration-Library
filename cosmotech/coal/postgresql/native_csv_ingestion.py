@@ -48,20 +48,16 @@ class CsvIngestionOptionError(CsvIngestionError):
 
 
 def validate_options(
-    csv_file=None,
-    csv_folder=None,
     table: Optional[str] = None,
     table_prefix: Optional[str] = None,
     add_id: bool = False,
     run_id: Optional[str] = None,
 ) -> None:
     """
-    Validate the combination of options of the load command.
+    Validate the combination of options of the load commands.
 
     Args:
-        csv_file: path given with --csv-file
-        csv_folder: path given with --csv-folder
-        table: table given with --table
+        table: table given with --table (load-csv-file only)
         table_prefix: prefix explicitly given with --table-prefix (None if not given)
         add_id: whether --add-id is set
         run_id: run id given with --run-id
@@ -69,10 +65,6 @@ def validate_options(
     Raises:
         CsvIngestionOptionError: if the combination is invalid
     """
-    if (csv_file is None) == (csv_folder is None):
-        raise CsvIngestionOptionError(T("coal.services.native_csv_ingestion.option_input_required"))
-    if table is not None and csv_folder is not None:
-        raise CsvIngestionOptionError(T("coal.services.native_csv_ingestion.option_table_with_folder"))
     if table is not None and table_prefix is not None:
         raise CsvIngestionOptionError(T("coal.services.native_csv_ingestion.option_table_with_prefix"))
     if add_id and not run_id:
