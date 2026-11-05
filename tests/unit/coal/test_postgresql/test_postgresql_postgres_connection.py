@@ -136,6 +136,34 @@ class TestResolvePostgresConfiguration:
         del configuration.postgres["port"]
         assert resolve_postgres_configuration(configuration=configuration).postgres.port == 5432
 
+    def test_resolve_postgres_configuration_uses_output(self, configuration, monkeypatch):
+        monkeypatch.setenv("POSTGRES_USER_PASSWORD", "output-password")
+        configuration.postgres.user_password = "env.POSTGRES_USER_PASSWORD"
+        del configuration.postgres["port"]
+        base = Configuration({"outputs": [{"type": "postgres", "conf": configuration}]})
+        conf = resolve_postgres_configuration(configuration=base)
+        assert conf.postgres.host == "localhost"
+        assert conf.postgres.user_password == "output-password"
+        assert conf.postgres.port == 5432
+        assert base.safe_get("postgres") is None
+
+    def test_resolve_postgres_configuration_top_level_wins(self, configuration):
+        configuration.outputs = [
+            {"type": "postgres", "conf": {"postgres": {"host": "output-host"}}},
+            {"type": "postgres", "conf": {"postgres": {"host": "other-host"}}},
+        ]
+        assert resolve_postgres_configuration(configuration=configuration) is configuration
+
+    def test_resolve_postgres_configuration_ambiguous_outputs(self):
+        conf = Configuration({"outputs": [{"type": "postgres", "conf": {}}, {"type": "postgres", "conf": {}}]})
+        with pytest.raises(PostgresConnectionOptionError, match="Multiple PostgreSQL outputs"):
+            resolve_postgres_configuration(configuration=conf)
+
+    @pytest.mark.parametrize("outputs", [[{"type": "s3", "conf": {}}], [{"type": "postgres", "conf": {}}]])
+    def test_resolve_postgres_configuration_output_without_settings(self, outputs):
+        with pytest.raises(PostgresConnectionOptionError, match="Incomplete PostgreSQL configuration"):
+            resolve_postgres_configuration(configuration=Configuration({"outputs": outputs}))
+
     def test_resolve_postgres_configuration_nothing_usable(self):
         with pytest.raises(PostgresConnectionOptionError) as excinfo:
             resolve_postgres_configuration(configuration=Configuration({}))

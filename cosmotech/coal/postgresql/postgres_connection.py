@@ -103,6 +103,12 @@ def resolve_postgres_configuration(
 
     if none_given:
         # Case 1: no option given, the settings come from the configuration only
+        if configuration.safe_get("postgres") is None:
+            outputs = [output for output in configuration.safe_get("outputs", []) if output.type == "postgres"]
+            if len(outputs) > 1:
+                raise PostgresConnectionOptionError(T("coal.services.postgres_connection.ambiguous_outputs"))
+            if outputs:
+                configuration = Configuration(outputs[0].conf)
         missing_keys = [key for key in REQUIRED_CONFIGURATION_KEYS if not configuration.safe_get(f"postgres.{key}")]
         if missing_keys:
             raise PostgresConnectionOptionError(

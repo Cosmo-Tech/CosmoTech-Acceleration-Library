@@ -182,6 +182,9 @@ How they behave:
 - With `--add-id`, the `csm_run_id` column of the table is filled with `--run-id` (or `CSM_RUN_ID`) for every row. Without it, the CSV is loaded as is and no run id is added.
 - The connection comes from `--postgres-*` options (all of host, db, schema and user, and the password), or from the
   CoAL configuration file and `POSTGRES_*` environment variables when none of them is given.
+  Configuration uses the top-level `[postgres]` section, or, if absent, the single `[[outputs]]` entry of type
+  `postgres` with settings under `[outputs.conf.postgres]`. Multiple PostgreSQL outputs require an explicit choice
+  through `[postgres]` or the connection options.
 
 ## Common Workflows and Integration Patterns
 
