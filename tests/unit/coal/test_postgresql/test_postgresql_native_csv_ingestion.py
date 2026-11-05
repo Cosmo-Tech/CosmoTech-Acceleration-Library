@@ -259,6 +259,12 @@ class TestIngestCsvFile:
         conn.rollback.assert_not_called()
         cursor_of(conn).execute.assert_not_called()
 
+    def test_ingest_csv_file_without_preflight_skips_catalog_queries(self, csv_file, configuration):
+        conn = make_catalog_conn(rowcount=2)
+        assert self.run(csv_file, conn, configuration, run_preflight=False) == 2
+        conn.execute.assert_not_called()
+        conn.commit.assert_called_once()
+
     def test_ingest_csv_file_copy_statement_is_qualified_and_quoted(self, csv_file, configuration):
         conn = make_catalog_conn()
         self.run(csv_file, conn, configuration, table="Other")

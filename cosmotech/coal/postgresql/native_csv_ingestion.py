@@ -334,6 +334,7 @@ def ingest_csv_file(
     table: Optional[str] = None,
     table_prefix: str = DEFAULT_TABLE_PREFIX,
     run_id: Optional[str] = None,
+    run_preflight: bool = True,
 ) -> int:
     """
     Load one CSV file into an existing table, in one transaction.
@@ -344,6 +345,7 @@ def ingest_csv_file(
         table: target table, used verbatim; default is the lowercased table_prefix + file stem
         table_prefix: prefix used when no table is given
         run_id: when set (--add-id), the csm_run_id column is filled with it through the transaction-local setting
+        run_preflight: whether to check the table and the header before loading (False if already done by the caller)
 
     Returns:
         The number of rows copied
@@ -354,7 +356,10 @@ def ingest_csv_file(
     schema = PostgresUtils(configuration).db_schema
 
     with connect(configuration) as conn:
-        columns = preflight(conn, csv_path, table, run_id is not None, schema)
+        if run_preflight:
+            columns = preflight(conn, csv_path, table, run_id is not None, schema)
+        else:
+            columns = read_header(csv_path)
         return _copy_in_transaction(conn, csv_path, schema, table, columns, run_id)
 
 
@@ -395,17 +400,14 @@ def ingest_csv_folder(
     schema = PostgresUtils(configuration).db_schema
 
     with connect(configuration) as conn:
-        plan = [
-            (csv_path, table, preflight(conn, csv_path, table, run_id is not None, schema))
-            for csv_path, table in targets
-        ]
+        for csv_path, table in targets:
+            preflight(conn, csv_path, table, run_id is not None, schema)
 
-    tables = [table for _, table, _ in plan]
+    tables = [table for _, table in targets]
     results: dict[str, int] = {}
-    for csv_path, table, columns in plan:
+    for csv_path, table in targets:
         try:
-            with connect(configuration) as conn:
-                results[table] = _copy_in_transaction(conn, csv_path, schema, table, columns, run_id)
+            results[table] = ingest_csv_file(csv_path, configuration, table=table, run_id=run_id, run_preflight=False)
         except Exception:
             _log_folder_failure(tables, list(results), table)
             raise
