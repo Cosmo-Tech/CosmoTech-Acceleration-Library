@@ -2,3 +2,4 @@
 pytest
 pytest-docker
 pytest-cov
+psycopg[binary]~=3.3  # also in requirements.custom.txt, needed by the tests

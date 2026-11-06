@@ -1,0 +1,171 @@
+# Copyright (C) - 2023 - 2025 - Cosmo Tech
+# This document and all information contained herein is the exclusive property -
+# including all intellectual property rights pertaining thereto - of Cosmo Tech.
+# Any use, reproduction, translation, broadcasting, transmission, distribution,
+# etc., to any person is prohibited unless it has been previously and
+# specifically authorized by written means by Cosmo Tech.
+
+import builtins
+import subprocess
+import sys
+from unittest.mock import MagicMock, patch
+
+import psycopg
+import pytest
+
+from cosmotech.coal.postgresql.psycopg_utils import (
+    PostgresConnectionError,
+    PostgresConnectionOptionError,
+    connect,
+    import_psycopg,
+    resolve_postgres_configuration,
+)
+from cosmotech.coal.utils.configuration import Configuration
+
+
+@pytest.fixture
+def configuration():
+    return Configuration(
+        {
+            "postgres": {
+                "host": "localhost",
+                "port": "5432",
+                "db_name": "testdb",
+                "db_schema": "dbschema",
+                "user_name": "user",
+                "user_password": "p@ss word",
+                "password_encoding": True,
+            }
+        }
+    )
+
+
+def clear_env(monkeypatch):
+    for key in (
+        "CONFIG_FILE_PATH",
+        "POSTGRES_HOST_URI",
+        "POSTGRES_HOST_PORT",
+        "POSTGRES_DB_NAME",
+        "POSTGRES_DB_SCHEMA",
+        "POSTGRES_USER_NAME",
+        "POSTGRES_USER_PASSWORD",
+        "CSM_PSQL_FORCE_PASSWORD_ENCODING",
+    ):
+        monkeypatch.delenv(key, raising=False)
+
+
+class TestImportPsycopg:
+    def test_import_psycopg_failure_gives_dedicated_error_with_cause(self):
+        real_import = builtins.__import__
+
+        def fake_import(name, *args, **kwargs):
+            if name == "psycopg":
+                raise ImportError("no pq wrapper available")
+            return real_import(name, *args, **kwargs)
+
+        with patch("builtins.__import__", side_effect=fake_import):
+            with pytest.raises(PostgresConnectionError) as excinfo:
+                import_psycopg()
+        assert isinstance(excinfo.value.__cause__, ImportError)
+        assert "[custom]" in str(excinfo.value)
+
+    def test_import_psycopg_package_import_does_not_need_psycopg(self):
+        code = (
+            "import sys; sys.modules['psycopg'] = None; "
+            "import cosmotech.coal.postgresql, cosmotech.csm_data.main; "
+            "print('ok')"
+        )
+        result = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
+        assert result.returncode == 0, result.stderr
+        assert "ok" in result.stdout
+
+
+class TestConnect:
+    def test_connect_sets_search_path(self, configuration):
+        conn = MagicMock()
+        with patch("psycopg.connect", return_value=conn) as connect_mock:
+            assert connect(configuration) is conn
+        assert connect_mock.call_args.args[0] == "postgresql://user:p%40ss%20word@localhost:5432/testdb"
+        assert connect_mock.call_args.kwargs == {"autocommit": False}
+        assert conn.execute.call_args.args[0].as_string() == 'SET search_path TO "dbschema"'
+
+    def test_connect_failure_raises_connection_error(self, configuration):
+        error = psycopg.OperationalError("connection refused")
+        with patch("psycopg.connect", side_effect=error):
+            with pytest.raises(PostgresConnectionError, match="connection refused") as excinfo:
+                connect(configuration)
+        assert excinfo.value.__cause__ is error
+
+
+class TestResolvePostgresConfiguration:
+    ALL = dict(host="h", db="d", schema="s", user="u", password="pw")
+
+    def test_resolve_postgres_configuration_all_options(self, monkeypatch):
+        clear_env(monkeypatch)
+        conf = resolve_postgres_configuration(port=6543, encode_password=False, **self.ALL)
+        assert conf.postgres.host == "h"
+        assert conf.postgres.port == 6543
+        assert conf.postgres.db_name == "d"
+        assert conf.postgres.db_schema == "s"
+        assert conf.postgres.user_name == "u"
+        assert conf.postgres.user_password == "pw"
+        assert conf.postgres.password_encoding is False
+        assert resolve_postgres_configuration(**self.ALL).postgres.port == 5432
+
+    def test_resolve_postgres_configuration_all_options_without_password(self, monkeypatch):
+        clear_env(monkeypatch)
+        with pytest.raises(PostgresConnectionOptionError, match="password"):
+            resolve_postgres_configuration(host="h", db="d", schema="s", user="u")
+
+    def test_resolve_postgres_configuration_partial_options_name_missing_ones(self, monkeypatch):
+        clear_env(monkeypatch)
+        monkeypatch.setenv("POSTGRES_DB_NAME", "from_env")
+        with pytest.raises(PostgresConnectionOptionError) as excinfo:
+            resolve_postgres_configuration(host="h", user="u", password="pw")
+        assert "--postgres-db" in str(excinfo.value)
+        assert "--postgres-schema" in str(excinfo.value)
+        assert "--postgres-host" not in str(excinfo.value)
+
+    def test_resolve_postgres_configuration_none_uses_configuration(self, configuration):
+        conf = resolve_postgres_configuration(configuration=configuration)
+        assert conf is configuration
+        assert conf.postgres.host == "localhost"
+        assert conf.postgres.user_password == "p@ss word"
+
+    def test_resolve_postgres_configuration_none_defaults_port(self, configuration):
+        del configuration.postgres["port"]
+        assert resolve_postgres_configuration(configuration=configuration).postgres.port == 5432
+
+    def test_resolve_postgres_configuration_uses_output(self, configuration, monkeypatch):
+        monkeypatch.setenv("POSTGRES_USER_PASSWORD", "output-password")
+        configuration.postgres.user_password = "env.POSTGRES_USER_PASSWORD"
+        del configuration.postgres["port"]
+        base = Configuration({"outputs": [{"type": "postgres", "conf": configuration}]})
+        conf = resolve_postgres_configuration(configuration=base)
+        assert conf.postgres.host == "localhost"
+        assert conf.postgres.user_password == "output-password"
+        assert conf.postgres.port == 5432
+        assert base.safe_get("postgres") is None
+
+    def test_resolve_postgres_configuration_top_level_wins(self, configuration):
+        configuration.outputs = [
+            {"type": "postgres", "conf": {"postgres": {"host": "output-host"}}},
+            {"type": "postgres", "conf": {"postgres": {"host": "other-host"}}},
+        ]
+        assert resolve_postgres_configuration(configuration=configuration) is configuration
+
+    def test_resolve_postgres_configuration_ambiguous_outputs(self):
+        conf = Configuration({"outputs": [{"type": "postgres", "conf": {}}, {"type": "postgres", "conf": {}}]})
+        with pytest.raises(PostgresConnectionOptionError, match="Multiple PostgreSQL outputs"):
+            resolve_postgres_configuration(configuration=conf)
+
+    @pytest.mark.parametrize("outputs", [[{"type": "s3", "conf": {}}], [{"type": "postgres", "conf": {}}]])
+    def test_resolve_postgres_configuration_output_without_settings(self, outputs):
+        with pytest.raises(PostgresConnectionOptionError, match="Incomplete PostgreSQL configuration"):
+            resolve_postgres_configuration(configuration=Configuration({"outputs": outputs}))
+
+    def test_resolve_postgres_configuration_nothing_usable(self):
+        with pytest.raises(PostgresConnectionOptionError) as excinfo:
+            resolve_postgres_configuration(configuration=Configuration({}))
+        assert "host" in str(excinfo.value)
+        assert "user_password" in str(excinfo.value)

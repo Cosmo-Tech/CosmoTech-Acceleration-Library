@@ -11,6 +11,12 @@ PostgreSQL integration module.
 This module provides functions for interacting with PostgreSQL databases.
 """
 
+# Re-export functions from the native csv ingestion module
+from cosmotech.coal.postgresql.native_csv_ingestion import (
+    ingest_csv_file,
+    ingest_csv_folder,
+)
+
 # Re-export functions from the runner module
 from cosmotech.coal.postgresql.runner import (
     send_runner_metadata_to_postgresql,

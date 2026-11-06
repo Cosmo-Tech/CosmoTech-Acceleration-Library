@@ -1,0 +1,10 @@
+parameters:
+  add_id: Fill the csm_run_id column of the table with the run id
+  run_id: Run id used with --add-id
+  postgres_host: PostgreSQL host URI
+  postgres_port: PostgreSQL database port
+  postgres_db: PostgreSQL database name
+  postgres_schema: PostgreSQL schema name
+  postgres_user: PostgreSQL connection user name
+  postgres_password: PostgreSQL connection password
+  encode_password: Force encoding of password to percent encoding
