@@ -102,7 +102,7 @@ def ingestion_errors():
         CsvIngestionError,
         CsvIngestionOptionError,
     )
-    from cosmotech.coal.postgresql.postgres_connection import (
+    from cosmotech.coal.postgresql.psycopg_utils import (
         PostgresConnectionError,
         PostgresConnectionOptionError,
     )

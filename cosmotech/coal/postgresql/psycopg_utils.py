@@ -6,7 +6,7 @@
 # specifically authorized by written means by Cosmo Tech.
 
 """
-PostgreSQL connection module (psycopg).
+PostgreSQL connection utilities (psycopg).
 
 This module resolves the connection settings (from options, the configuration file or the environment)
 and opens psycopg connections.

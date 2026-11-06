@@ -60,7 +60,7 @@ def load_csv_file(
         ingest_csv_file,
         validate_options,
     )
-    from cosmotech.coal.postgresql.postgres_connection import (
+    from cosmotech.coal.postgresql.psycopg_utils import (
         resolve_postgres_configuration,
     )
 

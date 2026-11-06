@@ -54,7 +54,7 @@ def load_csv_folder(
         ingest_csv_folder,
         validate_options,
     )
-    from cosmotech.coal.postgresql.postgres_connection import (
+    from cosmotech.coal.postgresql.psycopg_utils import (
         resolve_postgres_configuration,
     )
 

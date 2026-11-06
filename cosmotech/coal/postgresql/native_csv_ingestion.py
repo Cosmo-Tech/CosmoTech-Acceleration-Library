@@ -12,7 +12,7 @@ This module streams CSV files straight into existing PostgreSQL tables with the 
 command. Python only reads bytes and forwards them: PostgreSQL parses the CSV and converts the values into the
 column types declared on the table. Each file is loaded in a single transaction.
 
-The connection is handled by ``cosmotech.coal.postgresql.postgres_connection``.
+The connection is handled by ``cosmotech.coal.postgresql.psycopg_utils``.
 """
 
 import csv
@@ -23,7 +23,7 @@ from typing import Optional
 
 from cosmotech.orchestrator.utils.translate import T
 
-from cosmotech.coal.postgresql.postgres_connection import connect, import_psycopg
+from cosmotech.coal.postgresql.psycopg_utils import connect, import_psycopg
 from cosmotech.coal.postgresql.utils import PostgresUtils
 from cosmotech.coal.utils.configuration import Configuration
 from cosmotech.coal.utils.logger import LOGGER

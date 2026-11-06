@@ -4,7 +4,7 @@ description: "Helpers"
 # **cosmotech.coal.postgresql**
 
 !!! note "Optional dependency"
-    `native_csv_ingestion` and `postgres_connection` need `psycopg`: `pip install "cosmotech-acceleration-library[custom]"`.
+    `native_csv_ingestion` and `psycopg_utils` need `psycopg`: `pip install "cosmotech-acceleration-library[custom]"`.
 
 ::: cosmotech.coal.postgresql.native_csv_ingestion
     options:
@@ -14,7 +14,7 @@ description: "Helpers"
 
 <br/>
 
-::: cosmotech.coal.postgresql.postgres_connection
+::: cosmotech.coal.postgresql.psycopg_utils
     options:
       members:
         - resolve_postgres_configuration
