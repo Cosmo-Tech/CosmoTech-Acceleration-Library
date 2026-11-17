@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -e ".[test]"
+        pip install -e . --group test
         pip install -e ".[past]"
 
     - name: Run tests with coverage

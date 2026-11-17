@@ -142,7 +142,7 @@ To run the test suite:
 
 ```bash
 # Install test dependencies
-pip install -e ".[test]"
+pip install -e . --group test
 
 # Run tests with coverage reporting
 pytest tests/unit/coal/ --cov=cosmotech.coal --cov-report=term-missing --cov-report=html

@@ -5,11 +5,100 @@ licence_files = ["LICENSE"]
 name = "cosmotech_acceleration_library"
 authors = [{ name = "Cosmo Tech", email = "platform@cosmotech.com" }]
 description = "Acceleration libraries for CosmoTech cloud based solution development"
+version = "2.4.2"
 urls.Homepage = "https://www.cosmotech.com"
 urls.Source = "https://github.com/Cosmo-Tech/CosmoTech-Acceleration-Library"
 urls.Documentation = "https://cosmo-tech.github.io/CosmoTech-Acceleration-Library"
-dynamic = ["version", "dependencies", "optional-dependencies"]
 readme = { file = "README.md", content-type = "text/markdown" }
+dependencies = [
+    # Azure connection requirements
+    "azure-core~=1.41",
+    "azure-functions~=1.25",
+    "azure-identity~=1.27",
+    "azure-kusto-data~=4.6",
+    "azure-kusto-ingest~=4.6",
+    "tenacity~=9.2",
+
+    # Keycloak connection
+    "python-keycloak~=5.12",
+
+    # Cosmotech specific requirements
+    "cosmotech-api~=5.4",
+
+    # Commands requirements
+    "boto3~=1.44",
+    "requests~=2.34",
+    "singlestoredb~=1.19",
+
+    # Orchestrator templates requirements
+    "cosmotech-run-orchestrator~=2.1.0",
+
+    # Data store requirements
+    "pyarrow~=25.0.1",
+    "adbc-driver-manager~=1.13",
+    "adbc-driver-sqlite~=1.13",
+    "adbc-driver-postgresql~=1.13",
+
+    # CLI requirements
+    "click~=8.1",
+    "rich-click~=1.7",
+    "click-log~=0.4",
+    "tqdm~=4.70",
+
+    # Other requirements
+    "openpyxl~=3.1",
+    "pandas~=3.1",
+    "python-dateutil~=2.9",
+    "rich~=13.7",
+    "setuptools",
+]
+
+[project.optional-dependencies]
+# Published, installable extras: real runtime features of the package.
+custom = [
+    # Custom commands requirements
+    "psycopg[binary]~=3.3",
+]
+
+
+# Development dependency groups (PEP 735). They are not published with the
+# package: install them from a checkout with `pip install -e . --group dev`
+# (requires pip >= 25.1).
+[dependency-groups]
+dev = [
+    # Formatting and linting
+    "black~=25.12",
+    "pre-commit~=3.8.0",
+    "isort~=7.0",
+]
+doc = [
+    # Documentation generation
+    "properdocs~=1.6.7",
+    "mkdocs-click~=0.9",
+    "mkdocs-gen-files~=0.6",
+    "mkdocs-awesome-nav~=3.3.0",
+    "pymdown-extensions~=10.21",
+    "requirements-parser~=0.13",
+    "mike~=2.2.0",
+    "mkdocs-include-dir-to-nav~=1.2.0",
+    "mkdocs-material[imaging]~=9.7.7",
+    "mkdocs-table-reader-plugin~=2.2.2",
+    "mkdocs-literate-nav~=0.6.3",
+    "mkdocstrings[python]~=1.0.8",
+    "mkdocstrings-python~=2.0.11",
+]
+test = [
+    # Tests
+    "pytest",
+    "pytest-docker",
+    "pytest-cov",
+    "psycopg[binary]~=3.3",  # also in optional-dependencies.custom, needed by the tests
+]
+all = [
+    { include-group = "dev" },
+    { include-group = "doc" },
+    { include-group = "test" },
+]
 
 
 [build-system]
@@ -44,13 +133,6 @@ exclude = '''
 
 [tool.setuptools]
 include-package-data = true
-package-data."*" = [
-    "requirements.txt",
-    "requirements.doc.txt",
-    "requirements.custom.txt",
-    "requirements.test.txt",
-    "requirements.dev.txt"
-]
 zip-safe = false
 
 [project.scripts]
@@ -59,12 +141,3 @@ csm-data = "cosmotech.csm_data.main:main"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["cosmotech.*"]
-
-[tool.setuptools.dynamic]
-version.attr = "cosmotech.coal.__version__"
-dependencies.file = "requirements.txt"
-optional-dependencies.doc.file = "requirements.doc.txt"
-optional-dependencies.test.file = "requirements.test.txt"
-optional-dependencies.dev.file = "requirements.dev.txt"
-optional-dependencies.custom.file = "requirements.custom.txt"
-optional-dependencies.all.file = "requirements.all.txt"

@@ -1,2 +1,0 @@
-# Custom commands requirements
-psycopg[binary]~=3.3
