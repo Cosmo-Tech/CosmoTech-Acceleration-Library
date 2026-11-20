@@ -33,7 +33,7 @@ exclude = '''
 Install Black and other development tools:
 
 ```bash
-pip install -r requirements.dev.txt
+pip install -e . --group dev
 ```
 
 Or install Black directly:

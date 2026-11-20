@@ -1,4 +1,0 @@
-# Development requirements
-black~=25.0
-pre-commit~=3.3.2
-isort~=7.0

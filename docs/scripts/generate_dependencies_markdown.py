@@ -1,36 +1,34 @@
+import tomllib
 from typing import IO
 
 import mkdocs_gen_files
 import requirements
 
+with open("pyproject.toml", "rb") as _f:
+    _pyproject = tomllib.load(_f)
+
+_sections: list[tuple[str, list[str]]] = [
+    ("Runtime requirements", _pyproject["project"]["dependencies"]),
+    ("Documentation requirements", _pyproject["dependency-groups"]["doc"]),
+    ("Test requirements", _pyproject["dependency-groups"]["test"]),
+    ("Development requirements", _pyproject["dependency-groups"]["dev"]),
+]
+
 _md_file: IO
-with (
-    mkdocs_gen_files.open("dependencies.md", "w") as _md_file,
-    open("requirements.txt") as _req,
-    open("requirements.doc.txt") as _doc_req,
-    open("requirements.test.txt") as _test_req,
-    open("requirements.dev.txt") as _dev_req,
-):
+with mkdocs_gen_files.open("dependencies.md", "w") as _md_file:
     content = ["# List of dependencies", ""]
 
-    _requirements: list[str] = _req.read().splitlines()
-    _doc_requirements: list[str] = _doc_req.read().splitlines()
-    _test_requirements: list[str] = _test_req.read().splitlines()
-    _dev_requirements: list[str] = _dev_req.read().splitlines()
-
-    for _r in [_requirements, _doc_requirements, _test_requirements, _dev_requirements]:
-        for _l in _r:
-            if not _l:
-                content.append("")
-            elif _l[0] == "#":
-                content.append(_l[1:] + "  ")
-            else:
-                req = next(requirements.parse(_l))
-                _name = req.name
-                content.append(
-                    f"[ ![PyPI - {_name}]"
-                    f"(https://img.shields.io/pypi/l/{_name}?style=for-the-badge&labelColor=informational&label={_name})]"
-                    f"(https://pypi.org/project/{_name}/)  "
-                )
+    for _title, _reqs in _sections:
+        content.append(f"## {_title}")
+        content.append("")
+        for _l in _reqs:
+            req = next(requirements.parse(_l))
+            _name = req.name
+            content.append(
+                f"[ ![PyPI - {_name}]"
+                f"(https://img.shields.io/pypi/l/{_name}?style=for-the-badge&labelColor=informational&label={_name})]"
+                f"(https://pypi.org/project/{_name}/)  "
+            )
+        content.append("")
 
     _md_file.writelines(_l + "\n" for _l in content)

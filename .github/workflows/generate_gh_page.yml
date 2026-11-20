@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+env:
+  NO_MKDOCS_2_WARNING: 1
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -13,7 +15,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11
-      - run: pip install -e .[doc]
+      - run: pip install -e . --group doc
       - name: Extract version
         shell: bash
         run: echo "##[set-output name=version;]$(python -c 'from cosmotech.coal import __version__; print(__version__)')"

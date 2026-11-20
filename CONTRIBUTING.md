@@ -22,7 +22,7 @@ We are committed to providing a friendly, safe, and welcoming environment for al
 2. Clone your fork locally
 3. Set up the development environment:
    ```bash
-   pip install -e ".[dev]"
+   pip install -e . --group dev
    pre-commit install
    ```
 

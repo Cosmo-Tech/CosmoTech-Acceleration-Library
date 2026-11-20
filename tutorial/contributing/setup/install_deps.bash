@@ -1,1 +1,1 @@
-pip install -e ".[dev]"
+pip install -e . --group dev
